@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>KundServicelmml.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+KundServicelmml.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.constructionappapi.services</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.constructionappapi.entities.KundEntity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.constructionappapi.model.Kund</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.constructionappapi.reposity.KundRepository</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.springframework.beans.BeanUtils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.springframework.stereotype.Service</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.stream.Collectors</span><span class="s0">;</span>
+
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">KundServicelmml </span><span class="s0">implements </span><span class="s1">KundService {</span>
+
+    <span class="s0">private </span><span class="s1">KundRepository kundRepository</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">KundServicelmml(KundRepository kundRepository) {</span>
+        <span class="s0">this</span><span class="s1">.kundRepository = kundRepository</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Kund createKund(Kund kund) {</span>
+        <span class="s1">KundEntity kundEntity = </span><span class="s0">new </span><span class="s1">KundEntity()</span><span class="s0">;</span>
+        <span class="s1">BeanUtils.copyProperties(kund</span><span class="s0">, </span><span class="s1">kundEntity)</span><span class="s0">;</span>
+        <span class="s1">kundRepository.save(kundEntity)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">kund</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">List&lt;Kund&gt; getAllKunder() {</span>
+        <span class="s1">List&lt;KundEntity&gt; kundEntities = kundRepository.findAll()</span><span class="s0">;</span>
+
+        <span class="s1">List&lt;Kund&gt; kunder = kundEntities</span>
+                <span class="s1">.stream()</span>
+                <span class="s1">.map(kun -&gt; </span><span class="s0">new </span><span class="s1">Kund(kun.getId()</span><span class="s0">, </span><span class="s1">kun.getName()))</span>
+                <span class="s1">.collect(Collectors.toList())</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">kunder</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
