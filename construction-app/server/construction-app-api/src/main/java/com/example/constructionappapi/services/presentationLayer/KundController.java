@@ -1,7 +1,7 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.businessLogicLayer.RequestController;
 import com.example.constructionappapi.services.dataAccessLayer.model.Costumer;
+import com.example.constructionappapi.services.dataAccessLayer.repositories.IRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,21 +12,21 @@ import java.util.List;
 public class KundController {
 
     //private final dataAccessLayer.repositories.IRepository iRepository;
-    private RequestController requestController;
+    //private RequestController requestController;
+    private final IRepository iRepository;
 
-    public KundController(RequestController requestController) {
-        this.requestController = requestController;
+    public KundController(IRepository iRepository) {
+        this.iRepository = iRepository;
     }
-
 
     @PostMapping("/kunder")
     public Costumer createKund(@RequestBody Costumer costumer) {
-        return requestController.createKund(costumer);
+        return iRepository.createKund(costumer);
     }
 
     @GetMapping("/kunder")
     public List<Costumer> getAllKunder() {
-        return requestController.getAllKunder();
+        return iRepository.getAllKunder();
     }
 
 
