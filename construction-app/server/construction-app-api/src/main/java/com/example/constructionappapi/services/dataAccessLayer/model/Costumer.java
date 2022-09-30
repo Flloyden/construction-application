@@ -1,4 +1,4 @@
-package com.example.constructionappapi.model;
+package com.example.constructionappapi.services.dataAccessLayer.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Kund {
+public class Costumer {
     private long id;
     private String name;
 }
