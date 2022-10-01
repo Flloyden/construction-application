@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.dataAccessLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.DBAccessCustomer;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +20,7 @@ public class CustomerRepository implements ICustomerRepository {
 
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
-        CustomerEntity costumerEntity = new CustomerEntity();
-        BeanUtils.copyProperties(customer, costumerEntity);
-        DBAccessCustomer.save(costumerEntity);
-
-        return customer;
+        return DBAccessCustomer.save(customer);
     }
 
     @Override

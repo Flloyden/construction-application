@@ -12,6 +12,5 @@ import java.util.List;
  * A class that gives access to interaction with Customer in the DB (save, find, delete, etc) through predefined
  * functions in JpaRepository and the key ID in class costumer
  */
-public interface DBAccessCustomer extends JpaRepository<CustomerEntity, Long> {
-}//long bcs Costumer id is datatype long
+public interface DBAccessCustomer extends JpaRepository<CustomerEntity, Long> { }//long bcs Costumer id is datatype long
 
