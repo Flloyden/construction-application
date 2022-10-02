@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "calendar")
+@Table(name = "work")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
