@@ -7,16 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "calendar")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class representing (and creating?) the table User in DB
- */
-public class CustomerEntity {
+public class WorkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id; //automatically incrementing id
-    private String name;
+    private long id;
+    private long customerId;
+    /*
+    @Lob
+    private byte[] image;
+     */
 }

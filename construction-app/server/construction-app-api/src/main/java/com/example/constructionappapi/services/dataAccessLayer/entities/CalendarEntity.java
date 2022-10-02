@@ -5,18 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "calendar")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class representing (and creating?) the table User in DB
- */
-public class CustomerEntity {
+public class CalendarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id; //automatically incrementing id
-    private String name;
+    private long id;
+    private long workId;
+    private LocalDate date;
 }

@@ -25,14 +25,6 @@ public class CustomerRepository implements ICustomerRepository {
 
     @Override
     public List<CustomerEntity> getAllCustomers() {
-        //List<CustomerEntity> customerEntities = DBAccessCustomer.findAll();
-        /*
-        List<Customer> customers = customerEntities
-                .stream()
-                .map(kun -> new Customer(kun.getId(), kun.getName()))
-                .collect(Collectors.toList());
-         */
         return DBAccessCustomer.findAll();
-
     }
 }
