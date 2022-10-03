@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.ICustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class API {
 
+    //@Autowired ?? används i video, men vi gör d ej
     private final ICustomerRepository iCustomerRepository;
 
     public API(ICustomerRepository iCustomerRepository) {
