@@ -11,8 +11,6 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class API {
 
-    //private final dataAccessLayer.repositories.IRepository iRepository;
-    //private RequestController requestController;
     private final ICustomerRepository iCustomerRepository;
 
     public API(ICustomerRepository iCustomerRepository) {
