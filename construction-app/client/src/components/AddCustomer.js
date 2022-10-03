@@ -11,7 +11,11 @@ const AddCustomer = () => {
 
 const handleChange = (e) => {
     const value = e.target.value;
-    setKund({...kund, [e.target.name]: value});
+    setKund({...kund, [e.target.name]: value},
+        {...kund,[e.target.phonenumber]:value},
+        {...kund,[e.target.address]:value},
+        {...kund,[e.target.fastighetsbeteckning]:value},
+        {...kund,[e.target.phonenumber]:value});
 }
 
 const saveKund = (e) => {
@@ -32,6 +36,19 @@ const saveKund = (e) => {
         <br />
         <label>Namn: </label>
         <input type="text" name='name' value={kund.name} onChange={(e) => handleChange(e)}></input>
+
+        <label>Adress: </label>
+        <input type="text" name='address' value={kund.address} onChange={(e) => handleChange(e)}></input>
+
+        <label>Telefonnummer: </label>
+        <input type="text" name='phonenumber' value={kund.phonenumber} onChange={(e) => handleChange(e)}></input>
+
+        <label>fastighetsbeteckning: </label>
+        <input type="text" name='fastighetsbeteckning' value={kund.fastighetsbeteckning} onChange={(e) => handleChange(e)}></input>
+
+        <label>Personnummer: </label>
+        <input type="text" name='personnr' value={kund.personnr} onChange={(e) => handleChange(e)}></input>
+        
         <button onClick={saveKund}>Spara</button>
     </div>
   )

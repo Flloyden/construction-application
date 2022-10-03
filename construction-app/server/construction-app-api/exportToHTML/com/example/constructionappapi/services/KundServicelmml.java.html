@@ -47,7 +47,7 @@ KundServicelmml.java</font>
 
         <span class="s1">List&lt;Kund&gt; kunder = kundEntities</span>
                 <span class="s1">.stream()</span>
-                <span class="s1">.map(kun -&gt; </span><span class="s0">new </span><span class="s1">Kund(kun.getId()</span><span class="s0">, </span><span class="s1">kun.getName()))</span>
+                <span class="s1">.map(kun -&gt; </span><span class="s0">new </span><span class="s1">Kund(kun.getId(),kun.getPhonenumber(),kun.getAddress(),kun.getFastighetsbeteckning(),kun.getPersonnr()</span><span class="s0">, </span><span class="s1">kun.getName()))</span>
                 <span class="s1">.collect(Collectors.toList())</span><span class="s0">;</span>
         <span class="s0">return </span><span class="s1">kunder</span><span class="s0">;</span>
     <span class="s1">}</span>

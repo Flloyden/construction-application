@@ -14,12 +14,16 @@ import javax.persistence.*;
 /**
  * A class creating and giving access to the table Costumer in DB
  */
-public class CostumerEntity {
+public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id; //automatically incrementing id
     private String name;
+    private String address;
+    private String phonenumber;
+    private String fastighetsbeteckning;
+    private String personnr;
 
     public long getId() {
         return id;

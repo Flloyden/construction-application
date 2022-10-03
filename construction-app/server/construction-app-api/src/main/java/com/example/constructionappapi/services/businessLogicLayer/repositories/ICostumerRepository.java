@@ -1,5 +1,5 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CostumerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import java.util.List;
  * A interface to function as a model for all the repositories
  */
 public interface ICostumerRepository {
-    CostumerEntity createCustomer(CostumerEntity customer);
+    CustomerEntity createCustomer(CustomerEntity customer);
 
-    List<CostumerEntity> getAllCustomers();
+    List<CustomerEntity> getAllCustomers();
 }

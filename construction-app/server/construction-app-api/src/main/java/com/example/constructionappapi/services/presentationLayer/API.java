@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.dataAccessLayer.entities.CostumerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.ICostumerRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,12 +19,12 @@ public class API {
     }
 
     @PostMapping("/kunder")
-    public CostumerEntity createCustomer(@RequestBody CostumerEntity costumer) {
-        return iCostumerRepository.createCustomer(costumer);
+    public CustomerEntity createCustomer(@RequestBody CustomerEntity customer) {
+        return iCostumerRepository.createCustomer(customer);
     }
 
     @GetMapping("/kunder")
-    public List<CostumerEntity> getAllCustomers() {
+    public List<CustomerEntity> getAllCustomers() {
         return iCostumerRepository.getAllCustomers();
     }
 

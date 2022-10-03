@@ -1,7 +1,7 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.DBAccessCustomer;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CostumerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,12 +19,12 @@ public class CostumerRepository implements ICostumerRepository {
     }
 
     @Override
-    public CostumerEntity createCustomer(CostumerEntity customer) {
+    public CustomerEntity createCustomer(CustomerEntity customer) {
         return DBAccessCustomer.save(customer);
     }
 
     @Override
-    public List<CostumerEntity> getAllCustomers() {
+    public List<CustomerEntity> getAllCustomers() {
         return DBAccessCustomer.findAll();
     }
 }
