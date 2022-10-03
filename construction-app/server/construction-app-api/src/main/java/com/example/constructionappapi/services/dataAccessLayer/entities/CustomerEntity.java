@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //to generate Costumer table
 @Table(name = "customer")
@@ -21,23 +23,17 @@ public class CustomerEntity {
     private long id; //automatically incrementing id
     private String name;
     private String address;
-    private String phonenumber;
-    private String fastighetsbeteckning;
-    private String personnr;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String phoneNumber;
+    private String propertyDesignation;
+    private int socialSecurityNumber;
+    @OneToMany(
+            mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<WorkEntity> workList;
+    @OneToMany(
+            mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<CustomerNoteEntity> customerNotes;
 }

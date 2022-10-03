@@ -8,20 +8,17 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "calendar")
+@Table(name = "customer_note")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class creating and giving access to the table Calendar in DB
- */
-public class CalendarEntity {
+public class CustomerNoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(unique = true)
-    private LocalDate date;
+    private LocalDate datePosted;
+    private String note;
     @ManyToOne
-    @JoinColumn(name = "work_id")
-    private WorkEntity work;
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
 }

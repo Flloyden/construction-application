@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
-import com.example.constructionappapi.services.dataAccessLayer.DBAccessCustomer;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +10,21 @@ import java.util.List;
  * Class accessing the customer table in DB
  */
 @Service
-public class CostumerRepository implements ICostumerRepository {
+public class CustomerRepository implements ICustomerRepository {
 
-    private DBAccessCustomer DBAccessCustomer;
+    private CustomerDao CustomerDao;
 
-    public CostumerRepository(DBAccessCustomer DBAccessCustomer) {
-        this.DBAccessCustomer = DBAccessCustomer;
+    public CustomerRepository(CustomerDao CustomerDao) {
+        this.CustomerDao = CustomerDao;
     }
 
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
-        return DBAccessCustomer.save(customer);
+        return CustomerDao.save(customer);
     }
 
     @Override
     public List<CustomerEntity> getAllCustomers() {
-        return DBAccessCustomer.findAll();
+        return CustomerDao.findAll();
     }
 }
