@@ -14,7 +14,7 @@ import javax.persistence.*;
 /**
  * A class creating and giving access to the table Costumer in DB
  */
-public class CustomerEntity {
+public class CostumerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
