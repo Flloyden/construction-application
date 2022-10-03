@@ -9,13 +9,13 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
-public class CustomerController {
+public class API {
 
     //private final dataAccessLayer.repositories.IRepository iRepository;
     //private RequestController requestController;
     private final ICustomerRepository iCustomerRepository;
 
-    public CustomerController(ICustomerRepository iCustomerRepository) {
+    public API(ICustomerRepository iCustomerRepository) {
         this.iCustomerRepository = iCustomerRepository;
     }
 
