@@ -11,6 +11,9 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating and giving access to the table Work in DB
+ */
 public class WorkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,10 @@
-package com.example.constructionappapi.services.dataAccessLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 
 import java.util.List;
 
 /**
- * A interface to function as a model for all the Db repositories
+ * A interface to function as a model for all the repositories
  */
 public interface ICustomerRepository {
     CustomerEntity createCustomer(CustomerEntity customer);

@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating and giving access to the table Calendar in DB
+ */
 public class CalendarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

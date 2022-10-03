@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.dataAccessLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.DBAccessCustomer;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;

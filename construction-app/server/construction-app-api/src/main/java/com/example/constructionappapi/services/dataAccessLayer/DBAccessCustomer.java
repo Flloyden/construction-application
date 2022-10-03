@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 /**
- * A class that gives access to interaction with Customer in the DB (save, find, delete, etc) through predefined
- * functions in JpaRepository and the key ID in class costumer
+ * A class that gives access to interaction with table Customer in the DB (save, find, delete, etc)
+ * through it's entity-class
  */
 public interface DBAccessCustomer extends JpaRepository<CustomerEntity, Long> { }//long bcs Costumer id is datatype long
 

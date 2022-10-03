@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 /**
- * A class representing (and creating?) the table User in DB
+ * A class creating and giving access to the table Costumer in DB
  */
 public class CustomerEntity {
     @Id
