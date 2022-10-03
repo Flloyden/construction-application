@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class API {
 
-    //@Autowired ?? används i video, men vi gör d ej
+    //@Autowired ?? used in video but we dont use it?
     private final ICostumerRepository iCostumerRepository;
 
     public API(ICostumerRepository iCostumerRepository) {
