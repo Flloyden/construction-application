@@ -16,7 +16,7 @@ KundServicelmml.java</font>
 <pre><span class="s0">package </span><span class="s1">com.example.constructionappapi.services</span><span class="s0">;</span>
 
 <span class="s0">import </span><span class="s1">com.example.constructionappapi.entities.KundEntity</span><span class="s0">;</span>
-<span class="s0">import </span><span class="s1">com.example.constructionappapi.model.Kund</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.constructionappapi.model.Costumer</span><span class="s0">;</span>
 <span class="s0">import </span><span class="s1">com.example.constructionappapi.reposity.KundRepository</span><span class="s0">;</span>
 <span class="s0">import </span><span class="s1">org.springframework.beans.BeanUtils</span><span class="s0">;</span>
 <span class="s0">import </span><span class="s1">org.springframework.stereotype.Service</span><span class="s0">;</span>
@@ -27,23 +27,23 @@ KundServicelmml.java</font>
 <span class="s1">@Service</span>
 <span class="s0">public class </span><span class="s1">KundServicelmml </span><span class="s0">implements </span><span class="s1">KundService {</span>
 
-    <span class="s0">private </span><span class="s1">KundRepository kundRepository</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">KundRepository DBAccessCustomer</span><span class="s0">;</span>
 
-    <span class="s0">public </span><span class="s1">KundServicelmml(KundRepository kundRepository) {</span>
-        <span class="s0">this</span><span class="s1">.kundRepository = kundRepository</span><span class="s0">;</span>
+    <span class="s0">public </span><span class="s1">KundServicelmml(KundRepository DBAccessCustomer) {</span>
+        <span class="s0">this</span><span class="s1">.DBAccessCustomer = DBAccessCustomer</span><span class="s0">;</span>
     <span class="s1">}</span>
 
     <span class="s1">@Override</span>
-    <span class="s0">public </span><span class="s1">Kund createKund(Kund kund) {</span>
-        <span class="s1">KundEntity kundEntity = </span><span class="s0">new </span><span class="s1">KundEntity()</span><span class="s0">;</span>
-        <span class="s1">BeanUtils.copyProperties(kund</span><span class="s0">, </span><span class="s1">kundEntity)</span><span class="s0">;</span>
-        <span class="s1">kundRepository.save(kundEntity)</span><span class="s0">;</span>
-        <span class="s0">return </span><span class="s1">kund</span><span class="s0">;</span>
+    <span class="s0">public </span><span class="s1">Kund createKund(Kund customer) {</span>
+        <span class="s1">KundEntity costumerEntity = </span><span class="s0">new </span><span class="s1">KundEntity()</span><span class="s0">;</span>
+        <span class="s1">BeanUtils.copyProperties(customer</span><span class="s0">, </span><span class="s1">costumerEntity)</span><span class="s0">;</span>
+        <span class="s1">DBAccessCustomer.save(costumerEntity)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">customer</span><span class="s0">;</span>
     <span class="s1">}</span>
 
     <span class="s1">@Override</span>
     <span class="s0">public </span><span class="s1">List&lt;Kund&gt; getAllKunder() {</span>
-        <span class="s1">List&lt;KundEntity&gt; kundEntities = kundRepository.findAll()</span><span class="s0">;</span>
+        <span class="s1">List&lt;KundEntity&gt; kundEntities = DBAccessCustomer.findAll()</span><span class="s0">;</span>
 
         <span class="s1">List&lt;Kund&gt; kunder = kundEntities</span>
                 <span class="s1">.stream()</span>
