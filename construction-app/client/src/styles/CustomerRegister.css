@@ -31,11 +31,11 @@
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #44a7fd;
 }
 
 .styled-table tbody tr:hover {
-    color: #009879;
+    color: #0062ff;
     background-color: rgba(0, 0, 0, 0.185);
     cursor: pointer;
 }
