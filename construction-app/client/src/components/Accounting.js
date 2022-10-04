@@ -1,13 +1,10 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export default function Accounting() {
-    const navigate = useNavigate();
 
   return (
-    <div>
+    <div className='container'>
         <h1>Bokföring</h1>
-        <button onClick={() => navigate("/")}>Hem</button>
     </div>
   )
 }
