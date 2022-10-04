@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import ApiConnector from '../services/ApiConnector';
 
 const CustomerRegister = () => {
+    // Declaring variables
     const navigate = useNavigate();
     const [kunder, setKunder] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Gets all the clients on page load
         const fetData = async () => {
             setLoading(true);
             try {
@@ -22,9 +24,7 @@ const CustomerRegister = () => {
     }, []);
 
   return (
-    <div>
-        <br />
-        <button onClick={() => navigate("/")}>Hem</button>
+    <div className='container'>
         <h1>Kundregister</h1>
         <button onClick={() => navigate("/skapakund")}>Lägg till kund</button>
         {!loading && (

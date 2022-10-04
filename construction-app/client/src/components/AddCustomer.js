@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ApiConnector from '../services/ApiConnector';
 
 const AddCustomer = () => {
+    // Declare variables
     const navigate = useNavigate();
     const [kund, setKund] = useState ({
         id: "",
@@ -10,6 +11,7 @@ const AddCustomer = () => {
     });
 
 const handleChange = (e) => {
+    /**Gets the current input every keystroke */
     const value = e.target.value;
     setKund({...kund, [e.target.name]: value},
         {...kund,[e.target.phonenumber]:value},
@@ -19,6 +21,7 @@ const handleChange = (e) => {
 }
 
 const saveKund = (e) => {
+    /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
     ApiConnector.saveKund(kund).then((response) => {
         console.log(response)
@@ -29,11 +32,7 @@ const saveKund = (e) => {
 };
          
   return (
-    <div>
-        <br />
-        <button onClick={() => navigate("/")}>Hem</button>
-        <br />
-        <br />
+    <div className='container'>
         <label>Namn: </label>
         <input type="text" name='name' value={kund.name} onChange={(e) => handleChange(e)}></input>
 
