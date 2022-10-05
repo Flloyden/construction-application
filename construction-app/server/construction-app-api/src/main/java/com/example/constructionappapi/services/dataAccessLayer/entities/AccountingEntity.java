@@ -8,20 +8,17 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "calendar")
+@Table(name = "accounting")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class creating and giving access to the table Calendar in DB
- */
-public class CalendarEntity {
+public class AccountingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(unique = true)
-    private LocalDate date;
-    @ManyToOne
-    @JoinColumn(name = "work_id")
-    private WorkEntity work;
+    private String name;
+    private String registrationNumber;
+    private LocalDate warrantyDate;
+    @Lob
+    private byte[] receipt;
 }

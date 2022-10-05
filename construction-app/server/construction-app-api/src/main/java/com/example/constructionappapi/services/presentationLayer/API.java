@@ -1,7 +1,7 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.dataAccessLayer.entities.CostumerEntity;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.ICostumerRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.ICustomerRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,20 +12,19 @@ import java.util.List;
 public class API {
 
     //@Autowired ?? used in video but we dont use it?
-    private final ICostumerRepository iCostumerRepository;
+    private ICustomerRepository iCustomerRepository;
 
-    public API(ICostumerRepository iCostumerRepository) {
-        this.iCostumerRepository = iCostumerRepository;
+    public API(ICustomerRepository iCustomerRepository) {
+        this.iCustomerRepository = iCustomerRepository;
     }
 
     @PostMapping("/kunder")
-    public CostumerEntity createCustomer(@RequestBody CostumerEntity costumer) {
-        return iCostumerRepository.createCustomer(costumer);
+    public CustomerEntity createCustomer(@RequestBody CustomerEntity customer) {
+        return iCustomerRepository.createCustomer(customer);
     }
 
     @GetMapping("/kunder")
-    public List<CostumerEntity> getAllCustomers() {
-        return iCostumerRepository.getAllCustomers();
+    public List<CustomerEntity> getAllCustomers() {
+        return iCustomerRepository.getAllCustomers();
     }
-
 }
