@@ -4,6 +4,7 @@ import ApiConnector from '../services/ApiConnector';
 import '../styles/CustomerRegister.css';
 import { FaPen } from 'react-icons/fa';
 import { ImCross } from 'react-icons/im';
+import { BsPerson } from 'react-icons/bs';
 
 const CustomerRegister = () => {
     // Declaring variables
@@ -29,8 +30,10 @@ const CustomerRegister = () => {
   return (
     <div className='container'>
         <div className='content'>
-        <input type="text" className="myInput" placeholder="Sök efter namn.." title="Type in a name"></input>
-        <button className='addClient' onClick={() => navigate("/skapakund")}>Lägg till ny kund</button>
+            <div className='topContent'>
+                <input type="text" className="myInput" placeholder="Sök efter namn.." title="Type in a name"></input>
+                <button className='addClient' onClick={() => navigate("/skapakund")}><span className='newClientIcon'><BsPerson /></span> Ny kund</button>
+            </div>
         <table className="styled-table">
             <thead>
                 <tr>

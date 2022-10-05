@@ -31,7 +31,7 @@ export default function Navbar(props) {
   return (
     <div className='navbar'>
         <p className='pageTitle'>{pageTitle}</p>
-        <NavLink end to='/' className='nav-btn'><span className='navIcon'><AiOutlineHome /></span>Hem</NavLink>
+        <NavLink end to='/' className='nav-btn'><span className='navIcon'><AiOutlineHome /></span>Översikt</NavLink>
         <NavLink to='/kundregister' className='nav-btn'><span className='navIcon'><FiUsers /></span>Kundregister</NavLink>
         <NavLink to='/kalender' className='nav-btn'><span className='navIcon'><BiCalendar /></span>Kalender</NavLink>
         <NavLink to='/bokföring' className='nav-btn'><span className='navIcon'><HiOutlineDocumentText /></span>Bokföring</NavLink>
