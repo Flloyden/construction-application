@@ -14,7 +14,7 @@ const CustomerRegister = () => {
 
   useEffect(() => {
     // Gets all the clients on page load
-    const fetData = async () => {
+    const fetchData = async () => {
       setLoading(true);
       try {
         const response = await ApiConnector.getKund();
@@ -24,7 +24,7 @@ const CustomerRegister = () => {
       }
       setLoading(false);
     };
-    fetData();
+    fetchData();
   }, []);
 
   return (
