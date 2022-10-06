@@ -9,9 +9,14 @@ class ApiConnector {
         return axios.post(KUND_API_BASE_URL, kund);
     }
 
-    getKund() {
+    getKunder() {
         //Gets kunder from the database
         return axios.get(KUND_API_BASE_URL);
+    }
+
+    getKund(kund) {
+        //Gets kunder from the database
+        return axios.get(KUND_API_BASE_URL + "/" + kund);
     }
 }
 

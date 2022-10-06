@@ -2,9 +2,12 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.ICustomerRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -23,8 +26,18 @@ public class API {
         return iCustomerRepository.createCustomer(customer);
     }
 
+    @GetMapping("/kunder/{id}")
+    public Optional<CustomerEntity> getCustomer(@PathVariable final Long id) {
+        return iCustomerRepository.getCustomer(id);
+    }
+
     @GetMapping("/kunder")
     public List<CustomerEntity> getAllCustomers() {
         return iCustomerRepository.getAllCustomers();
+    }
+
+    @DeleteMapping("/kunder/{id}/remove")
+    public void deleteCustomer(@PathVariable final Long id) {
+        iCustomerRepository.deleteCustomer(id);
     }
 }

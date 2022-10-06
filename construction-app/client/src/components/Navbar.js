@@ -16,7 +16,7 @@ export default function Navbar(props) {
     useEffect(() => {
         const titleMap = [
             {path: '/', title:'Översikt'},
-            {path: '/kundregister', title:'Kundregister'},
+            {path: '/kunder', title:'Kundregister'},
             {path: '/kalender', title:'Kalender'},
             {path: '/bokföring', title:'Bokföring'},
             {path: '/random', title:'Random'}
@@ -31,8 +31,8 @@ export default function Navbar(props) {
   return (
     <div className='navbar'>
         <p className='pageTitle'>{pageTitle}</p>
-        <NavLink end to='/' className='nav-btn'><span className='navIcon'><AiOutlineHome /></span>Översikt</NavLink>
-        <NavLink to='/kundregister' className='nav-btn'><span className='navIcon'><FiUsers /></span>Kundregister</NavLink>
+        <NavLink end to='/' className='nav-btn'><span className='navIcon'><AiOutlineHome /></span>Hem</NavLink>
+        <NavLink to='/kunder' className='nav-btn'><span className='navIcon'><FiUsers /></span>Kundregister</NavLink>
         <NavLink to='/kalender' className='nav-btn'><span className='navIcon'><BiCalendar /></span>Kalender</NavLink>
         <NavLink to='/bokföring' className='nav-btn'><span className='navIcon'><HiOutlineDocumentText /></span>Bokföring</NavLink>
         <NavLink to='/random' className='nav-btn'><span className='navIcon'><TbNotebook /></span>Något annat</NavLink>

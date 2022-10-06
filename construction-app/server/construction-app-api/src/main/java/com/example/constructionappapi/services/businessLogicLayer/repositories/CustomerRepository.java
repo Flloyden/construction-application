@@ -5,6 +5,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Customer
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class accessing the customer table in DB
@@ -12,19 +13,29 @@ import java.util.List;
 @Service
 public class CustomerRepository implements ICustomerRepository {
 
-    private CustomerDao CustomerDao;
+    private CustomerDao customerDao;
 
     public CustomerRepository(CustomerDao CustomerDao) {
-        this.CustomerDao = CustomerDao;
+        this.customerDao = CustomerDao;
     }
 
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
-        return CustomerDao.save(customer);
+        return customerDao.save(customer);
     }
 
     @Override
     public List<CustomerEntity> getAllCustomers() {
-        return CustomerDao.findAll();
+        return customerDao.findAll();
+    }
+
+    @Override
+    public Optional<CustomerEntity> getCustomer(Long id) {
+        return customerDao.findById(id);
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+        customerDao.deleteById(id);
     }
 }

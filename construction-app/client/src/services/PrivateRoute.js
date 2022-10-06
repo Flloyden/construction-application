@@ -7,7 +7,7 @@ const PrivateRoutes = () => {
 
     return(
         // Navigates the user to the right page if logged in or not
-        auth.token ? <Outlet/> : <Navigate to="/" state={{ auth }} />
+        auth.token ? <Outlet/> : <Navigate to="/login" state={{ auth }} />
     )
 }
 

@@ -8,6 +8,7 @@ import Login from './components/Login';
 import './styles/App.css';
 import PrivateRoutes from './services/PrivateRoute';
 import Error from './components/Error';
+import Client from './components/Client';
 
 function App() {
   return (
@@ -19,12 +20,14 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route path="/" element={<Home />} />
               <Route index element={<Home />} />
-              <Route path='/kundregister' element={<CustomerRegister />} />
+              <Route path='/kunder' element={<CustomerRegister />} />
               <Route path='/bokföring' element={<Accounting />} />
               <Route path='/skapakund' element={<AddCustomer />} />
               <Route path='/kalender' element={<Calendar />} />
+              <Route path='/kunder/:id' element={<Client />} />
             </Route>
             <Route element={<Error />} path="*"/>
+            <Route element={<Login />} path="/login"/>
           </Routes>
         </div>
       </BrowserRouter>

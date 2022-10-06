@@ -12,20 +12,25 @@ const CustomerRegister = () => {
   const [kunder, setKunder] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Gets all the clients on page load
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await ApiConnector.getKund();
-        setKunder(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+    useEffect(() => {
+        // Gets all the clients on page load
+        const fetData = async () => {
+            setLoading(true);
+            try {
+                const response = await ApiConnector.getKunder();
+                setKunder(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+            setLoading(false)
+        }
+        fetData();
+    }, []);
+
+    const passId = (e) => {
+        console.log(e)
+        navigate(`/kunder/${e}`,{state:{clientId:e}});
+    }
 
   return (
     <div className="container">
@@ -70,9 +75,21 @@ const CustomerRegister = () => {
                     <ImCross className="removeIcon" />
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          )}
+            </thead>
+            {!loading && (
+                <tbody>
+                    {kunder.map((kunder) => (
+                        <tr key={kunder.id} onClick={(e) => passId(kunder.id)}>
+                            <td>{kunder.name}</td>
+                            <td>{kunder.address}</td>
+                            <td>Fönster</td>
+                            <td>2022-10-04</td>
+                            <td className='icons'><FaPen className='editIcon' /></td>
+                            <td className='icons'><ImCross className='removeIcon' /></td>
+                        </tr>
+                    ))}
+                </tbody>
+            )}
         </table>
       </div>
     </div>

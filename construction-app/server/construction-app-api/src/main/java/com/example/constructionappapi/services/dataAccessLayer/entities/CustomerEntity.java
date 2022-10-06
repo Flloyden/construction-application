@@ -25,7 +25,7 @@ public class CustomerEntity {
     private String address;
     private String phoneNumber;
     private String propertyDesignation;
-    private int socialSecurityNumber;
+    private String socialSecurityNumber;
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
