@@ -8,7 +8,7 @@
 }
 
 .styled-table thead tr {
-    background-image: linear-gradient(90deg , #0062ff, #44a7fd);
+    background-color: var(--main-color);;
     color: #ffffff;
     text-align: left;
 }
@@ -31,7 +31,7 @@
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #44a7fd;
+    border-bottom: 2px solid var(--main-color);;
 }
 
 .styled-table tbody tr:hover {
@@ -45,12 +45,13 @@
     background-size: 21px 21px;
     background-position: 10px 10px;
     background-repeat: no-repeat;
-    width: 83%;
+    display: inline-block;
+    width: 80%;
+    box-sizing: border-box;
     font-size: 16px;
     padding: 12px 20px 12px 40px;
-    border: 1px solid #ddd;
     margin-bottom: 12px;
-    border: 2px solid #297bff;
+    border: 2px solid var(--main-color);
     border-radius: 5px;
 }
 
@@ -77,8 +78,7 @@
 }
 
 .addClient {
-    float: right;
-    background-color: black;
+    background-color: var(--second-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -87,12 +87,26 @@
     color: white;
     padding: 0px 20px;
     height: 46px;
+    box-sizing: border-box;
+    width: 150px;
+    display: inline-block;
 }
 
 .addClient:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #5aa04b;
 }
 
 .content {
     width: 90%;
+}
+
+.topContent {
+    display:flex;
+    justify-content: space-between;
+}
+
+.newClientIcon {
+    font-size: 26px;
+    text-align: left;
+    vertical-align: middle;
 }
