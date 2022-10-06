@@ -60,22 +60,6 @@ const CustomerRegister = () => {
               <th></th>
             </tr>
           </thead>
-          {!loading && (
-            <tbody>
-              {kunder.map((kunder) => (
-                <tr key={kunder.id}>
-                  <td>{kunder.name}</td>
-                  <td>{kunder.address}</td>
-                  <td>Fönster</td>
-                  <td>2022-10-04</td>
-                  <td className="icons">
-                    <FaPen className="editIcon" />
-                  </td>
-                  <td className="icons">
-                    <ImCross className="removeIcon" />
-                  </td>
-                </tr>
-            </thead>
             {!loading && (
                 <tbody>
                     {kunder.map((kunder) => (
