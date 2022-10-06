@@ -1,41 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import ApiConnector from '../services/ApiConnector';
-import '../styles/CustomerRegister.css';
-import { FaPen } from 'react-icons/fa';
-import { ImCross } from 'react-icons/im';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-const CustomerRegister = () => {
-    // Declaring variables
+export default function Client() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [kunder, setKunder] = useState(null);
     const [loading, setLoading] = useState(true);
+    var url = location.pathname;
+    var res = url.split("/");
+    var pos = res.indexOf('kunder');
+    var result = res[pos+1];
 
     useEffect(() => {
         // Gets all the clients on page load
         const fetData = async () => {
             setLoading(true);
             try {
-                const response = await ApiConnector.getKunder();
-                setKunder(response.data)
+                const response = await ApiConnector.getKund(result);
+                if (response.data === null) {
+                    navigate("/error")
+                } else {
+                    setKunder(response.data)
+                }
             } catch (error) {
                 console.log(error)
             }
             setLoading(false)
         }
         fetData();
-    }, []);
-
-    const passId = (e) => {
-        console.log(e)
-        navigate(`/kunder/${e}`,{state:{clientId:e}});
-    }
+    }, [result, navigate]);
 
   return (
     <div className='container'>
         <div className='content'>
-        <input type="text" className="myInput" placeholder="Sök efter namn.." title="Type in a name"></input>
-        <button className='addClient' onClick={() => navigate("/skapakund")}>Lägg till ny kund</button>
         <table className="styled-table">
             <thead>
                 <tr>
@@ -49,16 +47,12 @@ const CustomerRegister = () => {
             </thead>
             {!loading && (
                 <tbody>
-                    {kunder.map((kunder) => (
-                        <tr key={kunder.id} onClick={(e) => passId(kunder.id)}>
+                    <tr>
                             <td>{kunder.name}</td>
                             <td>{kunder.address}</td>
                             <td>Fönster</td>
                             <td>2022-10-04</td>
-                            <td className='icons'><FaPen className='editIcon' /></td>
-                            <td className='icons'><ImCross className='removeIcon' /></td>
                         </tr>
-                    ))}
                 </tbody>
             )}
         </table>
@@ -66,5 +60,3 @@ const CustomerRegister = () => {
     </div>
   )
 }
-
-export default CustomerRegister

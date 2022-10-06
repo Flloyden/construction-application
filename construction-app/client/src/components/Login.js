@@ -24,7 +24,7 @@ const Login = () => {
       console.log(loading)
       if (emailRef.current.value === loginValue.email && passwordRef.current.value === loginValue.password) {
          localStorage.setItem('key', 'true');
-         navigate("/hem")
+         navigate("/")
       } else {
          console.log("Enter username and password")
       }
@@ -36,8 +36,8 @@ const Login = () => {
       /**Handles the logout function when the login button is pressed */
       e.preventDefault();
       localStorage.removeItem('key');
-      navigate("/")
-      window.location.reload(false)
+      navigate("/login")
+      window.location.reload(true)
    }
 
   return (
