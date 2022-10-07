@@ -21,6 +21,7 @@ public class API {
         this.iCustomerRepository = iCustomerRepository;
     }
 
+
     @PostMapping("/kunder")
     public CustomerEntity createCustomer(@RequestBody CustomerEntity customer) {
         return iCustomerRepository.createCustomer(customer);
@@ -40,4 +41,7 @@ public class API {
     public void deleteCustomer(@PathVariable final Long id) {
         iCustomerRepository.deleteCustomer(id);
     }
+
+
+
 }
