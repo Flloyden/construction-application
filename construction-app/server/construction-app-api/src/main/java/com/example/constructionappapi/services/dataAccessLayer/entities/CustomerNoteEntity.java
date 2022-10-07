@@ -12,6 +12,11 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+/**
+ * A class creating and giving access to the table Note in DB
+ */
+
 public class CustomerNoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
