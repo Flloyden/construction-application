@@ -1,5 +1,6 @@
 package com.example.constructionappapi.services.presentationLayer;
 
+import com.example.constructionappapi.services.businessLogicLayer.repositories.IWorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.ICustomerRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
@@ -16,10 +17,13 @@ public class API {
 
     //@Autowired ?? used in video but we dont use it?
     private ICustomerRepository iCustomerRepository;
+    private IWorkRepository iWorkRepository;
 
-    public API(ICustomerRepository iCustomerRepository) {
+    public API(ICustomerRepository iCustomerRepository, IWorkRepository iWorkRepository) {
         this.iCustomerRepository = iCustomerRepository;
+        this.iWorkRepository = iWorkRepository;
     }
+
 
 
     @PostMapping("/kunder")
@@ -43,5 +47,9 @@ public class API {
     }
 
 
-
+    @PostMapping("/work")
+    public WorkEntity createWorkEntity(@RequestBody WorkEntity work)
+    {
+        return iWorkRepository.createWorkEntity(work);
+    }
 }

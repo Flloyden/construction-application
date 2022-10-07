@@ -11,9 +11,7 @@ public class StartServer {
             SpringApplication.run(StartServer.class, args);
             System.out.println("Server is running!");
         }catch (Exception e){
-            System.out.println("Spring appliaction could not run: " + e);
+            System.out.println("Spring application could not run: " + e);
         }
-
     }
-
 }
