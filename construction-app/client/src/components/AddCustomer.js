@@ -42,7 +42,7 @@ const AddCustomer = () => {
       ApiConnector.saveKund(kund)
         .then((response) => {
           console.log(response);
-          navigate("/kundregister");
+          navigate("/kunder");
         })
         .catch((error) => {
           console.log(error);
