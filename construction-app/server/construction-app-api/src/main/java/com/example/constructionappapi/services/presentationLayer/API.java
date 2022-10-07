@@ -4,6 +4,7 @@ import com.example.constructionappapi.services.businessLogicLayer.repositories.I
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.ICustomerRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -16,15 +17,11 @@ import java.util.Optional;
 public class API {
 
     //@Autowired ?? used in video but we dont use it?
+
+    @Autowired
     private ICustomerRepository iCustomerRepository;
+    @Autowired
     private IWorkRepository iWorkRepository;
-
-    public API(ICustomerRepository iCustomerRepository, IWorkRepository iWorkRepository) {
-        this.iCustomerRepository = iCustomerRepository;
-        this.iWorkRepository = iWorkRepository;
-    }
-
-
 
     @PostMapping("/kunder")
     public CustomerEntity createCustomer(@RequestBody CustomerEntity customer) {
@@ -48,8 +45,7 @@ public class API {
 
 
     @PostMapping("/work")
-    public WorkEntity createWorkEntity(@RequestBody WorkEntity work)
-    {
+    public WorkEntity createWorkEntity(@RequestBody WorkEntity work) {
         return iWorkRepository.createWorkEntity(work);
     }
 }

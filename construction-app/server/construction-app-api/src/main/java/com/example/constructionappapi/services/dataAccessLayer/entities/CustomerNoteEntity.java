@@ -1,5 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ public class CustomerNoteEntity {
     private String note;
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private CustomerEntity customer;
 }

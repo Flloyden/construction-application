@@ -2,10 +2,12 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class WorkRepository implements IWorkRepository {
 
     private WorkDao workDao;
