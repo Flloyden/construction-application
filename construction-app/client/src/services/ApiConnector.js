@@ -15,8 +15,13 @@ class ApiConnector {
     }
 
     getKund(kund) {
-        //Gets kunder from the database
+        //Gets single kund from the database
         return axios.get(KUND_API_BASE_URL + "/" + kund);
+    }
+
+    deleteKund(kund) {
+        //Deletes a kund from the database
+        return axios.delete(KUND_API_BASE_URL + "/" + kund + "/remove");
     }
 }
 
