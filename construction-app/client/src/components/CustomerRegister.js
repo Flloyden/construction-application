@@ -15,6 +15,8 @@ const CustomerRegister = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentClientId, setCurrentClientId] = useState("");
   const [currentClientName, setCurrentClientName] = useState("");
+  const [name, setName] = useState('');
+  const [foundUsers, setFoundUsers] = useState(kunder);
 
   useEffect(() => {
     // Gets all the clients on page load
@@ -33,7 +35,6 @@ const CustomerRegister = () => {
 
   const passId = (e) => {
     // Passes the right id to the kund url
-    console.log(e);
     navigate(`/kunder/${e}`, { state: { clientId: e } });
   };
 
@@ -47,8 +48,23 @@ const CustomerRegister = () => {
     } catch (error) {
       console.log(error);
     }
-    setIsOpen(false)
+    setIsOpen(false);
     setLoading(false);
+  };
+
+  const filter = (e) => {
+    const keyword = e.target.value;
+    if (keyword !== '') {
+      const results = kunder.filter((user) => {
+        return user.name.toLowerCase().startsWith(keyword.toLowerCase());
+        // Use the toLowerCase() method to make it case-insensitive
+      });
+      setFoundUsers(results);
+    } else {
+      setFoundUsers(kunder);
+      // If the text field is empty, show all users
+    }
+    setName(keyword);
   };
 
   return (
@@ -56,10 +72,12 @@ const CustomerRegister = () => {
       <div className="content">
         <div className="topContent">
           <input
-            type="text"
             className="myInput"
-            placeholder="Sök efter namn.."
+            placeholder="Sök kund efter namn.."
             title="Type in a name"
+            type="search"
+            value={name}
+            onChange={filter}
           ></input>
           <button className="addClient" onClick={() => navigate("/skapakund")}>
             <span className="newClientIcon">
@@ -81,32 +99,63 @@ const CustomerRegister = () => {
           </thead>
           {!loading && (
             <tbody>
-              {kunder.map((kunder) => (
-                <tr key={kunder.id}>
-                  <td onClick={(e) => passId(kunder.id)}>{kunder.name}</td>
-                  <td>{kunder.address}</td>
+              {foundUsers && foundUsers.length > 0 ? (
+                foundUsers.map((user) => (
+                  <tr key={user.id}>
+                  <td onClick={(e) => passId(user.id)}>{user.name}</td>
+                  <td>{user.address}</td>
                   <td>Fönster</td>
                   <td>2022-10-04</td>
                   <td className="icons">
                     <FaPen className="editIcon" />
                   </td>
                   <td className="icons">
-                  <ImCross
+                    <ImCross
                       className="removeIcon"
                       onClick={() => {
                         setIsOpen(true);
-                        setCurrentClientId(kunder.id);
-                        setCurrentClientName(kunder.name);
+                        setCurrentClientId(user.id);
+                        setCurrentClientName(user.name);
                       }}
                     />
                   </td>
                 </tr>
-              ))}
+                  ))
+              ) : (
+                kunder.map((kunder) => (
+                  <tr key={kunder.id}>
+                    <td onClick={(e) => passId(kunder.id)}>{kunder.name}</td>
+                    <td>{kunder.address}</td>
+                    <td>Fönster</td>
+                    <td>2022-10-04</td>
+                    <td className="icons">
+                      <FaPen className="editIcon" />
+                    </td>
+                    <td className="icons">
+                    <ImCross
+                        className="removeIcon"
+                        onClick={() => {
+                          setIsOpen(true);
+                          setCurrentClientId(kunder.id);
+                          setCurrentClientName(kunder.name);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           )}
         </table>
       </div>
-      {isOpen && <Modal setIsOpen={setIsOpen} deleteClient={deleteClient} currentClientName={currentClientName} currentClientId={currentClientId} />}
+      {isOpen && (
+        <Modal
+          setIsOpen={setIsOpen}
+          deleteClient={deleteClient}
+          currentClientName={currentClientName}
+          currentClientId={currentClientId}
+        />
+      )}
     </div>
   );
 };

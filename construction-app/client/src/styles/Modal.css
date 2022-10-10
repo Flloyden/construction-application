@@ -115,12 +115,13 @@
     font-size: 0.8rem;
     border: none;
     color: #2c3e50;
-    background: #fcfcfc;
+    background: #d3d3d3;
     transition: all 0.25s ease;
   }
   
   .cancelBtn:hover {
     box-shadow: none;
     transform: none;
-    background: whitesmoke;
+    background: #5a5a5a;
+    color: white;
   }
