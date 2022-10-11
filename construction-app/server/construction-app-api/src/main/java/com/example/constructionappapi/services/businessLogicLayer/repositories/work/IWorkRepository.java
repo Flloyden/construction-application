@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories.work;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface IWorkRepository {
 
     WorkEntity createWorkEntity(WorkEntity work);
+
+    WorkEntity editWorkEntity(WorkEntity work);
 
     List<WorkEntity> getAllWorkEntities();
 

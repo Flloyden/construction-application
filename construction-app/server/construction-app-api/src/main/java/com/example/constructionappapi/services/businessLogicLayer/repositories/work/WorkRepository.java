@@ -1,5 +1,6 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories.work;
 
+import com.example.constructionappapi.services.businessLogicLayer.repositories.work.IWorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,11 @@ public class WorkRepository implements IWorkRepository {
 
     @Override
     public WorkEntity createWorkEntity(WorkEntity work) {
+        return workDao.save(work);
+    }
+
+    @Override
+    public WorkEntity editWorkEntity(WorkEntity work) {
         return workDao.save(work);
     }
 
