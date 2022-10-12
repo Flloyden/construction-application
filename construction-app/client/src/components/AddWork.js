@@ -9,24 +9,27 @@ const AddWork = ({currentClientName, currentClientId, currentClientAddress, curr
         phoneNumber: currentClientPhone,
         propertyDesignation: currentClientProperty,
         socialSecurityNumber: currentClientSSN,
-        workList: [{
-            id: "",
-            materialNote: "",
-            offer: null,
-            workStatus: "COMPLETED",
-            calendar: [],
-        }],
+        workList: [],
         customerNotes: [],
       });
     
       const handleChange = (e) => {
         /**Gets the current input every keystroke */
         const value = e.target.value;
-        console.log(kund.workList[0])
-        setKund({
-            ...kund,
-            [e.target.workList.materialNote]: value,
-          });
+
+        if(kund.workList.length < 1){
+          kund.workList.push({
+          id: "",
+          materialNote: e.target.value,
+          offer: null,
+          workStatus: "COMPLETED",
+          calendar: [],
+        })
+      } else {
+        kund.workList[0].materialNote = e.target.value
+      }
+    
+        console.log(kund)
       };
     
       const test = (e) => {
@@ -56,7 +59,7 @@ const AddWork = ({currentClientName, currentClientId, currentClientAddress, curr
             type="text"
             name="materialNote"
             required
-            value={kund.workList}
+            value={kund.workList.materialNote}
             onChange={(e) => handleChange(e)}
           ></input>
           </div>

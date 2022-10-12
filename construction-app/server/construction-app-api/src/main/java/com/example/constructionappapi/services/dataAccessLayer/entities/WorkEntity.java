@@ -1,6 +1,7 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class WorkEntity {
     private Status workStatus;
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonIgnore
+    @JsonBackReference
     private CustomerEntity customer;
     @OneToMany(
             mappedBy = "work",
