@@ -92,8 +92,8 @@ const CustomerRegister = () => {
               <th>Namn</th>
               <th>Adress</th>
               <th>Skapad</th>
-              <th></th>
-              <th></th>
+              <th className="optionsField"></th>
+              <th className="optionsField"></th>
             </tr>
           </thead>
           {!loading && (

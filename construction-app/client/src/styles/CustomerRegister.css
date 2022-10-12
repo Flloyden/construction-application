@@ -111,3 +111,7 @@
     text-align: left;
     vertical-align: middle;
 }
+
+.optionsField {
+    width: 30px;
+}
