@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class CustomerEntity {
     private String phoneNumber;
     private String propertyDesignation;
     private String socialSecurityNumber;
+    private LocalDate creationDate = LocalDate.now();
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
