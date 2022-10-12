@@ -23,13 +23,6 @@ public class CustomerAPI {
         return iCustomerRepository.createCustomer(customer);
     }
 
-    //UPDATE customer? //Ändra om det behövs
-    @PutMapping("kunder/edit/{id}")
-    public CustomerEntity editCustomer (@RequestBody CustomerEntity customer)
-    {
-        return iCustomerRepository.editCustomer(customer);
-    }
-
     @GetMapping("/kunder/{id}")
     public Optional<CustomerEntity> getCustomer(@PathVariable final Long id) {
         return iCustomerRepository.getCustomer(id);
