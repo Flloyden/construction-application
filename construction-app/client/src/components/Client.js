@@ -52,8 +52,8 @@ export default function Client() {
           ändra
         </button>
         {!loading && (
-          <div class="testingu">
-            <div class="one">
+          <div className="testingu">
+            <div className="one">
               <div className="testing">
                 <BsPersonFill className="icon1" />
                 <p className="infoText">Kund</p>
@@ -85,7 +85,7 @@ export default function Client() {
                 <span className="text">{kund.propertyDesignation}</span>
               </div>
             </div>
-            <div class="two">
+            <div className="two">
               <h2>Anteckningar</h2>
               <div className="notes">
                 <p>
@@ -99,7 +99,7 @@ export default function Client() {
                 </p>
               </div>
             </div>
-            <div class="three">
+            <div className="three">
               <div className="title">
                 <h2>Jobb</h2>
                 <GrAddCircle className="addWorkIcon" onClick={() => {
@@ -133,6 +133,7 @@ export default function Client() {
       )}
       {isWorkOpen && (
         <AddWork
+          setIsWorkOpen={setIsWorkOpen}
           currentClientId={kund.id}
           currentClientName={kund.name}
           currentClientAddress={kund.address}

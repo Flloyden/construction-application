@@ -1,0 +1,12 @@
+.model > .addInfo {
+    display: block;
+    padding-right: 0px;
+}
+
+.model {
+    z-index: 10;
+}
+
+.model > .addInfo > .inputs {
+    width: 100%;
+}
