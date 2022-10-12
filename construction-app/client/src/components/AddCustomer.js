@@ -109,7 +109,7 @@ const AddCustomer = () => {
           <label>Personnummer: </label>
           <input
             className="input"
-            type="number"
+            type="text"
             name="socialSecurityNumber"
             value={kund.socialSecurityNumber}
             onChange={(e) => handleChange(e)}

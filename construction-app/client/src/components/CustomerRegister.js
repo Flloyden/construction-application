@@ -91,7 +91,6 @@ const CustomerRegister = () => {
             <tr>
               <th>Namn</th>
               <th>Adress</th>
-              <th>Kommentar</th>
               <th>Skapad</th>
               <th></th>
               <th></th>
@@ -104,8 +103,7 @@ const CustomerRegister = () => {
                   <tr key={user.id}>
                   <td onClick={(e) => passId(user.id)}>{user.name}</td>
                   <td>{user.address}</td>
-                  <td>Fönster</td>
-                  <td>2022-10-04</td>
+                  <td>{kunder.creationDate}</td>
                   <td className="icons">
                     <FaPen className="editIcon" />
                   </td>
@@ -126,8 +124,7 @@ const CustomerRegister = () => {
                   <tr key={kunder.id}>
                     <td onClick={(e) => passId(kunder.id)}>{kunder.name}</td>
                     <td>{kunder.address}</td>
-                    <td>Fönster</td>
-                    <td>2022-10-04</td>
+                    <td>{kunder.creationDate}</td>
                     <td className="icons">
                       <FaPen className="editIcon" />
                     </td>
