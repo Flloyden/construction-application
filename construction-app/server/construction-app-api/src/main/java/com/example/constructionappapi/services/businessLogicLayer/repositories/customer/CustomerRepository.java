@@ -2,6 +2,8 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories.
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,14 @@ public class CustomerRepository implements ICustomerRepository {
 
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
+        for (WorkEntity work : customer.getWorkList()) {
+            work.setCustomer(customer);
+        }
+
+        for (CustomerNoteEntity customerNoteEntity : customer.getCustomerNotes()) {
+            customerNoteEntity.setCustomer(customer);
+        }
+
         return customerDao.save(customer);
     }
 
