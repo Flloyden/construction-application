@@ -34,8 +34,6 @@ public class CustomerRepository implements ICustomerRepository {
         return customerDao.save(customer);
     }
 
-
-
     @Override
     public List<CustomerEntity> getAllCustomers() {
         return customerDao.findAll();
