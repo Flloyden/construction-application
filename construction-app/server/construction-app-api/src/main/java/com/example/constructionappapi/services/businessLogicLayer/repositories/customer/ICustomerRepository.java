@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface ICustomerRepository {
     CustomerEntity createCustomer(CustomerEntity customer);
 
-    CustomerEntity editCustomer(CustomerEntity customer);
+
 
     List<CustomerEntity> getAllCustomers();
 

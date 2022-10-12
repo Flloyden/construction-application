@@ -4,6 +4,7 @@ package com.example.constructionappapi.services.presentationLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.work.IWorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,29 +19,29 @@ public class WorkAPI {
 @Autowired
 private IWorkRepository iWorkRepository;
 
-    @PostMapping("/work")
+    @PostMapping("/kunder/{customer_id}/work/create")
     public WorkEntity createWorkEntity(@RequestBody WorkEntity work) {
         return iWorkRepository.createWorkEntity(work);
     }
 
-    @PutMapping("/work/edit/{id}")
+    @PutMapping("/kunder/{customer_id}/work/edit/{id}")
     public WorkEntity editWorkEntity(@RequestBody WorkEntity work)
     {
         return iWorkRepository.editWorkEntity(work);
     }
 
-    @GetMapping("/work/{id}")
+    @GetMapping("/kunder/{customer_id}/work/{id}")
     public Optional<WorkEntity> getWorkEntity(@PathVariable final Long id){
         return iWorkRepository.getWorkEntity(id);
     }
 
-    @GetMapping("/work")
+    @GetMapping("/kunder/work")
     public List<WorkEntity> getAllWorkEntities()
     {
         return iWorkRepository.getAllWorkEntities();
     }
 
-    @DeleteMapping("/work/{id}/remove")
+    @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
     public void deleteWorkEntity(@PathVariable final Long id)
     {
         iWorkRepository.deleteWorkEntity(id);

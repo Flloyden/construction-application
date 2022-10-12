@@ -34,11 +34,7 @@ public class CustomerRepository implements ICustomerRepository {
         return customerDao.save(customer);
     }
 
-    @Override
-    public CustomerEntity editCustomer(CustomerEntity customer) {
-        return customerDao.save(customer); // calling save() on an object with predefined id
-        // will update the corresponding database record rather than insert a new one
-    }
+
 
     @Override
     public List<CustomerEntity> getAllCustomers() {
