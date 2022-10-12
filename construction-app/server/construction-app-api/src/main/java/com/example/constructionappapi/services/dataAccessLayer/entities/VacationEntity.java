@@ -14,6 +14,11 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+/**
+ * A class creating and giving access to the table Vacation in DB
+ */
+
 public class VacationEntity {
     @Id
     private LocalDate vacationDate;

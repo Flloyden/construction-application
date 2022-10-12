@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories.customer;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
@@ -22,6 +22,12 @@ public class CustomerRepository implements ICustomerRepository {
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
         return customerDao.save(customer);
+    }
+
+    @Override
+    public CustomerEntity editCustomer(CustomerEntity customer) {
+        return customerDao.save(customer); // calling save() on an object with predefined id
+        // will update the corresponding database record rather than insert a new one
     }
 
     @Override

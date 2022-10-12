@@ -1,9 +1,8 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,6 +25,7 @@ public class WorkEntity {
     private Status workStatus;
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private CustomerEntity customer;
     @OneToMany(
             mappedBy = "work",

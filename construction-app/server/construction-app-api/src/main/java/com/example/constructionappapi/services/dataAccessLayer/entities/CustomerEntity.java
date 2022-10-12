@@ -15,10 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 /**
- * A class creating and giving access to the table Costumer in DB
+ * A class creating and giving access to the table Customer in DB
  */
 public class CustomerEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id; //automatically incrementing id

@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories.customer;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 
@@ -11,9 +11,13 @@ import java.util.Optional;
 public interface ICustomerRepository {
     CustomerEntity createCustomer(CustomerEntity customer);
 
+    CustomerEntity editCustomer(CustomerEntity customer);
+
     List<CustomerEntity> getAllCustomers();
 
     Optional<CustomerEntity> getCustomer(Long id);
 
     void deleteCustomer(Long id);
+
+
 }

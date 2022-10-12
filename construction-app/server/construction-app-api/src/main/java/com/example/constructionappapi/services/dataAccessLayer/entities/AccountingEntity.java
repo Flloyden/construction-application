@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating and giving access to the table Accounting in DB
+ */
 public class AccountingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
