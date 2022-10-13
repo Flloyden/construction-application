@@ -13,6 +13,8 @@ const AddCustomer = () => {
     phoneNumber: "",
     propertyDesignation: "",
     socialSecurityNumber: "",
+    workList: [],
+    customerNotes: []
   });
 
   const handleChange = (e) => {
