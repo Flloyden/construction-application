@@ -1,8 +1,7 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,7 +25,9 @@ public class CustomerEntity {
     private String phoneNumber;
     private String propertyDesignation;
     private String socialSecurityNumber;
+    @Setter(value = AccessLevel.NONE)
     private LocalDate creationDate = LocalDate.now();
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,

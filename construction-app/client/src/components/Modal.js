@@ -2,7 +2,12 @@ import React from "react";
 import "../styles/Modal.css";
 import { RiCloseLine } from "react-icons/ri";
 
-const Modal = ({ setIsOpen, deleteClient, currentClientName, currentClientId }) => {
+const Modal = ({
+  setIsOpen,
+  deleteClient,
+  currentClientName,
+  currentClientId,
+}) => {
   return (
     <>
       <div className={"darkBG"} onClick={() => setIsOpen(false)} />
@@ -15,11 +20,15 @@ const Modal = ({ setIsOpen, deleteClient, currentClientName, currentClientId }) 
             <RiCloseLine style={{ marginBottom: "-3px" }} />
           </button>
           <div className={"modalContent"}>
-            Är du säker du vill ta bort <b>{currentClientName}</b> från kundregistret?
+            Är du säker du vill ta bort <b>{currentClientName}</b> från
+            kundregistret?
           </div>
           <div className={"modalActions"}>
             <div className={"actionsContainer"}>
-              <button className={"deleteBtn"} onClick={() => deleteClient(currentClientId)}>
+              <button
+                className={"deleteBtn"}
+                onClick={() => deleteClient(currentClientId)}
+              >
                 Ta bort
               </button>
               <button className={"cancelBtn"} onClick={() => setIsOpen(false)}>

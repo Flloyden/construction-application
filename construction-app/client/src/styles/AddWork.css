@@ -1,0 +1,35 @@
+.model > .addInfo {
+  display: block;
+  padding-right: 0px;
+}
+
+.model {
+  z-index: 10;
+}
+
+.model > .addInfo > .inputs {
+  width: 100%;
+}
+
+.styleButtons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.save,
+.cancel {
+  width: 49%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel {
+  background-color: #ff3e4e;
+}
+
+.cancel:hover {
+  background-color: #c62f3c;
+}
