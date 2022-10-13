@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ApiConnector from "../services/ApiConnector";
-import '../styles/AddWork.css';
+import "../styles/AddWork.css";
 
 const AddWork = ({
   setIsWorkOpen,
@@ -59,36 +59,41 @@ const AddWork = ({
   return (
     <>
       <div className="darkBG" onClick={() => setIsWorkOpen(false)} />
-        <div className="centered">
-          <div className="model">
-      <div className="addInfo">
-        <div className="inputs">
-        <h1>Lägg till jobb</h1>
-          <label>Material: </label>
-          <input
-            className="input"
-            type="text"
-            name="materialNote"
-            required
-            value={kund.workList.materialNote}
-            onChange={(e) => handleChange(e)}
-          ></input>
+      <div className="centered">
+        <div className="model">
+          <div className="addInfo">
+            <div className="inputs">
+              <h1>Lägg till jobb</h1>
+              <label>Material: </label>
+              <input
+                className="input"
+                type="text"
+                name="materialNote"
+                required
+                value={kund.workList.materialNote}
+                onChange={(e) => handleChange(e)}
+              ></input>
 
-          <label>Offert: </label>
-          <input
-            className="input"
-            type="file"
-            name="offer"
-            accept=".pdf"
-            value={kund.workList.offer}
-            onChange={(e) => handleChange(e)}
-          ></input>
+              <label>Offert: </label>
+              <input
+                className="input"
+                type="file"
+                name="offer"
+                accept=".pdf"
+                value={kund.workList.offer}
+                onChange={(e) => handleChange(e)}
+              ></input>
+              <div className="styleButtons">
+                <button className="save" onClick={test}>
+                  Spara
+                </button>
+                <button className="cancel" onClick={() => setIsWorkOpen(false)}>
+                  Avbryt
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <button className="save" onClick={test}>
-          Spara
-        </button>
-      </div>
-      </div>
       </div>
     </>
   );

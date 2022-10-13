@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import ApiConnector from "../services/ApiConnector";
-import { useLocation, useNavigate } from "react-router-dom";
-import { BsPersonFill, BsTelephoneFill, BsFillHouseFill } from "react-icons/bs";
-import { MdEmail, MdLocationOn } from "react-icons/md";
 import { AiOutlineNumber } from "react-icons/ai";
+import { BsFillHouseFill, BsPersonFill, BsTelephoneFill } from "react-icons/bs";
 import { GrAddCircle } from "react-icons/gr";
+import { MdEmail, MdLocationOn } from "react-icons/md";
+import { useLocation, useNavigate } from "react-router-dom";
+import ApiConnector from "../services/ApiConnector";
 import "../styles/Client.css";
-import ChangeInfo from "./ChangeInfo";
 import AddWork from "./AddWork";
+import ChangeInfo from "./ChangeInfo";
 
 export default function Client() {
   const navigate = useNavigate();
@@ -18,8 +18,8 @@ export default function Client() {
   var res = url.split("/");
   var pos = res.indexOf("kunder");
   var result = res[pos + 1];
-  const [isOpen, setIsOpen] = useState(false);
   const [isWorkOpen, setIsWorkOpen] = useState(false);
+  const [isChangeOpen, setIsChangeOpen] = useState(false);
 
   useEffect(() => {
     // Gets all the clients on page load
@@ -46,7 +46,7 @@ export default function Client() {
         <h1>Kundinformation</h1>
         <button
           onClick={() => {
-            setIsOpen(true);
+            setIsChangeOpen(true);
           }}
         >
           ändra
@@ -121,8 +121,9 @@ export default function Client() {
           </div>
         )}
       </div>
-      {isOpen && (
+      {isChangeOpen && (
         <ChangeInfo
+          setIsChangeOpen={setIsChangeOpen}
           currentClientId={kund.id}
           currentClientName={kund.name}
           currentClientAddress={kund.address}
