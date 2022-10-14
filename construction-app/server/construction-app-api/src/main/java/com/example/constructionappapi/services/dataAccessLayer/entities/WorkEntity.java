@@ -20,6 +20,7 @@ public class WorkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String name;
     private String materialNote;
     @Lob
     private byte[] offer;
