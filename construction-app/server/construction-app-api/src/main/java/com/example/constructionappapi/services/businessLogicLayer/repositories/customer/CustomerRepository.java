@@ -21,14 +21,27 @@ public class CustomerRepository implements ICustomerRepository {
         this.customerDao = CustomerDao;
     }
 
+    /**
+     * Adds the CustomerEntity-object to the WorkEntity-/CustomerNoteEntity-objects, to set foreign-key in the tables,
+     * and then creates/saves the CustomerEntity along with the WorkEntities/CustomerNoteEntities contained in the lists.
+     *
+     * @param customer
+     * @return
+     */
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
-        for (WorkEntity work : customer.getWorkList()) {
-            work.setCustomer(customer);
+        List<WorkEntity> workList;
+        if ((workList = customer.getWorkList()) != null) {
+            for (WorkEntity work : workList) {
+                work.setCustomer(customer);
+            }
         }
 
-        for (CustomerNoteEntity customerNoteEntity : customer.getCustomerNotes()) {
-            customerNoteEntity.setCustomer(customer);
+        List<CustomerNoteEntity> customerNotes;
+        if ((customerNotes = customer.getCustomerNotes()) != null) {
+            for (CustomerNoteEntity customerNoteEntity : customerNotes) {
+                customerNoteEntity.setCustomer(customer);
+            }
         }
 
         return customerDao.save(customer);

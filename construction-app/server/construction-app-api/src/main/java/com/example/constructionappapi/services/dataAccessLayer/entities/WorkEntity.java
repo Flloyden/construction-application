@@ -2,10 +2,12 @@ package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,6 +23,8 @@ public class WorkEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    private LocalDate startDate;
+    private int numberOfDays;
     private String materialNote;
     @Lob
     private byte[] offer;

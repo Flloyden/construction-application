@@ -1,11 +1,12 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity //to generate Costumer table
@@ -25,8 +26,7 @@ public class CustomerEntity {
     private String phoneNumber;
     private String propertyDesignation;
     private String socialSecurityNumber;
-    @Setter(value = AccessLevel.NONE)
-    private LocalDate creationDate = LocalDate.now();
+    private LocalDate creationDate = LocalDate.now();  //TODO: Need to check so that value doesn't get overwritten when saving a customer.
     @JsonManagedReference
     @OneToMany(
             mappedBy = "customer",
