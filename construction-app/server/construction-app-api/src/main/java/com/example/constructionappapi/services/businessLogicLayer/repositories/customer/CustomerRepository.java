@@ -4,6 +4,7 @@ import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +16,8 @@ import java.util.Optional;
 @Service
 public class CustomerRepository implements ICustomerRepository {
 
+    @Autowired
     private CustomerDao customerDao;
-
-    public CustomerRepository(CustomerDao CustomerDao) {
-        this.customerDao = CustomerDao;
-    }
 
     /**
      * Adds the CustomerEntity-object to the WorkEntity-/CustomerNoteEntity-objects, to set foreign-key in the tables,
