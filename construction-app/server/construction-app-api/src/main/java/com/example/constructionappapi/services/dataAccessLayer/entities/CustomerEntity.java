@@ -38,4 +38,12 @@ public class CustomerEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<CustomerNoteEntity> customerNotes;
+
+    public List<CustomerNoteEntity> getCustomerNotes() {
+        return customerNotes;
+    }
+
+    public List<WorkEntity> getWorkList() {
+        return workList;
+    }
 }

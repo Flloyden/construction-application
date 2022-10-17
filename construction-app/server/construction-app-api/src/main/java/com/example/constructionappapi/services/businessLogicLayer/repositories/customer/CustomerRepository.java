@@ -29,16 +29,16 @@ public class CustomerRepository implements ICustomerRepository {
     @Override
     public CustomerEntity createCustomer(CustomerEntity customer) {
         List<WorkEntity> workList;
-        if ((workList = customer.getWorkList()) != null) {
+        if ((workList = customer.getWorkList()) != null) { //Kollar om listan är tom
             for (WorkEntity work : workList) {
-                work.setCustomer(customer);
+                work.setCustomer(customer); //om inte tom -> assign work till en customer.
             }
         }
 
         List<CustomerNoteEntity> customerNotes;
-        if ((customerNotes = customer.getCustomerNotes()) != null) {
+        if ((customerNotes = customer.getCustomerNotes()) != null) { // Kollar om listan är tom
             for (CustomerNoteEntity customerNoteEntity : customerNotes) {
-                customerNoteEntity.setCustomer(customer);
+                customerNoteEntity.setCustomer(customer); //om inte tom -> assignar customernotes till customer
             }
         }
 
@@ -48,15 +48,15 @@ public class CustomerRepository implements ICustomerRepository {
     @Override
     public List<CustomerEntity> getAllCustomers() {
         return customerDao.findAll();
-    }
+    } //Returns all customers
 
     @Override
     public Optional<CustomerEntity> getCustomer(Long id) {
-        return customerDao.findById(id);
+        return customerDao.findById(id); //Returns customer by ID
     }
 
     @Override
     public void deleteCustomer(Long id) {
-        customerDao.deleteById(id);
+        customerDao.deleteById(id); //Deletes customer by ID
     }
 }

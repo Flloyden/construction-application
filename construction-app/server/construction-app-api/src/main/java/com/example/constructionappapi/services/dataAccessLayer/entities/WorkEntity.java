@@ -38,5 +38,9 @@ public class WorkEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<CalendarEntity> calendar;
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
 }
 

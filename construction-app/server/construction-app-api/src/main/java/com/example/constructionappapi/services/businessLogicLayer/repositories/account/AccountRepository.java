@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories;
+package com.example.constructionappapi.services.businessLogicLayer.repositories.account;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.AccountDao;
 import org.springframework.beans.factory.annotation.Autowired;

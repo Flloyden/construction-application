@@ -28,4 +28,7 @@ public class CustomerNoteEntity {
     @JoinColumn(name = "customer_id")
     @JsonIgnore
     private CustomerEntity customer;
+
+    public void setCustomer(CustomerEntity customer) {
+    }
 }
