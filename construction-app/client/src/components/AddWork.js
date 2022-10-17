@@ -26,6 +26,7 @@ const AddWork = ({
   const materialNoteRef = useRef();
   const offer = useRef();
   const [newList, setNewList] = useState();
+  const [image, setImage] = useState('');
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
@@ -34,13 +35,32 @@ const AddWork = ({
       id: "",
       name: nameRef.current.value,
       materialNote: materialNoteRef.current.value,
-      offer: offer.current.value,
+      offer: image,
       workStatus: "NOTSTARTED",
       calendar: [],
     });
 
-    console.log(offer.current.file)
+    console.log(image)
   };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleFile = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setImage(base64);
+  }
 
   const test = (e) => {
     /**Saves the "kund" and navigates back to the register */
@@ -96,7 +116,7 @@ const AddWork = ({
                 type="file"
                 name="offer"
                 accept="image/png, image/jpg, image/jpeg"
-                onChange={(e) => handleChange(e)}
+                onChange={e => handleFile(e)}
               ></input>
               <div className="styleButtons">
                 <button className="save" onClick={test}>

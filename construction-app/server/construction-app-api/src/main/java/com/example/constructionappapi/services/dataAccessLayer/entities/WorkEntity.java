@@ -27,7 +27,7 @@ public class WorkEntity {
     private int numberOfDays;
     private String materialNote;
     @Lob
-    private byte[] offer;
+    private String offer;
     private Status workStatus;
     @ManyToOne
     @JoinColumn(name = "customer_id")

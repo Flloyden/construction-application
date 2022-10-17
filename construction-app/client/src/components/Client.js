@@ -111,6 +111,7 @@ export default function Client() {
                 {kund.workList.map((workName) => (
                   <div className="workTitle" key={workName.id}>
                     <h2>{workName.name}</h2>
+                    <img src={workName.offer} alt="offer" style={{width:'50%'}}/>
                   </div>
                 ))}
               </div>
