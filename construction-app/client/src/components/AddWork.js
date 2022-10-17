@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ApiConnector from "../services/ApiConnector";
 import "../styles/AddWork.css";
 
@@ -10,6 +10,7 @@ const AddWork = ({
   currentClientPhone,
   currentClientProperty,
   currentClientSSN,
+  currentClientWorkList,
 }) => {
   const [kund, setKund] = useState({
     id: currentClientId,
@@ -18,33 +19,37 @@ const AddWork = ({
     phoneNumber: currentClientPhone,
     propertyDesignation: currentClientProperty,
     socialSecurityNumber: currentClientSSN,
-    workList: [],
+    workList: currentClientWorkList,
     customerNotes: [],
   });
+  const nameRef = useRef();
+  const materialNoteRef = useRef();
+  const offer = useRef();
+  const [newList, setNewList] = useState();
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
-    const value = e.target.value;
 
-    if (kund.workList.length < 1) {
-      kund.workList.push({
-        id: "",
-        materialNote: e.target.value,
-        offer: null,
-        workStatus: "COMPLETED",
-        calendar: [],
-      });
-    } else {
-      kund.workList[0].materialNote = e.target.value;
-    }
+    setNewList({
+      id: "",
+      name: nameRef.current.value,
+      materialNote: materialNoteRef.current.value,
+      offer: offer.current.value,
+      workStatus: "NOTSTARTED",
+      calendar: [],
+    });
 
-    console.log(kund);
+    console.log(offer.current.file)
   };
 
   const test = (e) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
     // Check if all input fields are ok
+
+    console.log(offer.current.file)
+
+    kund.workList.push(newList);
 
     ApiConnector.saveKund(kund)
       .then((response) => {
@@ -64,23 +69,33 @@ const AddWork = ({
           <div className="addInfo">
             <div className="inputs">
               <h1>Lägg till jobb</h1>
+              <label>Namn: </label>
+              <input
+                ref={nameRef}
+                className="input"
+                type="text"
+                name="name"
+                required
+                onChange={(e) => handleChange(e)}
+              ></input>
+
               <label>Material: </label>
               <input
+                ref={materialNoteRef}
                 className="input"
                 type="text"
                 name="materialNote"
                 required
-                value={kund.workList.materialNote}
                 onChange={(e) => handleChange(e)}
               ></input>
 
               <label>Offert: </label>
               <input
+              ref={offer}
                 className="input"
                 type="file"
                 name="offer"
-                accept=".pdf"
-                value={kund.workList.offer}
+                accept="image/png, image/jpg, image/jpeg"
                 onChange={(e) => handleChange(e)}
               ></input>
               <div className="styleButtons">

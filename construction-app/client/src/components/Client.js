@@ -31,6 +31,7 @@ export default function Client() {
           navigate("/error");
         } else {
           setKund(response.data);
+          console.log(response.data)
         }
       } catch (error) {
         console.log(error);
@@ -107,15 +108,11 @@ export default function Client() {
           }} />
               </div>
               <div className="work">
-                <div className="workTitle">
-                  <h2>Fönsterbyte</h2>
-                </div>
-                <div className="workTitle">
-                  <h2>Altan</h2>
-                </div>
-                <div className="workTitle">
-                  <h2>Dränering</h2>
-                </div>
+                {kund.workList.map((workName) => (
+                  <div className="workTitle" key={workName.id}>
+                    <h2>{workName.name}</h2>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -141,6 +138,7 @@ export default function Client() {
           currentClientPhone={kund.phoneNumber}
           currentClientProperty={kund.propertyDesignation}
           currentClientSSN={kund.socialSecurityNumber}
+          currentClientWorkList={kund.workList}
         />
       )}
     </div>
