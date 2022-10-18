@@ -8,6 +8,7 @@ import ApiConnector from "../services/ApiConnector";
 import "../styles/Client.css";
 import AddWork from "./AddWork";
 import ChangeInfo from "./ChangeInfo";
+import Work from "./Work";
 
 export default function Client() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function Client() {
           navigate("/error");
         } else {
           setKund(response.data);
-          console.log(response.data)
+          console.log(response.data);
         }
       } catch (error) {
         console.log(error);
@@ -103,15 +104,17 @@ export default function Client() {
             <div className="three">
               <div className="title">
                 <h2>Jobb</h2>
-                <GrAddCircle className="addWorkIcon" onClick={() => {
-            setIsWorkOpen(true);
-          }} />
+                <GrAddCircle
+                  className="addWorkIcon"
+                  onClick={() => {
+                    setIsWorkOpen(true);
+                  }}
+                />
               </div>
               <div className="work">
                 {kund.workList.map((workName) => (
                   <div className="workTitle" key={workName.id}>
-                    <h2>{workName.name}</h2>
-                    <img src={workName.offer} alt="offer" style={{width:'50%'}}/>
+                    <Work label={workName.name} workName={workName} />
                   </div>
                 ))}
               </div>

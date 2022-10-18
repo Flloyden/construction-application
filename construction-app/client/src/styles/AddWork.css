@@ -33,3 +33,29 @@
 .cancel:hover {
   background-color: #c62f3c;
 }
+
+.dates {
+  display: flex;
+  align-items: center;
+  padding-top: 0px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.192);
+}
+
+.dateInput {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.dates > p {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.input {
+  margin-bottom: 30px;
+}
