@@ -24,14 +24,6 @@ public class CustomerAPI {
         return iCustomerRepository.createCustomer(customer);
     }
 
-    @GetMapping("/kunderr")
-    public Map<LocalDate, VacationEntity> createCustomerrr() {
-        HashMap<LocalDate, VacationEntity> map = new HashMap<>();
-        map.put(LocalDate.now(), new VacationEntity(LocalDate.now()));
-        map.put(LocalDate.of(2045, 4, 23), new VacationEntity(LocalDate.now()));
-        return map;
-    }
-
     @GetMapping("/kunder/{id}")
     public Optional<CustomerEntity> getCustomer(@PathVariable final Long id) {
         return iCustomerRepository.getCustomer(id);
