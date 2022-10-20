@@ -80,25 +80,7 @@ public class StartServer {
             long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
             timer.scheduleAtFixedRate(repeatedTask, delay, period);
 
-
-            Calendar calendar = new Calendar();
-            calendar.addWork(new WorkEntity(
-                    1,
-                    "Door",
-                    LocalDate.of(2023, 5, 22),
-                    10,
-                    "testNote",
-                    null, Status.NOTSTARTED,
-                    null,
-                    new ArrayList<>()));
-
-            // calendar.calendarDates.keySet().stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
-            System.out.println();
-            calendar.calendarDates.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
-                WorkEntity work = calendar.calendarDates.get(key);
-                System.out.println(key.getDate() + " : " + work.getName() + " : " + work.getStartDate() + " : " + work.getNumberOfDays());
-            });
-
+            new Calendar();
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }

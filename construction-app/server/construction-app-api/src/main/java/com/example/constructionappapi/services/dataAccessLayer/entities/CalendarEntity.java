@@ -27,6 +27,10 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
     @JsonIgnore
     private WorkEntity work;
 
+    public CalendarEntity(LocalDate date) {
+        this.date = date;
+    }
+
     public CalendarEntity(LocalDate date, WorkEntity work) {
         this.date = date;
         this.work = work;
@@ -34,7 +38,8 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        CalendarEntity calendarEntity = (CalendarEntity) obj;
+        return date.equals(calendarEntity.getDate());
     }
 
     @Override
