@@ -86,11 +86,11 @@ public class Calendar {
         LocalDate freeCalendarSpot = null;
 
         while (true) {
-            //Stop if we're past the last date that a work item was moved to.
+            //Stop if we reached the last date that a work item was moved to.
             if (!possibleDate.isAfter(lastDateMovedTo)) break;
-            //Stop if start date of work being moved is reached.
+            //Stop if the start date of the work-item being moved is reached.
             if (workToMove.getStartDate().isAfter(possibleDate)) break;
-            //Stop if the work being moved is the same as the one for which the date is being checked.
+            //Stop if the work-item being moved is the same as the one for which the date is being checked.
             if (calendarDates.get(new CalendarEntity(possibleDate)) == workToMove) break;
             //Stop if reached today's date.
             if (LocalDate.now().isEqual(possibleDate)) break;
@@ -105,7 +105,6 @@ public class Calendar {
             possibleDate = possibleDate.minusDays(1L);
         }
 
-        //Insert
         if (freeCalendarSpot != null && !calendarDates.containsKey(new CalendarEntity(freeCalendarSpot))) {
             calendarDates.put(new CalendarEntity(freeCalendarSpot, workToMove), workToMove);
             calendarDates.remove(calendarEntity);
