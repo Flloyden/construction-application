@@ -1,0 +1,117 @@
+.styled-table {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: var(--main-color);;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th {
+    font-size: 20px;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid var(--main-color);;
+}
+
+.styled-table tbody tr:hover {
+    color: #0062ff;
+    background-color: rgba(0, 0, 0, 0.185);
+    cursor: pointer;
+}
+
+.myInput {
+    background-image: url('../../public/search.png');
+    background-size: 21px 21px;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    margin-bottom: 12px;
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+}
+
+
+.icons {
+    font-size: 24px;
+    text-align: right;
+}
+
+.editIcon {
+    color: #009879;
+}
+
+.removeIcon {
+    color: red;
+}
+
+.removeIcon:hover {
+    color: rgb(129, 0, 0);
+}
+
+.editIcon:hover {
+    color: #005745;
+}
+
+.addClient {
+    background-color: var(--second-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 0px 20px;
+    height: 46px;
+    box-sizing: border-box;
+    width: 200px;
+    display: inline-block;
+}
+
+.addClient:hover {
+    background-color: #5aa04b;
+}
+
+.content {
+    width: 90%;
+}
+
+.topContent {
+    display:flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.newClientIcon {
+    font-size: 26px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.optionsField {
+    width: 30px;
+}
