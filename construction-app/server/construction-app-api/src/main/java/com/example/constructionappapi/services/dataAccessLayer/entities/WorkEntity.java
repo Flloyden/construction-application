@@ -2,17 +2,13 @@ package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.List;
 
 @Entity
@@ -38,6 +34,7 @@ public class WorkEntity {
     @JoinColumn(name = "customer_id")
     @JsonBackReference
     private CustomerEntity customer;
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "work",
             cascade = CascadeType.ALL,

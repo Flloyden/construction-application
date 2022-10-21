@@ -3,7 +3,6 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories.
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,7 +14,7 @@ public interface ICalendarRepository {
 
     CalendarEntity editCalendar(CalendarEntity calendar);
 
-    List<CalendarEntity> getAllCalendarEntites();
+    String getAllCalendarEntites();
 
     Optional<CalendarEntity> getCalendar(Long id);
 

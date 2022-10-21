@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
     private LocalDate date;
     @ManyToOne
     @JoinColumn(name = "work_id")
-    @JsonIgnore
+    @JsonBackReference
     private WorkEntity work;
 
     public CalendarEntity(LocalDate date) {

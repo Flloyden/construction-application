@@ -1,16 +1,19 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories.calendar;
 
+import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CalendarRepository implements ICalendarRepository {
 
     @Autowired
     private CalendarDao calendarDao;
+    private final Calendar calendar = new Calendar(); //TODO: fixa kalender ordentligt.
 
     @Override
     public CalendarEntity createCalendar(CalendarEntity calendar) {
@@ -23,8 +26,8 @@ public class CalendarRepository implements ICalendarRepository {
     }
 
     @Override
-    public List<CalendarEntity> getAllCalendarEntites() {
-        return calendarDao.findAll();
+    public String getAllCalendarEntites() {
+        return calendar.toString();
     }
 
     @Override
