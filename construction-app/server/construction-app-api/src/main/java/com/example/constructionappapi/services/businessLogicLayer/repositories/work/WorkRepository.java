@@ -1,8 +1,11 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories.work;
 
+import com.example.constructionappapi.services.businessLogicLayer.Calendar;
+import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.work.IWorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,14 +14,13 @@ import java.util.Optional;
 @Service
 public class WorkRepository implements IWorkRepository {
 
+    @Autowired
     private WorkDao workDao;
-
-    public WorkRepository(WorkDao WorkDao) {
-        this.workDao = WorkDao;
-    }
+    private Calendar calendar = CalendarSingleton.getCalendar();
 
     /**
      * Creates a Work "Instance" and saves it in our DB using a WorkEntity as param
+     *
      * @param work
      * @return
      */
@@ -29,6 +31,7 @@ public class WorkRepository implements IWorkRepository {
 
     /**
      * Edits an existing Work "Instance" if the ID already exists in the DB, otherwise it will function as createWorkEntity()
+     *
      * @param work
      * @return
      */
@@ -39,6 +42,7 @@ public class WorkRepository implements IWorkRepository {
 
     /**
      * Returns all WorkEntities
+     *
      * @return
      */
     @Override
@@ -48,6 +52,7 @@ public class WorkRepository implements IWorkRepository {
 
     /**
      * Returns specific WorkEntity using ID
+     *
      * @param id
      * @return
      */
@@ -58,6 +63,7 @@ public class WorkRepository implements IWorkRepository {
 
     /**
      * Deletes specific WorkEntity using ID
+     *
      * @param id
      */
     @Override

@@ -1,6 +1,7 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories.calendar;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
+import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class CalendarRepository implements ICalendarRepository {
 
     @Autowired
     private CalendarDao calendarDao;
-    private final Calendar calendar = new Calendar(); //TODO: fixa kalender ordentligt.
+    private final Calendar calendar = CalendarSingleton.getCalendar(); //TODO: fixa kalender ordentligt.
 
     @Override
     public CalendarEntity createCalendar(CalendarEntity calendar) {
