@@ -8,23 +8,28 @@ import Login from './components/Login';
 import './styles/App.css';
 import PrivateRoutes from './services/PrivateRoute';
 import Error from './components/Error';
-import Client from './components/Client';
+import Customer from './components/Customer';
+import '../src/styles/index.css';
+import AddWarant from './components/AddWarranty';
+import Warranty from './components/Warranty';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <div>
+        <div className='flex'>
           <Login />
           <Routes>
             <Route element={<PrivateRoutes />}>
               <Route path="/" element={<Home />} />
               <Route index element={<Home />} />
               <Route path='/kunder' element={<CustomerRegister />} />
-              <Route path='/bokföring' element={<Accounting />} />
+              <Route path='/garantier' element={<Accounting />} />
               <Route path='/skapakund' element={<AddCustomer />} />
+              <Route path='/skapagaranti' element={<AddWarant />} />
               <Route path='/kalender' element={<Calendar />} />
-              <Route path='/kunder/:id' element={<Client />} />
+              <Route path='/kunder/:id' element={<Customer />} />
+              <Route path='/garantier/:id' element={<Warranty />} />
             </Route>
             <Route element={<Error />} path="*"/>
             <Route element={<Login />} path="/login"/>

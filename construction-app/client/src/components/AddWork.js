@@ -1,30 +1,30 @@
 import { useRef, useState } from "react";
 import ApiConnector from "../services/ApiConnector";
-import "../styles/AddWork.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
 const AddWork = ({
   setIsWorkOpen,
-  currentClientName,
-  currentClientId,
-  currentClientAddress,
-  currentClientPhone,
-  currentClientProperty,
-  currentClientSSN,
-  currentClientWorkList,
+  currentCustomerName,
+  currentCustomerId,
+  currentCustomerAddress,
+  currentCustomerPhone,
+  currentCustomerProperty,
+  currentCustomerSSN,
+  currentCustomerWorkList,
 }) => {
-  const [kund, setKund] = useState({
-    id: currentClientId,
-    name: currentClientName,
-    address: currentClientAddress,
-    phoneNumber: currentClientPhone,
-    propertyDesignation: currentClientProperty,
-    socialSecurityNumber: currentClientSSN,
-    workList: currentClientWorkList,
+  const customer = useState({
+    id: currentCustomerId,
+    name: currentCustomerName,
+    address: currentCustomerAddress,
+    phoneNumber: currentCustomerPhone,
+    propertyDesignation: currentCustomerProperty,
+    socialSecurityNumber: currentCustomerSSN,
+    workList: currentCustomerWorkList,
     customerNotes: [],
   });
+
   const nameRef = useRef();
   const materialNoteRef = useRef();
   const offer = useRef();
@@ -37,6 +37,7 @@ const AddWork = ({
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
 
+    // Gets the startdate, enddate and calculates amount of days
     const startDateMoment = moment(startDate, "YYYY-MM-DD").unix();
     const endDateMoment = moment(endDate, "YYYY-MM-DD").unix();
     const dayCount = (endDateMoment - startDateMoment) / 86400 + 1;
@@ -55,6 +56,7 @@ const AddWork = ({
   };
 
   const convertToBase64 = (file) => {
+    /**Converts file int base64 */
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -68,19 +70,19 @@ const AddWork = ({
   };
 
   const handleFile = async (e) => {
+    /**Gets the file from input and makes it into base64 and saves it */
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
     setImage(base64);
   };
 
-  const test = (e) => {
-    /**Saves the "kund" and navigates back to the register */
+  const saveWork = (e) => {
+    /**Saves the work and navigates back to the register */
     e.preventDefault();
-    // Check if all input fields are ok
-
-    kund.workList.push(newList);
-
-    ApiConnector.saveKund(kund)
+    // Pushes the new list into current lists
+    customer.workList.push(newList);
+    // Adds work to user with api call
+    ApiConnector.saveCustomer(customer)
       .then((response) => {
         console.log(response);
         window.location.reload(false);
@@ -92,84 +94,95 @@ const AddWork = ({
 
   return (
     <>
-      <div className="darkBG" onClick={() => setIsWorkOpen(false)} />
-      <div className="centered">
-        <div className="model">
-          <div className="addInfo">
-            <div className="inputs">
-              <h1>Lägg till jobb</h1>
-              <label className="label">Namn på jobb: </label>
-              <input
-                ref={nameRef}
-                className="input"
-                type="text"
-                name="name"
-                required
-                onChange={(e) => handleChange(e)}
-              ></input>
+      <div
+        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
+        onClick={() => setIsWorkOpen(false)}
+      />
+      <div className="bg-white fixed inset-0 flex items-center justify-center w-2/4 h-max m-auto rounded-lg p-4">
+        <div className="w-full">
+          <h1 className="text-4xl">Lägg till nytt jobb</h1>
+          <div className="mt-4">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Namn på jobb: </label>
+            <input
+              ref={nameRef}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="text"
+              name="name"
+              required
+              onChange={(e) => handleChange(e)}
+            ></input>
+          </div>
 
-              <label className="label">Offert: </label>
-              <input
-                ref={offer}
-                className="input"
-                type="file"
-                name="offer"
-                accept="image/png, image/jpg, image/jpeg"
-                onChange={(e) => handleFile(e)}
-              ></input>
+          <div className="mt-4"></div>
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Offert: </label>
+          <input
+            ref={offer}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="file"
+            name="offer"
+            accept="image/png, image/jpg, image/jpeg"
+            onChange={(e) => handleFile(e)}
+          ></input>
 
-              <label className="label">Arbetsdatum: </label>
-              <div className="dates">
-                <p>Startdatum:</p>
-                <label onClick={handleChange}>
-                  <DatePicker
-                    className="dateInput"
-                    selected={startDate}
-                    onChange={(date) => {
-                      setStartDate(date);
-                      handleChange(date);
-                    }}
-                    selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
-                  />
-                </label>
-                <p>Slutdatum:</p>
-                <label onClick={handleChange}>
-                  <DatePicker
-                    className="dateInput"
-                    selected={endDate}
-                    onChange={(date) => {
-                      setEndDate(date);
-                      handleChange(date);
-                    }}
-                    selectsEnd
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={startDate}
-                  />
-                </label>
-              </div>
-              <p>Antal dagar: {countDays}</p>
-
-              <label className="label">Material: </label>
-              <input
-                ref={materialNoteRef}
-                className="input"
-                type="text"
-                name="materialNote"
-                required
-                onChange={(e) => handleChange(e)}
-              ></input>
-              <div className="styleButtons">
-                <button className="save" onClick={test}>
-                  Spara
-                </button>
-                <button className="cancel" onClick={() => setIsWorkOpen(false)}>
-                  Avbryt
-                </button>
-              </div>
+          <div className="mt-4">
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Arbetsdatum: </label>
+            <div className="flex gap-2">
+              <label onClick={handleChange}>
+              <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Startdatum:</p>
+                <DatePicker
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  selected={startDate}
+                  onChange={(date) => {
+                    setStartDate(date);
+                    handleChange(date);
+                  }}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              </label>
+              
+              <label onClick={handleChange}>
+              <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Slutdatum:</p>
+                <DatePicker
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  selected={endDate}
+                  onChange={(date) => {
+                    setEndDate(date);
+                    handleChange(date);
+                  }}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                />
+              </label>
             </div>
+          </div>
+          <p className="mt-4 block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Antal dagar: {countDays}</p>
+
+          
+          <div className="mt-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Material: </label>
+          <input
+            ref={materialNoteRef}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="text"
+            name="materialNote"
+            required
+            onChange={(e) => handleChange(e)}
+          ></input>
+          </div>
+          <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
+          <button className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4" onClick={() => setIsWorkOpen(false)}>
+                Avbryt
+              </button>
+              <button
+                className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                onClick={saveWork}
+              >
+                Spara
+              </button>
           </div>
         </div>
       </div>

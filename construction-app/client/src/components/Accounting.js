@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
-import "../styles/Accounting.css";
-import { FaPen } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-import { BsPerson } from "react-icons/bs";
-import Modal from "./Modal";
+import WarrantyModal from "./WarrantyModal";
 
 const Accounting = () => {
   // Declaring variables
@@ -15,18 +12,19 @@ const Accounting = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentWarrantyId, setCurrentWarrantyId] = useState("");
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
-  const [currentWarrantyRegistrationNumber,setCurrentWarrantyRegistrationNumber] = useState("")
-  const [currentWarrantyDate,setCurrentWarrantyDate] = useState("");
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
 
   useEffect(() => {
-    // Gets all the clients on page load
+    // Gets all the warrenties on page load and runs only once
     const fetchData = async () => {
       setLoading(true);
+      // Tries to get data from api
       try {
         const response = await ApiConnector.getWarranties();
         setWarranties(response.data);
+        console.log(response.data);
+        // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
       }
@@ -36,17 +34,19 @@ const Accounting = () => {
   }, []);
 
   const passId = (e) => {
-    // Passes the right id to the accounting url
-    navigate(`/bokföring/${e}`, { state: { accountingId: e } });
+    // Passes the right id to the warranty url
+    navigate(`/garantier/${e}`, { state: { accountingId: e } });
   };
 
   const deleteWarranty = async () => {
     // Deletes a warranty with given id and updates the id
     setLoading(true);
+    // Tries to delete object with given id from database if exists
     try {
       await ApiConnector.deleteWarranty(currentWarrantyId);
-      const newList = await ApiConnector.getWarranties;
+      const newList = await ApiConnector.getWarranties();
       setWarranties(newList.data);
+      // Logs error of not successful
     } catch (error) {
       console.log(error);
     }
@@ -55,114 +55,144 @@ const Accounting = () => {
   };
 
   const filter = (e) => {
+    // Function to sort warranties by search input
     const keyword = e.target.value;
-    if (keyword !== '') {
+    // If input is not empty 
+    if (keyword !== "") {
       const results = warranties.filter((warranty) => {
-        return warranty.name.toLowerCase().startsWith(keyword.toLowerCase());
         // Use the toLowerCase() method to make it case-insensitive
+        return warranty.name.toLowerCase().startsWith(keyword.toLowerCase());
       });
+      // Sets found warrienties to result
       setFoundWarrenties(results);
     } else {
-      setFoundWarrenties(warranties);
       // If the text field is empty, show all users
+      setFoundWarrenties(warranties);
     }
     setName(keyword);
   };
 
-
-
   return (
-    <div className="container">
-      <div className="content">
-        <div className="topContent">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+      <div className="overflow-x-auto relative">
+        <div className="flex pb-4 justify-between gap-4">
           <input
-            className="myInput"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Sök garanti efter namn.."
             title="Type in a name"
             type="search"
             value={name}
             onChange={filter}
           ></input>
-          <button className="addWarranty" onClick={() => navigate("/bokföring")}>
-            <span className="newWarrantyIcon">
-              <BsPerson />
-            </span>{" "}
-            Ny garanti
+          <button
+            className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-48"
+            onClick={() => navigate("/skapagaranti")}
+          >
+            <span className="text-center">
+              <p>Ny garanti</p>
+            </span>
           </button>
         </div>
-        <table className="styled-table">
-          <thead>
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th>Namn</th>
-              <th>Registreringsnummer</th>
-              <th>Garanti-Datum</th>
-              <th className="optionsField"></th>
-              <th className="optionsField"></th>
+              <th scope="col" className="py-3 px-6">
+                Id
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Namn
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Registreringsnummer
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Garanti-Datum
+              </th>
+              <th scope="col" className="py-3 px-6 float-right">
+                Åtgärd
+              </th>
             </tr>
+            <tr></tr>
           </thead>
           {!loading && (
             <tbody>
-              {foundWarrenties && foundWarrenties.length > 0 ? (
-                foundWarrenties.map((warranty) => (
-                  <tr key={warranty.id}>
-                  <td onClick={(e) => passId(warranty.id)}>{warranty.name}</td>
-                  <td>{warranty.registration_number}</td>
-                  <td>{warranty.warranty_date}</td>
-                  <td className="icons">
-                    <FaPen className="editIcon" />
-                  </td>
-                  <td className="icons">
-                    <ImCross
-                      className="removeIcon"
-                      onClick={() => {
-                        setIsOpen(true);
-                        setCurrentWarrantyId(warranty.id);
-                        setCurrentWarrantyName(warranty.name);
-                        setCurrentWarrantyRegistrationNumber(warranty.registration_number);
-                        setCurrentWarrantyDate(warranty.warranty_date);
-                      }}
-                    />
-                  </td>
-                </tr>
+              {foundWarrenties && foundWarrenties.length > 0
+                ? foundWarrenties.map((warranty) => (
+                    <tr
+                      key={warranty.id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                    >
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+                        onClick={(e) => passId(warranty.id)}
+                      >
+                        {warranty.id}
+                      </th>
+                      <td className="py-4 px-6 dark:text-white">
+                        {warranty.name}
+                      </td>
+                      <td className="py-4 px-6">
+                        {warranty.registration_number}
+                      </td>
+                      <td className="py-4 px-6">{warranty.warranty_date}</td>
+                      <td className="py-4 pr-10 flex space-x-4 float-right">
+                        <ImCross
+                          onClick={() => {
+                            setIsOpen(true);
+                            setCurrentWarrantyId(warranty.id);
+                            setCurrentWarrantyName(warranty.name);
+                          }}
+                        />
+                      </td>
+                    </tr>
                   ))
-              ) : (
-                warranties.map((warranties) => (
-                  <tr key={warranties.id}>
-                    <td onClick={(e) => passId(warranties.id)}>{warranties.name}</td>
-                    <td>{warranties.registration_number}</td>
-                    <td>{warranties.warranty_date}</td>
-                    <td className="icons">
-                      <FaPen className="editIcon" />
-                    </td>
-                    <td className="icons">
-                    <ImCross
-                        className="removeIcon"
-                        onClick={() => {
-                          setIsOpen(true);
-                          setCurrentWarrantyId(warranties.id);
-                          setCurrentWarrantyName(warranties.name);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                ))
-              )}
+                : warranties.map((warranties) => (
+                    <tr
+                      key={warranties.id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                    >
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+                        onClick={(e) => passId(warranties.id)}
+                      >
+                        {warranties.id}
+                      </th>
+                      <td className="py-4 px-6 dark:text-white">
+                        {warranties.name}
+                      </td>
+                      <td className="py-4 px-6">
+                        {warranties.registration_number}
+                      </td>
+                      <td className="py-4 px-6">{warranties.warranty_date}</td>
+                      <td className="py-4 px-9">
+                        <ImCross
+                          data-modal-toggle="defaultModal"
+                          className="text-2xl float-right hover:text-red-500"
+                          onClick={() => {
+                            setIsOpen(true);
+                            setCurrentWarrantyId(warranties.id);
+                            setCurrentWarrantyName(warranties.name);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           )}
         </table>
       </div>
       {isOpen && (
-        <Modal
+        <WarrantyModal
           setIsOpen={setIsOpen}
           deleteWarranty={deleteWarranty}
           currentWarrantyName={currentWarrantyName}
           currentWarrantyId={currentWarrantyId}
-          currentWarrantyDate={currentWarrantyDate}
-          currentWarrantyRegistrationNumber={currentWarrantyRegistrationNumber}
         />
       )}
     </div>
   );
-}
+};
 
 export default Accounting;

@@ -1,134 +1,161 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
-import "../styles/AddWork.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
 
-const addWarranty = () =>{
+const AddWaranty = () => {
+  // Declare variables
+  const navigate = useNavigate();
+  const [image, setImage] = useState("");
+  const receipt = useRef();
+  const [warranty, setWarranty] = useState({
+    id: "",
+    name: "",
+    receipt: "",
+    registration_number: "",
+    warranty_date: "",
+  });
 
-const nameRef = useRef();
-const receiptRef = useRef();
-const registration_numberRef = useRef();
-const [image, setImage] = useState("");
-let [startDate, setStartDate] = useState(new Date());
-let [endDate, setEndDate] = useState(new Date());
-let [countDays, setCountDays] = useState(1);
+  const handleChange = (e) => {
+    /**Gets the current input every keystroke */
+    const value = e.target.value;
+    setWarranty({
+      ...warranty,
+      [e.target.name]: value,
+      [e.target.receipt]: image,
+      [e.target.registration_number]: value,
+      [e.target.warranty_date]: value,
+    });
+  };
 
-const startDateMoment = moment(startDate, new Date().toLocaleString() + "").unix();
-    const endDateMoment = moment(endDate, "YYYY-MM-DD").unix();
-    const dayCount = (endDateMoment - startDateMoment) / 86400 + 1;
-    setCountDays(dayCount);
-
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsDataURL(file);
-          fileReader.onload = () => {
-            resolve(fileReader.result);
-          };
-          fileReader.onerror = (error) => {
-            reject(error);
-          };
+  const saveWarranty = (e) => {
+    /**Saves the warranty and navigates back to the register */
+    e.preventDefault();
+    // Check if all input fields are ok
+    if (
+      warranty.name.length > 1 &&
+      warranty.registration_number.length > 1 &&
+      warranty.warranty_date.length > 0
+    ) {
+      ApiConnector.saveWarranty(warranty)
+        .then((response) => {
+          console.log(response);
+          navigate("/garantier");
+        })
+        .catch((error) => {
+          console.log(error);
         });
+    } else {
+      alert("Fyll i alla fält");
+    }
+  };
+
+  const clearInputs = () => {
+    /**Empties the input fields */
+    setWarranty({
+      id: "",
+      name: "",
+      receipt: "",
+      registration_number: "",
+      warranty_date: "",
+    });
+  };
+
+  const convertToBase64 = (file) => {
+    /**Converts an file to base64 */
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
       };
-
-      const handleFile = async (e) => {
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setImage(base64);
+      fileReader.onerror = (error) => {
+        reject(error);
       };
+    });
+  };
 
+  const handleFile = async (e) => {
+    /**Gets the file from input and makes it into base64 and saves it */
+    const file = e.target.files[0];
+    const base64 = await convertToBase64(file);
+    setImage(base64);
+  };
 
-      const test = (e) => {
-        /**Saves the "kund" and navigates back to the register */
-        e.preventDefault();
-        // Check if all input fields are ok
-    
-    
-        ApiConnector.saveWarranty(warranty)
-          .then((response) => {
-            console.log(response);
-            window.location.reload(false);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
+  return (
+    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+      <h1 className="text-4xl">Skapa en ny garanti</h1>
+      <div className="w-full">
+        <div className="mt-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            Namn:{" "}
+          </label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="text"
+            name="name"
+            required
+            value={warranty.name}
+            onChange={(e) => handleChange(e)}
+          ></input>
+        </div>
 
-      return (
-        <>
-          <div className="darkBG"/>
-          <div className="centered">
-            <div className="model">
-              <div className="addInfo">
-                <div className="inputs">
-                  <h1>Lägg till garanti</h1>
-                  <label className="label">Namn på garanti: </label>
-                  <input
-                    ref={nameRef}
-                    className="input"
-                    type="text"
-                    name="name"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
+        <div className="mt-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            Kvitto:{" "}
+          </label>
+          <input
+            ref={receipt}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="file"
+            name="offer"
+            accept="image/png, image/jpg, image/jpeg"
+            onChange={(e) => handleFile(e)}
+          ></input>
+        </div>
 
-               
-                  <label className="label">Kvitto: </label>
-                  <input
-                    ref={receiptRef}
-                    className="input"
-                    type="file"
-                    name="receipt"
-                    accept="image/png, image/jpg, image/jpeg"
-                    onChange={(e) => handleFile(e)}
-                  ></input>
+        <div className="mt-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            Registreringsnummer:{" "}
+          </label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="text"
+            name="registration_number"
+            value={warranty.registration_number}
+            onChange={(e) => handleChange(e)}
+          ></input>
+        </div>
 
-                <label className="label">Registreringsnummer: </label>
-                  <input
-                    ref={registration_numberRef}
-                    className="input"
-                    type="text"
-                    name="name"
-                    required
-                    onChange={(e) => handleChange(e)}
-                  ></input>
-    
-                  <label className="label">Utgångsdatum för kvitto: </label>
-                  <div className="dates">
-                   
-                    <p>Slutdatum för kvitto:</p>
-                    <label onClick={handleChange}>
-                      <DatePicker
-                        className="dateInput"
-                        selected={endDate}
-                        onChange={(date) => {
-                          setEndDate(date);
-                          handleChange(date);
-                        }}
-                        selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate}
-                      />
-                    </label>
-                  </div>
-                  <p>Antal dagar: {countDays}</p>
-    
-            
-                  <div className="styleButtons">
-                    <button className="save" onClick={test}>
-                      Spara
-                    </button>
-                    <button className="cancel" onClick={() => setIsWorkOpen(false)}>
-                      Avbryt
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      );
-                    }
+        <div className="mt-4">
+          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            Utgångsdatum:{" "}
+          </label>
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="text"
+            name="warranty_date"
+            value={warranty.warranty_date}
+            onChange={(e) => handleChange(e)}
+          ></input>
+        </div>
+
+        <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
+          <button
+            className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+            onClick={clearInputs}
+          >
+            Avbryt
+          </button>
+          <button
+            className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+            onClick={saveWarranty}
+          >
+            Spara
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddWaranty;

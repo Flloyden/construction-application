@@ -1,11 +1,11 @@
 import React from "react";
 import { RiCloseLine } from "react-icons/ri";
 
-const Modal = ({
+const WarrantyModal = ({
   setIsOpen,
-  deleteCustomer,
-  currentCustomerName,
-  currentCustomerId,
+  deleteWarranty,
+  currentWarrantyName,
+  currentWarrantyId,
 }) => {
   return (
     <>
@@ -25,8 +25,8 @@ const Modal = ({
             <RiCloseLine />
           </button>
           <div className="text-black p-4 text-2xl text-center">
-            Är du säker du vill ta bort <b>{currentCustomerName}</b> från
-            kundregistret?
+            Är du säker du vill ta bort <b>{currentWarrantyName}</b> från
+            garantier?
           </div>
           <div className="flex w-9/12 gap-2 justify-end absolute inset-x-0 bottom-4 mx-auto text-white">
             <button
@@ -37,7 +37,7 @@ const Modal = ({
             </button>
             <button
               className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-              onClick={() => deleteCustomer(currentCustomerId)}
+              onClick={() => deleteWarranty(currentWarrantyId)}
             >
               Ta bort
             </button>
@@ -48,4 +48,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default WarrantyModal;
