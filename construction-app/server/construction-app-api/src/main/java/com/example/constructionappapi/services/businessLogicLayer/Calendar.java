@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.businessLogicLayer;
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
 import java.time.DayOfWeek;
@@ -10,8 +11,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Calendar {
-    LocalDate[] vacationDays = new LocalDate[20];
-    //ArrayList<WorkEntity> workItems = new ArrayList<>();
+    ArrayList<VacationEntity> vacationDays = new ArrayList<>();
+
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
 
     public Calendar() {

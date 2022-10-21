@@ -16,8 +16,8 @@ import java.util.Optional;
 
 public class WorkAPI {
 
-@Autowired
-private IWorkRepository iWorkRepository;
+    @Autowired
+    private IWorkRepository iWorkRepository;
 
     @PostMapping("/kunder/{customer_id}/work/create")
     public WorkEntity createWorkEntity(@RequestBody WorkEntity work) {
@@ -25,25 +25,23 @@ private IWorkRepository iWorkRepository;
     }
 
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
-    public WorkEntity editWorkEntity(@RequestBody WorkEntity work)
-    {
+    public WorkEntity editWorkEntity(@RequestBody WorkEntity work) {
         return iWorkRepository.editWorkEntity(work);
     }
 
     @GetMapping("/kunder/{customer_id}/work/{id}")
-    public Optional<WorkEntity> getWorkEntity(@PathVariable final Long id){
+    public Optional<WorkEntity> getWorkEntity(@PathVariable final Long id) {
         return iWorkRepository.getWorkEntity(id);
     }
 
     @GetMapping("/kunder/work")
-    public List<WorkEntity> getAllWorkEntities()
-    {
+    public List<WorkEntity> getAllWorkEntities() {
         return iWorkRepository.getAllWorkEntities();
+
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
-    public void deleteWorkEntity(@PathVariable final Long id)
-    {
+    public void deleteWorkEntity(@PathVariable final Long id) {
         iWorkRepository.deleteWorkEntity(id);
     }
 }

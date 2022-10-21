@@ -9,6 +9,7 @@ public interface IWorkRepository {
 
     /**
      * Creates Work for customer using WorkEntity as param
+     *
      * @param work
      * @return
      */
@@ -16,6 +17,7 @@ public interface IWorkRepository {
 
     /**
      * Edits existing work (if not existing it will use CreateWorkEntity())
+     *
      * @param work
      * @return
      */
@@ -23,12 +25,14 @@ public interface IWorkRepository {
 
     /**
      * Returns all WorkEntities
+     *
      * @return
      */
     List<WorkEntity> getAllWorkEntities();
 
     /**
      * Returns WorkEntity by ID
+     *
      * @param id
      * @return
      */
@@ -36,8 +40,10 @@ public interface IWorkRepository {
 
     /**
      * Deletes WorkEntity by ID
+     *
      * @param id
      */
     void deleteWorkEntity(Long id);
 
+    WorkEntity getLastInserted();
 }

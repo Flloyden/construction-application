@@ -70,4 +70,9 @@ public class WorkRepository implements IWorkRepository {
     public void deleteWorkEntity(Long id) {
         workDao.deleteById(id);
     }
+
+    @Override
+    public WorkEntity getLastInserted() {
+        return workDao.findFirstByOrderByIdDesc();
+    }
 }
