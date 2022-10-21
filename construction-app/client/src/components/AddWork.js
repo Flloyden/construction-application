@@ -14,7 +14,7 @@ const AddWork = ({
   currentCustomerSSN,
   currentCustomerWorkList,
 }) => {
-  const customer = useState({
+  const [customer] = useState({
     id: currentCustomerId,
     name: currentCustomerName,
     address: currentCustomerAddress,

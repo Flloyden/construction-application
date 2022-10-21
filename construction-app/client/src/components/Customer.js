@@ -151,24 +151,24 @@ export default function Customer() {
       {isChangeOpen && (
         <ChangeInfo
           setIsChangeOpen={setIsChangeOpen}
-          currentClientId={customer.id}
-          currentClientName={customer.name}
-          currentClientAddress={customer.address}
-          currentClientPhone={customer.phoneNumber}
-          currentClientProperty={customer.propertyDesignation}
-          currentClientSSN={customer.socialSecurityNumber}
+          currentCustomerId={customer.id}
+          currentCustomerName={customer.name}
+          currentCustomerAddress={customer.address}
+          currentCustomerPhone={customer.phoneNumber}
+          currentCustomerProperty={customer.propertyDesignation}
+          currentCustomerSSN={customer.socialSecurityNumber}
         />
       )}
       {isWorkOpen && (
         <AddWork
           setIsWorkOpen={setIsWorkOpen}
-          currentClientId={customer.id}
-          currentClientName={customer.name}
-          currentClientAddress={customer.address}
-          currentClientPhone={customer.phoneNumber}
-          currentClientProperty={customer.propertyDesignation}
-          currentClientSSN={customer.socialSecurityNumber}
-          currentClientWorkList={customer.workList}
+          currentCustomerId={customer.id}
+          currentCustomerName={customer.name}
+          currentCustomerAddress={customer.address}
+          currentCustomerPhone={customer.phoneNumber}
+          currentCustomerProperty={customer.propertyDesignation}
+          currentCustomerSSN={customer.socialSecurityNumber}
+          currentCustomerWorkList={customer.workList}
         />
       )}
     </div>
