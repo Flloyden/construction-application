@@ -38,6 +38,8 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj.getClass() != CalendarEntity.class) return false;
+
         CalendarEntity calendarEntity = (CalendarEntity) obj;
         return date.equals(calendarEntity.getDate());
     }

@@ -42,12 +42,12 @@ public class Calendar {
         int daysToShuffleForward = daysToAdd;
 
         for (int i = 0; i < daysToAdd; i++) {
-            LocalDate date = work.getStartDate().plusDays(i);
-            CalendarEntity calendarEntity = new CalendarEntity(date, work);
+            LocalDate dateToAddTo = work.getStartDate().plusDays(i);
+            CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
             /*If the date where the new work is getting added already contains something the content that is already there needs
               to be shuffled forward x days decided by the daysToShuffleForward variable.*/
-            if (calendarDates.get(new CalendarEntity(date)) != null) shuffleForward(date, daysToShuffleForward);
+            if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) shuffleForward(dateToAddTo, daysToShuffleForward);
             else daysToShuffleForward--;/*If the spot where new work is being added is free all future work that needs to be
             shuffled forward should be shuffled forward one day less.*/
 
