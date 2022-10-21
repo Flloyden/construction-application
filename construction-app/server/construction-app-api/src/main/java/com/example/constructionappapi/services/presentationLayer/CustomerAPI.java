@@ -2,11 +2,12 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.customer.ICustomerRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -33,7 +34,6 @@ public class CustomerAPI {
     public List<CustomerEntity> getAllCustomers() {
         return iCustomerRepository.getAllCustomers();
     }
-
 
 
     @DeleteMapping("/kunder/{id}/remove")

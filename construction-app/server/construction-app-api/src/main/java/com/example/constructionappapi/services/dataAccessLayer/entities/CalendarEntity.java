@@ -16,7 +16,7 @@ import java.time.LocalDate;
 /**
  * A class creating and giving access to the table Calendar in DB
  */
-public class CalendarEntity {
+public class CalendarEntity implements Comparable<CalendarEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,4 +26,31 @@ public class CalendarEntity {
     @JoinColumn(name = "work_id")
     @JsonIgnore
     private WorkEntity work;
+
+    public CalendarEntity(LocalDate date) {
+        this.date = date;
+    }
+
+    public CalendarEntity(LocalDate date, WorkEntity work) {
+        this.date = date;
+        this.work = work;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != CalendarEntity.class) return false;
+
+        CalendarEntity calendarEntity = (CalendarEntity) obj;
+        return date.equals(calendarEntity.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return date.hashCode();
+    }
+
+    @Override
+    public int compareTo(CalendarEntity o) {
+        return date.compareTo(o.date);
+    }
 }
