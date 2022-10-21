@@ -1,54 +1,50 @@
 import axios from "axios";
 
 // Base url to get api
-const KUND_API_BASE_URL = "http://localhost:8080/api/v1/kunder"
-const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring"
+const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
+const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
 
 class ApiConnector {
-    //Saves the "kund" to the database
-    saveKund(kund) {
-        return axios.post(KUND_API_BASE_URL, kund);
-    }
+  //Saves the customer to the database
+  saveCustomer(customer) {
+    return axios.post(CUSTOMER_API_BASE_URL, customer);
+  }
 
-    getKunder() {
-        //Gets kunder from the database
-        return axios.get(KUND_API_BASE_URL);
-    }
+  getCustomers() {
+    //Gets all customers from the database
+    return axios.get(CUSTOMER_API_BASE_URL);
+  }
 
-    getKund(kund) {
-        //Gets single kund from the database
-        return axios.get(KUND_API_BASE_URL + "/" + kund);
-    }
+  getCustomer(customer) {
+    //Gets a single customer from the database
+    return axios.get(CUSTOMER_API_BASE_URL + "/" + customer);
+  }
 
-    deleteKund(kund) {
-        //Deletes a kund from the database
-        return axios.delete(KUND_API_BASE_URL + "/" + kund + "/remove");
-    }
+  deleteCustomer(customer) {
+    //Deletes a customer from the database with a specific id
+    return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/remove");
+  }
 
-    // ACCOUNTING / WARRANTY
-    saveWarranty(warranty)
-    {
-        //Saves the warranty to the database (Can also update existing warranty if ID already exists)
-        return axios.post(ACCOUNTING_API_BASE_URL, warranty);
-    }
+  // ACCOUNTING / WARRANTY
+  saveWarranty(warranty) {
+    //Saves the warranty to the database (Can also update existing warranty if ID already exists)
+    return axios.post(ACCOUNTING_API_BASE_URL, warranty);
+  }
 
-    getWarranties()
-    {
-        //Gets existing warranties from the database
-        return axios.get(ACCOUNTING_API_BASE_URL);
-    }
+  getWarranties() {
+    //Gets existing warranties from the database
+    return axios.get(ACCOUNTING_API_BASE_URL);
+  }
 
-    getWarranty(warranty)
-    {
-        //Gets specific warranty from the database
-        return axios.get(ACCOUNTING_API_BASE_URL + "/" + warranty)
-    }
+  getWarranty(warranty) {
+    //Gets specific warranty from the database
+    return axios.get(ACCOUNTING_API_BASE_URL + "/" + warranty);
+  }
 
-    deleteWarranty(warranty)
-    {
-        //Deletes an existing warranty from the database
-        return axios.delete(ACCOUNTING_API_BASE_URL + "/" + warranty + "/remove")
-    }
+  deleteWarranty(warranty) {
+    //Deletes an existing warranty from the database
+    return axios.delete(ACCOUNTING_API_BASE_URL + "/" + warranty + "/remove");
+  }
 }
 
 export default new ApiConnector();

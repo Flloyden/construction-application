@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
-import "../styles/CustomerRegister.css";
-import { FaPen } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-import { BsPerson } from "react-icons/bs";
 import Modal from "./Modal";
 
 const CustomerRegister = () => {
-  // Declaring variables
   const navigate = useNavigate();
-  const [kunder, setKunder] = useState(null);
+  const [customers, setCustomers] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [currentClientId, setCurrentClientId] = useState("");
-  const [currentClientName, setCurrentClientName] = useState("");
-  const [name, setName] = useState('');
-  const [foundUsers, setFoundUsers] = useState(kunder);
+  const [currentCustomerId, setCurrentCustomerId] = useState("");
+  const [currentCustomerName, setCurrentCustomerName] = useState("");
+  const [name, setName] = useState("");
+  const [foundUsers, setFoundUsers] = useState(customers);
 
   useEffect(() => {
-    // Gets all the clients on page load
+    // Gets all the clients on page load once per load
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await ApiConnector.getKunder();
-        setKunder(response.data);
+        const response = await ApiConnector.getCustomers();
+        setCustomers(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -34,7 +30,7 @@ const CustomerRegister = () => {
   }, []);
 
   const passId = (e) => {
-    // Passes the right id to the kund url
+    // Passes the right id to the customer url
     navigate(`/kunder/${e}`, { state: { clientId: e } });
   };
 
@@ -42,9 +38,9 @@ const CustomerRegister = () => {
     // Deletes a client with given id and updates the id
     setLoading(true);
     try {
-      await ApiConnector.deleteKund(currentClientId);
-      const newList = await ApiConnector.getKunder();
-      setKunder(newList.data);
+      await ApiConnector.deleteKund(currentCustomerId);
+      const newList = await ApiConnector.getCustomers();
+      setCustomers(newList.data);
     } catch (error) {
       console.log(error);
     }
@@ -53,94 +49,123 @@ const CustomerRegister = () => {
   };
 
   const filter = (e) => {
+    // Function to sort warranties by search input
     const keyword = e.target.value;
-    if (keyword !== '') {
-      const results = kunder.filter((user) => {
-        return user.name.toLowerCase().startsWith(keyword.toLowerCase());
+    // If input is not empty
+    if (keyword !== "") {
+      const results = customers.filter((user) => {
         // Use the toLowerCase() method to make it case-insensitive
+        return user.name.toLowerCase().startsWith(keyword.toLowerCase());
       });
+      // Sets found warrienties to result
       setFoundUsers(results);
     } else {
-      setFoundUsers(kunder);
       // If the text field is empty, show all users
+      setFoundUsers(customers);
     }
     setName(keyword);
   };
 
   return (
-    <div className="container">
-      <div className="content">
-        <div className="topContent">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+      <div className="overflow-x-auto relative">
+        <div className="flex pb-4 justify-between gap-4">
           <input
-            className="myInput"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Sök kund efter namn.."
             title="Type in a name"
             type="search"
             value={name}
             onChange={filter}
           ></input>
-          <button className="addClient" onClick={() => navigate("/skapakund")}>
-            <span className="newClientIcon">
-              <BsPerson />
-            </span>{" "}
-            Ny kund
+          <button
+            className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-48"
+            onClick={() => navigate("/skapakund")}
+          >
+            <span className="text-center">
+              <p>Ny kund</p>
+            </span>
           </button>
         </div>
-        <table className="styled-table">
-          <thead>
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th>Namn</th>
-              <th>Adress</th>
-              <th>Skapad</th>
-              <th className="optionsField"></th>
-              <th className="optionsField"></th>
+              <th scope="col" className="py-3 px-6">
+                Id
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Namn
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Adress
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Skapad
+              </th>
+              <th scope="col" className="py-3 px-6 float-right">
+                Åtgärd
+              </th>
             </tr>
           </thead>
           {!loading && (
             <tbody>
-              {foundUsers && foundUsers.length > 0 ? (
-                foundUsers.map((user) => (
-                  <tr key={user.id}>
-                  <td onClick={(e) => passId(user.id)}>{user.name}</td>
-                  <td>{user.address}</td>
-                  <td>{kunder.creationDate}</td>
-                  <td className="icons">
-                    <FaPen className="editIcon" />
-                  </td>
-                  <td className="icons">
-                    <ImCross
-                      className="removeIcon"
-                      onClick={() => {
-                        setIsOpen(true);
-                        setCurrentClientId(user.id);
-                        setCurrentClientName(user.name);
-                      }}
-                    />
-                  </td>
-                </tr>
+              {foundUsers && foundUsers.length > 0
+                ? foundUsers.map((user) => (
+                    <tr
+                      key={user.id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                    >
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+                        onClick={(e) => passId(user.id)}
+                      >
+                        {user.id}
+                      </th>
+                      <td className="py-4 px-6 dark:text-white">{user.name}</td>
+                      <td className="py-4 px-6">{user.address}</td>
+                      <td className="py-4 px-6">{user.creationDate}</td>
+                      <td className="py-4 pr-10 flex space-x-4 float-right">
+                        <ImCross
+                          onClick={() => {
+                            setIsOpen(true);
+                            setCurrentCustomerId(user.id);
+                            setCurrentCustomerName(user.name);
+                          }}
+                        />
+                      </td>
+                    </tr>
                   ))
-              ) : (
-                kunder.map((kunder) => (
-                  <tr key={kunder.id}>
-                    <td onClick={(e) => passId(kunder.id)}>{kunder.name}</td>
-                    <td>{kunder.address}</td>
-                    <td>{kunder.creationDate}</td>
-                    <td className="icons">
-                      <FaPen className="editIcon" />
-                    </td>
-                    <td className="icons">
-                    <ImCross
-                        className="removeIcon"
-                        onClick={() => {
-                          setIsOpen(true);
-                          setCurrentClientId(kunder.id);
-                          setCurrentClientName(kunder.name);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                ))
-              )}
+                : customers.map((customer) => (
+                    <tr
+                      key={customer.id}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                    >
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+                        onClick={(e) => passId(customer.id)}
+                      >
+                        {customer.id}
+                      </th>
+                      <td className="py-4 px-6 dark:text-white">
+                        {customer.name}
+                      </td>
+                      <td className="py-4 px-6">{customer.address}</td>
+                      <td className="py-4 px-6">{customer.creationDate}</td>
+                      <td className="py-4 px-9">
+                        <ImCross
+                          data-modal-toggle="defaultModal"
+                          className="text-2xl float-right hover:text-red-500"
+                          onClick={() => {
+                            setIsOpen(true);
+                            setCurrentCustomerId(customer.id);
+                            setCurrentCustomerName(customer.name);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           )}
         </table>
@@ -149,8 +174,8 @@ const CustomerRegister = () => {
         <Modal
           setIsOpen={setIsOpen}
           deleteClient={deleteClient}
-          currentClientName={currentClientName}
-          currentClientId={currentClientId}
+          currentCustomerName={currentCustomerName}
+          currentCustomerId={currentCustomerId}
         />
       )}
     </div>
