@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { BiCalendar } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
+import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { TbNotebook } from "react-icons/tb";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar(props) {
   // Declaring variables
@@ -43,8 +43,8 @@ export default function Navbar(props) {
   }, [currentLocation]);
 
   return (
-    <div className={`w-72 h-screen bg-blue-700 dark:bg-gray-800`}>
-      <div className="w-72 fixed p-5 pt-8 h-screen dark:bg-gray-800">
+    <div className={`w-72 h-full bg-blue-700 dark:bg-gray-800`}>
+      <div className="w-72 h-full fixed p-5 bg-blue-700 pt-8 h-screen dark:bg-gray-800">
         <div className="flex-none gap-x-4 items-center w-full h-full relative text-white">
           <p className="font-bold text-2xl text-center pb-4">{pageTitle}</p>
           <ul
