@@ -138,15 +138,13 @@ public class Calendar {
         s.append("[");
         while (entrySet.hasNext()) {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
-            s.append("{\"date\":\"").append(entry.getKey().getDate()).append("\",");
-            s.append("\"info\":[{");
-            s.append("\"workName\":\"");
-            s.append(entry.getValue().getName()).append("\"");
+            s.append("{");
+            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
+            s.append("\"workName\":\"").append(entry.getValue().getName()).append("\"");
             if (entry.getValue().getCustomer() != null) {
-                s.append(",\"customerName\":");
-                s.append("\"").append(entry.getValue().getCustomer().getName()).append("\"");
+                s.append(",\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\"");
             }
-            s.append("}]}");
+            s.append("}");
             if (entrySet.hasNext()) s.append(",");
         }
         s.append("]");
