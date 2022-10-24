@@ -140,6 +140,7 @@ public class Calendar {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
+            s.append("\"workId\":\"").append(entry.getValue().getId()).append("\",");
             s.append("\"workName\":\"").append(entry.getValue().getName()).append("\"");
             if (entry.getValue().getCustomer() != null) {
                 s.append(",\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\"");
