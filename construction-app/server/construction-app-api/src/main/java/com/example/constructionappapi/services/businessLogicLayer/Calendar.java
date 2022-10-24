@@ -133,20 +133,23 @@ public class Calendar {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-
-        s.append("{");
         Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySet = calendarDates.entrySet().iterator();
+
+        s.append("[");
         while (entrySet.hasNext()) {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
-
-            s.append("\"").append(entry.getKey().getDate()).append("\":").append(" {");
-            s.append("\"workName\":\"").append(entry.getValue().getName()).append("\"");
-            if (entry.getValue().getCustomer() != null)
-                s.append(",\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\"");
-            s.append("}");
+            s.append("{\"date\":\"").append(entry.getKey().getDate()).append("\",");
+            s.append("\"info\":[{");
+            s.append("\"workName\":\"");
+            s.append(entry.getValue().getName()).append("\"");
+            if (entry.getValue().getCustomer() != null) {
+                s.append(",\"customerName\":");
+                s.append("\"").append(entry.getValue().getCustomer().getName()).append("\"");
+            }
+            s.append("}]}");
             if (entrySet.hasNext()) s.append(",");
         }
-        s.append("}");
+        s.append("]");
 
         return s.toString();
     }
