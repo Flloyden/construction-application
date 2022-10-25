@@ -12,6 +12,8 @@ const Accounting = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentWarrantyId, setCurrentWarrantyId] = useState("");
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
+  const [currentWarrantyRegistrationNumber, setCurrentWarrantyRegistrationNumber] = useState(""); 
+  const [currentWarrantyDate, setCurrentWarrantyDate] = useState("");
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
 
@@ -163,9 +165,9 @@ const Accounting = () => {
                         {warranties.name}
                       </td>
                       <td className="py-4 px-6">
-                        {warranties.registration_number}
+                        {warranties.registrationNumber}
                       </td>
-                      <td className="py-4 px-6">{warranties.warranty_date}</td>
+                      <td className="py-4 px-6">{warranties.warrantyDate}</td>
                       <td className="py-4 px-9">
                         <ImCross
                           data-modal-toggle="defaultModal"
@@ -189,6 +191,8 @@ const Accounting = () => {
           deleteWarranty={deleteWarranty}
           currentWarrantyName={currentWarrantyName}
           currentWarrantyId={currentWarrantyId}
+          currentWarrantyDate={currentWarrantyDate}
+          currentWarrantyRegistrationNumber={currentWarrantyRegistrationNumber}
         />
       )}
     </div>

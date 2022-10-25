@@ -142,7 +142,7 @@ const AddCustomer = () => {
         <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
           <button
             className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-            onClick={clearInputs}
+            onClick={() => navigate("/kunder")}
           >
             Avbryt
           </button>
