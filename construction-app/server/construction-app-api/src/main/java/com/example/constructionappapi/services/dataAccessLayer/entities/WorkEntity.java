@@ -44,5 +44,6 @@ public class WorkEntity {
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
     }
+
 }
 

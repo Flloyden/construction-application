@@ -33,6 +33,6 @@ public class AccountingAPI {
 
     @DeleteMapping("/bokföring/{id}/remove")
     public void deleteCustomer(@PathVariable final Long id) {
-        iAccountingRepository.deleteAccounting(id); // Ska det vara return här?
+        iAccountingRepository.deleteAccounting(id);
     }
 }
