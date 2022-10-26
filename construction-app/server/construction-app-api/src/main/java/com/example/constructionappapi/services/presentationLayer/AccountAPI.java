@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.account.IAccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.AccountingEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
