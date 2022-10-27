@@ -4,10 +4,15 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Calendar
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 /**
  * A class that gives access to interaction with table Calendar in the DB (save, find, delete,
  * etc, given by JpaRepository) through it's entity-class
  */
 @Repository
 public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
+    CalendarEntity findFirstByDate(LocalDate date);
+
+    void deleteAllByDate(LocalDate date);
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface ICalendarRepository {
 
-    CalendarEntity createCalendar(CalendarEntity calendar);
+    CalendarEntity save(CalendarEntity calendar);
 
     CalendarEntity editCalendar(CalendarEntity calendar);
 

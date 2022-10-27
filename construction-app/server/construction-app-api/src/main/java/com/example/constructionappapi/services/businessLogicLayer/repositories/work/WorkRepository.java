@@ -18,6 +18,10 @@ public class WorkRepository implements IWorkRepository {
     private WorkDao workDao;
     private Calendar calendar = CalendarSingleton.getCalendar();
 
+    public WorkRepository(){
+        calendar.setWorkRepository(this);
+    }
+
     /**
      * Creates a Work "Instance" and saves it in our DB using a WorkEntity as param
      *
