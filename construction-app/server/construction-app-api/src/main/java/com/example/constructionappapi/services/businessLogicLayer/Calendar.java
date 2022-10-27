@@ -16,11 +16,13 @@ public class Calendar {
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
 
     public Calendar() {
-        CustomerEntity customer = new CustomerEntity(7, "sgfdsgfdsgfd", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customerOne = new CustomerEntity(7, "Sven Svensson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customerTwo = new CustomerEntity(7, "Thomas Olsson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customerThree = new CustomerEntity(7, "Jan Strandberg", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
 
-        WorkEntity door = new WorkEntity(1, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>());
-        WorkEntity fence = new WorkEntity(2, "Fence", LocalDate.of(2023, 5, 25), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>());
-        WorkEntity roof = new WorkEntity(3, "Roof", LocalDate.of(2023, 5, 29), 2, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>());
+        WorkEntity door = new WorkEntity(1, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customerOne, new ArrayList<>());
+        WorkEntity fence = new WorkEntity(2, "Fence", LocalDate.of(2023, 5, 25), 10, "testNote", null, Status.NOTSTARTED, customerTwo, new ArrayList<>());
+        WorkEntity roof = new WorkEntity(3, "Roof", LocalDate.of(2023, 5, 29), 2, "testNote", null, Status.NOTSTARTED, customerThree, new ArrayList<>());
 
         addWork(fence);
         addWork(door);
@@ -139,12 +141,10 @@ public class Calendar {
         while (entrySet.hasNext()) {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
-            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
-            s.append("\"workId\":\"").append(entry.getValue().getId()).append("\",");
-            s.append("\"workName\":\"").append(entry.getValue().getName()).append("\"");
             if (entry.getValue().getCustomer() != null) {
-                s.append(",\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\"");
+                s.append("\"title\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
             }
+            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\"");
             s.append("}");
             if (entrySet.hasNext()) s.append(",");
         }
