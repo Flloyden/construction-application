@@ -3,6 +3,7 @@ import axios from "axios";
 // Base url to get api
 const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
 const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
+const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 
 class ApiConnector {
   //Saves the customer to the database
@@ -44,6 +45,11 @@ class ApiConnector {
   deleteWarranty(warranty) {
     //Deletes an existing warranty from the database
     return axios.delete(ACCOUNTING_API_BASE_URL + "/" + warranty + "/remove");
+  }
+
+  getCalendar() {
+    //Gets all existing info about calendar from the database
+    return axios.get(CALENDAR_API_BASE_URL);
   }
 }
 
