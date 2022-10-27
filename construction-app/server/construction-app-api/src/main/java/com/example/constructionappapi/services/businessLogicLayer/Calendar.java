@@ -6,6 +6,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Customer
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
+import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -31,6 +32,12 @@ public class Calendar {
         System.out.println();
         System.out.println("Add");
         printCalendar();
+
+        for (int i = 0; i < 10; i++) {
+            VacationEntity vacationEntity = new VacationEntity();
+            vacationEntity.setVacationDate(LocalDate.of(2023, 5, 5 + i));
+            vacationDays.add(vacationEntity);
+        }
 
         /*
         removeWork(door);
@@ -138,16 +145,26 @@ public class Calendar {
         Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySet = calendarDates.entrySet().iterator();
 
         s.append("[");
+
+        for (VacationEntity vacationEntity : vacationDays) {
+            s.append("{");
+            s.append("\"title\":").append("\"").append("Semester").append("\",");
+            s.append("\"date\":\"").append(vacationEntity.getVacationDate()).append("\",");
+            s.append("\"color\":\"").append("25C900").append("\"");
+            s.append("},");
+        }
         while (entrySet.hasNext()) {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
                 s.append("\"title\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
             }
-            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\"");
+            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
+            s.append("\"color\":\"").append("FF0000").append("\"");
             s.append("}");
             if (entrySet.hasNext()) s.append(",");
         }
+
         s.append("]");
 
         return s.toString();
