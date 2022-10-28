@@ -150,7 +150,7 @@ public class Calendar {
             s.append("{");
             s.append("\"title\":").append("\"").append("Semester").append("\",");
             s.append("\"date\":\"").append(vacationEntity.getVacationDate()).append("\",");
-            s.append("\"color\":\"").append("25C900").append("\"");
+            s.append("\"color\":\"").append("#25C900").append("\"");
             s.append("},");
         }
         while (entrySet.hasNext()) {
@@ -160,7 +160,7 @@ public class Calendar {
                 s.append("\"title\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
             }
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
-            s.append("\"color\":\"").append("FF0000").append("\"");
+            s.append("\"color\":\"").append("#FF0000").append("\"");
             s.append("}");
             if (entrySet.hasNext()) s.append(",");
         }
