@@ -4,6 +4,8 @@ import ApiConnector from "../services/ApiConnector";
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 import listPlugin from '@fullcalendar/list';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 export default function Calendar() {
   const [loading, setLoading] = useState(true);
@@ -32,13 +34,27 @@ export default function Calendar() {
       {!loading && (
         <div className="h-full">
         <FullCalendar
-            plugins={[ dayGridPlugin, listPlugin ]}
-            initialView="listYear"
+            plugins={[ dayGridPlugin, listPlugin, timeGridPlugin, resourceTimelinePlugin  ]}
+            initialView="timeline"
+            duration={{days: 1}}
             events={calendarInfo}
             height="100%"
             locale="sv"
             firstDay={1}
-            eventColor="#FF0000"
+            headerToolbar={{
+              left: "prev",
+              center: "title",
+              right: "next"
+            }}
+            views={{
+              timeline: {
+                type: 'timeline',
+                duration: { months: 6 },
+                buttonText: 'År',
+                slotDuration: { months: 1 }
+              }
+            }}
+            schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
           />
           </div>
       )}
