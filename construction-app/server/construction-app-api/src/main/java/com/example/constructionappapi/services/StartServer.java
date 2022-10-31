@@ -8,6 +8,7 @@ import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -54,9 +55,16 @@ public class StartServer {
             calendar.addWork(roof);
             calendar.printCalendar();
 
-            calendar.removeWork(fence);
-             */
+            calendar.removeWork(door);
             calendar.printCalendar();
+
+            calendar.removeWork(roof);
+            calendar.printCalendar();
+
+            door = workRepository.createWorkEntity(new WorkEntity(0L, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>()));
+            calendar.addWork(door);
+            calendar.printCalendar();
+             */
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }

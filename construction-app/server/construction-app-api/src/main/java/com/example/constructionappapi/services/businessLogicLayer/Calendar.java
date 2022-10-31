@@ -53,8 +53,15 @@ public class Calendar {
         calendarRepository.findAll().forEach(calendarEntity -> calendarDates.put(calendarEntity, calendarEntity.getWork()));
     }
 
+    public boolean addWork(WorkEntity work) {
+        final boolean[] errorCheck = {true};
 
-    public void addWork(WorkEntity work) {
+        calendarDates.forEach((key, value) -> {
+            if (value.getId() == work.getId()) errorCheck[0] = false;
+        });
+
+        if (!errorCheck[0]) return false;
+
         int daysToAdd = work.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
 
@@ -74,6 +81,8 @@ public class Calendar {
             calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work);
         }
+
+        return true;
     }
 
     public void shuffleForward(LocalDate date, int daysToShuffle) {
@@ -122,7 +131,17 @@ public class Calendar {
             //Set freeCalenderSpot to possibleDate if the spot in the calendar is free, and it's not on a weekend.
             if (!calendarDates.containsKey(new CalendarEntity(possibleDate))) {
                 if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
-                    freeCalendarSpot = possibleDate;
+                    boolean vacationCheck = true;
+                    for (VacationEntity vacationEntity : vacationDays) {
+                        if (vacationEntity.getVacationDate().equals(possibleDate)) {
+                            vacationCheck = false;
+                            break;
+                        }
+                    }
+
+                    if (vacationCheck) {
+                        freeCalendarSpot = possibleDate;
+                    }
                 }
             }
 
