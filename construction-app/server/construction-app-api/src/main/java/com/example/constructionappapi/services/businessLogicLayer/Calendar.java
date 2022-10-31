@@ -46,9 +46,13 @@ public class Calendar {
     }
 */
 
+    /**
+     * Retrieves calendar items from the database and populates the hash-map with them.
+     */
     public void initializeCalendar() {
         calendarRepository.findAll().forEach(calendarEntity -> calendarDates.put(calendarEntity, calendarEntity.getWork()));
     }
+
 
     public void addWork(WorkEntity work) {
         int daysToAdd = work.getNumberOfDays();
@@ -67,7 +71,7 @@ public class Calendar {
 
             //Add work to the specified date.
             calendarEntity = calendarRepository.save(calendarEntity);
-            calendarEntity.getWork().getCalendar().add(calendarEntity);
+            calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work);
         }
     }

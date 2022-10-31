@@ -34,10 +34,10 @@ public class StartServer {
             long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
             timer.scheduleAtFixedRate(repeatedTask, delay, period);
 
-            /*
             Calendar calendar = CalendarSingleton.getCalendar();
             calendar.initializeCalendar();
 
+            /*
             CustomerEntity customer = new CustomerEntity(0L, "sgfdsgfdsgfd", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
             CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
             customer = customerRepository.createCustomer(customer);
@@ -55,8 +55,8 @@ public class StartServer {
             calendar.printCalendar();
 
             calendar.removeWork(fence);
-            calendar.printCalendar();
              */
+            calendar.printCalendar();
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }
