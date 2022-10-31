@@ -22,11 +22,12 @@ export default function Warranty() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await ApiConnector.getWarranties(result);
+        const response = await ApiConnector.getWarranty(result);
         if (response.data === null) {
           navigate("/error");
         } else {
           setWarranty(response.data);
+          console.log(response.data)
         }
       } catch (error) {
         console.log(error);
