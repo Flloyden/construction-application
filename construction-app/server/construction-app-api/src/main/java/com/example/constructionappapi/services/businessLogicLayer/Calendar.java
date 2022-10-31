@@ -54,13 +54,10 @@ public class Calendar {
     }
 
     public boolean addWork(WorkEntity work) {
-        final boolean[] errorCheck = {true};
-
-        calendarDates.forEach((key, value) -> {
-            if (value.getId() == work.getId()) errorCheck[0] = false;
-        });
-
-        if (!errorCheck[0]) return false;
+        //Check if the work item is already in the hashmap.
+        for (WorkEntity workEntity : calendarDates.values()) {
+            if (workEntity.getId() == work.getId()) return false;
+        }
 
         int daysToAdd = work.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
