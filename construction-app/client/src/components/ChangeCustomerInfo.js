@@ -70,7 +70,7 @@ const ChangeCustomerInfo = ({
         <div className="w-full">
           <h1 className="text-4xl">Ändra kundinformation</h1>
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Namn: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">Namn: </label>
             <input
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
@@ -83,7 +83,7 @@ const ChangeCustomerInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Adress: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">Adress: </label>
             <input
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
@@ -95,7 +95,7 @@ const ChangeCustomerInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Telefonnummer: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">Telefonnummer: </label>
             <input
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
@@ -107,7 +107,7 @@ const ChangeCustomerInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">fastighetsbeteckning: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">fastighetsbeteckning: </label>
             <input
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
@@ -119,7 +119,7 @@ const ChangeCustomerInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Personnummer: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">Personnummer: </label>
             <input
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"

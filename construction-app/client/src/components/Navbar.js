@@ -44,7 +44,7 @@ export default function Navbar(props) {
 
   return (
     <div className={`w-72 h-full bg-gray-800`}>
-      <div className="w-72 h-full fixed p-5 pt-8 h-screen bg-gray-800">
+      <div className="w-72 h-full fixed p-5 pt-8 bg-gray-800">
         <div className="flex-none gap-x-4 items-center w-full h-full relative text-white">
           <p className="font-bold text-2xl text-center pb-4">{pageTitle}</p>
           <ul

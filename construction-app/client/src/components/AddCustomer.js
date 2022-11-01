@@ -74,7 +74,7 @@ const AddCustomer = () => {
       <h1 className="text-4xl">Skapa en ny kund</h1>
       <div className="w-full">
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Namn:{" "}
           </label>
           <input
@@ -88,7 +88,7 @@ const AddCustomer = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Adress:{" "}
           </label>
           <input
@@ -101,7 +101,7 @@ const AddCustomer = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Telefonnummer:{" "}
           </label>
           <input
@@ -114,7 +114,7 @@ const AddCustomer = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             fastighetsbeteckning:{" "}
           </label>
           <input
@@ -127,7 +127,7 @@ const AddCustomer = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Personnummer:{" "}
           </label>
           <input

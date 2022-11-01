@@ -1,10 +1,11 @@
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import listPlugin from '@fullcalendar/list';
-import FullCalendar from '@fullcalendar/react'; // must go before plugins
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import ApiConnector from "../services/ApiConnector";
+import FullCalendar from '@fullcalendar/react' // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
+import listPlugin from '@fullcalendar/list';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 export default function Calendar() {
   const [loading, setLoading] = useState(true);

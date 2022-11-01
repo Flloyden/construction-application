@@ -95,8 +95,8 @@ const Accounting = () => {
             </span>
           </button>
         </div>
-        <table className="w-full text-sm text-left text-gray-500 text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 bg-gray-700 text-gray-400">
+        <table className="w-full text-sm text-left text-gray-400">
+          <thead className="text-xs uppercase bg-gray-700 text-gray-400">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
@@ -122,11 +122,11 @@ const Accounting = () => {
                 ? foundWarrenties.map((warranty) => (
                     <tr
                       key={warranty.id}
-                      className="bg-white border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap text-white cursor-pointer"
+                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
                         onClick={(e) => passId(warranty.id)}
                       >
                         {warranty.id}
@@ -152,11 +152,11 @@ const Accounting = () => {
                 : warranties.map((warranties) => (
                     <tr
                       key={warranties.id}
-                      className="bg-white border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap text-white cursor-pointer"
+                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
                         onClick={(e) => passId(warranties.id)}
                       >
                         {warranties.id}

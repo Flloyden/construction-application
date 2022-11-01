@@ -89,7 +89,7 @@ const ChangeWarrantyInfo = ({
         <div className="w-full">
           <h1 className="text-4xl">Ändra garanti-information</h1>
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
               Namn:{" "}
             </label>
             <input
@@ -104,7 +104,7 @@ const ChangeWarrantyInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
               Kvitto:{" "}
             </label>
             <input
@@ -120,7 +120,7 @@ const ChangeWarrantyInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
               Registreringsnummer:{" "}
             </label>
             <input
@@ -134,7 +134,7 @@ const ChangeWarrantyInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
               Utgångsdatum garanti:{" "}
             </label>
             <input

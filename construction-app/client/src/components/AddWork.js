@@ -102,7 +102,7 @@ const AddWork = ({
         <div className="w-full">
           <h1 className="text-4xl">Lägg till nytt jobb</h1>
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Namn på jobb: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">Namn på jobb: </label>
             <input
               ref={nameRef}
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -114,7 +114,7 @@ const AddWork = ({
           </div>
 
           <div className="mt-4"></div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Offert: </label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">Offert: </label>
           <input
             ref={offer}
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -125,10 +125,10 @@ const AddWork = ({
           ></input>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Arbetsdatum: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">Arbetsdatum: </label>
             <div className="flex gap-2">
               <label onClick={handleChange}>
-              <p className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Startdatum:</p>
+              <p className="block mb-2 text-sm font-medium text-gray-700">Startdatum:</p>
                 <DatePicker
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   selected={startDate}
@@ -143,7 +143,7 @@ const AddWork = ({
               </label>
               
               <label onClick={handleChange}>
-              <p className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Slutdatum:</p>
+              <p className="block mb-2 text-sm font-medium text-gray-700">Slutdatum:</p>
                 <DatePicker
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   selected={endDate}
@@ -159,11 +159,11 @@ const AddWork = ({
               </label>
             </div>
           </div>
-          <p className="mt-4 block mb-2 text-sm font-medium text-gray-900 text-gray-700">Antal dagar: {countDays}</p>
+          <p className="mt-4 block mb-2 text-sm font-medium text-gray-700">Antal dagar: {countDays}</p>
 
           
           <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Material: </label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">Material: </label>
           <input
             ref={materialNoteRef}
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"

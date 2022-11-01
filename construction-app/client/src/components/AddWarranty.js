@@ -86,7 +86,7 @@ const AddWaranty = () => {
       <h1 className="text-4xl">Skapa en ny garanti</h1>
       <div className="w-full">
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Namn:{" "}
           </label>
           <input
@@ -100,7 +100,7 @@ const AddWaranty = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Kvitto:{" "}
           </label>
           <input
@@ -114,7 +114,7 @@ const AddWaranty = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Registreringsnummer:{" "}
           </label>
           <input
@@ -127,7 +127,7 @@ const AddWaranty = () => {
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
+          <label className="block mb-2 text-sm font-medium text-gray-700">
             Utgångsdatum:{" "}
           </label>
           <input
