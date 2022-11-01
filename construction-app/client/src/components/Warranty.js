@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineNumber } from "react-icons/ai";
 import { BiRename } from "react-icons/bi";
-import { MdOutlineReceiptLong, MdOutlineDateRange } from "react-icons/md";
+import { MdOutlineDateRange, MdOutlineReceiptLong } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import ChangeWarrantyInfo from "./ChangeWarrantyInfo";

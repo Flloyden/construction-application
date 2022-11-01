@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { ImCross } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
-import { ImCross } from "react-icons/im";
 import WarrantyModal from "./WarrantyModal";
 
 const Accounting = () => {
@@ -79,7 +79,7 @@ const Accounting = () => {
       <div className="overflow-x-auto relative">
         <div className="flex pb-4 justify-between gap-4">
           <input
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             placeholder="Sök garanti efter namn.."
             title="Type in a name"
             type="search"
@@ -95,8 +95,8 @@ const Accounting = () => {
             </span>
           </button>
         </div>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-500 text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 bg-gray-700 text-gray-400">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
@@ -122,16 +122,16 @@ const Accounting = () => {
                 ? foundWarrenties.map((warranty) => (
                     <tr
                       key={warranty.id}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="bg-white border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap text-white cursor-pointer"
                         onClick={(e) => passId(warranty.id)}
                       >
                         {warranty.id}
                       </th>
-                      <td className="py-4 px-6 dark:text-white">
+                      <td className="py-4 px-6 text-white">
                         {warranty.name}
                       </td>
                       <td className="py-4 px-6">
@@ -152,16 +152,16 @@ const Accounting = () => {
                 : warranties.map((warranties) => (
                     <tr
                       key={warranties.id}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="bg-white border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white cursor-pointer"
+                        className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap text-white cursor-pointer"
                         onClick={(e) => passId(warranties.id)}
                       >
                         {warranties.id}
                       </th>
-                      <td className="py-4 px-6 dark:text-white">
+                      <td className="py-4 px-6 text-white">
                         {warranties.name}
                       </td>
                       <td className="py-4 px-6">

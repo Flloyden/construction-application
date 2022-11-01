@@ -89,11 +89,11 @@ const ChangeWarrantyInfo = ({
         <div className="w-full">
           <h1 className="text-4xl">Ändra garanti-information</h1>
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
               Namn:{" "}
             </label>
             <input
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
               name="name"
               required
@@ -104,12 +104,12 @@ const ChangeWarrantyInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
               Kvitto:{" "}
             </label>
             <input
               ref={receipt}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="file"
               name="offer"
               accept="image/png, image/jpg, image/jpeg"
@@ -120,11 +120,11 @@ const ChangeWarrantyInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
               Registreringsnummer:{" "}
             </label>
             <input
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
               name="registration_number"
               value={warranty.registration_number}
@@ -134,11 +134,11 @@ const ChangeWarrantyInfo = ({
           </div>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">
+            <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">
               Utgångsdatum garanti:{" "}
             </label>
             <input
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               type="text"
               name="warranty_date"
               value={warranty.warranty_date}

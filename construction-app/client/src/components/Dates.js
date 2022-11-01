@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function Dates(props) {
     const date = new Date(props.month);

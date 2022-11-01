@@ -43,8 +43,8 @@ export default function Navbar(props) {
   }, [currentLocation]);
 
   return (
-    <div className={`w-72 h-full bg-blue-700 dark:bg-gray-800`}>
-      <div className="w-72 h-full fixed p-5 bg-blue-700 pt-8 h-screen dark:bg-gray-800">
+    <div className={`w-72 h-full bg-gray-800`}>
+      <div className="w-72 h-full fixed p-5 pt-8 h-screen bg-gray-800">
         <div className="flex-none gap-x-4 items-center w-full h-full relative text-white">
           <p className="font-bold text-2xl text-center pb-4">{pageTitle}</p>
           <ul

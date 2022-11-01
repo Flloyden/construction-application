@@ -58,12 +58,12 @@ const Login = () => {
                <div className='bg-white fixed inset-0 items-center justify-center w-1/4 h-max m-auto rounded-lg p-4'>
                   <h1 className='text-2xl'>Thomas Erikssons byggnadsservice</h1>
                   <div className='mt-4'>
-                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Användarnamn:</label>
-                     <input ref={emailRef} type="email" placeholder='Användarnamn' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                     <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Användarnamn:</label>
+                     <input ref={emailRef} type="email" placeholder='Användarnamn' className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" />
                   </div>
                   <div className='mt-4'>
-                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-700">Lösenord:</label>
-                     <input ref={passwordRef} type="password" placeholder='Lösenord' className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                     <label className="block mb-2 text-sm font-medium text-gray-900 text-gray-700">Lösenord:</label>
+                     <input ref={passwordRef} type="password" placeholder='Lösenord' className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" />
                   </div>
                   <div className='mt-4 w-full'>
                      <button className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-full" disabled={ loading } onClick={handleLogin}>Logga in</button>
