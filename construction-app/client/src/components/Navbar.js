@@ -5,6 +5,7 @@ import { FiUsers } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { TbNotebook } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
+import Logout from "./Logout";
 
 export default function Navbar(props) {
   // Declaring variables
@@ -65,17 +66,7 @@ export default function Navbar(props) {
               </li>
             ))}
           </ul>
-          <div className="absolute inset-x-0 bottom-0">
-            <p className="font-light text-white py-2 text-base text-center">
-              Inloggad som: admin{props.loginValue.email}
-            </p>
-            <button
-              className="bg-blue-500 hover:bg-slate-700 font-bold py-2 px-4 rounded w-full duration-300"
-              onClick={props.handleLogout}
-            >
-              Logga ut
-            </button>
-          </div>
+          <Logout loginValue={props.loginValue} handleLogout={props.handleLogout}/>
         </div>
       </div>
     </div>
