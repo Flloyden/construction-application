@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import AddWork from "./AddWork";
 import ChangeInfo from "./ChangeCustomerInfo";
+import Modal from "./Modal";
 import Work from "./Work";
 
 export default function Customer() {
@@ -17,9 +18,11 @@ export default function Customer() {
   var url = location.pathname;
   var res = url.split("/");
   var pos = res.indexOf("kunder");
-  var result = res[pos + 1];
+  var currentCustomerId = res[pos + 1];
   const [isWorkOpen, setIsWorkOpen] = useState(false);
   const [isChangeOpen, setIsChangeOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentCustomerName, setCurrentCustomerName] = useState("");
 
   useEffect(() => {
     // Gets all the customers on page load once per load
@@ -27,7 +30,7 @@ export default function Customer() {
       setLoading(true);
       try {
         // Treis to get all customers from database with api call
-        const response = await ApiConnector.getCustomer(result);
+        const response = await ApiConnector.getCustomer(currentCustomerId);
         // Navigates to error page if not successful
         if (response.data === null) {
           navigate("/error");
@@ -43,7 +46,20 @@ export default function Customer() {
       setLoading(false);
     };
     fetchData();
-  }, [result, navigate]);
+  }, [currentCustomerId, navigate]);
+
+  const deleteCustomer = async () => {
+    // Deletes a client with given id and updates the id
+    setLoading(true);
+    try {
+      await ApiConnector.deleteCustomer(currentCustomerId);
+      navigate("/kunder")
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpen(false);
+    setLoading(false);
+  };
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
@@ -97,8 +113,10 @@ export default function Customer() {
               <div className="flex w-full gap-2 mt-2">
                 <button
                 className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                data-modal-toggle="defaultModal"
                 onClick={() => {
-                  setIsChangeOpen(true);
+                  setIsOpen(true);
+                  setCurrentCustomerName(customer.name);
                 }}
               >
                 Ta bort
@@ -169,6 +187,14 @@ export default function Customer() {
           currentCustomerProperty={customer.propertyDesignation}
           currentCustomerSSN={customer.socialSecurityNumber}
           currentCustomerWorkList={customer.workList}
+        />
+      )}
+      {isOpen && (
+        <Modal
+          setIsOpen={setIsOpen}
+          deleteCustomer={deleteCustomer}
+          currentCustomerName={currentCustomerName}
+          currentCustomerId={currentCustomerId}
         />
       )}
     </div>

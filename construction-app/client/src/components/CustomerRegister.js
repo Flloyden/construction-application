@@ -34,11 +34,11 @@ const CustomerRegister = () => {
     navigate(`/kunder/${e}`, { state: { clientId: e } });
   };
 
-  const deleteClient = async () => {
+  const deleteCustomer = async () => {
     // Deletes a client with given id and updates the id
     setLoading(true);
     try {
-      await ApiConnector.deleteKund(currentCustomerId);
+      await ApiConnector.deleteCustomer(currentCustomerId);
       const newList = await ApiConnector.getCustomers();
       setCustomers(newList.data);
     } catch (error) {
@@ -175,7 +175,7 @@ const CustomerRegister = () => {
       {isOpen && (
         <Modal
           setIsOpen={setIsOpen}
-          deleteClient={deleteClient}
+          deleteCustomer={deleteCustomer}
           currentCustomerName={currentCustomerName}
           currentCustomerId={currentCustomerId}
         />
