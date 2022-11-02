@@ -102,7 +102,7 @@ const CustomerRegister = () => {
               <th scope="col" className="py-3 px-6">
                 Skapad
               </th>
-              <th scope="col" className="py-3 px-6 float-right">
+              <th scope="col" className="max-w-fit text-center">
                 Åtgärd
               </th>
             </tr>
@@ -122,11 +122,13 @@ const CustomerRegister = () => {
                       >
                         {user.id}
                       </th>
-                      <td className="py-4 px-6 text-white">{user.name}</td>
-                      <td className="py-4 px-6">{user.address}</td>
-                      <td className="py-4 px-6">{user.creationDate}</td>
-                      <td className="py-4 pr-10 flex space-x-4 float-right">
+                      <td className="py-4 px-6 text-white" onClick={(e) => passId(user.id)}>{user.name}</td>
+                      <td className="py-4 px-6" onClick={(e) => passId(user.id)}>{user.address}</td>
+                      <td className="py-4 px-6" onClick={(e) => passId(user.id)}>{user.creationDate}</td>
+                      <td className="flex justify-around items-stretch py-4">
                         <ImCross
+                          data-modal-toggle="defaultModal"
+                          className="text-2xl hover:text-red-500"
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentCustomerId(user.id);
@@ -148,15 +150,15 @@ const CustomerRegister = () => {
                       >
                         {customer.id}
                       </th>
-                      <td className="py-4 px-6 text-white">
+                      <td className="py-4 px-6 text-white" onClick={(e) => passId(customer.id)}>
                         {customer.name}
                       </td>
-                      <td className="py-4 px-6">{customer.address}</td>
-                      <td className="py-4 px-6">{customer.creationDate}</td>
-                      <td className="py-4 px-9">
+                      <td className="py-4 px-6" onClick={(e) => passId(customer.id)}>{customer.address}</td>
+                      <td className="py-4 px-6" onClick={(e) => passId(customer.id)}>{customer.creationDate}</td>
+                      <td className="flex justify-around items-stretch py-4">
                         <ImCross
                           data-modal-toggle="defaultModal"
-                          className="text-2xl float-right hover:text-red-500"
+                          className="text-2xl hover:text-red-500"
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentCustomerId(customer.id);
