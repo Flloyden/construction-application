@@ -20,8 +20,8 @@ public class AccountingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String registrationNumber;
-    private LocalDate warrantyDate;
+    private String registration_number;
+    private LocalDate warranty_date;
     @Lob
     private byte[] receipt;
 }

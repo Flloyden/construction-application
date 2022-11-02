@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import DatePicker from "react-datepicker";
 
 const AddWaranty = () => {
   // Declare variables
   const navigate = useNavigate();
   const [image, setImage] = useState("");
   const receipt = useRef();
+  let [endDate, setEndDate] = useState(new Date());
+  const nameRef = useRef();
+  const regRef = useRef();
   const [warranty, setWarranty] = useState({
     id: "",
     name: "",
@@ -16,15 +20,14 @@ const AddWaranty = () => {
   });
 
   const handleChange = (e) => {
-    /**Gets the current input every keystroke */
-    const value = e.target.value;
     setWarranty({
-      ...warranty,
-      [e.target.name]: value,
-      [e.target.receipt]: image,
-      [e.target.registration_number]: value,
-      [e.target.warranty_date]: value,
+      id: "",
+      name: nameRef.current.value,
+      receipt: image,
+      registration_number: regRef.current.value,
+      warranty_date: endDate,
     });
+    console.log(warranty)
   };
 
   const saveWarranty = (e) => {
@@ -34,7 +37,7 @@ const AddWaranty = () => {
     if (
       warranty.name.length > 1 &&
       warranty.registration_number.length > 1 &&
-      warranty.warranty_date.length > 0
+      endDate > 0
     ) {
       ApiConnector.saveWarranty(warranty)
         .then((response) => {
@@ -90,11 +93,11 @@ const AddWaranty = () => {
             Namn:{" "}
           </label>
           <input
+            ref={nameRef}
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             type="text"
             name="name"
             required
-            value={warranty.name}
             onChange={(e) => handleChange(e)}
           ></input>
         </div>
@@ -118,25 +121,30 @@ const AddWaranty = () => {
             Registreringsnummer:{" "}
           </label>
           <input
+            ref={regRef}
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             type="text"
             name="registration_number"
-            value={warranty.registration_number}
             onChange={(e) => handleChange(e)}
           ></input>
         </div>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Utgångsdatum:{" "}
+          <label onClick={handleChange}>
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Utgångsdatum:{" "}
+            </label>
+            <DatePicker
+              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              selected={endDate}
+              onChange={(date) => {
+                setEndDate(date);
+                handleChange(date);
+              }}
+              selectsStart
+              startDate={endDate}
+            />
           </label>
-          <input
-            className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-            type="text"
-            name="warranty_date"
-            value={warranty.warranty_date}
-            onChange={(e) => handleChange(e)}
-          ></input>
         </div>
 
         <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
