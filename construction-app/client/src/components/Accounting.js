@@ -165,9 +165,9 @@ const Accounting = () => {
                         {warranties.name}
                       </td>
                       <td className="py-4 px-6">
-                        {warranties.registrationNumber}
+                        {warranties.registration_number}
                       </td>
-                      <td className="py-4 px-6">{warranties.warrantyDate}</td>
+                      <td className="py-4 px-6">{warranties.warranty_date}</td>
                       <td className="py-4 px-9">
                         <ImCross
                           data-modal-toggle="defaultModal"

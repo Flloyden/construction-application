@@ -53,6 +53,7 @@ const AddWork = ({
       workStatus: "NOTSTARTED",
       calendar: [],
     });
+    console.log(newList)
   };
 
   const convertToBase64 = (file) => {
