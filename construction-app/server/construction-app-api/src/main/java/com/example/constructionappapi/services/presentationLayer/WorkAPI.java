@@ -25,7 +25,7 @@ public class WorkAPI {
 
     private Calendar calendar = CalendarSingleton.getCalendar();
 
-    @PostMapping("/kunder/{customer_id}/work/save")
+    @PostMapping("/kunder/work/save")
     public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
         CustomerEntity customerEntity = iCustomerRepository.createCustomer(customer);
         calendar.addWork(iWorkRepository.getLastInserted());

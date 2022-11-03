@@ -63,8 +63,8 @@ public class StartServer {
 
             door = workRepository.createWorkEntity(new WorkEntity(0L, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>()));
             calendar.addWork(door);
-            calendar.printCalendar();
              */
+            calendar.printCalendar();
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }

@@ -6,7 +6,6 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Calendar
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
-import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -19,8 +18,9 @@ public class Calendar {
 
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
 
+     /*
     public Calendar() {
-        /*
+
         CustomerEntity customerOne = new CustomerEntity(7, "Sven Svensson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
         CustomerEntity customerTwo = new CustomerEntity(7, "Thomas Olsson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
         CustomerEntity customerThree = new CustomerEntity(7, "Jan Strandberg", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());

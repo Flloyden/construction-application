@@ -26,6 +26,10 @@ class ApiConnector {
     return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/remove");
   }
 
+  saveWork(customer){
+    return axios.post(CUSTOMER_API_BASE_URL + "/work/save", customer)
+  }
+
   // ACCOUNTING / WARRANTY
   saveWarranty(warranty) {
     //Saves the warranty to the database (Can also update existing warranty if ID already exists)
