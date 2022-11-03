@@ -34,6 +34,12 @@ const AddWork = ({
   let [endDate, setEndDate] = useState(new Date());
   let [countDays, setCountDays] = useState(1);
 
+
+  const isWeekday = (date) => {
+    const day = date.getDay;
+    return day !== 0 && day !== 6;
+  };
+
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
 
@@ -137,6 +143,8 @@ const AddWork = ({
                     setStartDate(date);
                     handleChange(date);
                   }}
+                  filterDate={isWeekday}
+                  placeholderText="Select a weekday"
                   selectsStart
                   startDate={startDate}
                   endDate={endDate}
