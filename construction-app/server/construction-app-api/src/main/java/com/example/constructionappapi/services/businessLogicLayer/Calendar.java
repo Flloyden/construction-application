@@ -54,7 +54,7 @@ public class Calendar {
     }
 
     public boolean addWork(WorkEntity work) {
-        //Check if the work item is already in the hashmap.
+        //Check if the work item is already in the hashmap. TODO: Dunno if needed.
         for (WorkEntity workEntity : calendarDates.values()) {
             if (workEntity.getId() == work.getId()) return false;
         }
