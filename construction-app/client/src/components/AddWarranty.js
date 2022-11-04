@@ -64,7 +64,7 @@ const AddWaranty = () => {
   };
 
   const convertToBase64 = (file) => {
-    /**Converts an file to base64 */
+    /**Converts file int base64 */
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -102,19 +102,16 @@ const AddWaranty = () => {
           ></input>
         </div>
 
-        <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Kvitto:{" "}
-          </label>
+        <div className="mt-4"></div>
+          <label className="block mb-2 text-sm font-medium text-gray-700">Offert: </label>
           <input
             ref={receipt}
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             type="file"
-            name="offer"
-            accept="image/png, image/jpg, image/jpeg"
+            name="receipt"
+            accept="image/png, image/jpg, image/jpeg, application/pdf"
             onChange={(e) => handleFile(e)}
           ></input>
-        </div>
 
         <div className="mt-4">
           <label className="block mb-2 text-sm font-medium text-gray-700">

@@ -12,8 +12,6 @@ const Accounting = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentWarrantyId, setCurrentWarrantyId] = useState("");
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
-  const [currentWarrantyRegistrationNumber, setCurrentWarrantyRegistrationNumber] = useState(""); 
-  const [currentWarrantyDate, setCurrentWarrantyDate] = useState("");
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
 
@@ -59,7 +57,7 @@ const Accounting = () => {
   const filter = (e) => {
     // Function to sort warranties by search input
     const keyword = e.target.value;
-    // If input is not empty 
+    // If input is not empty
     if (keyword !== "") {
       const results = warranties.filter((warranty) => {
         // Use the toLowerCase() method to make it case-insensitive
@@ -105,10 +103,7 @@ const Accounting = () => {
                 Namn
               </th>
               <th scope="col" className="py-3 px-6">
-                Registreringsnummer
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Garanti-Datum
+                Utgångsdatum
               </th>
               <th scope="col" className="py-3 px-6 float-right">
                 Åtgärd
@@ -131,19 +126,26 @@ const Accounting = () => {
                       >
                         {warranty.id}
                       </th>
-                      <td className="py-4 px-6 text-white">
+                      <td
+                        className="py-4 px-6 text-white"
+                        onClick={(e) => passId(warranty.id)}
+                      >
                         {warranty.name}
                       </td>
-                      <td className="py-4 px-6">
-                        {warranty.registration_number}
+                      <td
+                        className="py-4 px-6 w-full"
+                        onClick={(e) => passId(warranty.id)}
+                      >
+                        {warranty.warranty_date}
                       </td>
-                      <td className="py-4 px-6">{warranty.warranty_date}</td>
-                      <td className="py-4 pr-10 flex space-x-4 float-right">
+                      <td className="py-4 px-9">
                         <ImCross
+                          data-modal-toggle="defaultModal"
+                          className="text-2xl float-right hover:text-red-500"
                           onClick={() => {
                             setIsOpen(true);
-                            setCurrentWarrantyId(warranty.id);
-                            setCurrentWarrantyName(warranty.name);
+                            setCurrentWarrantyId(warranties.id);
+                            setCurrentWarrantyName(warranties.name);
                           }}
                         />
                       </td>
@@ -161,13 +163,18 @@ const Accounting = () => {
                       >
                         {warranties.id}
                       </th>
-                      <td className="py-4 px-6 text-white">
+                      <td
+                        className="py-4 px-6 text-white"
+                        onClick={(e) => passId(warranties.id)}
+                      >
                         {warranties.name}
                       </td>
-                      <td className="py-4 px-6">
-                        {warranties.registration_number}
+                      <td
+                        className="py-4 px-6 w-full"
+                        onClick={(e) => passId(warranties.id)}
+                      >
+                        {warranties.warranty_date}
                       </td>
-                      <td className="py-4 px-6">{warranties.warranty_date}</td>
                       <td className="py-4 px-9">
                         <ImCross
                           data-modal-toggle="defaultModal"
@@ -191,8 +198,6 @@ const Accounting = () => {
           deleteWarranty={deleteWarranty}
           currentWarrantyName={currentWarrantyName}
           currentWarrantyId={currentWarrantyId}
-          currentWarrantyDate={currentWarrantyDate}
-          currentWarrantyRegistrationNumber={currentWarrantyRegistrationNumber}
         />
       )}
     </div>
