@@ -23,5 +23,5 @@ public class AccountingEntity {
     private String registration_number;
     private LocalDate warranty_date;
     @Lob
-    private byte[] receipt;
+    private String receipt;
 }
