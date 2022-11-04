@@ -101,7 +101,7 @@ export default function Warranty() {
                       onClick={toggleReceipt}
                       className="bg-slate-700 hover:bg-slate-800 py-2 px-4 rounded duration-300 text-center text-1xl text-white w-48 h-12"
                     >
-                      {showReceipt ? "Stäng" : "Visa offert"}
+                      {showReceipt ? "Stäng" : "Visa kvitto"}
                     </button>
                     <div
                       className={
