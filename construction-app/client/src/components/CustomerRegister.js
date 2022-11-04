@@ -34,7 +34,7 @@ const CustomerRegister = () => {
     navigate(`/kunder/${e}`, { state: { clientId: e } });
   };
 
-  const deleteCustomer = async () => {
+  const deleteThis = async () => {
     // Deletes a client with given id and updates the id
     setLoading(true);
     try {
@@ -175,9 +175,9 @@ const CustomerRegister = () => {
       {isOpen && (
         <Modal
           setIsOpen={setIsOpen}
-          deleteCustomer={deleteCustomer}
-          currentCustomerName={currentCustomerName}
-          currentCustomerId={currentCustomerId}
+          deleteThis={deleteThis}
+          currentName={currentCustomerName}
+          currentId={currentCustomerId}
         />
       )}
     </div>
