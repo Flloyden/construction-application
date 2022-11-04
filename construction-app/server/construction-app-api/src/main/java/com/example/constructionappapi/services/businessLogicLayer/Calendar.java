@@ -8,6 +8,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.*;
 
 public class Calendar {
@@ -188,7 +189,7 @@ public class Calendar {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
-                s.append("\"title\":").append("\"").append(entry.getKey().getDate().getDayOfMonth()).append(" ").append(entry.getKey().getDate().getDayOfWeek().toString()).append(" ").append(entry.getValue().getCustomer().getName()).append("\",");
+                s.append("\"title\":").append("\"").append(entry.getKey().getDate().getDayOfMonth()).append(" - ").append(entry.getKey().getDate().getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("sv", "SE"))).append(": ").append(entry.getValue().getCustomer().getName()).append("\",");
             }
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
             s.append("\"color\":\"").append("#FF0000").append("\"");
