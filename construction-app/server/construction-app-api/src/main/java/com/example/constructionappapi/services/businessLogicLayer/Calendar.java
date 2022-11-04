@@ -188,7 +188,7 @@ public class Calendar {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
-                s.append("\"title\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
+                s.append("\"title\":").append("\"").append(entry.getKey().getDate().getDayOfMonth()).append(" ").append(entry.getKey().getDate().getDayOfWeek().toString()).append(" ").append(entry.getValue().getCustomer().getName()).append("\",");
             }
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
             s.append("\"color\":\"").append("#FF0000").append("\"");
