@@ -48,7 +48,7 @@ export default function Customer() {
     fetchData();
   }, [currentCustomerId, navigate]);
 
-  const deleteCustomer = async () => {
+  const deleteThis = async () => {
     // Deletes a client with given id and updates the id
     setLoading(true);
     try {
@@ -192,9 +192,9 @@ export default function Customer() {
       {isOpen && (
         <Modal
           setIsOpen={setIsOpen}
-          deleteCustomer={deleteCustomer}
-          currentCustomerName={currentCustomerName}
-          currentCustomerId={currentCustomerId}
+          deleteThis={deleteThis}
+          currentName={currentCustomerName}
+          currentId={currentCustomerId}
         />
       )}
     </div>
