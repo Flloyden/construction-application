@@ -12,34 +12,47 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const emailRef = useRef();
-  const passwordRef = useRef();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const getValue = localStorage.getItem("key");
+  const getValue = localStorage.getItem('accessToken');
   const auth = { token: getValue };
+  const [username, setUserName] = useState();
+  const [password, setPassword] = useState();
 
-  const handleLogin = (e) => {
+  async function loginUser(credentials) {
+    return fetch('https://www.mecallapi.com/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+      .then(data => data.json())
+   }
+
+  const handleLogin = async e => {
     /**Handles the login function when the login button is pressed */
     e.preventDefault();
     setLoading(true);
-    console.log(loading);
-    // Checks the inputs to be right values
-    if (
-      emailRef.current.value === loginValue.email &&
-      passwordRef.current.value === loginValue.password
-    ) {
-      // Sets a key in localstorage
-      localStorage.setItem("key", "true");
-      // Navigates to homepage or calendar based on device
-      if (isMobile) {
-        navigate("/kalender");
-      } else {
-        navigate("/");
-      }
-      // Promts user to enter username and password if not correct
+    const response = await loginUser({
+      username,
+      password
+    });
+    if ('accessToken' in response) {
+      console.log("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      })
+        localStorage.setItem('accessToken', response['accessToken']);
+        localStorage.setItem('user', JSON.stringify(response['user']));
+        if (isMobile) {
+          navigate("/kalender");
+        } else {
+          window.location.href = "/";
+        }
     } else {
-      console.log("Enter username and password");
+      alert("Failed", response.message, "error");
+      console.log("Failed", response.message, "error");
     }
     setLoading(false);
     console.log(loading);
@@ -49,7 +62,8 @@ const Login = () => {
     /**Handles the logout function when the login button is pressed */
     e.preventDefault();
     // Removes the key from localstorage
-    localStorage.removeItem("key");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     // Navigates back to login
     navigate("/login");
     window.location.reload(false);
@@ -77,7 +91,7 @@ const Login = () => {
                   Användarnamn:
                 </label>
                 <input
-                  ref={emailRef}
+                  onChange={e => setUserName(e.target.value)}
                   type="email"
                   placeholder="Användarnamn"
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -88,7 +102,7 @@ const Login = () => {
                   Lösenord:
                 </label>
                 <input
-                  ref={passwordRef}
+                onChange={e => setPassword(e.target.value)}
                   type="password"
                   placeholder="Lösenord"
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
