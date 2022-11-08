@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoutes = () => {
   // Gets the key in localstorage
-  const getValue = localStorage.getItem("key");
+  const getValue = localStorage.getItem('accessToken');
   let auth = { token: getValue };
 
   return (
