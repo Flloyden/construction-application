@@ -52,17 +52,6 @@ const AddWaranty = () => {
     }
   };
 
-  const clearInputs = () => {
-    /**Empties the input fields */
-    setWarranty({
-      id: "",
-      name: "",
-      receipt: "",
-      registration_number: "",
-      warranty_date: "",
-    });
-  };
-
   const convertToBase64 = (file) => {
     /**Converts file int base64 */
     return new Promise((resolve, reject) => {
