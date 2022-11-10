@@ -33,7 +33,7 @@ public class WorkAPI {
     }
 
     @PostMapping("/kunder/{customerId}/work/update")
-    public WorkEntity saveWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
+    public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         Optional<CustomerEntity> customer = iCustomerRepository.getCustomer(customerId);
 
         if (customer.isPresent()) {
