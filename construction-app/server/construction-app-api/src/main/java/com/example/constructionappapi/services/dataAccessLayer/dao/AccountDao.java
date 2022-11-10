@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * etc, given by JpaRepository) through it's entity-class
  */
 public interface AccountDao extends JpaRepository<AccountEntity, Long> {
+    AccountEntity findFirstByUsernameAndPassword(String username, String password);
 }
