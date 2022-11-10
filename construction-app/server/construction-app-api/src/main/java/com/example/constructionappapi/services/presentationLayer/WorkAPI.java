@@ -41,7 +41,7 @@ public class WorkAPI {
             return iWorkRepository.createWorkEntity(work);
         }
 
-        return work;
+        return iWorkRepository.getWorkEntity(work.getId()).get();
     }
 
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
