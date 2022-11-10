@@ -4,8 +4,13 @@ import axios from "axios";
 const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
 const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
 const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
+const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 
 class ApiConnector {
+  authenicate(){
+    return axios.post(AUTHENTICATION_API)
+  }
+  
   //Saves the customer to the database
   saveCustomer(customer) {
     return axios.post(CUSTOMER_API_BASE_URL, customer);
@@ -24,6 +29,10 @@ class ApiConnector {
   deleteCustomer(customer) {
     //Deletes a customer from the database with a specific id
     return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/remove");
+  }
+
+  saveWork(customer){
+    return axios.post(CUSTOMER_API_BASE_URL + "/work/save", customer)
   }
 
   // ACCOUNTING / WARRANTY

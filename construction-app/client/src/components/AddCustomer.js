@@ -57,18 +57,6 @@ const AddCustomer = () => {
     }
   };
 
-  const clearInputs = () => {
-    /**Empties the input fields */
-    setCustomer({
-      id: "",
-      name: "",
-      address: "",
-      phoneNumber: "",
-      propertyDesignation: "",
-      socialSecurityNumber: "",
-    });
-  };
-
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
       <h1 className="text-4xl">Skapa en ny kund</h1>

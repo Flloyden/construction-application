@@ -69,11 +69,11 @@ const Work = (props) => {
                   onClick={() => setShowOffer(false)}
                 >
                   {showOffer && (
-                    <img
+                    <embed
                       className="w-full mx-auto"
                       src={props.workName.offer}
                       alt="offer"
-                      style={{ width: "50%" }}
+                      style={{ height: "100%", width: "50%" }}
                     />
                   )}
                 </div>

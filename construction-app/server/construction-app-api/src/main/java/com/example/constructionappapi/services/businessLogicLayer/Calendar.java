@@ -1,22 +1,27 @@
 package com.example.constructionappapi.services.businessLogicLayer;
 
-import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.calendar.CalendarRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.work.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
-import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.*;
 
 public class Calendar {
+    private CalendarRepository calendarRepository;
+    private WorkRepository workRepository;
+
     ArrayList<VacationEntity> vacationDays = new ArrayList<>();
 
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
 
+     /*
     public Calendar() {
+
         CustomerEntity customerOne = new CustomerEntity(7, "Sven Svensson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
         CustomerEntity customerTwo = new CustomerEntity(7, "Thomas Olsson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
         CustomerEntity customerThree = new CustomerEntity(7, "Jan Strandberg", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
@@ -33,13 +38,6 @@ public class Calendar {
         System.out.println("Add");
         printCalendar();
 
-        for (int i = 0; i < 10; i++) {
-            VacationEntity vacationEntity = new VacationEntity();
-            vacationEntity.setVacationDate(LocalDate.of(2023, 5, 5 + i));
-            vacationDays.add(vacationEntity);
-        }
-
-        /*
         removeWork(door);
         System.out.println("Remove");
         printCalendar();
@@ -47,10 +45,23 @@ public class Calendar {
         removeWork(roof);
         System.out.println("Remove");
         printCalendar();
-         */
+
+    }
+*/
+
+    /**
+     * Retrieves calendar items from the database and populates the hash-map with them.
+     */
+    public void initializeCalendar() {
+        calendarRepository.findAll().forEach(calendarEntity -> calendarDates.put(calendarEntity, calendarEntity.getWork()));
     }
 
-    public void addWork(WorkEntity work) {
+    public boolean addWork(WorkEntity work) {
+        //Check if the work item is already in the hashmap. TODO: Dunno if needed.
+        for (WorkEntity workEntity : calendarDates.values()) {
+            if (workEntity.getId() == work.getId()) return false;
+        }
+
         int daysToAdd = work.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
 
@@ -66,25 +77,32 @@ public class Calendar {
             shuffled forward should be shuffled forward one day less.*/
 
             //Add work to the specified date.
-            work.getCalendar().add(calendarEntity);
+            calendarEntity = calendarRepository.save(calendarEntity);
+            calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work);
         }
+
+        return true;
     }
 
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
+        CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date); //id = 4
 
         /*If the date where the work-object is trying to get shuffled to is already taken, the work-object
         that is already there should be shuffled forward one day.*/
         if (calendarDates.containsKey(new CalendarEntity(newDate))) shuffleForward(newDate, 1);
 
         /*If the date is free the work-object that is getting shuffled forward can be added. */
-        WorkEntity workToAdd = calendarDates.get(new CalendarEntity(date));
-        calendarDates.put(new CalendarEntity(newDate, workToAdd), workToAdd);
+        calendarDates.remove(calendarEntity);
+        calendarEntity.setDate(newDate);
+        calendarEntity = calendarRepository.save(calendarEntity);
+        calendarDates.put(calendarEntity, calendarEntity.getWork());
     }
 
     public void removeWork(WorkEntity work) {
         //Remove all map entries containing a work-object that has the same id as the specified work-object.
+        workRepository.deleteWorkEntity(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
@@ -113,7 +131,17 @@ public class Calendar {
             //Set freeCalenderSpot to possibleDate if the spot in the calendar is free, and it's not on a weekend.
             if (!calendarDates.containsKey(new CalendarEntity(possibleDate))) {
                 if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
-                    freeCalendarSpot = possibleDate;
+                    boolean vacationCheck = true;
+                    for (VacationEntity vacationEntity : vacationDays) {
+                        if (vacationEntity.getVacationDate().equals(possibleDate)) {
+                            vacationCheck = false;
+                            break;
+                        }
+                    }
+
+                    if (vacationCheck) {
+                        freeCalendarSpot = possibleDate;
+                    }
                 }
             }
 
@@ -121,8 +149,12 @@ public class Calendar {
         }
 
         if (freeCalendarSpot != null && !calendarDates.containsKey(new CalendarEntity(freeCalendarSpot))) {
-            calendarDates.put(new CalendarEntity(freeCalendarSpot, workToMove), workToMove);
+            //calendarRepository.save(new CalendarEntity(freeCalendarSpot, workToMove));
             calendarDates.remove(calendarEntity);
+            calendarEntity.setDate(freeCalendarSpot);
+            calendarDates.put(calendarEntity, calendarEntity.getWork());
+            calendarRepository.save(calendarEntity);
+            //calendarRepository.deleteCalendar(calendarEntity.getId());
             return freeCalendarSpot;
         }
 
@@ -132,7 +164,7 @@ public class Calendar {
     public void printCalendar() {
         calendarDates.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
             WorkEntity work = calendarDates.get(key);
-            String s = String.format("Key: %s %-10s %s | Value: %-5s %s %s %s", key.getDate(), key.getDate().getDayOfWeek(), key.hashCode(), work.getName(), work.getId(), work.getStartDate(), work.getNumberOfDays());
+            String s = String.format("Key: %s %s %-10s %s | Value: %-5s %s %s %s", key.getId(), key.getDate(), key.getDate().getDayOfWeek(), key.hashCode(), work.getName(), work.getId(), work.getStartDate(), work.getNumberOfDays());
             System.out.println(s);
         });
 
@@ -157,7 +189,7 @@ public class Calendar {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
-                s.append("\"title\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
+                s.append("\"title\":").append("\"").append(entry.getKey().getDate().getDayOfMonth()).append(" - ").append(entry.getKey().getDate().getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("sv", "SE"))).append(": ").append(entry.getValue().getCustomer().getName()).append("\",");
             }
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
             s.append("\"color\":\"").append("#FF0000").append("\"");
@@ -168,6 +200,14 @@ public class Calendar {
         s.append("]");
 
         return s.toString();
+    }
+
+    public void setCalendarRepository(CalendarRepository calendarRepository) {
+        this.calendarRepository = calendarRepository;
+    }
+
+    public void setWorkRepository(WorkRepository workRepository) {
+        this.workRepository = workRepository;
     }
 }
 

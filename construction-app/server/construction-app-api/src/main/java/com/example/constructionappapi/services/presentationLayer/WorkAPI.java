@@ -1,10 +1,13 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 
+import com.example.constructionappapi.services.businessLogicLayer.Calendar;
+import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.customer.ICustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.work.IWorkRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,15 +16,20 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
-
 public class WorkAPI {
 
     @Autowired
     private IWorkRepository iWorkRepository;
+    @Autowired
+    private ICustomerRepository iCustomerRepository;
 
-    @PostMapping("/kunder/{customer_id}/work/create")
-    public WorkEntity createWorkEntity(@RequestBody WorkEntity work) {
-        return iWorkRepository.createWorkEntity(work);
+    private Calendar calendar = CalendarSingleton.getCalendar();
+
+    @PostMapping("/kunder/work/save")
+    public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
+        CustomerEntity customerEntity = iCustomerRepository.createCustomer(customer);
+        calendar.addWork(iWorkRepository.getLastInserted());
+        return customerEntity;
     }
 
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
@@ -42,6 +50,9 @@ public class WorkAPI {
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
     public void deleteWorkEntity(@PathVariable final Long id) {
-        iWorkRepository.deleteWorkEntity(id);
+        if (iWorkRepository.getWorkEntity(id).isPresent()) {
+            WorkEntity work = iWorkRepository.getWorkEntity(id).get();
+            calendar.removeWork(work);
+        }
     }
 }

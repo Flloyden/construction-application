@@ -89,7 +89,7 @@ const AddWork = ({
     // Pushes the new list into current lists
     customer.workList.push(newList);
     // Adds work to user with api call
-    ApiConnector.saveCustomer(customer)
+    ApiConnector.saveWork(customer)
       .then((response) => {
         console.log(response);
         window.location.reload(false);

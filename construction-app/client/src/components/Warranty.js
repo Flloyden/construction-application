@@ -5,29 +5,35 @@ import { MdOutlineDateRange, MdOutlineReceiptLong } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import ChangeWarrantyInfo from "./ChangeWarrantyInfo";
+import Modal from "./Modal";
 
 export default function Warranty() {
   const navigate = useNavigate();
   const location = useLocation();
   const [warranty, setWarranty] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
   var url = location.pathname;
   var res = url.split("/");
   var pos = res.indexOf("garantier");
-  var result = res[pos + 1];
+  var currentId = res[pos + 1];
   const [isChangeWarrantyOpen, setIsChangeWarrantyOpen] = useState(false);
+  const toggleReceipt = () => {
+    setShowReceipt(!showReceipt);
+  };
 
   useEffect(() => {
     // Gets all the clients on page load
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await ApiConnector.getWarranty(result);
+        const response = await ApiConnector.getWarranty(currentId);
         if (response.data === null) {
           navigate("/error");
         } else {
           setWarranty(response.data);
-          console.log(response.data)
+          console.log(response.data);
         }
       } catch (error) {
         console.log(error);
@@ -35,7 +41,20 @@ export default function Warranty() {
       setLoading(false);
     };
     fetchData();
-  }, [result, navigate]);
+  }, [currentId, navigate]);
+
+  const deleteThis = async () => {
+    // Deletes a client with given id and updates the id
+    setLoading(true);
+    try {
+      await ApiConnector.deleteWarranty(currentId);
+      navigate("/garantier");
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpen(false);
+    setLoading(false);
+  };
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
@@ -77,14 +96,38 @@ export default function Warranty() {
                   <p className="text-2xl font-bold">Kvitto</p>
                 </div>
                 <span className="text-1xl ml-auto my-auto">
-                  {warranty.receipt}
+                  <div className="flex">
+                    <button
+                      onClick={toggleReceipt}
+                      className="bg-slate-700 hover:bg-slate-800 py-2 px-4 rounded duration-300 text-center text-1xl text-white w-48 h-12"
+                    >
+                      {showReceipt ? "Stäng" : "Visa kvitto"}
+                    </button>
+                    <div
+                      className={
+                        showReceipt
+                          ? "w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
+                          : "content-parent"
+                      }
+                      onClick={() => setShowReceipt(false)}
+                    >
+                      {showReceipt && (
+                        <img
+                          className="w-full mx-auto"
+                          src={warranty.receipt}
+                          alt="receipt"
+                          style={{ width: "50%" }}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </span>
               </div>
               <div className="flex w-full gap-2 mt-2">
                 <button
                   className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
                   onClick={() => {
-                    setIsChangeWarrantyOpen(true);
+                    setIsOpen(true);
                   }}
                 >
                   Ta bort
@@ -124,6 +167,14 @@ export default function Warranty() {
           currentWarrantyReg={warranty.registration_number}
           currentWarrantyDate={warranty.warranty_date}
           currentWarrantyReceipt={warranty.receipt}
+        />
+      )}
+      {isOpen && (
+        <Modal
+          setIsOpen={setIsOpen}
+          deleteThis={deleteThis}
+          currentName={warranty.name}
+          currenId={currentId}
         />
       )}
     </div>
