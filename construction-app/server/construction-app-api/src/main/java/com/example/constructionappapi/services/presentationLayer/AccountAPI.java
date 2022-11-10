@@ -34,9 +34,11 @@ public class AccountAPI {
         s.append("\"accessToken\":").append("\"").append(UUID.randomUUID()).append("\"").append(",");
         s.append("\"user\":").append("{");
         s.append("\"id\":").append(account.getId()).append(",");
-        s.append("\"username\":").append("\"").append(account.getUsername()).append("\"").append(",");
+        s.append("\"username\":").append("\"").append(account.getUsername()).append("\"");
         s.append("}");
         s.append("}");
+
+        System.out.println(s);
 
         return s.toString();
     }
