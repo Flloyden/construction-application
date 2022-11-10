@@ -27,13 +27,12 @@ const AddWork = ({
 
   const nameRef = useRef();
   const materialNoteRef = useRef();
+  const dayCountRef = useRef();
   const offer = useRef();
   const [newList, setNewList] = useState();
   const [image, setImage] = useState("");
   let [startDate, setStartDate] = useState(new Date());
   let [endDate, setEndDate] = useState(new Date());
-  let [countDays, setCountDays] = useState(1);
-
 
   const isWeekday = (date) => {
     const day = date.getDay;
@@ -42,17 +41,10 @@ const AddWork = ({
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
-
-    // Gets the startdate, enddate and calculates amount of days
-    const startDateMoment = moment(startDate, "YYYY-MM-DD").unix();
-    const endDateMoment = moment(endDate, "YYYY-MM-DD").unix();
-    const dayCount = (endDateMoment - startDateMoment) / 86400 + 1;
-    setCountDays(dayCount);
-
     setNewList({
       id: "",
       name: nameRef.current.value,
-      numberOfDays: dayCount,
+      numberOfDays: dayCountRef.current.value,
       materialNote: materialNoteRef.current.value,
       offer: image,
       startDate: startDate,
@@ -132,7 +124,6 @@ const AddWork = ({
           ></input>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Arbetsdatum: </label>
             <div className="flex gap-2">
               <label onClick={handleChange}>
               <p className="block mb-2 text-sm font-medium text-gray-700">Startdatum:</p>
@@ -152,24 +143,18 @@ const AddWork = ({
               </label>
               
               <label onClick={handleChange}>
-              <p className="block mb-2 text-sm font-medium text-gray-700">Slutdatum:</p>
-                <DatePicker
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                  selected={endDate}
-                  onChange={(date) => {
-                    setEndDate(date);
-                    handleChange(date);
-                  }}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
-                  minDate={startDate}
-                />
+              <label className="block mb-2 text-sm font-medium text-gray-700">Antal dagar:</label>
+              <input
+                ref={dayCountRef}
+                className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                type="text"
+                name="materialNote"
+                required
+                onChange={(e) => handleChange(e)}
+              ></input>
               </label>
             </div>
           </div>
-          <p className="mt-4 block mb-2 text-sm font-medium text-gray-700">Antal dagar: {countDays}</p>
-
           
           <div className="mt-4">
           <label className="block mb-2 text-sm font-medium text-gray-700">Material: </label>
