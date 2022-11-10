@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -22,11 +23,22 @@ public class AccountAPI {
     }
 
     @PostMapping("/login")
-    public AccountEntity login(@RequestBody AccountEntity account) {
+    public String login(@RequestBody AccountEntity account) {
         AccountEntity accountEntity = iAccountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
         System.out.println(account);
+        StringBuilder s = new StringBuilder();
 
-        return account;
+        s.append("{");
+        s.append("\"status\":").append("\"ok\"").append(",");
+        s.append("\"message\":").append("\"Logged in\"").append(",");
+        s.append("\"accessToken\":").append("\"").append(UUID.randomUUID()).append("\"").append(",");
+        s.append("\"user\":").append("{");
+        s.append("\"id\":").append(account.getId()).append(",");
+        s.append("\"username\":").append("\"").append(account.getUsername()).append("\"").append(",");
+        s.append("}");
+        s.append("}");
+
+        return s.toString();
     }
 
     @GetMapping("/account/{id}")
