@@ -2,9 +2,11 @@ package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.account.AccountRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.customer.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.work.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
@@ -37,6 +39,13 @@ public class StartServer {
 
             Calendar calendar = CalendarSingleton.getCalendar();
             calendar.initializeCalendar();
+
+            AccountEntity accountEntity = new AccountEntity(0, "admin", "admin");
+            AccountRepository accountRepository = configurableApplicationContext.getBean(AccountRepository.class);
+            Optional<AccountEntity> accountEntityOptional = accountRepository.findFirstByUsernameAndPassword("admin", "admin");
+            if (accountEntityOptional.isEmpty()) {
+                accountRepository.createAccount(accountEntity);
+            }
 
             /*
             CustomerEntity customer = new CustomerEntity(0L, "sgfdsgfdsgfd", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());

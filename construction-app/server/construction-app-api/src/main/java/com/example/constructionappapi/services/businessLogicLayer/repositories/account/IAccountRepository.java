@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface IAccountRepository {
 
-    AccountEntity findFirstByUsernameAndPassword(String username, String password);
+    Optional<AccountEntity> findFirstByUsernameAndPassword(String username, String password);
 
     AccountEntity createAccount(AccountEntity account);
     AccountEntity editAccount(AccountEntity account);

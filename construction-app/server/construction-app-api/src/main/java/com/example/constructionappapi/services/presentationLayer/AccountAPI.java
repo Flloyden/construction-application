@@ -24,21 +24,26 @@ public class AccountAPI {
 
     @PostMapping("/login")
     public String login(@RequestBody AccountEntity account) {
-        AccountEntity accountEntity = iAccountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
+        Optional<AccountEntity> accountEntity = iAccountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
         System.out.println(account);
         StringBuilder s = new StringBuilder();
 
-        s.append("{");
-        s.append("\"status\":").append("\"ok\"").append(",");
-        s.append("\"message\":").append("\"Logged in\"").append(",");
-        s.append("\"accessToken\":").append("\"").append(UUID.randomUUID()).append("\"").append(",");
-        s.append("\"user\":").append("{");
-        s.append("\"id\":").append(account.getId()).append(",");
-        s.append("\"username\":").append("\"").append(account.getUsername()).append("\"");
-        s.append("}");
-        s.append("}");
-
-        System.out.println(s);
+        if(accountEntity.isPresent()) {
+            s.append("{");
+            s.append("\"status\":").append("\"ok\"").append(",");
+            s.append("\"message\":").append("\"Logged in\"").append(",");
+            s.append("\"accessToken\":").append("\"").append(UUID.randomUUID()).append("\"").append(",");
+            s.append("\"user\":").append("{");
+            s.append("\"id\":").append(account.getId()).append(",");
+            s.append("\"username\":").append("\"").append(account.getUsername()).append("\"");
+            s.append("}");
+            s.append("}");
+        } else {
+            s.append("{");
+            s.append("\"status\":").append("\"error\"").append(",");
+            s.append("\"message\":").append("\"Felaktig inloggning\"");
+            s.append("}");
+        }
 
         return s.toString();
     }

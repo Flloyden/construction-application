@@ -13,7 +13,7 @@ public class AccountRepository implements IAccountRepository {
     @Autowired
     private AccountDao accountDao;
 
-    public AccountEntity findFirstByUsernameAndPassword(String username, String password) {
+    public Optional<AccountEntity> findFirstByUsernameAndPassword(String username, String password) {
         return accountDao.findFirstByUsernameAndPassword(username, password);
     }
     @Override
