@@ -36,7 +36,7 @@ class ApiConnector {
   }
 
   changeWork(customer, work) {
-    return axios.post(CUSTOMER_API_BASE_URL + "/", customer + "/work/edit/" + work)
+    return axios.post(CUSTOMER_API_BASE_URL + "/" + customer + "/work/update/", work)
   }
 
   deleteWork(customer, work) {
