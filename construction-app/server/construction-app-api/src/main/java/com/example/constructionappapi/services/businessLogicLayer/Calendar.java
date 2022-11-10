@@ -149,12 +149,10 @@ public class Calendar {
         }
 
         if (freeCalendarSpot != null && !calendarDates.containsKey(new CalendarEntity(freeCalendarSpot))) {
-            //calendarRepository.save(new CalendarEntity(freeCalendarSpot, workToMove));
             calendarDates.remove(calendarEntity);
             calendarEntity.setDate(freeCalendarSpot);
             calendarDates.put(calendarEntity, calendarEntity.getWork());
             calendarRepository.save(calendarEntity);
-            //calendarRepository.deleteCalendar(calendarEntity.getId());
             return freeCalendarSpot;
         }
 
@@ -189,7 +187,11 @@ public class Calendar {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
-                s.append("\"title\":").append("\"").append(entry.getKey().getDate().getDayOfMonth()).append(" - ").append(entry.getKey().getDate().getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("sv", "SE"))).append(": ").append(entry.getValue().getCustomer().getName()).append("\",");
+                String titleString = String.format("%s - %s: %s",
+                        entry.getKey().getDate().getDayOfMonth(),
+                        entry.getKey().getDate().getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("sv", "SE")),
+                        entry.getValue().getCustomer().getName());
+                s.append("\"title\":").append("\"").append(titleString).append("\",");
             }
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
             s.append("\"color\":\"").append("#FF0000").append("\"");
