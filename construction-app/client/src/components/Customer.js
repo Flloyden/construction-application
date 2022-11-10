@@ -158,7 +158,7 @@ export default function Customer() {
               <div className="">
                 {customer.workList.map((workName) => (
                   <div className="text-2xl border-2 my-4 border-gray-800 rounded-lg" key={workName.id}>
-                    <Work label={workName.name} workName={workName} />
+                    <Work label={workName.name} workName={workName} currentCustomerId={currentCustomerId} />
                   </div>
                 ))}
               </div>

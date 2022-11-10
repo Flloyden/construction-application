@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountRepository implements IAccountRepository{
+public class AccountRepository implements IAccountRepository {
     @Autowired
     private AccountDao accountDao;
 
+    public AccountEntity findFirstByUsernameAndPassword(String username, String password) {
+        return accountDao.findFirstByUsernameAndPassword(username, password);
+    }
     @Override
     public AccountEntity createAccount(AccountEntity account) {
         return accountDao.save(account);

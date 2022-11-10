@@ -31,8 +31,17 @@ class ApiConnector {
     return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/remove");
   }
 
-  saveWork(customer){
+  saveWork(customer) {
     return axios.post(CUSTOMER_API_BASE_URL + "/work/save", customer)
+  }
+
+  changeWork(customer, work) {
+    return axios.post(CUSTOMER_API_BASE_URL + "/", customer + "/work/edit/" + work)
+  }
+
+  deleteWork(customer, work) {
+    //Deletes a work from the database with a specific id
+    return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/work/delete/" + work);
   }
 
   // ACCOUNTING / WARRANTY

@@ -3,7 +3,6 @@ import { AiOutlineHome } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
-import { TbNotebook } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
 import Logout from "./Logout";
 
@@ -21,8 +20,7 @@ export default function Navbar(props) {
     },
     { title: "Kunder", src: <FiUsers />, link: "/kunder" },
     { title: "Kalender", src: <BiCalendar />, link: "/kalender" },
-    { title: "Bokföring", src: <HiOutlineDocumentText />, link: "/garantier" },
-    { title: "Random", src: <TbNotebook />, link: "/random" },
+    { title: "Bokföring", src: <HiOutlineDocumentText />, link: "/garantier" }
   ];
 
   // Checks the endpoint and changes the page tilte and header

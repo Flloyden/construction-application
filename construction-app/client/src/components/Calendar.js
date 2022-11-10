@@ -20,7 +20,6 @@ export default function Calendar() {
       try {
         const response = await ApiConnector.getCalendar();
         setCalendarInfo(response.data);
-        console.log(JSON.stringify(response.data, null, 2));
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);

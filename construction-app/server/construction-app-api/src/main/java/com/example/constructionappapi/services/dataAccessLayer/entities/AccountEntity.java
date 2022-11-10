@@ -19,9 +19,6 @@ public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String loginName;
+    private String username;
     private String password;
-    private String email;
-    private LocalDate timeOfLastLogin;
-    private int failedLoginCounter;
 }
