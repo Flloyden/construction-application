@@ -32,6 +32,18 @@ public class WorkAPI {
         return customerEntity;
     }
 
+    @PostMapping("/kunder/{customerId}/work/update")
+    public WorkEntity saveWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
+        Optional<CustomerEntity> customer = iCustomerRepository.getCustomer(customerId);
+
+        if (customer.isPresent()) {
+            work.setCustomer(customer.get());
+            return iWorkRepository.createWorkEntity(work);
+        }
+
+        return work;
+    }
+
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
     public WorkEntity editWorkEntity(@RequestBody WorkEntity work) {
         return iWorkRepository.editWorkEntity(work);
