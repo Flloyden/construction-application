@@ -20,6 +20,7 @@ const Login = () => {
   const [password, setPassword] = useState();
 
   async function loginUser(credentials) {
+    console.log(JSON.stringify(credentials))
     return fetch('https://www.mecallapi.com/api/login', {
       method: 'POST',
       headers: {
@@ -48,7 +49,6 @@ const Login = () => {
         if (isMobile) {
           navigate("/kalender");
         } else {
-          window.location.href = "/";
         }
     } else {
       alert("Failed", response.message, "error");

@@ -1,16 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import ApiConnector from "../services/ApiConnector";
+import ChangeWorkInfo from "./ChangeWorkInfo";
+import WorkModal from "./WorkModal";
 
 const Work = (props) => {
   const [open, setOPen] = useState(false);
   const toggle = () => {
     setOPen(!open);
   };
-  const contentRef = useRef();
   const [showOffer, setShowOffer] = useState(false);
   const toggleOffer = () => {
     setShowOffer(!showOffer);
   };
-  if (contentRef.current) console.log(contentRef.current.scrollHeight);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isChangeOpen, setIsChangeOpen] = useState(false);
+
+  const deleteThis = async () => {
+    // Deletes a client with given id and updates the id
+    try {
+      await ApiConnector.deleteWork(props.currentCustomerId, props.workName.id);
+      window.location.reload(false);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpen(false);
+  };
 
   return (
     <div>
@@ -79,8 +93,47 @@ const Work = (props) => {
                 </div>
               </div>
             </div>
+            <div className="flex w-full gap-2">
+              <button
+                className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                data-modal-toggle="defaultModal"
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+              >
+                Ta bort
+              </button>
+              <button
+                className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                onClick={() => {
+                  setIsChangeOpen(true);
+                }}
+              >
+                Ändra
+              </button>
+            </div>
           </div>
         </div>
+      )}
+      {isOpen && (
+        <WorkModal
+          setIsOpen={setIsOpen}
+          deleteThis={deleteThis}
+          currentName={props.label}
+          currentId={props.workName.id}
+        />
+      )}
+      {isChangeOpen && (
+        <ChangeWorkInfo
+          currentCustomerId={props.currentCustomerId}
+          setIsChangeOpen={setIsChangeOpen}
+          currentWorkId={props.workName.id}
+          currentWorkName={props.label}
+          currentOffer={props.workName.offer}
+          currentWorkDays={props.workName.numberOfDays}
+          currentStartDate={props.workName.startDate}
+          currentWorkMaterial={props.workName.materialNote}
+        />
       )}
     </div>
   );
