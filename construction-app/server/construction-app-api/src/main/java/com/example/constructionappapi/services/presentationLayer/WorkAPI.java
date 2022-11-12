@@ -37,14 +37,6 @@ public class WorkAPI {
     public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         Optional<CustomerEntity> customer = iCustomerRepository.getCustomer(customerId);
 
-        Optional<WorkEntity> preUpdateWork = iWorkRepository.getWorkEntity(work.getId());
-        if (preUpdateWork.isPresent()) {
-            if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                calendar.removeWork(preUpdateWork.get());
-                calendar.addWork(work);
-            }
-        }
-
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
             return iWorkRepository.createWorkEntity(work);
