@@ -57,14 +57,6 @@ const ChangeWarrantyInfo = ({
   const saveChanges = (e) => {
     /**Saves the warranty and navigates back to the register */
     e.preventDefault();
-    // Check if all input fields are ok
-    if (
-      warranty.name.length > 1 &&
-      warranty.address.length > 1 &&
-      warranty.phoneNumber.length > 1 &&
-      warranty.propertyDesignation.length > 0 &&
-      warranty.socialSecurityNumber.length > 1
-    ) {
       // Makes the api call to save changes
       ApiConnector.saveWarranty(warranty)
         .then((response) => {
@@ -74,9 +66,6 @@ const ChangeWarrantyInfo = ({
         .catch((error) => {
           console.log(error);
         });
-    } else {
-      alert("Fyll i alla fält");
-    }
   };
 
   return (

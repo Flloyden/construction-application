@@ -25,7 +25,7 @@ const ChangeWorkInfo = ({
   const materialNoteRef = useRef();
   const offer = useRef();
   const [newList, setNewList] = useState();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(currentOffer);
   let [countDays, setCountDays] = useState(1);
   const currentEndDateMoment = moment(currentStartDate, "YYYY-MM-DD").add('days', currentWorkDays).format('YYYY-MM-DD');
   let [startDate, setStartDate] = useState(new Date(currentStartDate));
@@ -39,9 +39,10 @@ const ChangeWorkInfo = ({
     const endDateMoment = moment(endDate, "YYYY-MM-DD").unix();
     const dayCount = (endDateMoment - startDateMoment) / 86400 + 1;
     setCountDays(dayCount);
+    console.log(image)
 
     setNewList({
-      id: "",
+      id: currentWorkId,
       name: nameRef.current.value,
       numberOfDays: dayCount,
       materialNote: materialNoteRef.current.value,
@@ -78,9 +79,10 @@ const ChangeWorkInfo = ({
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
       // Makes the change with the help of api call
-      ApiConnector.changeWork(currentCustomerId, currentWorkId)
+      ApiConnector.changeWork(currentCustomerId, newList)
         .then((response) => {
           console.log(response);
+          window.location.reload(false);
         })
         .catch((error) => {
           console.log(error);
@@ -165,7 +167,6 @@ const ChangeWorkInfo = ({
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             type="text"
             name="materialNote"
-            value={work.materialNote}
             placeholder={currentWorkMaterial}
             required
             onChange={(e) => handleChange(e)}
