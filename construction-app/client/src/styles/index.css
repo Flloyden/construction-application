@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fc-event-time{
+    display : none;
+}
+
+.fc-timeline-event-harness:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}

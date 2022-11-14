@@ -7,10 +7,26 @@ import listPlugin from "@fullcalendar/list";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import { BrowserView, MobileView } from "react-device-detect";
+import moment from "moment";
+import Holidays from "date-holidays";
+import { useNavigate } from "react-router-dom";
+import NavigateModal from "./NavigateModal";
 
 export default function Calendar() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [calendarInfo, setCalendarInfo] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentCustomerName, setCurrentCustomerName] = useState("");
+  const [currentCustomerId, setCurrentCustomerId] = useState("");
+  const hd = new Holidays('SE');
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  var day = date.getDate();
+  const holiday = hd.getHolidays(date);
+  var nextYear = hd.getHolidays(new Date(year + 1, month, day));
+  var nextNextYear = hd.getHolidays(new Date(year + 2, month, day));
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -20,6 +36,8 @@ export default function Calendar() {
       try {
         const response = await ApiConnector.getCalendar();
         setCalendarInfo(response.data);
+        console.log(response.data)
+
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -28,6 +46,11 @@ export default function Calendar() {
     };
     fetchData();
   }, []);
+
+  const allowNavigate = () => {
+    navigate(`/kunder/${currentCustomerId}`, { state: { clientId: currentCustomerId } });
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="w-full h-full">
@@ -44,7 +67,32 @@ export default function Calendar() {
                 ]}
                 initialView="timeline"
                 duration={{ days: 1 }}
-                events={calendarInfo}
+                eventClick={
+                  function(arg){
+                    if ((arg.event.id).length < 1) {
+                      alert("Finns ingen kund på den valda kolumnen!")
+                    } else {
+                      setCurrentCustomerName(arg.event.extendedProps.description);
+                      setCurrentCustomerId(arg.event.id);
+                      setIsModalOpen(true);
+                    }
+                  }
+                }
+                eventSources={[
+                  calendarInfo.map((item, i) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: item.color, id: item.customerId, description: item.customerName, allDay: false}
+                  }),
+                  holiday.map((item, i) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, allDay: false}
+                  }),
+                  nextYear.map((item, i) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, allDay: false}
+                  }),
+                  nextNextYear.map((item, i) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, allDay: false}
+                  }),
+                ]}
+                
                 height="auto"
                 locale="sv"
                 firstDay={1}
@@ -101,6 +149,14 @@ export default function Calendar() {
           )}
         </div>
       </MobileView>
+      {isModalOpen && (
+        <NavigateModal
+        setIsModalOpen={setIsModalOpen}
+        allowNavigate={allowNavigate}
+        currentName={currentCustomerName}
+        currentId={currentCustomerId}
+      />
+      )}
     </div>
   );
 }
