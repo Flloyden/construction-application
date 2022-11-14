@@ -79,16 +79,16 @@ export default function Calendar() {
                   }
                 }
                 eventSources={[
-                  calendarInfo.map((item, i) => {
+                  calendarInfo.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: item.color, id: item.customerId, description: item.customerName, allDay: false}
                   }),
-                  holiday.map((item, i) => {
+                  holiday.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, allDay: false}
                   }),
-                  nextYear.map((item, i) => {
+                  nextYear.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, allDay: false}
                   }),
-                  nextNextYear.map((item, i) => {
+                  nextNextYear.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, allDay: false}
                   }),
                 ]}
