@@ -20,7 +20,7 @@ export default function Navbar(props) {
     },
     { title: "Kunder", src: <FiUsers />, link: "/kunder" },
     { title: "Kalender", src: <BiCalendar />, link: "/kalender" },
-    { title: "Bokföring", src: <HiOutlineDocumentText />, link: "/garantier" }
+    { title: "Garantier", src: <HiOutlineDocumentText />, link: "/garantier" }
   ];
 
   // Checks the endpoint and changes the page tilte and header
@@ -29,7 +29,7 @@ export default function Navbar(props) {
       { path: "/", title: "Översikt" },
       { path: "/kunder", title: "Kundregister" },
       { path: "/kalender", title: "Kalender" },
-      { path: "/garantier", title: "Bokföring" },
+      { path: "/garantier", title: "Garantier" },
       { path: "/random", title: "Random" },
     ];
     const currentTitle = titleMap.find(
