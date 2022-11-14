@@ -67,48 +67,42 @@ export default function Customer() {
         <h1 className="text-4xl">Kundinformation</h1>
         {!loading && (
           <div className="flex flex-wrap">
-            <div className="w-3/6 pr-10 pb-10">
-              <div className="flex px-4 py-4 justify-between border-b-2">
+            <div className="pr-10 pb-10 text-left">
+              <div className="flex px-4 py-4 border-b-2">
                 <div className="flex">
                 <BsPersonFill className="text-3xl mr-4 mt-0.5"/>
-                <p className="text-2xl font-bold">Kund</p>
                 </div>
-                <span className="text-1xl ml-auto my-auto">{customer.name}</span>
+                <span className="text-1xl my-auto">{customer.name}</span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+              <div className="flex px-4 py-4 border-b-2">
                 <div className="flex">
                 <AiOutlineNumber className="text-3xl mr-4 mt-0.5"/>
-                <p className="text-2xl font-bold">Personnummer</p>
                 </div>
-                <span className="text-1xl ml-auto my-auto">{customer.socialSecurityNumber}</span>
+                <span className="text-1xl my-auto">{customer.socialSecurityNumber}</span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+              <div className="flex px-4 py-4 border-b-2">
                 <div className="flex">
                 <MdLocationOn className="text-3xl mr-4 mt-0.5"/>
-                <p className="text-2xl font-bold">Adress</p>
                 </div>
-                <span className="text-1xl ml-auto my-auto">{customer.address}</span>
+                <span className="text-1xl my-auto">{customer.address}</span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+              <div className="flex px-4 py-4 border-b-2">
                 <div className="flex">
                 <MdEmail className="text-3xl mr-4 mt-0.5"/>
-                <p className="text-2xl font-bold">E-post</p>
                 </div>
-                <span className="text-1xl ml-auto my-auto">{customer.name}</span>
+                <span className="text-1xl my-auto">{customer.name}</span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+              <div className="flex px-4 py-4 border-b-2">
                 <div className="flex">
                 <BsTelephoneFill className="text-3xl mr-4 mt-0.5"/>
-                <p className="text-2xl font-bold">Telefonnummer</p>
                 </div>
-                <span className="text-1xl ml-auto my-auto">{customer.phoneNumber}</span>
+                <span className="text-1xl my-auto">{customer.phoneNumber}</span>
               </div>
-              <div className="flex px-4 py-4 justify-between">
+              <div className="flex px-4 py-4">
                 <div className="flex">
                 <BsFillHouseFill className="text-3xl mr-4 mt-0.5"/>
-                <p className="text-2xl font-bold">Fastighetsbeteckning</p>
                 </div>
-                <span className="text-1xl ml-auto my-auto">{customer.propertyDesignation}</span>
+                <span className="text-1xl my-auto">{customer.propertyDesignation}</span>
               </div>
               <div className="flex w-full gap-2 mt-2">
                 <button
@@ -131,7 +125,7 @@ export default function Customer() {
               </button>
               </div>
             </div>
-            <div className="w-3/6">
+            <div className="w-4/6 ml-44">
               <h2 className="text-3xl">Anteckningar</h2>
               <div className="notes">
                 <p>
