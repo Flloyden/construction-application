@@ -29,6 +29,7 @@ public class WorkAPI {
     public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
         CustomerEntity customerEntity = iCustomerRepository.createCustomer(customer);
         calendar.addWork(iWorkRepository.getLastInserted());
+
         return customerEntity;
     }
 
