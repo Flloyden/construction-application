@@ -194,6 +194,7 @@ public class Calendar {
             }
             s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
             s.append("\"color\":\"").append("#FF0000").append("\"");
+            s.append("\"customerId\":\"").append(entry.getValue().getCustomer().getId()).append("\"");
             s.append("}");
             if (entrySet.hasNext()) s.append(",");
         }
