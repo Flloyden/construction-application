@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.businessLogicLayer.repositories.account.IAccountRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +15,16 @@ import java.util.UUID;
 public class AccountAPI {
 
     @Autowired
-    private IAccountRepository iAccountRepository;
+    private AccountRepository accountRepository;
 
     @PostMapping("/account")
     public AccountEntity createAccount(@RequestBody AccountEntity account) {
-        return iAccountRepository.createAccount(account);
+        return accountRepository.createAccount(account);
     }
 
     @PostMapping("/login")
     public String login(@RequestBody AccountEntity account) {
-        Optional<AccountEntity> accountEntity = iAccountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
+        Optional<AccountEntity> accountEntity = accountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
         System.out.println(account);
         StringBuilder s = new StringBuilder();
 
@@ -50,16 +50,16 @@ public class AccountAPI {
 
     @GetMapping("/account/{id}")
     public Optional<AccountEntity> getAccount(@PathVariable final Long id) {
-        return iAccountRepository.getAccount(id);
+        return accountRepository.getAccount(id);
     }
 
     @GetMapping("/account")
     public List<AccountEntity> getAllAccounts() {
-        return iAccountRepository.getAllAccountEntities();
+        return accountRepository.getAllAccountEntities();
     }
 
     @DeleteMapping("/account/{id}/remove")
     public void deleteAccount(@PathVariable final Long id) {
-        iAccountRepository.deleteAccount(id);
+        accountRepository.deleteAccount(id);
     }
 }

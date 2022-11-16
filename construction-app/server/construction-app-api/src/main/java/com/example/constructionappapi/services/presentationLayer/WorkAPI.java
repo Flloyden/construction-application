@@ -3,8 +3,8 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.customer.ICustomerRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.work.IWorkRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,52 +19,52 @@ import java.util.Optional;
 public class WorkAPI {
 
     @Autowired
-    private IWorkRepository iWorkRepository;
+    private WorkRepository workRepository;
     @Autowired
-    private ICustomerRepository iCustomerRepository;
+    private CustomerRepository customerRepository;
 
     private Calendar calendar = CalendarSingleton.getCalendar();
 
     @PostMapping("/kunder/work/save")
     public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
-        CustomerEntity customerEntity = iCustomerRepository.createCustomer(customer);
-        calendar.addWork(iWorkRepository.getLastInserted());
+        CustomerEntity customerEntity = customerRepository.createCustomer(customer);
+        calendar.addWork(workRepository.getLastInserted());
 
         return customerEntity;
     }
 
     @PostMapping("/kunder/{customerId}/work/update")
     public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
-        Optional<CustomerEntity> customer = iCustomerRepository.getCustomer(customerId);
+        Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
 
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
-            return iWorkRepository.createWorkEntity(work);
+            return workRepository.createWorkEntity(work);
         }
 
-        return iWorkRepository.getWorkEntity(work.getId()).get();
+        return workRepository.getWorkEntity(work.getId()).get();
     }
 
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
     public WorkEntity editWorkEntity(@RequestBody WorkEntity work) {
-        return iWorkRepository.editWorkEntity(work);
+        return workRepository.editWorkEntity(work);
     }
 
     @GetMapping("/kunder/{customer_id}/work/{id}")
     public Optional<WorkEntity> getWorkEntity(@PathVariable final Long id) {
-        return iWorkRepository.getWorkEntity(id);
+        return workRepository.getWorkEntity(id);
     }
 
     @GetMapping("/kunder/work")
     public List<WorkEntity> getAllWorkEntities() {
-        return iWorkRepository.getAllWorkEntities();
+        return workRepository.getAllWorkEntities();
 
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
     public void deleteWorkEntity(@PathVariable final Long id) {
-        if (iWorkRepository.getWorkEntity(id).isPresent()) {
-            WorkEntity work = iWorkRepository.getWorkEntity(id).get();
+        if (workRepository.getWorkEntity(id).isPresent()) {
+            WorkEntity work = workRepository.getWorkEntity(id).get();
             calendar.removeWork(work);
         }
     }

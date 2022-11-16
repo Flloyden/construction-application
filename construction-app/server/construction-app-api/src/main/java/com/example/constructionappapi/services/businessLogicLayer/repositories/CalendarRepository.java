@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories.calendar;
+package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CalendarRepository implements ICalendarRepository {
+public class CalendarRepository{
 
     @Autowired
     private CalendarDao calendarDao;
@@ -23,17 +23,14 @@ public class CalendarRepository implements ICalendarRepository {
         calendar.setCalendarRepository(this);
     }
 
-    @Override
     public CalendarEntity save(CalendarEntity calendar) {
         return calendarDao.save(calendar);
     }
 
-    @Override
     public CalendarEntity editCalendar(CalendarEntity calendar) {
         return calendarDao.save(calendar);
     }
 
-    @Override
     public String getAllCalendarEntites() {
         return calendar.toString();
     }
@@ -46,12 +43,10 @@ public class CalendarRepository implements ICalendarRepository {
         return calendarDao.findAll();
     }
 
-    @Override
     public Optional<CalendarEntity> getCalendar(Long id) {
         return calendarDao.findById(id);
     }
 
-    @Override
     public void deleteCalendar(Long id) {
         calendarDao.deleteById(id);
     }
