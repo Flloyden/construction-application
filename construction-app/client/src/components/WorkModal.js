@@ -10,11 +10,11 @@ const WorkModal = ({
   return (
     <>
       <div
-        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
+        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0 z-20"
         onClick={() => setIsOpen(false)}
       />
-      <div className="bg-slate-700 top-1/4 left-1/3 fixed ml-36 rounded-lg">
-        <div className="w-96 bg-white h-80 rounded-lg">
+      <div className="bg-slate-700 top-1/4 left-1/3 fixed ml-36 rounded-lg z-30">
+        <div className="w-96 bg-white h-80 rounded-lg z-30">
           <div className="text-center text-4xl p-4 text-red-600">
             <h5>Varning</h5>
           </div>

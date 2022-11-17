@@ -10,7 +10,7 @@ const Modal = ({
   return (
     <>
       <div
-        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
+        className="w-screen h-screen bg-slate-700 bg-opacity-70 top-0 left-0 fixed"
         onClick={() => setIsOpen(false)}
       />
       <div className="bg-slate-700 top-1/4 left-1/3 fixed ml-36 rounded-lg">

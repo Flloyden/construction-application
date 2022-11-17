@@ -1,4 +1,3 @@
-import moment from "moment";
 import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -32,7 +31,7 @@ const AddWork = ({
   const [newList, setNewList] = useState();
   const [image, setImage] = useState("");
   let [startDate, setStartDate] = useState(new Date());
-  let [endDate, setEndDate] = useState(new Date());
+  let endDate = new Date();
 
   const isWeekday = (date) => {
     const day = date.getDay;
@@ -48,7 +47,7 @@ const AddWork = ({
       materialNote: materialNoteRef.current.value,
       offer: image,
       startDate: startDate,
-      workStatus: "NOTSTARTED",
+      workStatus: "STARTED",
       calendar: [],
     });
     console.log(newList)

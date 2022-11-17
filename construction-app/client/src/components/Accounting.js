@@ -23,7 +23,6 @@ const Accounting = () => {
       try {
         const response = await ApiConnector.getWarranties();
         setWarranties(response.data);
-        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
