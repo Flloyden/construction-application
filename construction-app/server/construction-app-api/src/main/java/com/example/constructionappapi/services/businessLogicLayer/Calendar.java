@@ -63,21 +63,36 @@ public class Calendar {
 
         int daysToAdd = work.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
-
+        long n = 0L;
         for (int i = 0; i < daysToAdd; i++) {
-            LocalDate dateToAddTo = work.getStartDate().plusDays(i);
+            LocalDate dateToAddTo = work.getStartDate().plusDays(i + n);
+
+            System.out.println("dateToAdd: " + dateToAddTo);
+            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                dateToAddTo = dateToAddTo.plusDays(1);
+                System.out.println("Weekend dateToAdd: " + dateToAddTo);
+                n++;
+            }
+
             CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
+            System.out.println("dateToAdd: " + dateToAddTo);
             /*If the date where the new work is getting added already contains something the content that is already there needs
               to be shuffled forward x days decided by the daysToShuffleForward variable.*/
-            if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null)
+            //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
+            if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
+                printCalendar();
                 shuffleForward(dateToAddTo, daysToShuffleForward);
-            else daysToShuffleForward--;/*If the spot where new work is being added is free all future work that needs to be
+            } else daysToShuffleForward--;/*If the spot where new work is being added is free all future work that needs to be
             shuffled forward should be shuffled forward one day less.*/
+
+            if (dateToAddTo.equals(LocalDate.of(2022, 12, 7))) {
+                System.out.println("boop");
+            }
 
             //Add work to the specified date.
             calendarEntity = calendarRepository.save(calendarEntity);
-            calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
+            //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work);
         }
 
@@ -86,7 +101,11 @@ public class Calendar {
 
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
-        CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date); //id = 4
+        CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
+
+        while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            newDate = newDate.plusDays(1);
+        }
 
         /*If the date where the work-object is trying to get shuffled to is already taken, the work-object
         that is already there should be shuffled forward one day.*/
