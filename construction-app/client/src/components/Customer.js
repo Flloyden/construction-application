@@ -6,9 +6,11 @@ import { MdEmail, MdLocationOn } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import AddWork from "./AddWork";
-import ChangeInfo from "./ChangeCustomerInfo";
+import ChangeCustomerInfo from "./ChangeCustomerInfo";
 import Modal from "./Modal";
 import Work from "./Work";
+import { RiCloseLine } from "react-icons/ri";
+import { RiPencilFill } from "react-icons/ri";
 
 export default function Customer() {
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function Customer() {
     setLoading(true);
     try {
       await ApiConnector.deleteCustomer(currentCustomerId);
-      navigate("/kunder")
+      navigate("/kunder");
     } catch (error) {
       console.log(error);
     }
@@ -63,105 +65,226 @@ export default function Customer() {
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
-      <div className="rounded-lg w-full h-full p-4">
+      <div className="rounded-lg w-full h-full">
         <h1 className="text-4xl">Kundinformation</h1>
         {!loading && (
-          <div className="flex flex-wrap">
-            <div className="pr-10 pb-10 text-left">
-              <div className="flex px-4 py-4 border-b-2">
+          <div className="flex flex-wrap w-full gap-6">
+            <div className="text-left flex flex-wrap w-1/4 justify-between items-center pr-6 border-r-2">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                <BsPersonFill className="text-3xl mr-4 mt-0.5"/>
+                  <BsPersonFill className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
                 <span className="text-1xl my-auto">{customer.name}</span>
               </div>
-              <div className="flex px-4 py-4 border-b-2">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                <AiOutlineNumber className="text-3xl mr-4 mt-0.5"/>
+                  <AiOutlineNumber className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl my-auto">{customer.socialSecurityNumber}</span>
+                <span className="text-1xl my-auto">
+                  {customer.socialSecurityNumber}
+                </span>
               </div>
-              <div className="flex px-4 py-4 border-b-2">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                <MdLocationOn className="text-3xl mr-4 mt-0.5"/>
+                  <MdLocationOn className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
                 <span className="text-1xl my-auto">{customer.address}</span>
               </div>
-              <div className="flex px-4 py-4 border-b-2">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                <MdEmail className="text-3xl mr-4 mt-0.5"/>
+                  <MdEmail className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
                 <span className="text-1xl my-auto">{customer.name}</span>
               </div>
-              <div className="flex px-4 py-4 border-b-2">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                <BsTelephoneFill className="text-3xl mr-4 mt-0.5"/>
+                  <BsTelephoneFill className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
                 <span className="text-1xl my-auto">{customer.phoneNumber}</span>
               </div>
-              <div className="flex px-4 py-4">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                <BsFillHouseFill className="text-3xl mr-4 mt-0.5"/>
+                  <BsFillHouseFill className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl my-auto">{customer.propertyDesignation}</span>
+                <span className="text-1xl my-auto">
+                  {customer.propertyDesignation}
+                </span>
               </div>
-              <div className="flex w-full gap-2 mt-2">
+              <div className="flex gap-2 justify-end items-center pb-8 w-full">
                 <button
-                className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
-                data-modal-toggle="defaultModal"
-                onClick={() => {
-                  setIsOpen(true);
-                  setCurrentCustomerName(customer.name);
-                }}
-              >
-                Ta bort
-              </button>
-              <button
-                className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
-                onClick={() => {
-                  setIsChangeOpen(true);
-                }}
-              >
-                Ändra
-              </button>
-              </div>
-            </div>
-            <div className="w-4/6 ml-44">
-              <h2 className="text-3xl">Anteckningar</h2>
-              <div className="notes">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus vulputate condimentum tellus, in euismod lectus
-                  blandit et. Etiam aliquam congue erat, et vulputate nisl
-                  ornare vitae. Sed ut mi sem. Nam fermentum arcu vel sapien
-                  vehicula efficitur. In vel dictum turpis. Quisque mollis, nunc
-                  eget feugiat ornare, odio turpis sodales sapien, at maximus
-                  purus quam tempus sapien. In consectetur tempus pellentesque.
-                </p>
-              </div>
-            </div>
-            <div className="w-full py-4">
-              <div className="flex">
-                <h2 className="text-3xl">Jobb</h2>
-                <GrAddCircle
-                  className="text-4xl ml-2 cursor-pointer hover:rotate-90 duration-200"
+                  className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
                   onClick={() => {
-                    setIsWorkOpen(true);
+                    setIsChangeOpen(true);
                   }}
-                />
+                >
+                  Ändra
+                </button>
+                <button
+                  className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                  data-modal-toggle="defaultModal"
+                  onClick={() => {
+                    setIsOpen(true);
+                    setCurrentCustomerName(customer.name);
+                  }}
+                >
+                  Ta bort
+                </button>
               </div>
-              <div className="">
-                {customer.workList.map((workName) => (
-                  <div className="text-2xl border-2 my-4 border-gray-800 rounded-lg" key={workName.id}>
-                    <Work label={workName.name} workName={workName} currentCustomerId={currentCustomerId} />
+              <div className="w-full py-4 border-t-2">
+                <div className="flex">
+                  <h2 className="text-3xl pb-2">Jobb</h2>
+                </div>
+                <div className="flex flex-wrap gap-4 items-center pb-10 h-fit mx-auto justify-start">
+                  <div className="flex w-full h-min py-4 items-center justify-center bg-white border border-gray-200 rounded-lg shadow-md lg:max-w-md hover:scale-105 duration-300">
+                    <GrAddCircle
+                      className="text-9xl ml-2 cursor-pointer hover:rotate-90 hover:opacity-100 duration-500 opacity-20"
+                      onClick={() => {
+                        setIsWorkOpen(true);
+                      }}
+                    />
                   </div>
-                ))}
+                  {customer.workList
+                    .slice(0)
+                    .reverse()
+                    .map((workName) => (
+                      <div
+                        className="w-full h-fit bg-white border border-gray-200 rounded-lg shadow-md lg:max-w-md duration-300"
+                        key={workName.id}
+                      >
+                        <Work
+                          label={workName.name}
+                          workName={workName}
+                          currentCustomerId={currentCustomerId}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="w-full bg-gray-700 rounded-md p-4">
+                <h1 className="text-2xl w-full text-white">
+                  Lägg till ny anteckning
+                </h1>
+                <div className="w-full flex gap-2">
+                  <div className="mt-4 w-1/4">
+                    <label className="mb-2 text-sm font-medium text-white">
+                      Datum:{" "}
+                    </label>
+                    <input
+                      className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                      type="text"
+                      name="name"
+                      required
+                    ></input>
+                  </div>
+
+                  <div className="mt-4 w-1/4">
+                    <label className="mb-2 text-sm font-medium text-white">
+                      Jobb:{" "}
+                    </label>
+                    <input
+                      className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                      type="text"
+                      name="address"
+                    ></input>
+                  </div>
+
+                  <div className="mt-4 w-1/4">
+                    <label className="mb-2 text-sm font-medium text-white">
+                      Tid:{" "}
+                    </label>
+                    <input
+                      className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                      type="text"
+                      name="phoneNumber"
+                    ></input>
+                  </div>
+
+                  <div className="mt-4 w-1/4">
+                    <label className="mb-2 text-sm font-medium text-white">
+                      Körning:{" "}
+                    </label>
+                    <input
+                      className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                      type="text"
+                      name="propertyDesignation"
+                    ></input>
+                  </div>
+
+                  <div className="mt-4 w-1/4">
+                    <label className="mb-2 text-sm font-medium text-white">
+                      Anställd tid:{" "}
+                    </label>
+                    <input
+                      className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                      type="text"
+                      name="socialSecurityNumber"
+                    ></input>
+                  </div>
+
+                  <div className="flex w-min gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto">
+                    <button className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white">
+                      Spara
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <h2 className="text-3xl pt-10 pb-2">Anteckningar</h2>
+              <div className="bg-gray-700 py-2 rounded-md">
+                <table className="w-full text-sm text-left text-gray-400">
+                  <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+                    <tr>
+                      <th scope="col" className="py-3 px-6">
+                        Datum
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Jobb
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Tid
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Körning
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Antälld tid
+                      </th>
+                      <th scope="col" className="max-w-fit text-center">
+                        Åtgärd
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200">
+                      <th
+                        scope="row"
+                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
+                      ></th>
+                      <td className="py-4 px-6 text-white"></td>
+                      <td className="py-4 px-6"></td>
+                      <td className="py-4 px-6"></td>
+                      <td className="py-4 px-6"></td>
+                      <td className="flex justify-around py-2 items-end">
+                        <div className="flex justify-end">
+                          <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 mr-2 text-blue-600 h-fit hover:bg-slate-200">
+                            <RiPencilFill />
+                          </button>
+                          <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 text-red-600 h-fit hover:bg-slate-200">
+                            <RiCloseLine />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         )}
       </div>
       {isChangeOpen && (
-        <ChangeInfo
+        <ChangeCustomerInfo
           setIsChangeOpen={setIsChangeOpen}
           currentCustomerId={customer.id}
           currentCustomerName={customer.name}
@@ -169,6 +292,7 @@ export default function Customer() {
           currentCustomerPhone={customer.phoneNumber}
           currentCustomerProperty={customer.propertyDesignation}
           currentCustomerSSN={customer.socialSecurityNumber}
+          currentCustomerWorkList={customer.workList}
         />
       )}
       {isWorkOpen && (

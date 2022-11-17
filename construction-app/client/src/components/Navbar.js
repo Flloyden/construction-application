@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
-import { FiUsers } from "react-icons/fi";
+import { FiUsers, FiSettings } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import Logout from "./Logout";
@@ -20,7 +20,8 @@ export default function Navbar(props) {
     },
     { title: "Kunder", src: <FiUsers />, link: "/kunder" },
     { title: "Kalender", src: <BiCalendar />, link: "/kalender" },
-    { title: "Garantier", src: <HiOutlineDocumentText />, link: "/garantier" }
+    { title: "Garantier", src: <HiOutlineDocumentText />, link: "/garantier" },
+    { title: "Inställningar", src: <FiSettings />, link: "/settings" }
   ];
 
   // Checks the endpoint and changes the page tilte and header
@@ -30,7 +31,7 @@ export default function Navbar(props) {
       { path: "/kunder", title: "Kundregister" },
       { path: "/kalender", title: "Kalender" },
       { path: "/garantier", title: "Garantier" },
-      { path: "/random", title: "Random" },
+      { path: "/settings", title: "Inställningar" },
     ];
     const currentTitle = titleMap.find(
       (item) => item.path === currentLocation.pathname

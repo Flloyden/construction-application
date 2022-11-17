@@ -12,24 +12,29 @@ const ChangeWorkInfo = ({
   currentOffer,
   currentWorkDays,
   currentWorkMaterial,
-  currentStartDate
+  currentStartDate,
+  currentWorkStatus
 }) => {
   const [work] = useState({
     id: currentWorkId,
     name: currentWorkName,
     offer: currentOffer,
     startDate: currentStartDate,
-    materialNote: currentWorkMaterial
+    workStatus: currentWorkStatus,
+    materialNote: currentWorkMaterial,
   });
   const nameRef = useRef();
   const materialNoteRef = useRef();
   const offer = useRef();
   const [newList, setNewList] = useState();
   const [image, setImage] = useState(currentOffer);
-  let [countDays, setCountDays] = useState(1);
-  const currentEndDateMoment = moment(currentStartDate, "YYYY-MM-DD").add('days', currentWorkDays).format('YYYY-MM-DD');
+  const currentEndDateMoment = moment(currentStartDate, "YYYY-MM-DD")
+    .add("days", currentWorkDays)
+    .format("YYYY-MM-DD");
   let [startDate, setStartDate] = useState(new Date(currentStartDate));
   let [endDate, setEndDate] = useState(new Date(currentEndDateMoment));
+  const [selected, setSelected] = useState(currentWorkStatus);
+  const dayCountRef = useRef();
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
@@ -38,8 +43,7 @@ const ChangeWorkInfo = ({
     const startDateMoment = moment(startDate, "YYYY-MM-DD").unix();
     const endDateMoment = moment(endDate, "YYYY-MM-DD").unix();
     const dayCount = (endDateMoment - startDateMoment) / 86400 + 1;
-    setCountDays(dayCount);
-    console.log(image)
+    console.log(image);
 
     setNewList({
       id: currentWorkId,
@@ -48,10 +52,10 @@ const ChangeWorkInfo = ({
       materialNote: materialNoteRef.current.value,
       offer: image,
       startDate: startDate,
-      workStatus: "NOTSTARTED",
+      workStatus: selected,
       calendar: [],
     });
-    console.log(newList)
+    console.log(newList);
   };
 
   const convertToBase64 = (file) => {
@@ -78,28 +82,35 @@ const ChangeWorkInfo = ({
   const saveChanges = (e) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
-      // Makes the change with the help of api call
-      ApiConnector.changeWork(currentCustomerId, newList)
-        .then((response) => {
-          console.log(response);
-          window.location.reload(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    // Makes the change with the help of api call
+    ApiConnector.changeWork(currentCustomerId, newList)
+      .then((response) => {
+        console.log(response);
+        window.location.reload(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  function changeWorkStatus(e) {
+    console.log(e.target.value);
+    setSelected(e.target.value);
+  }
 
   return (
     <>
       <div
-        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
+        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0 z-10"
         onClick={() => setIsChangeOpen(false)}
       />
-      <div className="bg-white fixed inset-0 flex items-center justify-center w-2/4 h-max m-auto rounded-lg p-4">
-      <div className="w-full">
+      <div className="bg-white fixed inset-0 flex items-center justify-center w-2/4 h-max m-auto rounded-lg p-4 z-20">
+        <div className="w-full">
           <h1 className="text-4xl">Ändra jobbinformation</h1>
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Namn på jobb: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Namn på jobb:{" "}
+            </label>
             <input
               ref={nameRef}
               className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -112,7 +123,9 @@ const ChangeWorkInfo = ({
           </div>
 
           <div className="mt-4"></div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">Offert: </label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Offert:{" "}
+          </label>
           <input
             ref={offer}
             className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -123,10 +136,14 @@ const ChangeWorkInfo = ({
           ></input>
 
           <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Arbetsdatum: </label>
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Arbetsdatum:{" "}
+            </label>
             <div className="flex gap-2">
               <label onClick={handleChange}>
-              <p className="block mb-2 text-sm font-medium text-gray-700">Startdatum:</p>
+                <p className="block mb-2 text-sm font-medium text-gray-700">
+                  Startdatum:
+                </p>
                 <DatePicker
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   selected={startDate}
@@ -139,49 +156,108 @@ const ChangeWorkInfo = ({
                   endDate={endDate}
                 />
               </label>
-              
+
               <label onClick={handleChange}>
-              <p className="block mb-2 text-sm font-medium text-gray-700">Slutdatum:</p>
-                <DatePicker
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Antal dagar:
+                </label>
+                <input
+                  ref={dayCountRef}
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                  selected={endDate}
-                  onChange={(date) => {
-                    setEndDate(date);
-                    handleChange(date);
-                  }}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
-                  minDate={startDate}
-                />
+                  type="text"
+                  name="materialNote"
+                  required
+                  onChange={(e) => handleChange(e)}
+                ></input>
               </label>
             </div>
           </div>
-          <p className="mt-4 block mb-2 text-sm font-medium text-gray-700">Antal dagar: {countDays}</p>
+          <p className="mt-4 block text-sm font-medium text-gray-700">
+            Jobbstatus:
+          </p>
+          <div className="flex gap-4">
+            <div className="w-1/3">
+              <input
+                type="radio"
+                id="NOTSTARTED"
+                name="choose"
+                value="NOTSTARTED"
+                checked={selected === "NOTSTARTED"}
+                onChange={changeWorkStatus}
+                className="peer hidden"
+              />
+              <label
+                htmlFor="NOTSTARTED"
+                className="block hover:bg-gray-500 bg-gray-700 cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+              >
+                Ej påbörjat
+              </label>
+            </div>
 
-          
+            <div className="w-1/3">
+              <input
+                type="radio"
+                id="STARTED"
+                name="choose"
+                value="STARTED"
+                onChange={changeWorkStatus}
+                checked={selected === "STARTED"}
+                className="peer hidden"
+              />
+              <label
+                htmlFor="STARTED"
+                className="block hover:bg-gray-500 bg-gray-700 cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+              >
+                Pågående
+              </label>
+            </div>
+
+            <div className="w-1/3">
+              <input
+                type="radio"
+                id="COMPLETED"
+                name="choose"
+                value="COMPLETED"
+                onChange={changeWorkStatus}
+                checked={selected === "COMPLETED"}
+                className="peer hidden"
+              />
+              <label
+                htmlFor="COMPLETED"
+                className="block hover:bg-gray-500 bg-gray-700 cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+              >
+                Slutfört
+              </label>
+            </div>
+          </div>
+
           <div className="mt-4">
-          <label className="block mb-2 text-sm font-medium text-gray-700">Material: </label>
-          <input
-            ref={materialNoteRef}
-            className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-            type="text"
-            name="materialNote"
-            placeholder={currentWorkMaterial}
-            required
-            onChange={(e) => handleChange(e)}
-          ></input>
+            <label className="block mb-2 text-sm font-medium text-gray-700">
+              Material:{" "}
+            </label>
+            <input
+              ref={materialNoteRef}
+              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              type="text"
+              name="materialNote"
+              placeholder={currentWorkMaterial}
+              required
+              onChange={(e) => handleChange(e)}
+            ></input>
           </div>
           <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
-          <button className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4" onClick={() => setIsChangeOpen(false)}>
-                Avbryt
-              </button>
-              <button
-                className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-                onClick={saveChanges}
-              >
-                Spara
-              </button>
+            <button
+              className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+              onClick={() => setIsChangeOpen(false)}
+            >
+              Avbryt
+            </button>
+            <button
+              className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+              onClick={saveChanges}
+            >
+              Spara
+            </button>
           </div>
         </div>
       </div>

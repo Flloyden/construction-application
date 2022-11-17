@@ -9,6 +9,7 @@ const ChangeCustomerInfo = ({
   currentCustomerPhone,
   currentCustomerProperty,
   currentCustomerSSN,
+  currentCustomerWorkList,
 }) => {
   const [customer, setCustomer] = useState({
     id: currentCustomerId,
@@ -17,7 +18,7 @@ const ChangeCustomerInfo = ({
     phoneNumber: currentCustomerPhone,
     propertyDesignation: currentCustomerProperty,
     socialSecurityNumber: currentCustomerSSN,
-    workList: [],
+    workList: currentCustomerWorkList,
     customerNotes: [],
   });
 
