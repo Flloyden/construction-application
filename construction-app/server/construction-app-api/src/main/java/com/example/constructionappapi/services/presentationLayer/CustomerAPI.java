@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.businessLogicLayer.repositories.customer.ICustomerRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,29 +13,27 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 public class CustomerAPI {
 
-    //@Autowired ?? used in video but we dont use it?
-
     @Autowired
-    private ICustomerRepository iCustomerRepository;
+    private CustomerRepository customerRepository;
 
     @PostMapping("/kunder")
     public CustomerEntity createCustomer(@RequestBody CustomerEntity customer) {
-        return iCustomerRepository.createCustomer(customer);
+        return customerRepository.createCustomer(customer);
     }
 
     @GetMapping("/kunder/{id}")
     public Optional<CustomerEntity> getCustomer(@PathVariable final Long id) {
-        return iCustomerRepository.getCustomer(id);
+        return customerRepository.getCustomer(id);
     }
 
     @GetMapping("/kunder")
     public List<CustomerEntity> getAllCustomers() {
-        return iCustomerRepository.getAllCustomers();
+        return customerRepository.getAllCustomers();
     }
 
 
     @DeleteMapping("/kunder/{id}/remove")
     public void deleteCustomer(@PathVariable final Long id) {
-        iCustomerRepository.deleteCustomer(id); // Ska det vara return här?
+        customerRepository.deleteCustomer(id); // Ska det vara return här?
     }
 }

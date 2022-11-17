@@ -34,12 +34,16 @@ public class WorkEntity {
     @JoinColumn(name = "customer_id")
     @JsonBackReference
     private CustomerEntity customer;
-    @JsonManagedReference
     @OneToMany(
             mappedBy = "work",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<CalendarEntity> calendar;
+    @OneToMany(
+            mappedBy = "workEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<CustomerNoteEntity> customerNotes;
 
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;

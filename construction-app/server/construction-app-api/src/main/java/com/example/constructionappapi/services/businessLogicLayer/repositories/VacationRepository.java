@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories.vacation;
+package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;

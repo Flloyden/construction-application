@@ -2,20 +2,12 @@ package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.account.AccountRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.customer.CustomerRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.work.WorkRepository;
-import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
-import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @SpringBootApplication

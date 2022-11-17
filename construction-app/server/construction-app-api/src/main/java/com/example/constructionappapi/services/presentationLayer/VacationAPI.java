@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.businessLogicLayer.repositories.vacation.VacationRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories.customer;
+package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
@@ -14,7 +14,7 @@ import java.util.Optional;
  * Class accessing the customer table in DB
  */
 @Service
-public class CustomerRepository implements ICustomerRepository {
+public class CustomerRepository{
 
     @Autowired
     private CustomerDao customerDao;
@@ -26,7 +26,7 @@ public class CustomerRepository implements ICustomerRepository {
      * @param customer
      * @return
      */
-    @Override
+
     public CustomerEntity createCustomer(CustomerEntity customer) {
         List<WorkEntity> workList;
         if ((workList = customer.getWorkList()) != null) { //Kollar om listan är tom
@@ -45,17 +45,16 @@ public class CustomerRepository implements ICustomerRepository {
         return customerDao.save(customer);
     }
 
-    @Override
     public List<CustomerEntity> getAllCustomers() {
         return customerDao.findAll();
     } //Returns all customers
 
-    @Override
+
     public Optional<CustomerEntity> getCustomer(Long id) {
         return customerDao.findById(id); //Returns customer by ID
     }
 
-    @Override
+
     public void deleteCustomer(Long id) {
         customerDao.deleteById(id); //Deletes customer by ID
     }

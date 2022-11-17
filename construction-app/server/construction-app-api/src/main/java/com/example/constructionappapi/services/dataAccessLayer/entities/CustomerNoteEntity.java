@@ -24,11 +24,20 @@ public class CustomerNoteEntity {
     private long id;
     private LocalDate datePosted;
     private String note;
+    private String timeSpend;
+    private String kmDriven;
+    private String timeEmployee;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonIgnore
     private CustomerEntity customer;
+    @ManyToOne
+    @JoinColumn(name = "work_id")
+    @JsonIgnore
+    private WorkEntity workEntity;
 
     public void setCustomer(CustomerEntity customer) {
     }
+
+
 }

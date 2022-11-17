@@ -1,8 +1,7 @@
-package com.example.constructionappapi.services.businessLogicLayer.repositories.work;
+package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.work.IWorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WorkRepository implements IWorkRepository {
+public class WorkRepository{
 
     @Autowired
     private WorkDao workDao;
@@ -28,7 +27,7 @@ public class WorkRepository implements IWorkRepository {
      * @param work
      * @return
      */
-    @Override
+
     public WorkEntity createWorkEntity(WorkEntity work) {
         return workDao.save(work);
     }
@@ -39,7 +38,7 @@ public class WorkRepository implements IWorkRepository {
      * @param work
      * @return
      */
-    @Override
+
     public WorkEntity editWorkEntity(WorkEntity work) {
         return workDao.save(work);
     }
@@ -49,7 +48,7 @@ public class WorkRepository implements IWorkRepository {
      *
      * @return
      */
-    @Override
+
     public List<WorkEntity> getAllWorkEntities() {
         return workDao.findAll();
     }
@@ -60,7 +59,7 @@ public class WorkRepository implements IWorkRepository {
      * @param id
      * @return
      */
-    @Override
+
     public Optional<WorkEntity> getWorkEntity(Long id) {
         return workDao.findById(id);
     }
@@ -70,12 +69,12 @@ public class WorkRepository implements IWorkRepository {
      *
      * @param id
      */
-    @Override
+
     public void deleteWorkEntity(Long id) {
         workDao.deleteById(id);
     }
 
-    @Override
+
     public WorkEntity getLastInserted() {
         return workDao.findFirstByOrderByIdDesc();
     }
