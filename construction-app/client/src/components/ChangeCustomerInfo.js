@@ -32,6 +32,7 @@ const ChangeCustomerInfo = ({
       [e.target.name]: value,
       [e.target.address]: value,
       [e.target.phoneNumber]: value,
+      workList: currentCustomerWorkList,
       [e.target.propertyDesignation]: value,
     });
   };
