@@ -67,28 +67,20 @@ public class Calendar {
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = work.getStartDate().plusDays(i + n);
 
-            System.out.println("dateToAdd: " + dateToAddTo);
             while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY) {
                 dateToAddTo = dateToAddTo.plusDays(1);
-                System.out.println("Weekend dateToAdd: " + dateToAddTo);
                 n++;
             }
 
             CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
-            System.out.println("dateToAdd: " + dateToAddTo);
             /*If the date where the new work is getting added already contains something the content that is already there needs
               to be shuffled forward x days decided by the daysToShuffleForward variable.*/
             //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
-                printCalendar();
                 shuffleForward(dateToAddTo, daysToShuffleForward);
             } else daysToShuffleForward--;/*If the spot where new work is being added is free all future work that needs to be
             shuffled forward should be shuffled forward one day less.*/
-
-            if (dateToAddTo.equals(LocalDate.of(2022, 12, 7))) {
-                System.out.println("boop");
-            }
 
             //Add work to the specified date.
             calendarEntity = calendarRepository.save(calendarEntity);
