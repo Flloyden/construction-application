@@ -5,7 +5,6 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Customer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,17 +22,17 @@ public class CustomerNoteRepository{
         return null;
     }
 
-    public List<CustomerNoteEntity> getAllCustomerNotes() { //TODO baserat på work_id
-        return null;
+    public Optional<CustomerNoteEntity> getAllCustomerNotes(Long work_id) { //TODO baserat på work_id
+        return customerNoteDao.findByWork_id(work_id);
     }
 
 
     public Optional<CustomerNoteEntity> getCustomerNote(Long id) {
-        return Optional.empty();
+        return customerNoteDao.findById(id);
     }
 
 
-    public void deleteCustomer(Long id) {
-
+    public void deleteCustomerNote(Long id) {
+        customerNoteDao.deleteById(id);
     }
 }
