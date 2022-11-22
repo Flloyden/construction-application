@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import ApiConnector from "../services/ApiConnector";
+import CheckWarranties from "./CheckWarranties";
 
 export default function Home() {
 
@@ -12,11 +14,13 @@ export default function Home() {
         <div className='border-2 border-gray-800 p-4 shadow-md flex rounded-md align-middle items-center justify-center w-1/5'><p><span className='font-bold'>Antal semesterdagar:</span> 26</p></div>
       </div>
       <div className='grid grid-cols-2 gap-4 h-2/4 mt-4'>
-        <div className='border-2 border-gray-800 shadow-md rounded-md align-middle items-center justify-center'>
+        <div className='border-2 border-gray-800 shadow-md rounded-md'>
           <div className='flex w-full h-2/4 border-b-2 align-middle items-center justify-center hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white'>Pågående jobb</div>
           <div className='flex w-full h-2/4 align-middle items-center justify-center hover:bg-gray-800  duration-300 hover:cursor-pointer hover:text-white'>Kommande jobb</div>
         </div>
-        <div className='border-2 border-gray-800 p-4 shadow-md flex rounded-md align-middle items-center justify-center'>Utgånde garanti</div>
+        <div className='border-2 border-gray-800 shadow-md rounded-md align-middle items-center justify-center w-full h-full'>
+          <CheckWarranties />
+        </div>
       </div>
       <div className='mt-4 justify-between flex gap-4 text-white h-1/4'>
         <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200'>Semester</button>
