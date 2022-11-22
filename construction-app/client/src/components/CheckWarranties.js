@@ -58,7 +58,7 @@ export default function CheckWarranties() {
       {!loading && (
         <div className="w-full h-full">
           {warranties.length < 1 ? (
-            <p className="align-center justify-center items-center flex w-full h-full">Finns ingen</p>
+            <p className="align-center justify-center items-center flex w-full h-full">Finns inga garantier</p>
           ) : (
             <div
               className="align-center justify-center items-center flex w-full h-full hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white"
