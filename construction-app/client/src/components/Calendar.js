@@ -49,6 +49,7 @@ export default function Calendar() {
       try {
         const response = await ApiConnector.getCalendar();
         setCalendarInfo(response.data);
+        console.log(response.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -69,10 +70,16 @@ export default function Calendar() {
   };
 
   const checkDay = (e) => {
-    console.log(e)
     var givenDate = new Date(e);
     var day = givenDate.getDay();
-    var isWeekend = (day === 6) || (day === 0) ? '#7C2D7E': '#fff';
+    var isWeekend = (day === 6) || (day === 0) ? '#dc2626': '#fff';
+    return isWeekend
+  }
+
+  const checkDayText = (e) => {
+    var givenDate = new Date(e);
+    var day = givenDate.getDay();
+    var isWeekend = (day === 6) || (day === 0) ? '#fff': '#000';
     return isWeekend
   }
 
@@ -82,6 +89,11 @@ export default function Calendar() {
         <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
           {!loading && (
             <div className="h-full">
+              <div className="flex gap-4 pb-4">
+                <p className="flex gap-1 items-center"><span className="w-3 h-3 bg-red-600 m-0 rounded-md"></span>Helgdagar</p>
+                <p className="flex gap-1 items-center"><span className="w-3 h-3 bg-emerald-500 m-0 rounded-md"></span>Semesterdagar</p>
+                <p className="flex gap-1 items-center"><span className="w-3 h-3 bg-sky-600 m-0 rounded-md"></span>Jobb</p>
+              </div>
               <FullCalendar
                 plugins={[
                   dayGridPlugin,
@@ -104,19 +116,19 @@ export default function Calendar() {
                 }
                 eventSources={[
                   calendarInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: item.color, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
                   }),
                   holiday.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
                   nextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
                   nextNextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
                   listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
-                    return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: '#000', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
                   }),
                 ]}
                 
@@ -142,9 +154,14 @@ export default function Calendar() {
         </div>
       </BrowserView>
       <MobileView>
-        <div className="p-7 text 2x1 font-semibold h-full">
+        <div className="p-4 text 2x1 font-semibold h-full">
           {!loading && (
-            <div className="h-full">
+            <div className="h-full pb-10">
+              <div className="flex justify-between gap-4 pb-4">
+                <p className="flex gap-1 items-center"><span className="w-3 h-3 bg-red-600 m-0 rounded-md"></span>Helgdagar</p>
+                <p className="flex gap-1 items-center"><span className="w-3 h-3 bg-emerald-500 m-0 rounded-md"></span>Semesterdagar</p>
+                <p className="flex gap-1 items-center"><span className="w-3 h-3 bg-sky-600 m-0 rounded-md"></span>Jobb</p>
+              </div>
               <FullCalendar
                 plugins={[
                   dayGridPlugin,
@@ -154,7 +171,23 @@ export default function Calendar() {
                 ]}
                 initialView="timeline"
                 duration={{ days: 1 }}
-                events={calendarInfo}
+                eventSources={[
+                  calendarInfo.map((item) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                  }),
+                  holiday.map((item) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                  }),
+                  nextYear.map((item) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                  }),
+                  nextNextYear.map((item) => {
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                  }),
+                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
+                    return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
+                  }),
+                ]}
                 height="auto"
                 locale="sv"
                 firstDay={1}
