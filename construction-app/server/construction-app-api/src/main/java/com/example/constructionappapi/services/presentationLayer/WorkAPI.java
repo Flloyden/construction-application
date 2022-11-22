@@ -5,6 +5,7 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,18 @@ public class WorkAPI {
     @Autowired
     private CustomerRepository customerRepository;
 
-    private Calendar calendar = CalendarSingleton.getCalendar();
+    private final Calendar calendar = CalendarSingleton.getCalendar();
 
     @PostMapping("/kunder/work/save")
     public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
+         /* TODO: Probably a better way of saving work. With work as request body.
+        Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
+        if (customer.isPresent()) {
+            work.setCustomer(customer.get());
+            calendar.addWork(work);
+        }
+         */
+
         CustomerEntity customerEntity = customerRepository.createCustomer(customer);
         calendar.addWork(workRepository.getLastInserted());
 

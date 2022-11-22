@@ -1,6 +1,8 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
+import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
@@ -14,7 +16,7 @@ import java.util.Optional;
  * Class accessing the customer table in DB
  */
 @Service
-public class CustomerRepository{
+public class CustomerRepository {
 
     @Autowired
     private CustomerDao customerDao;
@@ -31,7 +33,14 @@ public class CustomerRepository{
         List<WorkEntity> workList;
         if ((workList = customer.getWorkList()) != null) { //Kollar om listan är tom
             for (WorkEntity work : workList) {
-                work.setCustomer(customer); //om inte tom -> assign work till en customer.
+                work.setCustomer(customer);//om inte tom -> assign work till en customer.
+
+                List<CalendarEntity> calendarList;
+                if ((calendarList = work.getCalendar()) != null) {
+                    for (CalendarEntity calendarEntity : calendarList) {
+                        calendarEntity.setWork(work);
+                    }
+                }
             }
         }
 
