@@ -5,6 +5,7 @@ const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
 const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
 const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
+const NOTES_API = "http://localhost:8080/kunder/notes/save";
 
 class ApiConnector {
   authenicate(){
@@ -68,6 +69,11 @@ class ApiConnector {
   getCalendar() {
     //Gets all existing info about calendar from the database
     return axios.get(CALENDAR_API_BASE_URL);
+  }
+
+  getNotes() {
+    //Gets all existing info about calendar from the database
+    return axios.get(NOTES_API);
   }
 }
 

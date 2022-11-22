@@ -9,8 +9,8 @@ import AddWork from "./AddWork";
 import ChangeCustomerInfo from "./ChangeCustomerInfo";
 import Modal from "./Modal";
 import Work from "./Work";
-import { RiCloseLine } from "react-icons/ri";
-import { RiPencilFill } from "react-icons/ri";
+import AddCustomerNote from "./AddCustomerNote";
+import Notes from "./Notes";
 
 export default function Customer() {
   const navigate = useNavigate();
@@ -162,123 +162,8 @@ export default function Customer() {
               </div>
             </div>
             <div className="flex-1">
-              <div className="w-full bg-gray-700 rounded-md p-4">
-                <h1 className="text-2xl w-full text-white">
-                  Lägg till ny anteckning
-                </h1>
-                <div className="w-full flex gap-2">
-                  <div className="mt-4 w-1/4">
-                    <label className="mb-2 text-sm font-medium text-white">
-                      Datum:{" "}
-                    </label>
-                    <input
-                      className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                      type="text"
-                      name="name"
-                      required
-                    ></input>
-                  </div>
-
-                  <div className="mt-4 w-1/4">
-                    <label className="mb-2 text-sm font-medium text-white">
-                      Jobb:{" "}
-                    </label>
-                    <input
-                      className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                      type="text"
-                      name="address"
-                    ></input>
-                  </div>
-
-                  <div className="mt-4 w-1/4">
-                    <label className="mb-2 text-sm font-medium text-white">
-                      Tid:{" "}
-                    </label>
-                    <input
-                      className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                      type="text"
-                      name="phoneNumber"
-                    ></input>
-                  </div>
-
-                  <div className="mt-4 w-1/4">
-                    <label className="mb-2 text-sm font-medium text-white">
-                      Körning:{" "}
-                    </label>
-                    <input
-                      className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                      type="text"
-                      name="propertyDesignation"
-                    ></input>
-                  </div>
-
-                  <div className="mt-4 w-1/4">
-                    <label className="mb-2 text-sm font-medium text-white">
-                      Anställd tid:{" "}
-                    </label>
-                    <input
-                      className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                      type="text"
-                      name="socialSecurityNumber"
-                    ></input>
-                  </div>
-
-                  <div className="flex w-min gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto">
-                    <button className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white">
-                      Spara
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <h2 className="text-3xl pt-10 pb-2">Anteckningar</h2>
-              <div className="bg-gray-700 py-2 rounded-md">
-                <table className="w-full text-sm text-left text-gray-400">
-                  <thead className="text-xs uppercase bg-gray-700 text-gray-400">
-                    <tr>
-                      <th scope="col" className="py-3 px-6">
-                        Datum
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        Jobb
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        Tid
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        Körning
-                      </th>
-                      <th scope="col" className="py-3 px-6">
-                        Antälld tid
-                      </th>
-                      <th scope="col" className="max-w-fit text-center">
-                        Åtgärd
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200">
-                      <th
-                        scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
-                      ></th>
-                      <td className="py-4 px-6 text-white"></td>
-                      <td className="py-4 px-6"></td>
-                      <td className="py-4 px-6"></td>
-                      <td className="py-4 px-6"></td>
-                      <td className="flex justify-around py-2 items-end">
-                        <div className="flex justify-end">
-                          <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 mr-2 text-blue-600 h-fit hover:bg-slate-200">
-                            <RiPencilFill />
-                          </button>
-                          <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 text-red-600 h-fit hover:bg-slate-200">
-                            <RiCloseLine />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <AddCustomerNote />
+              <Notes />
             </div>
           </div>
         )}
