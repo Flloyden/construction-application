@@ -13,7 +13,7 @@ import java.util.*;
 public class Calendar {
     private CalendarRepository calendarRepository;
     private WorkRepository workRepository;
-    ArrayList<VacationEntity> vacationDays = new ArrayList<>();
+    private ArrayList<VacationEntity> vacationDays = new ArrayList<>();
 
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
 
