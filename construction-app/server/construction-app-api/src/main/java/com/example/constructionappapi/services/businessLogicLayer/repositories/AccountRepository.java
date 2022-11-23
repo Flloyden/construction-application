@@ -20,10 +20,6 @@ public class AccountRepository{
         return accountDao.save(account);
     }
 
-    public AccountEntity editAccount(AccountEntity account) {
-        return accountDao.save(account);
-    }
-
     public List<AccountEntity> getAllAccountEntities() {
         return accountDao.findAll();
     }

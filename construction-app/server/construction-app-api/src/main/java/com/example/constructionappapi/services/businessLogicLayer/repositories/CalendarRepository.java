@@ -27,10 +27,6 @@ public class CalendarRepository{
         return calendarDao.save(calendar);
     }
 
-    public CalendarEntity editCalendar(CalendarEntity calendar) {
-        return calendarDao.save(calendar);
-    }
-
     public String getAllCalendarEntites() {
         return calendar.toString();
     }

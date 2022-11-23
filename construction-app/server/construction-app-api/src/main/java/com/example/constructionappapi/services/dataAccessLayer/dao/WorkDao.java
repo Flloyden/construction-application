@@ -4,6 +4,8 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 /**
  * A class that gives access to interaction with table Work in the DB (save, find, delete,
@@ -12,4 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     WorkEntity findFirstByOrderByIdDesc();
+
+    WorkEntity findFirstByOrderByStartDateDesc();
 }

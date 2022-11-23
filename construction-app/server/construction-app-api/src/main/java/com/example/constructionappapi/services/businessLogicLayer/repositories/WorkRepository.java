@@ -17,7 +17,8 @@ public class WorkRepository{
     private WorkDao workDao;
     private Calendar calendar = CalendarSingleton.getCalendar();
 
-    public WorkRepository(){
+    public WorkRepository()
+    {
         calendar.setWorkRepository(this);
     }
 
@@ -77,5 +78,10 @@ public class WorkRepository{
 
     public WorkEntity getLastInserted() {
         return workDao.findFirstByOrderByIdDesc();
+    }
+
+    public WorkEntity checkForActiveWork()
+    {
+        return workDao.findFirstByOrderByStartDateDesc();
     }
 }

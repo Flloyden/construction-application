@@ -12,6 +12,11 @@ import java.util.List;
 @Entity //to generate Costumer table
 @Table(name = "customer")
 @Data
+@NamedNativeQuery(name = "Customer.findActiveCustomerByDate", query = "SELECT customer.name, customer.address \n" +
+        "FROM construction_system.customer\n" +
+        "INNER JOIN construction_system.work \n" +
+        "ON customer.id = work.customer_id\n" +
+        "WHERE work.start_date = \"?1\";", resultClass = CustomerEntity.class)
 @AllArgsConstructor
 @NoArgsConstructor
 /**
