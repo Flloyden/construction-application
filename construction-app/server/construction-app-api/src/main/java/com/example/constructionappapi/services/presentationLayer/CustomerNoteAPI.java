@@ -20,7 +20,7 @@ public class CustomerNoteAPI {
     private CustomerNoteRepository customerNoteRepository;
 
     @PostMapping("kunder/anteckningar/save")
-    public CustomerNoteEntity createCostumerNote(@RequestBody CustomerNoteEntity customerNote,  WorkEntity work) {
+    public CustomerNoteEntity createCostumerNote(@RequestBody CustomerNoteEntity customerNote, WorkEntity work) {
         return customerNoteRepository.createCustomerNote(customerNote, work);
     }
 
@@ -30,8 +30,9 @@ public class CustomerNoteAPI {
     }
 
     @GetMapping("kunder/anteckningar/{customerId}")
-    public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable CustomerEntity customer) {
-        return customerNoteRepository.getAllNotesForCustomer(customer);
+    public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable Long customerId) {
+        return customerNoteRepository.findAllByCustomerId(customerId);
+        //return customerNoteRepository.getAllNotesForCustomer(customerId);
     }
 
     @DeleteMapping("kunder/anteckningar/{customerId}/remove")

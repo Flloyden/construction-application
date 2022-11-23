@@ -13,7 +13,7 @@ import java.util.List;
  * Class accessing the customer note table in DB
  */
 @Service
-public class CustomerNoteRepository{
+public class CustomerNoteRepository {
 
     @Autowired
     private CustomerNoteDao customerNoteDao;
@@ -34,6 +34,10 @@ public class CustomerNoteRepository{
 
     public List<CustomerNoteEntity> getAllNotesForCustomer(CustomerEntity customer) {
         return customer.getCustomerNotes();
+    }
+
+    public List<CustomerNoteEntity> findAllByCustomerId(Long customerId) {
+        return customerNoteDao.findAllByCustomerId(customerId);
     }
 
     public void deleteNote(Long customerId) {
