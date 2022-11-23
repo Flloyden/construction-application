@@ -67,7 +67,6 @@ public class WorkAPI {
     @GetMapping("/kunder/work")
     public List<WorkEntity> getAllWorkEntities() {
         return workRepository.getAllWorkEntities();
-
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")

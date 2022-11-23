@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,9 +44,16 @@ public class WorkEntity {
             orphanRemoval = true)
     private List<CustomerNoteEntity> customerNotes;
 
+    public List<CustomerNoteEntity> getCustomerNotes() {
+        return customerNotes;
+    }
+
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
     }
 
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
 }
 

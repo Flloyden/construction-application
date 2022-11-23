@@ -1,6 +1,5 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
-import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
@@ -47,7 +46,7 @@ public class CustomerRepository {
         List<CustomerNoteEntity> customerNotes;
         if ((customerNotes = customer.getCustomerNotes()) != null) { // Kollar om listan är tom
             for (CustomerNoteEntity customerNoteEntity : customerNotes) {
-                customerNoteEntity.setCustomer(customer); //om inte tom -> assignar customernotes till customer
+                customerNoteEntity.setCustomerForNote(customer); //om inte tom -> assignar customernotes till customer
             }
         }
 

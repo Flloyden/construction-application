@@ -36,8 +36,11 @@ public class CustomerNoteEntity {
     @JsonIgnore
     private WorkEntity workEntity;
 
-    public void setCustomer(CustomerEntity customer) {
+    public void setCustomerForNote(CustomerEntity customer) {
+        this.customer = customer;
     }
-
+    public void setWorkForNote(WorkEntity workEntity) {
+        this.workEntity = workEntity;
+    }
 
 }
