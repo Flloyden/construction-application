@@ -4,10 +4,13 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @SpringBootApplication
@@ -66,6 +69,12 @@ public class StartServer {
             calendar.addWork(door);
              */
             calendar.printCalendar();
+
+            //------------------------- Test anteckningsapi
+            //WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
+            //workAPI.saveWork(new CustomerEntity(0L, "testt", "test", "678", "test", "9999", LocalDate.now(), new ArrayList<>(), new ArrayList<>()));
+
+
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }
