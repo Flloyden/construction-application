@@ -123,6 +123,27 @@ public class Calendar {
         });
     }
 
+    public WorkEntity updateWork(WorkEntity work) {
+        String ANSI_RED = "\u001B[31m";
+        WorkEntity updatedWork = workRepository.createWorkEntity(work);
+        System.out.println(ANSI_RED + "Deleting old calendar posts." + ANSI_RED);
+        calendarRepository.deleteAllByWorkId(updatedWork.getId());
+        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == updatedWork.getId());
+
+        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
+        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
+        calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
+            if (calendarEntity.getDate().isAfter(work.getStartDate())) {
+                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
+            }
+        });
+
+        System.out.println(ANSI_RED + "Adding new calendar posts." + ANSI_RED);
+        addWork(updatedWork);
+
+        return workRepository.getWorkEntity(updatedWork.getId()).get();
+    }
+
     public LocalDate moveCalendarItemBackwards(WorkEntity workToMove, CalendarEntity calendarEntity, LocalDate lastDateMovedTo) {
         LocalDate possibleDate = calendarEntity.getDate().minusDays(1L);
         LocalDate freeCalendarSpot = null;

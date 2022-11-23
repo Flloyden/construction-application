@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.dataAccessLayer.dao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -15,4 +16,7 @@ public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
     CalendarEntity findFirstByDate(LocalDate date);
 
     void deleteAllByDate(LocalDate date);
+
+    @Transactional
+    void deleteAllByWorkId(long id);
 }
