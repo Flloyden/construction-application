@@ -5,7 +5,6 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,24 +43,7 @@ public class WorkAPI {
 
     @PostMapping("/kunder/{customerId}/work/update")
     public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
-        Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
-
-        if (customer.isPresent()) {
-            work.setCustomer(customer.get());
-            //Get the pre-update work.
-            Optional<WorkEntity> preUpdateWork = workRepository.getWorkEntity(work.getId());
-            if (preUpdateWork.isPresent()) {
-                WorkEntity updatedWork;
-                //Check if date has been changed.
-                if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                    updatedWork = calendar.updateWork(work);
-                }
-            }
-
-            return workRepository.createWorkEntity(work);
-        }
-
-        return workRepository.getWorkEntity(work.getId()).get();
+        return workRepository.updateWork(customerId, work);
     }
 
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
