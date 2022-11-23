@@ -46,6 +46,17 @@ public class WorkAPI {
     public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
 
+        //Get the pre-update work.
+        Optional<WorkEntity> preUpdateWork = workRepository.getWorkEntity(work.getId());
+        if (preUpdateWork.isPresent()) {
+            //Check if date has been changed.
+            if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
+                calendar.removeWork(preUpdateWork.get());
+                calendar.addWork(work);
+            }
+        }
+
+
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
             return workRepository.createWorkEntity(work);
