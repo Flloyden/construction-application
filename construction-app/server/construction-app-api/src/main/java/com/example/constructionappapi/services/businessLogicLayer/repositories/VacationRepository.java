@@ -28,14 +28,18 @@ public class VacationRepository {
      * @return
      */
     public VacationEntity saveVacation(VacationEntity vacationEntity) {
-        VacationEntity saveVacationEntity = vacationDao.save(vacationEntity);
-
-        for (int i = 0; i < saveVacationEntity.getNumberOfDays(); i++) {
-            VacationCalendarEntity vacationCalendarEntity = new VacationCalendarEntity(0L, saveVacationEntity.getStartDate().plusDays(i), saveVacationEntity);
-            vacationCalendarDao.save(vacationCalendarEntity);
+        if (vacationCalendarDao.findFirstByDateLessThanEqualAndDateGreaterThanEqual(vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()), vacationEntity.getStartDate()).isEmpty()) {
+            VacationEntity saveVacationEntity = vacationDao.save(vacationEntity);
+            for (int i = 0; i < saveVacationEntity.getNumberOfDays(); i++) {
+                VacationCalendarEntity vacationCalendarEntity = new VacationCalendarEntity(0L, saveVacationEntity.getStartDate().plusDays(i), saveVacationEntity);
+                vacationCalendarDao.save(vacationCalendarEntity);
+            }
+            return saveVacationEntity;
+        } else {
+            System.out.println("!!!!!!!!!!!!!!!!Date taken!!!!!!!!!!!!!!!!!");
         }
 
-        return saveVacationEntity;
+        return null;
     }
 
     /**

@@ -4,7 +4,6 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
@@ -61,9 +60,13 @@ public class StartServer {
     }
 
     private static void testAddVacation(ConfigurableApplicationContext configurableApplicationContext) {
-        VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now(), 10, new ArrayList<>());
+        VacationEntity vacationEntity1 = new VacationEntity(0L, "test", LocalDate.now(), 10, new ArrayList<>());
+        VacationEntity vacationEntity2 = new VacationEntity(0L, "test", LocalDate.now(), 10, new ArrayList<>());
+        VacationEntity vacationEntity3 = new VacationEntity(0L, "test", LocalDate.now().plusDays(20), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
-        vacationAPI.saveVacation(vacationEntity);
+        vacationAPI.saveVacation(vacationEntity1);
+        vacationAPI.saveVacation(vacationEntity2);
+        vacationAPI.saveVacation(vacationEntity3);
     }
 
     private static void testAddWork(ConfigurableApplicationContext configurableApplicationContext) {
