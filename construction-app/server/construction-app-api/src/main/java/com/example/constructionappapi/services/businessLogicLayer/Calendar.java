@@ -60,6 +60,39 @@ public class Calendar {
         return true;
     }
 
+    /*
+    public void addVacation(VacationEntity vacation) {
+        int daysToAdd = vacation.getNumberOfDays();
+        int daysToShuffleForward = daysToAdd;
+
+        long n = 0L;
+        for (int i = 0; i < daysToAdd; i++) {
+            LocalDate dateToAddTo = vacation.getStartDate().plusDays(i + n);
+
+
+            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                dateToAddTo = dateToAddTo.plusDays(1);
+                n++;
+            }
+
+            CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
+
+            //If the date where the new work is getting added already contains something the content that is already there needs
+            //to be shuffled forward x days decided by the daysToShuffleForward variable
+            //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
+            if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
+                shuffleForward(dateToAddTo, daysToShuffleForward);
+            } else daysToShuffleForward--;//If the spot where new work is being added is free all future work that needs to be
+            //shuffled forward should be shuffled forward one day less.
+
+            //Add work to the specified date.
+            calendarEntity = calendarRepository.save(calendarEntity);
+            //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
+            calendarDates.put(calendarEntity, work);
+        }
+    }
+     */
+
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
@@ -137,12 +170,14 @@ public class Calendar {
             if (!calendarDates.containsKey(new CalendarEntity(possibleDate))) {
                 if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
                     boolean vacationCheck = true;
+                    /*
                     for (VacationEntity vacationEntity : vacationDays) {
                         if (vacationEntity.getVacationDate().equals(possibleDate)) {
                             vacationCheck = false;
                             break;
                         }
                     }
+                     */
 
                     if (vacationCheck) {
                         freeCalendarSpot = possibleDate;
@@ -181,6 +216,7 @@ public class Calendar {
 
         s.append("[");
 
+        /*
         for (VacationEntity vacationEntity : vacationDays) {
             s.append("{");
             s.append("\"title\":").append("\"").append("Semester").append("\",");
@@ -188,6 +224,7 @@ public class Calendar {
             s.append("\"color\":\"").append("#25C900").append("\"");
             s.append("},");
         }
+         */
         while (entrySet.hasNext()) {
             Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
             s.append("{");

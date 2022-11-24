@@ -5,8 +5,6 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Vacation
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -18,22 +16,24 @@ public class VacationAPI {
     private VacationRepository vacationRepository;
 
     @PostMapping("/semester")
-    public VacationEntity saveVacationDate(@RequestBody VacationEntity vacationEntity) {
+    public VacationEntity saveVacation(@RequestBody VacationEntity vacationEntity) {
         return vacationRepository.saveVacation(vacationEntity);
     }
 
     @GetMapping("/semester/{id}")
-    public Optional<VacationEntity> getVacation(@PathVariable final LocalDate id) {
+    public Optional<VacationEntity> getVacation(@PathVariable final Long id) {
         return vacationRepository.getVacation(id);
     }
 
+    /*
     @GetMapping("/semester")
     public List<VacationEntity> getAllVacationDates() {
         return vacationRepository.getAllVacationEntities();
     }
+     */
 
     @DeleteMapping("/semester/{id}/remove")
-    public void deleteVacation(@PathVariable final LocalDate id) {
+    public void deleteVacation(@PathVariable final Long id) {
         vacationRepository.deleteVacation(id);
     }
 }

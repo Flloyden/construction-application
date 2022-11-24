@@ -4,11 +4,14 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.presentationLayer.VacationAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -48,12 +51,19 @@ public class StartServer {
                 accountRepository.createAccount(accountEntity);
             }
 
+            //testAddVacation(configurableApplicationContext);
             //testAddWork(configurableApplicationContext);
             //testRemoveWork(configurableApplicationContext);
             //testWorkDateChange(configurableApplicationContext);
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }
+    }
+
+    private static void testAddVacation(ConfigurableApplicationContext configurableApplicationContext) {
+        VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now(), 10, new ArrayList<>());
+        VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
+        vacationAPI.saveVacation(vacationEntity);
     }
 
     private static void testAddWork(ConfigurableApplicationContext configurableApplicationContext) {
