@@ -50,6 +50,8 @@ public class StartServer {
                 accountRepository.createAccount(accountEntity);
             }
 
+            //testMoveWorkForwardsOnAddVacation(configurableApplicationContext);
+            //testMoveWorkBackwardsOnRemoveVacation(configurableApplicationContext);
             //testAddVacation(configurableApplicationContext);
             //testAddWork(configurableApplicationContext);
             //testRemoveWork(configurableApplicationContext);
@@ -67,6 +69,42 @@ public class StartServer {
         vacationAPI.saveVacation(vacationEntity1);
         vacationAPI.saveVacation(vacationEntity2);
         vacationAPI.saveVacation(vacationEntity3);
+    }
+
+    private static void testMoveWorkForwardsOnAddVacation(ConfigurableApplicationContext configurableApplicationContext) {
+        Calendar calendar = CalendarSingleton.getCalendar();
+
+        CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        customer = customerRepository.createCustomer(customer);
+
+        WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
+        WorkEntity door = new WorkEntity(0L, "Door", LocalDate.now(), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>());
+        door = workRepository.createWorkEntity(door);
+        calendar.addWork(door);
+
+        VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
+        VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
+        vacationAPI.saveVacation(vacationEntity);
+    }
+
+    private static void testMoveWorkBackwardsOnRemoveVacation(ConfigurableApplicationContext configurableApplicationContext) {
+        Calendar calendar = CalendarSingleton.getCalendar();
+
+        CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        customer = customerRepository.createCustomer(customer);
+
+        WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
+        WorkEntity door = new WorkEntity(0L, "Door", LocalDate.now(), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>());
+        door = workRepository.createWorkEntity(door);
+        calendar.addWork(door);
+
+        VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
+        VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
+        vacationAPI.saveVacation(vacationEntity);
+
+        vacationAPI.deleteVacation(vacationEntity.getId());
     }
 
     private static void testAddWork(ConfigurableApplicationContext configurableApplicationContext) {

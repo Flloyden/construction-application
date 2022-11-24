@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.businessLogicLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
@@ -16,6 +17,7 @@ public class Calendar {
     private ArrayList<VacationEntity> vacationDays = new ArrayList<>();
 
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
+    public HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
 
     /**
      * Retrieves calendar items from the database and populates the hash-map with them.
@@ -60,44 +62,50 @@ public class Calendar {
         return true;
     }
 
-    /*
     public void addVacation(VacationEntity vacation) {
         int daysToAdd = vacation.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
 
         long n = 0L;
         for (int i = 0; i < daysToAdd; i++) {
-            LocalDate dateToAddTo = vacation.getStartDate().plusDays(i + n);
-
-
-            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                dateToAddTo = dateToAddTo.plusDays(1);
-                n++;
-            }
-
-            CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
+            LocalDate dateToAddTo = vacation.getStartDate().plusDays(i);
 
             //If the date where the new work is getting added already contains something the content that is already there needs
             //to be shuffled forward x days decided by the daysToShuffleForward variable
             //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
                 shuffleForward(dateToAddTo, daysToShuffleForward);
-            } else daysToShuffleForward--;//If the spot where new work is being added is free all future work that needs to be
+            } else
+                daysToShuffleForward--;//If the spot where new work is being added is free all future work that needs to be
             //shuffled forward should be shuffled forward one day less.
 
             //Add work to the specified date.
-            calendarEntity = calendarRepository.save(calendarEntity);
+            //calendarEntity = calendarRepository.save(calendarEntity);
             //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
-            calendarDates.put(calendarEntity, work);
+            vacationDates.put(vacation.getVacationCalendar().get(i), vacation);
         }
     }
-     */
+
+    public void removeVacation(VacationEntity vacation) {
+        vacationDates.entrySet().removeIf(item -> item.getValue().getId() == vacation.getId());
+
+        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
+        moveCalendarItemBackwards(vacation.getStartDate());
+        /*
+        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
+        calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
+            if (calendarEntity.getDate().isAfter(work.getStartDate())) {
+                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
+            }
+        });
+         */
+    }
 
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
 
-        while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
             newDate = newDate.plusDays(1);
         }
 
@@ -118,38 +126,51 @@ public class Calendar {
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
+        moveCalendarItemBackwards(work.getStartDate());
+        /*
         LocalDate[] lastDateMovedTo = {LocalDate.MIN};
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
             if (calendarEntity.getDate().isAfter(work.getStartDate())) {
                 lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
             }
         });
+         */
     }
 
     /**
      * Updates the dates for a work in the calendar by removing the old dates and then adding the new ones.
+     *
      * @param work The new work-entity.
      * @return The updated work-entity.
      */
     public WorkEntity updateWork(WorkEntity work) {
-        String ANSI_RED = "\u001B[31m";
         WorkEntity updatedWork = workRepository.createWorkEntity(work);
-        System.out.println(ANSI_RED + "Deleting old calendar posts." + ANSI_RED);
         calendarRepository.deleteAllByWorkId(updatedWork.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == updatedWork.getId());
 
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
+        moveCalendarItemBackwards(work.getStartDate());
+        /*
         LocalDate[] lastDateMovedTo = {LocalDate.MIN};
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
             if (calendarEntity.getDate().isAfter(work.getStartDate())) {
                 lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
             }
         });
+         */
 
-        System.out.println(ANSI_RED + "Adding new calendar posts." + ANSI_RED);
         addWork(updatedWork);
 
         return workRepository.getWorkEntity(updatedWork.getId()).get();
+    }
+
+    public void moveCalendarItemBackwards(LocalDate startDate) {
+        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
+        calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
+            if (calendarEntity.getDate().isAfter(startDate)) {
+                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
+            }
+        });
     }
 
     public LocalDate moveCalendarItemBackwards(WorkEntity workToMove, CalendarEntity calendarEntity, LocalDate lastDateMovedTo) {
@@ -168,18 +189,8 @@ public class Calendar {
 
             //Set freeCalenderSpot to possibleDate if the spot in the calendar is free, and it's not on a weekend.
             if (!calendarDates.containsKey(new CalendarEntity(possibleDate))) {
-                if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
-                    boolean vacationCheck = true;
-                    /*
-                    for (VacationEntity vacationEntity : vacationDays) {
-                        if (vacationEntity.getVacationDate().equals(possibleDate)) {
-                            vacationCheck = false;
-                            break;
-                        }
-                    }
-                     */
-
-                    if (vacationCheck) {
+                if (!vacationDates.containsKey(new VacationCalendarEntity(possibleDate))) {
+                    if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
                         freeCalendarSpot = possibleDate;
                     }
                 }

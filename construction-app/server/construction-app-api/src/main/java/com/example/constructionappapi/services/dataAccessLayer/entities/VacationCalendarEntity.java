@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VacationCalendarEntity {
+public class VacationCalendarEntity implements Comparable<VacationCalendarEntity>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -22,4 +22,26 @@ public class VacationCalendarEntity {
     @JoinColumn(name = "vacation_id")
     @JsonBackReference
     private VacationEntity vacation;
+
+    public VacationCalendarEntity(LocalDate date) {
+        this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != VacationCalendarEntity.class) return false;
+
+        VacationCalendarEntity vacationCalendarEntity = (VacationCalendarEntity) obj;
+        return date.equals(vacationCalendarEntity.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return date.hashCode();
+    }
+
+    @Override
+    public int compareTo(VacationCalendarEntity o) {
+        return date.compareTo(o.date);
+    }
 }

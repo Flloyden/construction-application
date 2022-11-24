@@ -8,6 +8,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Vacation
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,12 +30,16 @@ public class VacationRepository {
      */
     public VacationEntity saveVacation(VacationEntity vacationEntity) {
         if (vacationCalendarDao.findFirstByDateLessThanEqualAndDateGreaterThanEqual(vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()), vacationEntity.getStartDate()).isEmpty()) {
-            VacationEntity saveVacationEntity = vacationDao.save(vacationEntity);
-            for (int i = 0; i < saveVacationEntity.getNumberOfDays(); i++) {
-                VacationCalendarEntity vacationCalendarEntity = new VacationCalendarEntity(0L, saveVacationEntity.getStartDate().plusDays(i), saveVacationEntity);
+            VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
+
+            for (int i = 0; i < savedVacationEntity.getNumberOfDays(); i++) {
+                VacationCalendarEntity vacationCalendarEntity = new VacationCalendarEntity(0L, savedVacationEntity.getStartDate().plusDays(i), savedVacationEntity);
                 vacationCalendarDao.save(vacationCalendarEntity);
             }
-            return saveVacationEntity;
+
+            calendar.addVacation(vacationDao.findById(savedVacationEntity.getId()).get());
+
+            return savedVacationEntity;
         } else {
             System.out.println("!!!!!!!!!!!!!!!!Date taken!!!!!!!!!!!!!!!!!");
         }
@@ -67,6 +72,11 @@ public class VacationRepository {
      * @param id
      */
     public void deleteVacation(Long id) {
-        vacationDao.deleteById(id);
+        Optional<VacationEntity> vacationEntity = vacationDao.findById(id);
+
+        if (vacationEntity.isPresent()) {
+            vacationDao.deleteById(id);
+            calendar.removeVacation(vacationEntity.get());
+        }
     }
 }
