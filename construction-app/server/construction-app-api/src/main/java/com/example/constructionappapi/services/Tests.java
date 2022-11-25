@@ -32,6 +32,54 @@ public class Tests {
         vacationAPI.saveVacation(vacationEntity3);
     }
 
+    public void testSkipVacationDatesWhenAddingWork() {
+        Calendar calendar = CalendarSingleton.getCalendar();
+
+        VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
+        VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
+        vacationAPI.saveVacation(vacationEntity);
+
+        CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        customer = customerRepository.createCustomer(customer);
+
+        WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
+        WorkEntity door = new WorkEntity(0L, "Door", LocalDate.now(), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>());
+        door = workRepository.createWorkEntity(door);
+        calendar.addWork(door);
+
+        calendar.printCalendar();
+    }
+
+    public void testSkipVacationDatesWhenRemovingWork() {
+        Calendar calendar = CalendarSingleton.getCalendar();
+
+        VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
+        VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
+        vacationAPI.saveVacation(vacationEntity);
+
+        CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        customer = customerRepository.createCustomer(customer);
+
+        WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
+        WorkEntity door = new WorkEntity(0L, "Door", LocalDate.now(), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>());
+        door = workRepository.createWorkEntity(door);
+        calendar.addWork(door);
+
+        WorkEntity fence = new WorkEntity(0L, "Fence", LocalDate.now().plusDays(3), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>());
+        fence = workRepository.createWorkEntity(fence);
+        calendar.addWork(fence);
+
+        calendar.printCalendar();
+
+        workRepository.deleteWorkEntity(fence.getId());
+
+        calendar.printCalendar();
+
+        calendar.printVacationCalendar();
+    }
+
     public void testMoveWorkForwardsOnAddVacation() {
         Calendar calendar = CalendarSingleton.getCalendar();
 

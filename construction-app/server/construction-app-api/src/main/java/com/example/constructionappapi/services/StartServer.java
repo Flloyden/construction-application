@@ -45,6 +45,7 @@ public class StartServer {
             }
 
             Tests tests = new Tests(configurableApplicationContext);
+            //tests.testSkipVacationDatesWhenRemovingWork();
             //tests.testMoveWorkBackwardsOnRemoveVacation();
             //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();

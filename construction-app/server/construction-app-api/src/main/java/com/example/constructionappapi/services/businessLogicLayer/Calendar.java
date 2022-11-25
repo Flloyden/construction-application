@@ -41,7 +41,7 @@ public class Calendar {
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = work.getStartDate().plusDays(i + n);
 
-            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
                 dateToAddTo = dateToAddTo.plusDays(1);
                 n++;
             }
@@ -84,7 +84,6 @@ public class Calendar {
     }
 
     public void removeWork(WorkEntity work) {
-        workRepository.deleteWorkEntity(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
         moveCalendarItemBackwards(work.getStartDate());
     }
