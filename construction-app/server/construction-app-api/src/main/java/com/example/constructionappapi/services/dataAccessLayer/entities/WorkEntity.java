@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,14 +10,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * A class creating and giving access to the table Work in DB
+ */
 @Entity
 @Table(name = "work")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class creating and giving access to the table Work in DB
- */
 public class WorkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

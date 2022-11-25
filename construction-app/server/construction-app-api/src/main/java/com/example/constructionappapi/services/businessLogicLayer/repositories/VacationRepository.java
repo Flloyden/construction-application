@@ -8,7 +8,6 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Vacation
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,10 @@ public class VacationRepository {
     private VacationCalendarDao vacationCalendarDao;
 
     private Calendar calendar = CalendarSingleton.getCalendar();
+
+    public VacationRepository() {
+        calendar.setVacationRepository(this);
+    }
 
     /**
      * Saves/Updates(if ID already exists) a vacation date
@@ -37,11 +40,8 @@ public class VacationRepository {
             for (int i = 0; i < savedVacationEntity.getNumberOfDays(); i++) {
                 vacationDates.add(new VacationCalendarEntity(0L, savedVacationEntity.getStartDate().plusDays(i), savedVacationEntity));
             }
-            vacationCalendarDao.saveAll(vacationDates);
-            calendar.addVacation(savedVacationEntity, vacationCalendarDao.saveAll(vacationDates));
-            //vacationCalendarDao.save(vacationCalendarEntity);
 
-            // calendar.addVacation(vacationDao.findById(savedVacationEntity.getId()).get());
+            calendar.addVacation(savedVacationEntity, vacationCalendarDao.saveAll(vacationDates));
 
             return savedVacationEntity;
         } else {
@@ -82,5 +82,13 @@ public class VacationRepository {
             vacationDao.deleteById(id);
             calendar.removeVacation(vacationEntity.get());
         }
+    }
+
+    public List<VacationEntity> findAllVacationEntities() {
+        return vacationDao.findAll();
+    }
+
+    public List<VacationCalendarEntity> findAllVacationCalendarEntities() {
+        return vacationCalendarDao.findAll();
     }
 }

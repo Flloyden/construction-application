@@ -1,6 +1,7 @@
 package com.example.constructionappapi.services.businessLogicLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
@@ -13,6 +14,7 @@ import java.util.*;
 
 public class Calendar {
     private CalendarRepository calendarRepository;
+    private VacationRepository vacationRepository;
     private WorkRepository workRepository;
     private ArrayList<VacationEntity> vacationDays = new ArrayList<>();
 
@@ -24,6 +26,7 @@ public class Calendar {
      */
     public void initializeCalendar() {
         calendarRepository.findAll().forEach(calendarEntity -> calendarDates.put(calendarEntity, calendarEntity.getWork()));
+        vacationRepository.findAllVacationCalendarEntities().forEach(vacationCalendarEntity -> vacationDates.put(vacationCalendarEntity, vacationCalendarEntity.getVacation()));
     }
 
     public boolean addWork(WorkEntity work) {
@@ -60,6 +63,30 @@ public class Calendar {
         }
 
         return true;
+    }
+
+    /**
+     * Updates the dates for a work in the calendar by removing the old dates and then adding the new ones.
+     *
+     * @param work The new work-entity.
+     * @return The updated work-entity.
+     */
+    public WorkEntity updateWork(WorkEntity work) {
+        WorkEntity updatedWork = workRepository.createWorkEntity(work);
+        calendarRepository.deleteAllByWorkId(updatedWork.getId());
+        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == updatedWork.getId());
+
+        moveCalendarItemBackwards(work.getStartDate());
+
+        addWork(updatedWork);
+
+        return workRepository.getWorkEntity(updatedWork.getId()).get();
+    }
+
+    public void removeWork(WorkEntity work) {
+        workRepository.deleteWorkEntity(work.getId());
+        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
+        moveCalendarItemBackwards(work.getStartDate());
     }
 
     public void addVacation(VacationEntity vacation, List<VacationCalendarEntity> vacationDatesToAdd) {
@@ -104,35 +131,8 @@ public class Calendar {
         calendarDates.put(calendarEntity, calendarEntity.getWork());
     }
 
-    public void removeWork(WorkEntity work) {
-        //Remove all map entries containing a work-object that has the same id as the specified work-object.
-        workRepository.deleteWorkEntity(work.getId());
-        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
-
-        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
-        moveCalendarItemBackwards(work.getStartDate());
-    }
-
-    /**
-     * Updates the dates for a work in the calendar by removing the old dates and then adding the new ones.
-     *
-     * @param work The new work-entity.
-     * @return The updated work-entity.
-     */
-    public WorkEntity updateWork(WorkEntity work) {
-        WorkEntity updatedWork = workRepository.createWorkEntity(work);
-        calendarRepository.deleteAllByWorkId(updatedWork.getId());
-        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == updatedWork.getId());
-
-        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
-        moveCalendarItemBackwards(work.getStartDate());
-
-        addWork(updatedWork);
-
-        return workRepository.getWorkEntity(updatedWork.getId()).get();
-    }
-
     public void moveCalendarItemBackwards(LocalDate startDate) {
+        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
         LocalDate[] lastDateMovedTo = {LocalDate.MIN};
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
             if (calendarEntity.getDate().isAfter(startDate)) {
@@ -188,6 +188,16 @@ public class Calendar {
         System.out.println();
     }
 
+    public void printVacationCalendar() {
+        vacationDates.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
+            VacationEntity vacation = vacationDates.get(key);
+            String s = String.format("Key: %s %s %-10s %s | Value: %-5s %s %s %s", key.getId(), key.getDate(), key.getDate().getDayOfWeek(), key.hashCode(), vacation.getName(), vacation.getId(), vacation.getStartDate(), vacation.getNumberOfDays());
+            System.out.println(s);
+        });
+
+        System.out.println();
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -222,6 +232,10 @@ public class Calendar {
 
     public void setWorkRepository(WorkRepository workRepository) {
         this.workRepository = workRepository;
+    }
+
+    public void setVacationRepository(VacationRepository vacationRepository) {
+        this.vacationRepository = vacationRepository;
     }
 }
 

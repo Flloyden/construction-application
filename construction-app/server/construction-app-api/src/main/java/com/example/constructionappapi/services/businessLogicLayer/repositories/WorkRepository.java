@@ -75,7 +75,10 @@ public class WorkRepository {
      */
 
     public void deleteWorkEntity(Long id) {
-        workDao.deleteById(id);
+        if (getWorkEntity(id).isPresent()) {
+            WorkEntity work = getWorkEntity(id).get();
+            calendar.removeWork(work);
+        }
     }
 
 

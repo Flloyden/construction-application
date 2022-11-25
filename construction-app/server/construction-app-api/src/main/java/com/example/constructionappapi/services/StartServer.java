@@ -3,21 +3,15 @@ package com.example.constructionappapi.services;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
-import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
-import com.example.constructionappapi.services.presentationLayer.VacationAPI;
-import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @SpringBootApplication
 public class StartServer {
@@ -54,7 +48,6 @@ public class StartServer {
             //tests.testMoveWorkBackwardsOnRemoveVacation();
             //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();
-
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }
