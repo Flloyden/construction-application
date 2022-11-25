@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +33,15 @@ public class VacationRepository {
         if (vacationCalendarDao.findFirstByDateLessThanEqualAndDateGreaterThanEqual(vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()), vacationEntity.getStartDate()).isEmpty()) {
             VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
 
+            ArrayList<VacationCalendarEntity> vacationDates = new ArrayList<>();
             for (int i = 0; i < savedVacationEntity.getNumberOfDays(); i++) {
-                VacationCalendarEntity vacationCalendarEntity = new VacationCalendarEntity(0L, savedVacationEntity.getStartDate().plusDays(i), savedVacationEntity);
-                vacationCalendarDao.save(vacationCalendarEntity);
+                vacationDates.add(new VacationCalendarEntity(0L, savedVacationEntity.getStartDate().plusDays(i), savedVacationEntity));
             }
+            vacationCalendarDao.saveAll(vacationDates);
+            calendar.addVacation(savedVacationEntity, vacationCalendarDao.saveAll(vacationDates));
+            //vacationCalendarDao.save(vacationCalendarEntity);
 
-            calendar.addVacation(vacationDao.findById(savedVacationEntity.getId()).get());
+            // calendar.addVacation(vacationDao.findById(savedVacationEntity.getId()).get());
 
             return savedVacationEntity;
         } else {

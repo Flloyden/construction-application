@@ -20,7 +20,7 @@ import java.util.List;
 public class VacationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private LocalDate startDate;
     private int numberOfDays;

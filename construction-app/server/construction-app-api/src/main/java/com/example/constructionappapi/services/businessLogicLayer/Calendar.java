@@ -62,7 +62,7 @@ public class Calendar {
         return true;
     }
 
-    public void addVacation(VacationEntity vacation) {
+    public void addVacation(VacationEntity vacation, List<VacationCalendarEntity> vacationDatesToAdd) {
         int daysToAdd = vacation.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
 
@@ -82,7 +82,8 @@ public class Calendar {
             //Add work to the specified date.
             //calendarEntity = calendarRepository.save(calendarEntity);
             //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
-            vacationDates.put(vacation.getVacationCalendar().get(i), vacation);
+            vacationDates.put(vacationDatesToAdd.get(i), vacation);
+            //vacationDates.put(vacation.getVacationCalendar().get(i), vacation);
         }
     }
 

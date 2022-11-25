@@ -16,16 +16,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Tests {
-    private ConfigurableApplicationContext configurableApplicationContext;
+    private final ConfigurableApplicationContext configurableApplicationContext;
 
     public Tests(ConfigurableApplicationContext configurableApplicationContext) {
         this.configurableApplicationContext = configurableApplicationContext;
     }
 
     public void testAddVacation() {
-        VacationEntity vacationEntity1 = new VacationEntity(0L, "test", LocalDate.now(), 10, new ArrayList<>());
-        VacationEntity vacationEntity2 = new VacationEntity(0L, "test", LocalDate.now(), 10, new ArrayList<>());
-        VacationEntity vacationEntity3 = new VacationEntity(0L, "test", LocalDate.now().plusDays(20), 10, new ArrayList<>());
+        VacationEntity vacationEntity1 = new VacationEntity(null, "test", LocalDate.now(), 10, null);
+        VacationEntity vacationEntity2 = new VacationEntity(null, "test", LocalDate.now(), 10, null);
+        VacationEntity vacationEntity3 = new VacationEntity(null, "test", LocalDate.now().plusDays(20), 10, null);
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity1);
         vacationAPI.saveVacation(vacationEntity2);
@@ -47,6 +47,7 @@ public class Tests {
         VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
+        calendar.printCalendar();
     }
 
     public void testMoveWorkBackwardsOnRemoveVacation() {
@@ -63,9 +64,10 @@ public class Tests {
 
         VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
-        vacationAPI.saveVacation(vacationEntity);
+        vacationEntity = vacationAPI.saveVacation(vacationEntity);
 
         vacationAPI.deleteVacation(vacationEntity.getId());
+        calendar.printCalendar();
     }
 
     public void testAddWork() {

@@ -51,6 +51,8 @@ public class StartServer {
             }
 
             Tests tests = new Tests(configurableApplicationContext);
+            //tests.testMoveWorkBackwardsOnRemoveVacation();
+            //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();
 
         } catch (Exception e) {
