@@ -25,7 +25,6 @@ public class VacationEntity {
     private LocalDate startDate;
     private int numberOfDays;
     @OneToMany(
-            fetch = FetchType.EAGER,
             mappedBy = "vacation",
             cascade = CascadeType.ALL,
             orphanRemoval = true)

@@ -70,36 +70,19 @@ public class Calendar {
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = vacation.getStartDate().plusDays(i);
 
-            //If the date where the new work is getting added already contains something the content that is already there needs
-            //to be shuffled forward x days decided by the daysToShuffleForward variable
-            //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
                 shuffleForward(dateToAddTo, daysToShuffleForward);
-            } else
-                daysToShuffleForward--;//If the spot where new work is being added is free all future work that needs to be
-            //shuffled forward should be shuffled forward one day less.
+            } else {
+                daysToShuffleForward--;
+            }
 
-            //Add work to the specified date.
-            //calendarEntity = calendarRepository.save(calendarEntity);
-            //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             vacationDates.put(vacationDatesToAdd.get(i), vacation);
-            //vacationDates.put(vacation.getVacationCalendar().get(i), vacation);
         }
     }
 
     public void removeVacation(VacationEntity vacation) {
         vacationDates.entrySet().removeIf(item -> item.getValue().getId() == vacation.getId());
-
-        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
         moveCalendarItemBackwards(vacation.getStartDate());
-        /*
-        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
-        calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
-            if (calendarEntity.getDate().isAfter(work.getStartDate())) {
-                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
-            }
-        });
-         */
     }
 
     public void shuffleForward(LocalDate date, int daysToShuffle) {
@@ -128,14 +111,6 @@ public class Calendar {
 
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
         moveCalendarItemBackwards(work.getStartDate());
-        /*
-        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
-        calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
-            if (calendarEntity.getDate().isAfter(work.getStartDate())) {
-                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
-            }
-        });
-         */
     }
 
     /**
@@ -151,14 +126,6 @@ public class Calendar {
 
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
         moveCalendarItemBackwards(work.getStartDate());
-        /*
-        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
-        calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
-            if (calendarEntity.getDate().isAfter(work.getStartDate())) {
-                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
-            }
-        });
-         */
 
         addWork(updatedWork);
 
@@ -224,21 +191,13 @@ public class Calendar {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySet = calendarDates.entrySet().iterator();
+        Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySetWork = calendarDates.entrySet().iterator();
+        Iterator<Map.Entry<VacationCalendarEntity, VacationEntity>> entrySetVacation = vacationDates.entrySet().iterator();
 
         s.append("[");
 
-        /*
-        for (VacationEntity vacationEntity : vacationDays) {
-            s.append("{");
-            s.append("\"title\":").append("\"").append("Semester").append("\",");
-            s.append("\"date\":\"").append(vacationEntity.getVacationDate()).append("\",");
-            s.append("\"color\":\"").append("#25C900").append("\"");
-            s.append("},");
-        }
-         */
-        while (entrySet.hasNext()) {
-            Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
+        while (entrySetWork.hasNext()) {
+            Map.Entry<CalendarEntity, WorkEntity> entry = entrySetWork.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
                 s.append("\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
@@ -248,8 +207,9 @@ public class Calendar {
             s.append("\"color\":\"").append("#FF0000").append("\",");
             s.append("\"customerId\":\"").append(entry.getValue().getCustomer().getId()).append("\"");
             s.append("}");
-            if (entrySet.hasNext()) s.append(",");
+            if (entrySetWork.hasNext()) s.append(",");
         }
+
 
         s.append("]");
 
