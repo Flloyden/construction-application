@@ -67,7 +67,19 @@ public class WorkAPI {
     @GetMapping("/kunder/work")
     public List<WorkEntity> getAllWorkEntities() {
         return workRepository.getAllWorkEntities();
+    }
 
+    @GetMapping("/kunder/upcoming")
+    public List<WorkEntity> getUpcomingWork()
+    {
+        if (workRepository.checkForActiveWork()!=null)
+        {
+            return workRepository.checkForActiveWork();
+        }
+         else
+        {
+            return null;
+        }
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import CheckWarranties from "./CheckWarranties";
+import CheckUpcomingWork from "./CheckUpcomingWork";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -16,7 +17,9 @@ export default function Home() {
       <div className='grid grid-cols-2 gap-4 h-2/4 mt-4'>
         <div className='border-2 border-gray-800 shadow-md rounded-md'>
           <div className='flex w-full h-2/4 border-b-2 align-middle items-center justify-center hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white'>Pågående jobb</div>
-          <div className='flex w-full h-2/4 align-middle items-center justify-center hover:bg-gray-800  duration-300 hover:cursor-pointer hover:text-white'>Kommande jobb</div>
+          <div className='flex w-full h-2/4 align-middle items-center justify-center hover:bg-gray-800  duration-300 hover:cursor-pointer hover:text-white'>Kommande jobb
+          <CheckUpcomingWork />
+          </div>
         </div>
         <div className='border-2 border-gray-800 shadow-md rounded-md align-middle items-center justify-center w-full h-full'>
           <CheckWarranties />

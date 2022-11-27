@@ -3,12 +3,9 @@ package com.example.constructionappapi.services;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
-import org.hibernate.jdbc.Work;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -45,8 +42,9 @@ public class StartServer {
             }
 
             WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
-            WorkEntity test = workRepository.checkForActiveWork();
+            List<WorkEntity> test = workRepository.checkForActiveWork();
             System.out.println(test);
+
 
             /*
             CustomerEntity customer = new CustomerEntity(0L, "sgfdsgfdsgfd", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());

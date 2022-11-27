@@ -4,6 +4,9 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,5 +18,5 @@ import java.util.Optional;
 public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     WorkEntity findFirstByOrderByIdDesc();
 
-    WorkEntity findFirstByOrderByStartDateDesc();
+    List<WorkEntity> findByStartDateBetween(LocalDate start, LocalDate end);
 }
