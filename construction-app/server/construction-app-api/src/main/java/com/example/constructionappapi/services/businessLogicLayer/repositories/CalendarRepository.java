@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +54,10 @@ public class CalendarRepository{
 
     public void deleteAllByDate(LocalDate date) {
         calendarDao.deleteAllByDate(date);
+    }
+
+    public void deleteAllByWorkId(Long id) {
+        calendarDao.deleteAllByWorkId(id);
+        calendarDao.findAllById(Collections.singleton(id));
     }
 }

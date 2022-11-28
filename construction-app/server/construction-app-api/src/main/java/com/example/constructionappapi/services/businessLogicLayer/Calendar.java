@@ -1,8 +1,10 @@
 package com.example.constructionappapi.services.businessLogicLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 
@@ -12,46 +14,19 @@ import java.util.*;
 
 public class Calendar {
     private CalendarRepository calendarRepository;
+    private VacationRepository vacationRepository;
     private WorkRepository workRepository;
     private ArrayList<VacationEntity> vacationDays = new ArrayList<>();
 
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
-
-     /*
-    public Calendar() {
-
-        CustomerEntity customerOne = new CustomerEntity(7, "Sven Svensson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
-        CustomerEntity customerTwo = new CustomerEntity(7, "Thomas Olsson", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
-        CustomerEntity customerThree = new CustomerEntity(7, "Jan Strandberg", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
-
-        WorkEntity door = new WorkEntity(1, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customerOne, new ArrayList<>());
-        WorkEntity fence = new WorkEntity(2, "Fence", LocalDate.of(2023, 5, 25), 10, "testNote", null, Status.NOTSTARTED, customerTwo, new ArrayList<>());
-        WorkEntity roof = new WorkEntity(3, "Roof", LocalDate.of(2023, 5, 29), 2, "testNote", null, Status.NOTSTARTED, customerThree, new ArrayList<>());
-
-        addWork(fence);
-        addWork(door);
-        addWork(roof);
-
-        System.out.println();
-        System.out.println("Add");
-        printCalendar();
-
-        removeWork(door);
-        System.out.println("Remove");
-        printCalendar();
-
-        removeWork(roof);
-        System.out.println("Remove");
-        printCalendar();
-
-    }
-*/
+    public HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
 
     /**
      * Retrieves calendar items from the database and populates the hash-map with them.
      */
     public void initializeCalendar() {
         calendarRepository.findAll().forEach(calendarEntity -> calendarDates.put(calendarEntity, calendarEntity.getWork()));
+        vacationRepository.findAllVacationCalendarEntities().forEach(vacationCalendarEntity -> vacationDates.put(vacationCalendarEntity, vacationCalendarEntity.getVacation()));
     }
 
     public boolean addWork(WorkEntity work) {
@@ -66,7 +41,7 @@ public class Calendar {
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = work.getStartDate().plusDays(i + n);
 
-            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
                 dateToAddTo = dateToAddTo.plusDays(1);
                 n++;
             }
@@ -90,11 +65,57 @@ public class Calendar {
         return true;
     }
 
+    /**
+     * Updates the dates for a work in the calendar by removing the old dates and then adding the new ones.
+     *
+     * @param work The new work-entity.
+     * @return The updated work-entity.
+     */
+    public WorkEntity updateWork(WorkEntity work) {
+        WorkEntity updatedWork = workRepository.createWorkEntity(work);
+        calendarRepository.deleteAllByWorkId(updatedWork.getId());
+        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == updatedWork.getId());
+
+        moveCalendarItemBackwards(work.getStartDate());
+
+        addWork(updatedWork);
+
+        return workRepository.getWorkEntity(updatedWork.getId()).get();
+    }
+
+    public void removeWork(WorkEntity work) {
+        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
+        moveCalendarItemBackwards(work.getStartDate());
+    }
+
+    public void addVacation(VacationEntity vacation, List<VacationCalendarEntity> vacationDatesToAdd) {
+        int daysToAdd = vacation.getNumberOfDays();
+        int daysToShuffleForward = daysToAdd;
+
+        long n = 0L;
+        for (int i = 0; i < daysToAdd; i++) {
+            LocalDate dateToAddTo = vacation.getStartDate().plusDays(i);
+
+            if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
+                shuffleForward(dateToAddTo, daysToShuffleForward);
+            } else {
+                daysToShuffleForward--;
+            }
+
+            vacationDates.put(vacationDatesToAdd.get(i), vacation);
+        }
+    }
+
+    public void removeVacation(VacationEntity vacation) {
+        vacationDates.entrySet().removeIf(item -> item.getValue().getId() == vacation.getId());
+        moveCalendarItemBackwards(vacation.getStartDate());
+    }
+
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
 
-        while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
             newDate = newDate.plusDays(1);
         }
 
@@ -109,15 +130,11 @@ public class Calendar {
         calendarDates.put(calendarEntity, calendarEntity.getWork());
     }
 
-    public void removeWork(WorkEntity work) {
-        //Remove all map entries containing a work-object that has the same id as the specified work-object.
-        workRepository.deleteWorkEntity(work.getId());
-        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
-
+    public void moveCalendarItemBackwards(LocalDate startDate) {
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
         LocalDate[] lastDateMovedTo = {LocalDate.MIN};
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
-            if (calendarEntity.getDate().isAfter(work.getStartDate())) {
+            if (calendarEntity.getDate().isAfter(startDate)) {
                 lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
             }
         });
@@ -139,16 +156,8 @@ public class Calendar {
 
             //Set freeCalenderSpot to possibleDate if the spot in the calendar is free, and it's not on a weekend.
             if (!calendarDates.containsKey(new CalendarEntity(possibleDate))) {
-                if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
-                    boolean vacationCheck = true;
-                    for (VacationEntity vacationEntity : vacationDays) {
-                        if (vacationEntity.getVacationDate().equals(possibleDate)) {
-                            vacationCheck = false;
-                            break;
-                        }
-                    }
-
-                    if (vacationCheck) {
+                if (!vacationDates.containsKey(new VacationCalendarEntity(possibleDate))) {
+                    if (possibleDate.getDayOfWeek() != DayOfWeek.SATURDAY && possibleDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
                         freeCalendarSpot = possibleDate;
                     }
                 }
@@ -178,22 +187,26 @@ public class Calendar {
         System.out.println();
     }
 
+    public void printVacationCalendar() {
+        vacationDates.keySet().stream().sorted(Comparator.reverseOrder()).forEach(key -> {
+            VacationEntity vacation = vacationDates.get(key);
+            String s = String.format("Key: %s %s %-10s %s | Value: %-5s %s %s %s", key.getId(), key.getDate(), key.getDate().getDayOfWeek(), key.hashCode(), vacation.getName(), vacation.getId(), vacation.getStartDate(), vacation.getNumberOfDays());
+            System.out.println(s);
+        });
+
+        System.out.println();
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySet = calendarDates.entrySet().iterator();
+        Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySetWork = calendarDates.entrySet().iterator();
+        Iterator<Map.Entry<VacationCalendarEntity, VacationEntity>> entrySetVacation = vacationDates.entrySet().iterator();
 
         s.append("[");
 
-        for (VacationEntity vacationEntity : vacationDays) {
-            s.append("{");
-            s.append("\"title\":").append("\"").append("Semester").append("\",");
-            s.append("\"date\":\"").append(vacationEntity.getVacationDate()).append("\",");
-            s.append("\"color\":\"").append("#25C900").append("\"");
-            s.append("},");
-        }
-        while (entrySet.hasNext()) {
-            Map.Entry<CalendarEntity, WorkEntity> entry = entrySet.next();
+        while (entrySetWork.hasNext()) {
+            Map.Entry<CalendarEntity, WorkEntity> entry = entrySetWork.next();
             s.append("{");
             if (entry.getValue().getCustomer() != null) {
                 s.append("\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
@@ -203,8 +216,9 @@ public class Calendar {
             s.append("\"color\":\"").append("#FF0000").append("\",");
             s.append("\"customerId\":\"").append(entry.getValue().getCustomer().getId()).append("\"");
             s.append("}");
-            if (entrySet.hasNext()) s.append(",");
+            if (entrySetWork.hasNext()) s.append(",");
         }
+
 
         s.append("]");
 
@@ -217,6 +231,10 @@ public class Calendar {
 
     public void setWorkRepository(WorkRepository workRepository) {
         this.workRepository = workRepository;
+    }
+
+    public void setVacationRepository(VacationRepository vacationRepository) {
+        this.vacationRepository = vacationRepository;
     }
 }
 

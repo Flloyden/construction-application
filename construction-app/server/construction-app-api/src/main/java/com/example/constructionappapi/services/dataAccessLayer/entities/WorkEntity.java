@@ -10,14 +10,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * A class creating and giving access to the table Work in DB
+ */
 @Entity
 @Table(name = "work")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class creating and giving access to the table Work in DB
- */
 public class WorkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

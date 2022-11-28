@@ -10,8 +10,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @SpringBootApplication
 public class StartServer {
@@ -35,6 +37,8 @@ public class StartServer {
             Calendar calendar = CalendarSingleton.getCalendar();
             calendar.initializeCalendar();
 
+            //TODO: Remove when done with project.
+            //Adds an account to the database on server-start to make testing easier.
             AccountEntity accountEntity = new AccountEntity(0, "admin", "admin");
             AccountRepository accountRepository = configurableApplicationContext.getBean(AccountRepository.class);
             Optional<AccountEntity> accountEntityOptional = accountRepository.findFirstByUsernameAndPassword("admin", "admin");
@@ -42,39 +46,11 @@ public class StartServer {
                 accountRepository.createAccount(accountEntity);
             }
 
-            /*
-            CustomerEntity customer = new CustomerEntity(0L, "sgfdsgfdsgfd", "testAddressEdit", "54321", "testPropDesignation", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
-            CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-            customer = customerRepository.createCustomer(customer);
-
-            WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
-            WorkEntity door = workRepository.createWorkEntity(new WorkEntity(0L, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>()));
-            WorkEntity fence = workRepository.createWorkEntity(new WorkEntity(0L, "Fence", LocalDate.of(2023, 5, 25), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>()));
-            WorkEntity roof = workRepository.createWorkEntity(new WorkEntity(0L, "Roof", LocalDate.of(2023, 5, 29), 2, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>()));
-
-            calendar.addWork(door);
-            calendar.printCalendar();
-            calendar.addWork(fence);
-            calendar.printCalendar();
-            calendar.addWork(roof);
-            calendar.printCalendar();
-
-            calendar.removeWork(door);
-            calendar.printCalendar();
-
-            calendar.removeWork(roof);
-            calendar.printCalendar();
-
-            door = workRepository.createWorkEntity(new WorkEntity(0L, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, Status.NOTSTARTED, customer, new ArrayList<>()));
-            calendar.addWork(door);
-             */
-            calendar.printCalendar();
-
-            //------------------------- Test anteckningsapi
-            //WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
-            //workAPI.saveWork(new CustomerEntity(0L, "testt", "test", "678", "test", "9999", LocalDate.now(), new ArrayList<>(), new ArrayList<>()));
-
-
+            Tests tests = new Tests(configurableApplicationContext);
+            //tests.testSkipVacationDatesWhenRemovingWork();
+            //tests.testMoveWorkBackwardsOnRemoveVacation();
+            //tests.testAddVacation();
+            //tests.testMoveWorkForwardsOnAddVacation();
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }

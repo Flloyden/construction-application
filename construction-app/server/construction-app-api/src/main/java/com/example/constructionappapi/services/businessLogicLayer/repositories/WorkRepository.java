@@ -2,7 +2,9 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +13,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WorkRepository{
+public class WorkRepository {
 
     @Autowired
     private WorkDao workDao;
+    @Autowired
+    private CustomerDao customerDao;
     private Calendar calendar = CalendarSingleton.getCalendar();
 
-    public WorkRepository(){
+    public WorkRepository() {
         calendar.setWorkRepository(this);
     }
 
@@ -71,11 +75,35 @@ public class WorkRepository{
      */
 
     public void deleteWorkEntity(Long id) {
-        workDao.deleteById(id);
+        Optional<WorkEntity> work = getWorkEntity(id);
+        if (work.isPresent()) {
+            workDao.delete(work.get());
+            calendar.removeWork(work.get());
+        }
     }
 
 
     public WorkEntity getLastInserted() {
         return workDao.findFirstByOrderByIdDesc();
+    }
+
+    public WorkEntity updateWork(long customerId, WorkEntity work) {
+        Optional<CustomerEntity> customer = customerDao.findById(customerId);
+        if (customer.isPresent()) {
+            work.setCustomer(customer.get());
+
+            Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
+            if (preUpdateWork.isPresent()) {
+                WorkEntity updatedWork = null;
+                //Checks if the date has been changed and updates the calendar if it has.
+                if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
+                    updatedWork = calendar.updateWork(work);
+                }
+
+                return updatedWork;
+            }
+        }
+
+        return null;
     }
 }
