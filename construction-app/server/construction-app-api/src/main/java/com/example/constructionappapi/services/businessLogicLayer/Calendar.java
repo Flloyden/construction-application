@@ -240,22 +240,6 @@ public class Calendar {
             if (entrySetVacation.hasNext()) s.append(",");
         }
 
-        /*
-        while (entrySetWork.hasNext()) {
-            Map.Entry<CalendarEntity, WorkEntity> entry = entrySetWork.next();
-            s.append("{");
-            if (entry.getValue().getCustomer() != null) {
-                s.append("\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
-            }
-            s.append("\"workName\":\"").append(entry.getValue().getName()).append("\",");
-            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
-            s.append("\"color\":\"").append("#FF0000").append("\",");
-            s.append("\"customerId\":\"").append(entry.getValue().getCustomer().getId()).append("\"");
-            s.append("}");
-            if (entrySetWork.hasNext()) s.append(",");
-        }
-         */
-
         s.append("]");
 
         return s.toString();

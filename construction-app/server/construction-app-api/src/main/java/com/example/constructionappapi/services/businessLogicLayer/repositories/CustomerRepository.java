@@ -62,7 +62,6 @@ public class CustomerRepository {
         return customerDao.findById(id); //Returns customer by ID
     }
 
-
     public void deleteCustomer(Long id) {
         customerDao.deleteById(id); //Deletes customer by ID
     }
