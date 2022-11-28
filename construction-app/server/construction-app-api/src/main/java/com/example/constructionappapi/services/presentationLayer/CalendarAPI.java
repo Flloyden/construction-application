@@ -14,9 +14,15 @@ public class CalendarAPI {
     @Autowired
     private CalendarRepository calendarRepository;
 
-    @GetMapping(value = "/kalender",
+    @GetMapping(value = "/kalender/work",
             produces = "application/json")
-    public String getAllCustomers() {
-        return calendarRepository.getAllCalendarEntites();
+    public String getAllWorkDates() {
+        return calendarRepository.getAllWorkDates();
+    }
+
+    @GetMapping(value = "/kalender/semester",
+            produces = "application/json")
+    public String getAllvacationDates() {
+        return calendarRepository.getAllVacationDates();
     }
 }

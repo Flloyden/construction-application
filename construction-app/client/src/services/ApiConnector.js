@@ -69,7 +69,7 @@ class ApiConnector {
 
   getCalendar() {
     //Gets all existing info about calendar from the database
-    return axios.get(CALENDAR_API_BASE_URL);
+    return axios.get(CALENDAR_API_BASE_URL + "/work");
   }
 
   saveNote(note, workId) {
@@ -88,11 +88,12 @@ class ApiConnector {
 
   getSemester() {
     //Gets all existing info about calendar from the database
-    return axios.get(SEMESTER_API);
+    return axios.get(CALENDAR_API_BASE_URL + "/semester");
   }
 
-  saveNote(customer) {
-    return axios.post(CUSTOMER_API_BASE_URL + "/note/save", customer)
+  saveNote(workId, noteList) {
+    console.log(noteList)
+    return axios.post(CUSTOMER_API_BASE_URL + "/anteckningar/save/" + workId, noteList)
   }
 }
 

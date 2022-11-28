@@ -197,11 +197,10 @@ public class Calendar {
         System.out.println();
     }
 
-    @Override
-    public String toString() {
+
+    public String workToString() {
         StringBuilder s = new StringBuilder();
         Iterator<Map.Entry<CalendarEntity, WorkEntity>> entrySetWork = calendarDates.entrySet().iterator();
-        Iterator<Map.Entry<VacationCalendarEntity, VacationEntity>> entrySetVacation = vacationDates.entrySet().iterator();
 
         s.append("[");
 
@@ -219,6 +218,43 @@ public class Calendar {
             if (entrySetWork.hasNext()) s.append(",");
         }
 
+
+        s.append("]");
+
+        return s.toString();
+    }
+
+    public String vacationToString() {
+        StringBuilder s = new StringBuilder();
+        Iterator<Map.Entry<VacationCalendarEntity, VacationEntity>> entrySetVacation = vacationDates.entrySet().iterator();
+
+        s.append("[");
+
+        while (entrySetVacation.hasNext()) {
+            Map.Entry<VacationCalendarEntity, VacationEntity> entry = entrySetVacation.next();
+            s.append("{");
+            s.append("\"vacationId\":").append("\"").append(entry.getValue().getId()).append("\",");
+            s.append("\"vacationName\":").append("\"").append(entry.getValue().getName()).append("\",");
+            s.append("\"date\":").append("\"").append(entry.getKey().getDate()).append("\"");
+            s.append("}");
+            if (entrySetVacation.hasNext()) s.append(",");
+        }
+
+        /*
+        while (entrySetWork.hasNext()) {
+            Map.Entry<CalendarEntity, WorkEntity> entry = entrySetWork.next();
+            s.append("{");
+            if (entry.getValue().getCustomer() != null) {
+                s.append("\"customerName\":").append("\"").append(entry.getValue().getCustomer().getName()).append("\",");
+            }
+            s.append("\"workName\":\"").append(entry.getValue().getName()).append("\",");
+            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
+            s.append("\"color\":\"").append("#FF0000").append("\",");
+            s.append("\"customerId\":\"").append(entry.getValue().getCustomer().getId()).append("\"");
+            s.append("}");
+            if (entrySetWork.hasNext()) s.append(",");
+        }
+         */
 
         s.append("]");
 

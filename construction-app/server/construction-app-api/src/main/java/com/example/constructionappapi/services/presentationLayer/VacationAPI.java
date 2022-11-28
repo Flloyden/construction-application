@@ -26,7 +26,6 @@ public class VacationAPI {
         return vacationRepository.getVacation(id);
     }
 
-
     @GetMapping("/semester")
     public List<VacationEntity> getAllVacations() {
         return vacationRepository.getAllVacationEntities();

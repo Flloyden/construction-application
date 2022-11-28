@@ -123,7 +123,7 @@ export default function Calendar() {
                     return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
                   }),
                   semesterInfo.map((item) => {
-                    return {title: moment(item.startDate).format('DD') + ": " + item.name, start: item.startDate, color: '#10b981', id: item.id, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, borderColor: '#000', allDay: false}
                   }),
                   holiday.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
@@ -134,7 +134,7 @@ export default function Calendar() {
                   nextNextYear.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
-                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.startDate}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
+                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.date}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
                     return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
                   }),
                 ]}
