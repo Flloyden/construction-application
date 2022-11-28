@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CalendarRepository{
+public class CalendarRepository {
 
     @Autowired
     private CalendarDao calendarDao;
@@ -32,8 +32,12 @@ public class CalendarRepository{
         return calendarDao.save(calendar);
     }
 
-    public String getAllCalendarEntites() {
-        return calendar.toString();
+    public String getAllWorkDates() {
+        return calendar.workToString();
+    }
+
+    public String getAllVacationDates() {
+        return calendar.vacationToString();
     }
 
     public CalendarEntity findFirstByDate(LocalDate date) {
