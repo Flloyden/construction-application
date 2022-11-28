@@ -1,7 +1,9 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,28 +14,44 @@ import java.util.Optional;
  * Class accessing the customer note table in DB
  */
 @Service
-public class CustomerNoteRepository{
+public class CustomerNoteRepository {
 
     @Autowired
     private CustomerNoteDao customerNoteDao;
+    @Autowired
+    private WorkRepository workRepository;
+
+    private WorkEntity workEntity;
 
 
-    public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNote) {
-        //customerNoteEntity.setCustomer(customer); //assignar customernotes till customer
-        return null;
+    public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNote, long workId) {
+        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
+
+        CustomerEntity customerEntity = workEntity.get().getCustomer(); //hämta customer till det jobbet
+
+        customerNote.setCustomer(customerEntity); //assignar note till customer
+
+        customerNote.setWorkForNote(workEntity.get()); //assigna note till work
+
+        return customerNoteDao.save(customerNote);
     }
 
-    public List<CustomerNoteEntity> getAllCustomerNotes() { //TODO baserat på work_id
-        return null;
+
+
+
+    public List<CustomerNoteEntity> getAllNotesForWork(WorkEntity work) {
+        return work.getCustomerNotes();
     }
 
 
-    public Optional<CustomerNoteEntity> getCustomerNote(Long id) {
-        return Optional.empty();
+    public List<CustomerNoteEntity> getAllNotesForCustomer(CustomerEntity customer) {
+        return customer.getCustomerNotes();
     }
 
+    public List<CustomerNoteEntity> findAllByCustomerId(Long customerId) {
+        return customerNoteDao.findAllByCustomerId(customerId);
+    }
 
-    public void deleteCustomer(Long id) {
-
+    public void deleteNote(Long customerId) {
     }
 }

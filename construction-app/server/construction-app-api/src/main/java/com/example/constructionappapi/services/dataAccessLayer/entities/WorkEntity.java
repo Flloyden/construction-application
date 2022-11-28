@@ -45,9 +45,16 @@ public class WorkEntity {
             orphanRemoval = true)
     private List<CustomerNoteEntity> customerNotes;
 
+    public List<CustomerNoteEntity> getCustomerNotes() {
+        return customerNotes;
+    }
+
     public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
     }
 
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
 }
 

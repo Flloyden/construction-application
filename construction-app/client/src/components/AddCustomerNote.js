@@ -71,6 +71,7 @@ export default function AddCustomerNote(
   return (
     <div className="w-full bg-gray-700 rounded-md p-4">
       <h1 className="text-2xl w-full text-white">Lägg till ny anteckning</h1>
+
       <div className="w-full flex gap-2">
         <div className="mt-4 w-1/4">
           <label className="mb-2 text-sm font-medium text-white">Datum: </label>
@@ -114,10 +115,10 @@ export default function AddCustomerNote(
             Körning:{" "}
           </label>
           <input
+            ref={kmRef}
             className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
             type="text"
             name="propertyDesignation"
-            ref={kmRef}
             onChange={onChange}
           ></input>
         </div>
@@ -143,4 +144,4 @@ export default function AddCustomerNote(
       </div>
     </div>
   );
-}
+};

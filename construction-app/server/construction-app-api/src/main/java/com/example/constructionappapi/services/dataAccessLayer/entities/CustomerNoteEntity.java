@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Entity
 @Table(name = "customer_note")
@@ -36,8 +37,11 @@ public class CustomerNoteEntity {
     @JsonIgnore
     private WorkEntity workEntity;
 
-    public void setCustomer(CustomerEntity customer) {
+    public void setCustomerForNote(CustomerEntity customer) {
+        this.customer = customer;
     }
-
+    public void setWorkForNote(WorkEntity workEntity) {
+        this.workEntity = workEntity;
+    }
 
 }

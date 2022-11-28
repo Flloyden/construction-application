@@ -2,10 +2,14 @@ package com.example.constructionappapi.services.presentationLayer;
 
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerNoteRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -13,5 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerNoteAPI {
 
     @Autowired
-    private CustomerNoteRepository costumerNoteRepository;
+    private CustomerNoteRepository customerNoteRepository;
+
+    @PostMapping("kunder/anteckningar/save/{workId}")
+    public CustomerNoteEntity createCostumerNote(@RequestBody CustomerNoteEntity customerNote, @PathVariable final long workId) {
+        return customerNoteRepository.createCustomerNote(customerNote, workId);
+    }
+
+    @GetMapping("kunder/anteckningar/{workId}")
+    public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable WorkEntity work) {
+        return customerNoteRepository.getAllNotesForWork(work);
+    }
+
+    @GetMapping("kunder/anteckningar/{customerId}")
+    public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable Long customerId) {
+        return customerNoteRepository.findAllByCustomerId(customerId);
+        //return customerNoteRepository.getAllNotesForCustomer(customerId);
+    }
+
+    @DeleteMapping("kunder/anteckningar/{customerId}/remove")
+    public void deleteNote(@PathVariable final Long customerId) {
+        customerNoteRepository.deleteNote(customerId); // Ska det vara return här?
+    }
 }
