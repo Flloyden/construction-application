@@ -23,29 +23,41 @@ export default function AddCustomerNote(
   });
 
   const [newList, setNewList] = useState();
-
-  const [selectValue, setSelectValue] = useState("");
+  const [noteStatus, setNoteStatus] = useState("");
+  const [selectValue, setSelectValue] = useState(0);
   const [workId, setWorkId] = useState("");
+  const [workName, setWorkName] = useState("");
   const dateRef = useRef();
   const kmRef = useRef();
   const employeeRef = useRef();
   const timeRef = useRef();
+  const noteRef = useRef();
 
   const onChange = (event) => {
     const value = event.target.value;
     if (event.target.name === "select") {
       setSelectValue(value);
+      setWorkName(value.split(','))
+      console.log(selectValue)
       setWorkId(value.slice(-1))
+    } else if (event.target.name === "selectStatus") {
+      setNoteStatus(value)
+      console.log(value)
+      console.log(noteStatus)
     } else {
       console.log(value)
+      console.log(workName)
     }
     setNewList({
       id: "",
       datePosted: dateRef.current.value,
       kmDriven: kmRef.current.value,
-      note: "",
+      note: noteRef.current.value,
       timeEmployee: employeeRef.current.value,
       timeSpend: timeRef.current.value,
+      workName: workName[0],
+      workNumber: workId,
+      noteStatus: noteStatus,
     })
     console.log(newList)
   };
@@ -61,7 +73,7 @@ export default function AddCustomerNote(
     ApiConnector.saveNote(workId, newList)
       .then((response) => {
         console.log(response);
-        //window.location.reload(false);
+        window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
@@ -135,13 +147,36 @@ export default function AddCustomerNote(
             onChange={onChange}
           ></input>
         </div>
-
-        <div className="flex w-min gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto">
+      </div>
+      <div className="flex w-full gap-2">
+        <div className="mt-2 w-8/12">
+          <label className="mb-2 text-sm font-medium text-white">
+            Kommentar:{" "}
+          </label>
+          <input
+            className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            type="text"
+            name="socialSecurityNumber"
+            ref={noteRef}
+            onChange={onChange}
+          ></input>
+        </div>
+        <div className="flex w-2/12 gap-2 mt-8 justify-end inset-x-0 bottom-4 mx-auto">
+        <select
+            name="selectStatus"
+            onChange={onChange}
+            className="form-select rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value={0}>Vanlig</option>
+            <option value={1}>Summering</option>
+          </select>
+          </div>
+        <div className="flex w-2/12 gap-2 mt-8 justify-end inset-x-0 bottom-4 mx-auto">
           <button className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white" onClick={saveNote}>
             Spara
           </button>
         </div>
-      </div>
+        </div>
     </div>
   );
 };

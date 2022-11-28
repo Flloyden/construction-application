@@ -172,7 +172,7 @@ export default function Customer() {
                 currentCustomerWorkList={customer.workList}
                 currentCustomerNotes={customer.customerNotes}
               />
-              <Notes />
+              <Notes currentCustomer={customer} />
             </div>
           </div>
         )}

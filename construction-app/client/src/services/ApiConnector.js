@@ -72,11 +72,6 @@ class ApiConnector {
     return axios.get(CALENDAR_API_BASE_URL + "/work");
   }
 
-  saveNote(note, workId) {
-    console.log("http://localhost:8080/kunder/anteckningar/save/" + workId)
-    return axios.post("http://localhost:8080/kunder/anteckningar/save/" + workId, note);
-  }
-
   getNotes() {
     //Gets all existing info about calendar from the database
     return axios.get(NOTES_API);

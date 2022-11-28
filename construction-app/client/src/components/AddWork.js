@@ -48,7 +48,7 @@ const AddWork = ({
       materialNote: materialNoteRef.current.value,
       offer: image,
       startDate: startDate,
-      workStatus: "STARTED",
+      workStatus: "NOTSTARTED",
       calendar: [],
     });
     console.log(newList)
