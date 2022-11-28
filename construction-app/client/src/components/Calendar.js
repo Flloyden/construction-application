@@ -16,6 +16,7 @@ export default function Calendar() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [calendarInfo, setCalendarInfo] = useState(null);
+  const [semesterInfo, setSemesterInfo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomerName, setCurrentCustomerName] = useState("");
   const [currentCustomerId, setCurrentCustomerId] = useState("");
@@ -48,8 +49,11 @@ export default function Calendar() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getCalendar();
+        const res = await ApiConnector.getSemester();
         setCalendarInfo(response.data);
+        setSemesterInfo(res.data)
         console.log(response.data)
+        console.log(res.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -118,6 +122,9 @@ export default function Calendar() {
                   calendarInfo.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
                   }),
+                  semesterInfo.map((item) => {
+                    return {title: moment(item.startDate).format('DD') + ": " + item.name, start: item.startDate, color: '#10b981', id: item.id, borderColor: '#000', allDay: false}
+                  }),
                   holiday.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
@@ -127,7 +134,7 @@ export default function Calendar() {
                   nextNextYear.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
-                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
+                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.startDate}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
                     return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
                   }),
                 ]}

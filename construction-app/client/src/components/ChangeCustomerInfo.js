@@ -10,6 +10,7 @@ const ChangeCustomerInfo = ({
   currentCustomerProperty,
   currentCustomerSSN,
   currentCustomerWorkList,
+  currentCustomerNotes
 }) => {
   const [customer, setCustomer] = useState({
     id: currentCustomerId,
@@ -19,7 +20,7 @@ const ChangeCustomerInfo = ({
     propertyDesignation: currentCustomerProperty,
     socialSecurityNumber: currentCustomerSSN,
     workList: currentCustomerWorkList,
-    customerNotes: [],
+    customerNotes: currentCustomerNotes,
   });
 
   const handleChange = (e) => {

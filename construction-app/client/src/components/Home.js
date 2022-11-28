@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CheckWarranties from "./CheckWarranties";
+import Semester from "./Semester";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [isSemesterOpen, setIsSemesterOpen] = useState(false);
 
   return (
     <div className='p-7 text 2x1 font-semibold flex-1 h-screen'>
@@ -23,10 +26,15 @@ export default function Home() {
         </div>
       </div>
       <div className='mt-4 justify-between flex gap-4 text-white h-1/4'>
-        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200'>Semester</button>
+        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => {setIsSemesterOpen(true)}}>Semester</button>
         <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => navigate("/skapakund")}>Ny kund</button>
         <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => navigate("/skapagaranti")}>Ny garanti</button>
       </div>
+      {isSemesterOpen && (
+        <Semester
+          setIsSemesterOpen={setIsSemesterOpen}
+        />
+      )}
     </div>
   )
 }

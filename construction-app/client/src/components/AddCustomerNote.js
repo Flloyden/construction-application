@@ -1,60 +1,69 @@
 import React, { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import ApiConnector from "../services/ApiConnector";
 
-const AddCustomerNote = () => {
-  const [note, setNote] = useState({
-    id: "",
-    date_posted: "",
-    km_driven: "",
-    note: "",
-    time_employee: "",
-    time_spend: "",
-    customer_id: "",
-    work_id: "",
+export default function AddCustomerNote(
+  currentCustomerName,
+  currentCustomerId,
+  currentCustomerAddress,
+  currentCustomerPhone,
+  currentCustomerProperty,
+  currentCustomerSSN,
+  currentCustomerWorkList,
+  currentCustomerNotes
+) {
+  const [customer] = useState({
+    id: currentCustomerId,
+    name: currentCustomerName,
+    address: currentCustomerAddress,
+    phoneNumber: currentCustomerPhone,
+    propertyDesignation: currentCustomerProperty,
+    socialSecurityNumber: currentCustomerSSN,
+    workList: currentCustomerWorkList,
+    customerNotes: currentCustomerNotes,
   });
 
+  const [newList, setNewList] = useState();
+
+  const [selectValue, setSelectValue] = useState("");
+  const [lastItem, setLastItem] = useState("");
+  const dateRef = useRef();
   const kmRef = useRef();
-  const noteRef = useRef();
   const employeeRef = useRef();
   const timeRef = useRef();
-  const customerRef = useRef();
-  const workRef = useRef();
-  const [newList, setNewList] = useState();
-  let [startDate, setStartDate] = useState(new Date());
-  let endDate = new Date();
 
-  const [workId, setWorkId] = useState(1);
-
-  const isWeekday = (date) => {
-    const day = date.getDay;
-    return day !== 0 && day !== 6;
-  };
-
-  const handleChange = (e) => {
-    /**Gets the current input every keystroke */
-    console.log(kmRef.current.value)
+  const onChange = (event) => {
+    const value = event.target.value;
+    if (event.target.name === "select") {
+      setSelectValue(value);
+      setLastItem(value.slice(-1))
+    } else {
+      console.log(value)
+    }
     setNewList({
       id: "",
-      date_posted: startDate,
+      date_posted: dateRef.current.value,
       km_driven: kmRef.current.value,
       note: "",
       time_employee: employeeRef.current.value,
       time_spend: timeRef.current.value,
-      customer_id: 1,
-      work_id: 1,
-    });
-    console.log(newList);
+      customer_id: "",
+      work_id: lastItem,
+    })
+    console.log(newList)
   };
 
   const saveNote = (e) => {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
-    setNote(newList);
-    ApiConnector.saveNote(note, workId)
+    // Pushes the new list into current lists
+    console.log(customer.name.currentCustomerNotes)
+    customer.name.currentCustomerNotes.push(newList);
+    console.log(customer.name.currentCustomerNotes)
+    // Adds work to user with api call
+    ApiConnector.saveNote(customer)
       .then((response) => {
         console.log(response);
+        //window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
@@ -67,30 +76,29 @@ const AddCustomerNote = () => {
 
       <div className="w-full flex gap-2">
         <div className="mt-4 w-1/4">
-            <p className="mb-1 text-sm font-medium text-white">Datum:</p>
-            <DatePicker
-              className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-              selected={startDate}
-              onChange={(date) => {
-                setStartDate(date);
-                handleChange(date);
-              }}
-              filterDate={isWeekday}
-              placeholderText="Select a weekday"
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-            />
+          <label className="mb-2 text-sm font-medium text-white">Datum: </label>
+          <input
+            className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            type="text"
+            name="name"
+            required
+            ref={dateRef}
+            onChange={onChange}
+          ></input>
         </div>
 
         <div className="mt-4 w-1/4">
           <label className="mb-2 text-sm font-medium text-white">Jobb: </label>
-          <input
-            className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-            type="text"
-            name="address"
-            onChange={(e) => handleChange(e)}
-          ></input>
+          <select
+            name="select"
+            onChange={onChange}
+            className="form-select rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option defaultValue>
+              Välj jobb
+            </option>
+            {customer.name.currentCustomerWorkList.slice(0).reverse().map((item, i) => {return (<option key={item.id} value={[item.name, item.id]}>{item.name}</option>)})}
+          </select>
         </div>
 
         <div className="mt-4 w-1/4">
@@ -98,9 +106,9 @@ const AddCustomerNote = () => {
           <input
             className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
             type="text"
-            name="time_spent"
+            name="phoneNumber"
             ref={timeRef}
-            onChange={(e) => handleChange(e)}
+            onChange={onChange}
           ></input>
         </div>
 
@@ -112,9 +120,9 @@ const AddCustomerNote = () => {
             ref={kmRef}
             className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
             type="text"
-            name="name"
-            required
-            onChange={(e) => handleChange(e)}
+            name="propertyDesignation"
+            ref={kmRef}
+            onChange={onChange}
           ></input>
         </div>
 
@@ -125,17 +133,14 @@ const AddCustomerNote = () => {
           <input
             className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
             type="text"
-            name="hired_time"
+            name="socialSecurityNumber"
             ref={employeeRef}
-            onChange={(e) => handleChange(e)}
+            onChange={onChange}
           ></input>
         </div>
 
         <div className="flex w-min gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto">
-          <button
-            className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white"
-            onClick={saveNote}
-          >
+          <button className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white" onClick={saveNote}>
             Spara
           </button>
         </div>
@@ -143,5 +148,3 @@ const AddCustomerNote = () => {
     </div>
   );
 };
-
-export default AddCustomerNote;
