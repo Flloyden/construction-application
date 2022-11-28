@@ -20,7 +20,7 @@ public class VacationCalendarEntity implements Comparable<VacationCalendarEntity
     private LocalDate date;
     @ManyToOne
     @JoinColumn(name = "vacation_id")
-    @JsonBackReference
+    @JsonBackReference(value = "vacationToVacationCalendar")
     private VacationEntity vacation;
 
     public VacationCalendarEntity(LocalDate date) {

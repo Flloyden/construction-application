@@ -41,7 +41,7 @@ public class WorkEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToCalendar")
-    private List<CalendarEntity> calendar;
+    private List<CalendarEntity> calendar = new ArrayList<>();
     @OneToMany(
             mappedBy = "workEntity",
             cascade = CascadeType.ALL,

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,10 +26,10 @@ public class VacationEntity {
     private String name;
     private LocalDate startDate;
     private int numberOfDays;
-    @JsonManagedReference
     @OneToMany(
             mappedBy = "vacation",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<VacationCalendarEntity> vacationCalendar;
+    @JsonManagedReference(value = "vacationToVacationCalendar")
+    private List<VacationCalendarEntity> vacationCalendar = new ArrayList<>();
 }

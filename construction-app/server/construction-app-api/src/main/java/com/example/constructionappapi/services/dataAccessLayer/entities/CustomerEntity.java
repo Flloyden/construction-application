@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity //to generate Costumer table
@@ -32,13 +33,13 @@ public class CustomerEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference("customerToWork")
-    private List<WorkEntity> workList;
+    private List<WorkEntity> workList = new ArrayList<>();
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference("customerToNote")
-    private List<CustomerNoteEntity> customerNotes;
+    private List<CustomerNoteEntity> customerNotes = new ArrayList<>();
 
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
