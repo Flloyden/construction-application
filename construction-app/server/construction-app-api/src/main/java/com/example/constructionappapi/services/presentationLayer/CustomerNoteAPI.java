@@ -21,12 +21,12 @@ public class CustomerNoteAPI {
         return customerNoteRepository.createCustomerNote(customerNote, workId);
     }
 
-    @GetMapping("kunder/anteckningar/{workId}")
+    @GetMapping("kunder/anteckningar/{workId}/jobb")
     public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable final long workId) {
         return customerNoteRepository.getAllNotesForWork(workId);
     }
 
-    @GetMapping("kunder/anteckningar/{customerId}")
+    @GetMapping("kunder/anteckningar/{customerId}/kund")
     public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable final long customerId) {
         return customerNoteRepository.getAllNotesByCustomerId(customerId);
     }
