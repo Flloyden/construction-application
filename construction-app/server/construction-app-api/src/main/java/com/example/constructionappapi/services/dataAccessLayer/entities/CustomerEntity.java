@@ -27,16 +27,17 @@ public class CustomerEntity {
     private String propertyDesignation;
     private String socialSecurityNumber;
     private LocalDate creationDate = LocalDate.now();  //TODO: Need to check so that value doesn't get overwritten when saving a customer.
-    @JsonManagedReference
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonManagedReference("customerToWork")
     private List<WorkEntity> workList;
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonManagedReference("customerToNote")
     private List<CustomerNoteEntity> customerNotes;
 
     public List<CustomerNoteEntity> getCustomerNotes() {

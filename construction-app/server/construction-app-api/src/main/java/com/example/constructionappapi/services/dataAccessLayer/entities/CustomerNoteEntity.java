@@ -1,5 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,14 +32,13 @@ public class CustomerNoteEntity {
     private long workNumber;
     private long noteStatus;
 
-
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonIgnore
+    @JsonBackReference(value = "customerToNote")
     private CustomerEntity customer;
     @ManyToOne
     @JoinColumn(name = "work_id")
-    @JsonIgnore
+    @JsonBackReference(value = "workToNote")
     private WorkEntity workEntity;
 
     public void setCustomerForNote(CustomerEntity customer) {

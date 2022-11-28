@@ -24,7 +24,7 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
     private LocalDate date;
     @ManyToOne
     @JoinColumn(name = "work_id")
-    @JsonBackReference
+    @JsonBackReference(value = "workToCalendar")
     private WorkEntity work;
 
     public CalendarEntity(LocalDate date) {
