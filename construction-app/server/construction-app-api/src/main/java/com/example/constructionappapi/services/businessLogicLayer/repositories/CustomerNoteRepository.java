@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class accessing the customer note table in DB
@@ -18,14 +19,23 @@ public class CustomerNoteRepository {
     @Autowired
     private CustomerNoteDao customerNoteDao;
     private CustomerNoteEntity customerNoteEntity;
+    private WorkRepository workRepository;
 
 
-    public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNote, WorkEntity work) {
-        CustomerEntity customerEntity = work.getCustomer(); //hämta customer till det jobbet
+    public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNote, long workId) {
+        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
+
+        CustomerEntity customerEntity = workEntity.get().getCustomer(); //hämta customer till det jobbet
+        
         customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
-        customerNoteEntity.setWorkForNote(work); //assigna note till work
+
+        customerNoteEntity.setWorkForNote(workEntity); //assigna note till work
+
         return customerNoteDao.save(customerNote);
     }
+
+
+
 
     public List<CustomerNoteEntity> getAllNotesForWork(WorkEntity work) {
         return work.getCustomerNotes();

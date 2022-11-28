@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Entity
 @Table(name = "customer_note")
@@ -34,12 +35,12 @@ public class CustomerNoteEntity {
     @ManyToOne
     @JoinColumn(name = "work_id")
     @JsonIgnore
-    private WorkEntity workEntity;
+    private Optional<WorkEntity> workEntity;
 
     public void setCustomerForNote(CustomerEntity customer) {
         this.customer = customer;
     }
-    public void setWorkForNote(WorkEntity workEntity) {
+    public void setWorkForNote(Optional<WorkEntity> workEntity) {
         this.workEntity = workEntity;
     }
 

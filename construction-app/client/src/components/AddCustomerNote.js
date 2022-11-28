@@ -121,7 +121,6 @@ export default function AddCustomerNote(
             className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
             type="text"
             name="propertyDesignation"
-            ref={kmRef}
             onChange={onChange}
           ></input>
         </div>
