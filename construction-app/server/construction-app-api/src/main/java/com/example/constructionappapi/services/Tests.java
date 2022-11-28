@@ -23,9 +23,9 @@ public class Tests {
     }
 
     public void testAddVacation() {
-        VacationEntity vacationEntity1 = new VacationEntity(null, "test", LocalDate.now(), 10, null);
-        VacationEntity vacationEntity2 = new VacationEntity(null, "test", LocalDate.now(), 10, null);
-        VacationEntity vacationEntity3 = new VacationEntity(null, "test", LocalDate.now().plusDays(20), 10, null);
+        VacationEntity vacationEntity1 = new VacationEntity(0L, "test", LocalDate.now(), 10, null);
+        VacationEntity vacationEntity2 = new VacationEntity(0L, "test", LocalDate.now(), 10, null);
+        VacationEntity vacationEntity3 = new VacationEntity(0L, "test", LocalDate.now().plusDays(20), 10, null);
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity1);
         vacationAPI.saveVacation(vacationEntity2);
