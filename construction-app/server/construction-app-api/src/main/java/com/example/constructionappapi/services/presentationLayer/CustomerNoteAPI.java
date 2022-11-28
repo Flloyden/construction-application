@@ -32,11 +32,10 @@ public class CustomerNoteAPI {
     @GetMapping("kunder/anteckningar/{customerId}")
     public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable Long customerId) {
         return customerNoteRepository.findAllByCustomerId(customerId);
-        //return customerNoteRepository.getAllNotesForCustomer(customerId);
     }
 
     @DeleteMapping("kunder/anteckningar/{customerId}/remove")
-    public void deleteNote(@PathVariable final Long customerId) {
-        customerNoteRepository.deleteNote(customerId); // Ska det vara return här?
+    public void deleteNote(@PathVariable final Long noteId) {
+        customerNoteRepository.deleteNote(noteId);
     }
 }

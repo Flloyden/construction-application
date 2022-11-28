@@ -44,15 +44,11 @@ public class CustomerNoteRepository {
         return workEntity.get().getCustomerNotes();
     }
 
-
-    public List<CustomerNoteEntity> getAllNotesForCustomer(CustomerEntity customer) {
-        return customer.getCustomerNotes();
-    }
-
     public List<CustomerNoteEntity> findAllByCustomerId(Long customerId) {
         return customerNoteDao.findAllByCustomerId(customerId);
     }
 
-    public void deleteNote(Long customerId) {
+    public void deleteNote(Long noteId) {
+        customerNoteDao.deleteById(noteId);
     }
 }
