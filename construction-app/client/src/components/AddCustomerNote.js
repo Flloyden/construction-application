@@ -25,7 +25,7 @@ export default function AddCustomerNote(
   const [newList, setNewList] = useState();
 
   const [selectValue, setSelectValue] = useState("");
-  const [lastItem, setLastItem] = useState("");
+  const [workId, setWorkId] = useState("");
   const dateRef = useRef();
   const kmRef = useRef();
   const employeeRef = useRef();
@@ -35,32 +35,30 @@ export default function AddCustomerNote(
     const value = event.target.value;
     if (event.target.name === "select") {
       setSelectValue(value);
-      setLastItem(value.slice(-1))
+      setWorkId(value.slice(-1))
     } else {
       console.log(value)
     }
     setNewList({
       id: "",
-      date_posted: dateRef.current.value,
-      km_driven: kmRef.current.value,
+      datePosted: dateRef.current.value,
+      kmDriven: kmRef.current.value,
       note: "",
-      time_employee: employeeRef.current.value,
-      time_spend: timeRef.current.value,
-      customer_id: "",
-      work_id: lastItem,
+      timeEmployee: employeeRef.current.value,
+      timeSpend: timeRef.current.value,
     })
     console.log(newList)
   };
+
+  console.log(customer.name)
 
   const saveNote = (e) => {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     // Pushes the new list into current lists
-    console.log(customer.name.currentCustomerNotes)
-    customer.name.currentCustomerNotes.push(newList);
-    console.log(customer.name.currentCustomerNotes)
+    console.log(newList)
     // Adds work to user with api call
-    ApiConnector.saveNote(customer)
+    ApiConnector.saveNote(workId, newList)
       .then((response) => {
         console.log(response);
         //window.location.reload(false);
