@@ -35,12 +35,12 @@ public class CustomerNoteEntity {
     @ManyToOne
     @JoinColumn(name = "work_id")
     @JsonIgnore
-    private Optional<WorkEntity> workEntity;
+    private WorkEntity workEntity;
 
     public void setCustomerForNote(CustomerEntity customer) {
         this.customer = customer;
     }
-    public void setWorkForNote(Optional<WorkEntity> workEntity) {
+    public void setWorkForNote(WorkEntity workEntity) {
         this.workEntity = workEntity;
     }
 

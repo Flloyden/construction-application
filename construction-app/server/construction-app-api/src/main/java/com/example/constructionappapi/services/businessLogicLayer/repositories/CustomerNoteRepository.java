@@ -18,18 +18,20 @@ public class CustomerNoteRepository {
 
     @Autowired
     private CustomerNoteDao customerNoteDao;
-    private CustomerNoteEntity customerNoteEntity;
+    @Autowired
     private WorkRepository workRepository;
+
+    private WorkEntity workEntity;
 
 
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNote, long workId) {
         Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
 
         CustomerEntity customerEntity = workEntity.get().getCustomer(); //hämta customer till det jobbet
-        
-        customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
 
-        customerNoteEntity.setWorkForNote(workEntity); //assigna note till work
+        customerNote.setCustomer(customerEntity); //assignar note till customer
+
+        customerNote.setWorkForNote(workEntity.get()); //assigna note till work
 
         return customerNoteDao.save(customerNote);
     }

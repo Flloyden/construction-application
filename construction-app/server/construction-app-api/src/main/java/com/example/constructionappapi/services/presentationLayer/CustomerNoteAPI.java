@@ -20,8 +20,8 @@ public class CustomerNoteAPI {
     private CustomerNoteRepository customerNoteRepository;
 
     @PostMapping("kunder/anteckningar/save/{workId}")
-    public CustomerNoteEntity createCostumerNote(@RequestBody CustomerNoteEntity customerNote, @PathVariable final long workID) {
-        return customerNoteRepository.createCustomerNote(customerNote, workID);
+    public CustomerNoteEntity createCostumerNote(@RequestBody CustomerNoteEntity customerNote, @PathVariable final long workId) {
+        return customerNoteRepository.createCustomerNote(customerNote, workId);
     }
 
     @GetMapping("kunder/anteckningar/{workId}")
