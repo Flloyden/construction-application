@@ -12,6 +12,7 @@ const AddWork = ({
   currentCustomerProperty,
   currentCustomerSSN,
   currentCustomerWorkList,
+  currentCustomerNotes,
 }) => {
   const [customer] = useState({
     id: currentCustomerId,
@@ -21,7 +22,7 @@ const AddWork = ({
     propertyDesignation: currentCustomerProperty,
     socialSecurityNumber: currentCustomerSSN,
     workList: currentCustomerWorkList,
-    customerNotes: [],
+    customerNotes: currentCustomerNotes,
   });
 
   const nameRef = useRef();

@@ -6,6 +6,7 @@ const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
 const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 const NOTES_API = "http://localhost:8080/kunder/notes/save";
+const SEMESTER_API = "http://localhost:8080/api/v1/semester"
 
 class ApiConnector {
   authenicate(){
@@ -74,6 +75,19 @@ class ApiConnector {
   getNotes() {
     //Gets all existing info about calendar from the database
     return axios.get(NOTES_API);
+  }
+
+  saveSemester(date) {
+    return axios.post(SEMESTER_API, date)
+  }
+
+  getSemester() {
+    //Gets all existing info about calendar from the database
+    return axios.get(SEMESTER_API);
+  }
+
+  saveNote(customer) {
+    return axios.post(CUSTOMER_API_BASE_URL + "/note/save", customer)
   }
 }
 

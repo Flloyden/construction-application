@@ -162,7 +162,16 @@ export default function Customer() {
               </div>
             </div>
             <div className="flex-1">
-              <AddCustomerNote />
+              <AddCustomerNote
+                currentCustomerId={customer.id}
+                currentCustomerName={customer.name}
+                currentCustomerAddress={customer.address}
+                currentCustomerPhone={customer.phoneNumber}
+                currentCustomerProperty={customer.propertyDesignation}
+                currentCustomerSSN={customer.socialSecurityNumber}
+                currentCustomerWorkList={customer.workList}
+                currentCustomerNotes={customer.customerNotes}
+              />
               <Notes />
             </div>
           </div>
@@ -178,6 +187,7 @@ export default function Customer() {
           currentCustomerProperty={customer.propertyDesignation}
           currentCustomerSSN={customer.socialSecurityNumber}
           currentCustomerWorkList={customer.workList}
+          currentCustomerNotes={customer.customerNotes}
         />
       )}
       {isWorkOpen && (
@@ -190,6 +200,7 @@ export default function Customer() {
           currentCustomerProperty={customer.propertyDesignation}
           currentCustomerSSN={customer.socialSecurityNumber}
           currentCustomerWorkList={customer.workList}
+          currentCustomerNotes={customer.customerNotes}
         />
       )}
       {isOpen && (
