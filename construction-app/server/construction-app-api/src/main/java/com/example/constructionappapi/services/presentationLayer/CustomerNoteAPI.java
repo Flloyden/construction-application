@@ -2,14 +2,11 @@ package com.example.constructionappapi.services.presentationLayer;
 
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerNoteRepository;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -30,12 +27,12 @@ public class CustomerNoteAPI {
     }
 
     @GetMapping("kunder/anteckningar/{customerId}")
-    public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable Long customerId) {
-        return customerNoteRepository.findAllByCustomerId(customerId);
+    public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable final long customerId) {
+        return customerNoteRepository.getAllNotesByCustomerId(customerId);
     }
 
     @DeleteMapping("kunder/anteckningar/{customerId}/remove")
-    public void deleteNote(@PathVariable final Long noteId) {
+    public void deleteNote(@PathVariable final long noteId) {
         customerNoteRepository.deleteNote(noteId);
     }
 }
