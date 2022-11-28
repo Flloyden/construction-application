@@ -29,6 +29,7 @@ public class CustomerNoteEntity {
     private String timeEmployee;
     private String workName;
     private long workNumber;
+    private long noteStatus;
 
 
     @ManyToOne
