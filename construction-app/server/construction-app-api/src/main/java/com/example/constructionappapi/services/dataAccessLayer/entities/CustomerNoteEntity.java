@@ -28,7 +28,8 @@ public class CustomerNoteEntity {
     private String timeSpend;
     private String kmDriven;
     private String timeEmployee;
-    
+    private String workName;
+
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
