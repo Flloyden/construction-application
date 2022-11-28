@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,9 +44,10 @@ public class WorkEntity {
     private List<CalendarEntity> calendar;
     @OneToMany(
             mappedBy = "workEntity",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JsonManagedReference(value = "workToNote")
-    private List<CustomerNoteEntity> customerNotes;
+    private List<CustomerNoteEntity> customerNotes = new ArrayList<>(); //TODO: Might cause problems.
 
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
