@@ -25,8 +25,8 @@ public class CustomerNoteAPI {
     }
 
     @GetMapping("kunder/anteckningar/{workId}")
-    public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable WorkEntity work) {
-        return customerNoteRepository.getAllNotesForWork(work);
+    public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable final long workId) {
+        return customerNoteRepository.getAllNotesForWork(workId);
     }
 
     @GetMapping("kunder/anteckningar/{customerId}")

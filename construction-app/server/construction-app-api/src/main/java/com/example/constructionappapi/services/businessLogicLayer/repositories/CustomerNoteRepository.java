@@ -39,8 +39,9 @@ public class CustomerNoteRepository {
 
 
 
-    public List<CustomerNoteEntity> getAllNotesForWork(WorkEntity work) {
-        return work.getCustomerNotes();
+    public List<CustomerNoteEntity> getAllNotesForWork(long workId) {
+        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
+        return workEntity.get().getCustomerNotes();
     }
 
 
