@@ -25,6 +25,7 @@ export default function Customer() {
   const [isChangeOpen, setIsChangeOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [currentCustomerName, setCurrentCustomerName] = useState("");
+  const [oldNotesToggle, setOldNotesToggle] = useState(false);
 
   useEffect(() => {
     // Gets all the customers on page load once per load
@@ -39,7 +40,6 @@ export default function Customer() {
           // If success it sets customers to the response data
         } else {
           setCustomer(response.data);
-          console.log(response.data);
         }
         // Logs any errors
       } catch (error) {
@@ -61,6 +61,12 @@ export default function Customer() {
     }
     setIsOpen(false);
     setLoading(false);
+  };
+
+  const showOldNotes = (e) => {
+    /**Handles the logout function when the login button is pressed */
+    e.preventDefault();
+    setOldNotesToggle(!oldNotesToggle)
   };
 
   return (
@@ -161,7 +167,7 @@ export default function Customer() {
                 </div>
               </div>
             </div>
-            <div className="flex-1">
+            <div className="flex-1 h-max">
               <AddCustomerNote
                 currentCustomerId={customer.id}
                 currentCustomerName={customer.name}
@@ -172,7 +178,7 @@ export default function Customer() {
                 currentCustomerWorkList={customer.workList}
                 currentCustomerNotes={customer.customerNotes}
               />
-              <Notes currentCustomer={customer} />
+              <Notes currentCustomer={customer} showOldNotes={showOldNotes} oldNotesToggle={oldNotesToggle} />
             </div>
           </div>
         )}

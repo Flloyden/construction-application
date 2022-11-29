@@ -62,8 +62,6 @@ export default function AddCustomerNote(
     console.log(newList)
   };
 
-  console.log(customer.name)
-
   const saveNote = (e) => {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
@@ -161,7 +159,10 @@ export default function AddCustomerNote(
             onChange={onChange}
           ></input>
         </div>
-        <div className="flex w-2/12 gap-2 mt-8 justify-end inset-x-0 bottom-4 mx-auto">
+        <div className="w-2/12 gap-2 mt-2 justify-end inset-x-0 bottom-4 mx-auto">
+        <label className="mb-2 text-sm font-medium text-white">
+            Spara som:{" "}
+        </label>
         <select
             name="selectStatus"
             onChange={onChange}
