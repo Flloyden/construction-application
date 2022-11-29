@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { RiPencilFill } from "react-icons/ri";
+import ApiConnector from "../services/ApiConnector";
+import NoteModal from "./NoteModal";
 
 export default function Notes(props) {
-  //console.log(currentCustomer.currentCustomer.customerNotes);
   const copy = [...props.currentCustomer.customerNotes];
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentId, setCurrentId] = useState();
   const resultSum = copy.filter((item) => item.noteStatus === 1);
   const resultReg = copy.filter((item) => item.noteStatus === 0);
   const selectedOnes = resultSum.map((item) => {
@@ -14,10 +17,21 @@ export default function Notes(props) {
     return !selectedOnes.find((selected) => selected === col.workNumber);
   });
 
+  const deleteThis = async () => {
+    // Deletes a client with given id and updates the id
+    try {
+      await ApiConnector.deleteNote(currentId);
+      window.location.reload(false);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpen(false);
+  };
+
   if (props.currentCustomer.customerNotes.length < 1) {
     return <div></div>;
   }
-  if (result.length > 0) {
+  if (copy.length > 0) {
     return (
       <div>
         <h2 className="text-2xl pt-10 pb-2">Anteckningar</h2>
@@ -71,7 +85,11 @@ export default function Notes(props) {
                         <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 mr-2 text-blue-600 h-fit hover:bg-slate-200">
                           <RiPencilFill />
                         </button>
-                        <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 text-red-600 h-fit hover:bg-slate-200">
+                        <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 text-red-600 h-fit hover:bg-slate-200"
+                        onClick={() => {
+                          setCurrentId(item.id)
+                          setIsOpen(true);
+                        }}>
                           <RiCloseLine />
                         </button>
                       </div>
@@ -146,7 +164,7 @@ export default function Notes(props) {
         </div>
         <div className="w-full flex justify-center items-center align-middle mt-14">
           <button
-            className={resultReg.length > 0 ? "bg-blue-500 text-white hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300": "hidden"}
+            className={resultReg.length > 0 && resultSum.length > 0 ? "bg-blue-500 text-white hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300": "hidden"}
             onClick={props.showOldNotes}
           >
             {props.oldNotesToggle ? "Dölj gamla anteckningar" : "Visa gamla anteckningar"}
@@ -218,6 +236,13 @@ export default function Notes(props) {
             </div>
           </div>
         )}
+        {isOpen && (
+        <NoteModal
+          setIsOpen={setIsOpen}
+          deleteThis={deleteThis}
+          currentId={currentId}
+        />
+      )}
       </div>
     );
   }

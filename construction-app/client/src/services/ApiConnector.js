@@ -87,8 +87,12 @@ class ApiConnector {
   }
 
   saveNote(workId, noteList) {
-    console.log(noteList)
     return axios.post(CUSTOMER_API_BASE_URL + "/anteckningar/save/" + workId, noteList)
+  }
+
+  deleteNote(noteId) {
+    console.log(noteId)
+    return axios.delete("http://localhost:8080/api/v1/kunder/anteckningar/remove/", noteId)
   }
 }
 
