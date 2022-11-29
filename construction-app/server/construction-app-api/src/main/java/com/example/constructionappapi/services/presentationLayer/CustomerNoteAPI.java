@@ -31,7 +31,7 @@ public class CustomerNoteAPI {
         return customerNoteRepository.getAllNotesByCustomerId(customerId);
     }
 
-    @DeleteMapping("kunder/anteckningar/{customerId}/remove")
+    @DeleteMapping("kunder/anteckningar/remove/{noteId}")
     public void deleteNote(@PathVariable final long noteId) {
         customerNoteRepository.deleteNote(noteId);
     }
