@@ -32,7 +32,7 @@ public class CustomerNoteAPI {
     }
 
     @DeleteMapping("kunder/anteckningar/remove/{noteId}")
-    public void deleteNote(@PathVariable final long noteId) {
+    public void deleteNote(@PathVariable final Long noteId) {
         customerNoteRepository.deleteNote(noteId);
     }
 }

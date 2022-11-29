@@ -48,7 +48,7 @@ public class CustomerNoteRepository {
         return customerNoteDao.findAllByCustomerId(customerId);
     }
 
-    public void deleteNote(long noteId) {
+    public void deleteNote(Long noteId) {
         customerNoteDao.deleteById(noteId);
     }
 }
