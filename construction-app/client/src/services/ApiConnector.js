@@ -52,6 +52,10 @@ class ApiConnector {
      return axios.get(CUSTOMER_API_BASE_URL + "/" + "upcoming");
   }
 
+  getOngoingWork(){
+    return axios.get(CUSTOMER_API_BASE_URL + "/" + "ongoing");
+  }
+
   // ACCOUNTING / WARRANTY
   saveWarranty(warranty) {
     //Saves the warranty to the database (Can also update existing warranty if ID already exists)

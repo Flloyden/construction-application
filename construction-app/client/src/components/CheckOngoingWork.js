@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 
-export default function CheckUpcomingupcomingWork() {
+export default function CheckOngoingWork() {
   const [loading, setLoading] = useState(true);
-  const [upcomingWork, setUpcomingWork] = useState(null);
+  const [ongoingWork, setOngoingWork] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Gets all the upcoming upcomingWork on page load and runs only once
+    // Gets all the upcoming ongoingWork on page load and runs only once
     const fetchData = async () => {
       setLoading(true);
       // Tries to get data from api
       try {
-        const response = await ApiConnector.getUpcomingupcomingWork();
-        setUpcomingWork(response.data);
+        const response = await ApiConnector.getOngoingWork();
+        setOngoingWork(response.data);
+        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -24,9 +25,9 @@ export default function CheckUpcomingupcomingWork() {
     fetchData();
   }, []);
 
-  function getUpcomingupcomingWork() {
-    /**Gets upcoming upcomingWork within ten days of today's date */
-    let sortedDates = upcomingWork.sort(
+  function getOngoingWork() {
+    /**Gets upcoming ongoingWork within ten days of today's date */
+    let sortedDates = ongoingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
@@ -36,7 +37,7 @@ export default function CheckUpcomingupcomingWork() {
 
   function getCustomerId() {
     /**Gets the customer id with nearest expiring date by sorting the array */
-    let sortedDates = upcomingWork.sort(
+    let sortedDates = ongoingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
@@ -46,7 +47,7 @@ export default function CheckUpcomingupcomingWork() {
 
   const passId = (e) => {
     // Passes the right id to the customer url
-    if (upcomingWork.length < 1) {
+    if (ongoingWork.length < 1) {
       alert("FINNS INGEN KUND");
     } else {
       navigate(`/kunder/${e}`, { state: { clientId: e } });
@@ -57,7 +58,7 @@ export default function CheckUpcomingupcomingWork() {
     <div className="w-full h-full">
       {!loading && (
         <div className="w-full h-full">
-          {upcomingWork.length < 1 ? (
+          {ongoingWork.length < 1 ? (
             <p className="align-center justify-center items-center flex w-full h-full">Finns inga kommande jobb</p>
           ) : (
             <div
@@ -66,7 +67,7 @@ export default function CheckUpcomingupcomingWork() {
             >
               <div>
                 <p className="border-b-2 py-2">Kommande jobb</p>
-                <p className="mt-2">{getUpcomingupcomingWork()}</p>
+                <p className="mt-2">{getOngoingWork()}</p>
               </div>
             </div>
           )}

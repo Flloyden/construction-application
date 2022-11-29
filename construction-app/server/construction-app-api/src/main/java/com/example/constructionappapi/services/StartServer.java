@@ -42,8 +42,10 @@ public class StartServer {
             }
 
             WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
-            List<WorkEntity> test = workRepository.checkForActiveWork();
-            System.out.println(test);
+            List<WorkEntity> test = workRepository.checkForOngoingWork();
+            System.out.println(test.toString());
+
+
 
 
             /*

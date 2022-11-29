@@ -2,8 +2,10 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.dataAccessLayer.Status;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -89,5 +91,11 @@ public class WorkRepository{
         LocalDate tenDaysForward = today.plusDays(10);
 
         return workDao.findByStartDateBetween(today, tenDaysForward);
+    }
+
+    public List<WorkEntity> checkForOngoingWork()
+    {
+        LocalDate today = LocalDate.now();
+        return workDao.findByStartDateAndWorkStatus(today,1);
     }
 }
