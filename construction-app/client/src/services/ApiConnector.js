@@ -92,7 +92,7 @@ class ApiConnector {
 
   deleteNote(noteId) {
     console.log(noteId)
-    return axios.delete("http://localhost:8080/api/v1/kunder/anteckningar/remove/", noteId)
+    return axios.delete("http://localhost:8080/api/v1/kunder/anteckningar/remove/" + noteId)
   }
 }
 
