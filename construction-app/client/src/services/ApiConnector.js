@@ -1,4 +1,5 @@
 import axios from "axios";
+import { assertTSExpressionWithTypeArguments } from "@babel/types";
 
 // Base url to get api
 const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
@@ -44,6 +45,16 @@ class ApiConnector {
   deleteWork(customer, work) {
     //Deletes a work from the database with a specific id
     return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/work/delete/" + work);
+  }
+
+  getUpcomingWork(){
+    //Gets upcoming work based on todays date and ten days forward. 
+     //Checks if any customer has work with startdate within 10 days.
+     return axios.get(CUSTOMER_API_BASE_URL + "/" + "upcoming");
+  }
+
+  getOngoingWork(){
+    return axios.get(CUSTOMER_API_BASE_URL + "/" + "ongoing");
   }
 
   // ACCOUNTING / WARRANTY

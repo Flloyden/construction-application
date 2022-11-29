@@ -28,6 +28,7 @@ public class CalendarRepository {
         return calendarDao.save(calendar);
     }
 
+
     public CalendarEntity editCalendar(CalendarEntity calendar) {
         return calendarDao.save(calendar);
     }
@@ -38,6 +39,10 @@ public class CalendarRepository {
 
     public String getAllVacationDates() {
         return calendar.vacationToString();
+    }
+    public String getAllCalendarEntites() {
+        return calendar.toString();
+
     }
 
     public CalendarEntity findFirstByDate(LocalDate date) {

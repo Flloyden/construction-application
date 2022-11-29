@@ -9,6 +9,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,8 @@ public class WorkRepository {
     private CustomerDao customerDao;
     private Calendar calendar = CalendarSingleton.getCalendar();
 
-    public WorkRepository() {
+    public WorkRepository()
+    {
         calendar.setWorkRepository(this);
     }
 
@@ -87,6 +89,7 @@ public class WorkRepository {
         return workDao.findFirstByOrderByIdDesc();
     }
 
+
     public WorkEntity updateWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isPresent()) {
@@ -105,5 +108,21 @@ public class WorkRepository {
         }
 
         return null;
+    }
+
+    public List<WorkEntity> checkForActiveWork()
+    {
+        LocalDate today = LocalDate.now();
+        today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
+                                                //Lägger därför en dag framåt från dagens datum.
+        LocalDate tenDaysForward = today.plusDays(10);
+
+        return workDao.findByStartDateBetween(today, tenDaysForward);
+    }
+
+    public List<WorkEntity> checkForOngoingWork()
+    {
+        LocalDate today = LocalDate.now();
+        return workDao.findByStartDateAndWorkStatus(today,1);
     }
 }
