@@ -59,14 +59,14 @@ export default function CheckOngoingWork() {
       {!loading && (
         <div className="w-full h-full">
           {ongoingWork.length < 1 ? (
-            <p className="align-center justify-center items-center flex w-full h-full">Finns inga kommande jobb</p>
+            <p className="align-center justify-center items-center flex w-full h-full">Finns inga pågående jobb</p>
           ) : (
             <div
               className="align-center justify-center items-center flex w-full h-full hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white"
               onClick={(e) => passId(getCustomerId())}
             >
               <div>
-                <p className="border-b-2 py-2">Kommande jobb</p>
+                <p className="border-b-2 py-2">Pågående jobb</p>
                 <p className="mt-2">{getOngoingWork()}</p>
               </div>
             </div>

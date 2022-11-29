@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 
-export default function CheckUpcomingupcomingWork() {
+export default function CheckUpcomingWork() {
   const [loading, setLoading] = useState(true);
   const [upcomingWork, setUpcomingWork] = useState(null);
   const navigate = useNavigate();
@@ -13,8 +13,9 @@ export default function CheckUpcomingupcomingWork() {
       setLoading(true);
       // Tries to get data from api
       try {
-        const response = await ApiConnector.getUpcomingupcomingWork();
+        const response = await ApiConnector.getUpcomingWork();
         setUpcomingWork(response.data);
+        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -24,8 +25,23 @@ export default function CheckUpcomingupcomingWork() {
     fetchData();
   }, []);
 
-  function getUpcomingupcomingWork() {
+  function getUpcomingWork() { 
+    //if(upcomingWork.length > 1) // Skapar en lista med alla kommande jobb
+    //{                           // Hade behövt hjälp med att displaya det
+      //const work = [];
+      //for (let i = 0; i < upcomingWork.length; i++) 
+      //{
+        //let sortedDates = upcomingWork.sort(
+          //(a, b) =>
+            //new Date(...a.startDate.split("/").reverse()) -
+            //new Date(...b.startDate.split("/").reverse())
+        //);
+        //work[i] = sortedDates[i].name + " - " + sortedDates[i].startDate + " | "; 
+    //}
+    //return work;
+  //}
     /**Gets upcoming upcomingWork within ten days of today's date */
+   
     let sortedDates = upcomingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
@@ -66,7 +82,7 @@ export default function CheckUpcomingupcomingWork() {
             >
               <div>
                 <p className="border-b-2 py-2">Kommande jobb</p>
-                <p className="mt-2">{getUpcomingupcomingWork()}</p>
+                <p className="mt-2">{getUpcomingWork()}</p>
               </div>
             </div>
           )}

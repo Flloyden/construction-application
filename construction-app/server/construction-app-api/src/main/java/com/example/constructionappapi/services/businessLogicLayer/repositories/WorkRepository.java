@@ -123,6 +123,7 @@ public class WorkRepository {
     public List<WorkEntity> checkForOngoingWork()
     {
         LocalDate today = LocalDate.now();
-        return workDao.findByStartDateAndWorkStatus(today,1);
+        today.plusDays(1);
+        return workDao.findByStartDate(today);
     }
 }
