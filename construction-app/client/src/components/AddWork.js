@@ -1,6 +1,4 @@
 import { useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import ApiConnector from "../services/ApiConnector";
 
 const AddWork = ({
@@ -41,13 +39,6 @@ const AddWork = ({
   const offer = useRef();
   const [newList, setNewList] = useState();
   const [image, setImage] = useState("");
-  let [startDate, setStartDate] = useState(new Date());
-  let endDate = new Date();
-
-  const isWeekday = (date) => {
-    const day = date.getDay;
-    return day !== 0 && day !== 6;
-  };
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
@@ -58,7 +49,7 @@ const AddWork = ({
       numberOfDays: dayCountRef.current.value,
       materialNote: materialNoteRef.current.value,
       offer: image,
-      startDate: startDate,
+      startDate: "",
       workStatus: "NOTSTARTED",
       calendar: []
     })
@@ -136,22 +127,6 @@ const AddWork = ({
 
           <div className="mt-4">
             <div className="flex gap-2">
-              <label onClick={handleChange}>
-              <p className="block mb-2 text-sm font-medium text-gray-700">Startdatum:</p>
-                <DatePicker
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                  selected={startDate}
-                  onChange={(date) => {
-                    setStartDate(date);
-                    handleChange(date);
-                  }}
-                  filterDate={isWeekday}
-                  placeholderText="Select a weekday"
-                  selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              </label>
               
               <label onClick={handleChange}>
               <label className="block mb-2 text-sm font-medium text-gray-700">Antal dagar:</label>

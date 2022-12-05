@@ -11,6 +11,7 @@ import Modal from "./Modal";
 import Work from "./Work";
 import AddCustomerNote from "./AddCustomerNote";
 import Notes from "./Notes";
+import SumCustomerNote from "./SumCustomerNote";
 
 export default function Customer() {
   const navigate = useNavigate();
@@ -168,6 +169,8 @@ export default function Customer() {
               </div>
             </div>
             <div className="flex-1 h-max">
+            <div className="flex flex-wrap">
+            <div className="w-3/4">
               <AddCustomerNote
                 currentCustomerId={customer.id}
                 currentCustomerName={customer.name}
@@ -178,7 +181,23 @@ export default function Customer() {
                 currentCustomerWorkList={customer.workList}
                 currentCustomerNotes={customer.customerNotes}
               />
+              </div>
+              <div className="w-1/4 h-full pl-1 pb-1">
+              <SumCustomerNote
+                currentCustomerId={customer.id}
+                currentCustomerName={customer.name}
+                currentCustomerAddress={customer.address}
+                currentCustomerPhone={customer.phoneNumber}
+                currentCustomerProperty={customer.propertyDesignation}
+                currentCustomerSSN={customer.socialSecurityNumber}
+                currentCustomerWorkList={customer.workList}
+                currentCustomerNotes={customer.customerNotes}
+              />
+              </div>
+              <div className="w-full">
               <Notes currentCustomer={customer} showOldNotes={showOldNotes} oldNotesToggle={oldNotesToggle} />
+              </div>
+              </div>
             </div>
           </div>
         )}
