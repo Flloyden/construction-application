@@ -25,14 +25,11 @@ const AddWork = ({
   const dayCountRef = useRef();
 
   const handleChange = (e) => {
-    console.log(e)
     let value = e.target.value;
-    console.log(value);
     setWork({
       ...work,
       [e.target.name]: value,
     });
-    console.log(work);
   };
 
   const convertToBase64 = (file) => {
@@ -67,7 +64,7 @@ const AddWork = ({
     ApiConnector.saveWork(currentCustomerId, work)
       .then((response) => {
         console.log(response);
-        //window.location.reload(false);
+        window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);

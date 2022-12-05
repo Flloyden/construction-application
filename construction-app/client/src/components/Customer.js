@@ -67,7 +67,7 @@ export default function Customer() {
   const showOldNotes = (e) => {
     /**Handles the logout function when the login button is pressed */
     e.preventDefault();
-    setOldNotesToggle(!oldNotesToggle)
+    setOldNotesToggle(!oldNotesToggle);
   };
 
   return (
@@ -168,35 +168,39 @@ export default function Customer() {
                 </div>
               </div>
             </div>
-            <div className="flex-1 h-max">
-            <div className="flex flex-wrap">
-            <div className="w-3/4">
-              <AddCustomerNote
-                currentCustomerId={customer.id}
-                currentCustomerName={customer.name}
-                currentCustomerAddress={customer.address}
-                currentCustomerPhone={customer.phoneNumber}
-                currentCustomerProperty={customer.propertyDesignation}
-                currentCustomerSSN={customer.socialSecurityNumber}
-                currentCustomerWorkList={customer.workList}
-                currentCustomerNotes={customer.customerNotes}
-              />
-              </div>
-              <div className="w-1/4 h-full pl-1 pb-1">
-              <SumCustomerNote
-                currentCustomerId={customer.id}
-                currentCustomerName={customer.name}
-                currentCustomerAddress={customer.address}
-                currentCustomerPhone={customer.phoneNumber}
-                currentCustomerProperty={customer.propertyDesignation}
-                currentCustomerSSN={customer.socialSecurityNumber}
-                currentCustomerWorkList={customer.workList}
-                currentCustomerNotes={customer.customerNotes}
-              />
-              </div>
-              <div className="w-full">
-              <Notes currentCustomer={customer} showOldNotes={showOldNotes} oldNotesToggle={oldNotesToggle} />
-              </div>
+            <div className={customer.workList.length > 0 ? "flex-1 h-max" : "hidden"}>
+              <div className="flex flex-wrap">
+                <div className="w-3/4">
+                  <AddCustomerNote
+                    currentCustomerId={customer.id}
+                    currentCustomerName={customer.name}
+                    currentCustomerAddress={customer.address}
+                    currentCustomerPhone={customer.phoneNumber}
+                    currentCustomerProperty={customer.propertyDesignation}
+                    currentCustomerSSN={customer.socialSecurityNumber}
+                    currentCustomerWorkList={customer.workList}
+                    currentCustomerNotes={customer.customerNotes}
+                  />
+                </div>
+                <div className="w-1/4 h-full pl-1 pb-1">
+                  <SumCustomerNote
+                    currentCustomerId={customer.id}
+                    currentCustomerName={customer.name}
+                    currentCustomerAddress={customer.address}
+                    currentCustomerPhone={customer.phoneNumber}
+                    currentCustomerProperty={customer.propertyDesignation}
+                    currentCustomerSSN={customer.socialSecurityNumber}
+                    currentCustomerWorkList={customer.workList}
+                    currentCustomerNotes={customer.customerNotes}
+                  />
+                </div>
+                <div className="w-full">
+                  <Notes
+                    currentCustomer={customer}
+                    showOldNotes={showOldNotes}
+                    oldNotesToggle={oldNotesToggle}
+                  />
+                </div>
               </div>
             </div>
           </div>
