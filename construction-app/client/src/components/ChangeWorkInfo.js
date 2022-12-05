@@ -48,7 +48,7 @@ const ChangeWorkInfo = ({
     setNewList({
       id: currentWorkId,
       name: nameRef.current.value,
-      numberOfDays: dayCount,
+      numberOfDays: dayCountRef.current.value,
       materialNote: materialNoteRef.current.value,
       offer: image,
       startDate: startDate,

@@ -25,20 +25,9 @@ public class WorkAPI {
 
     private final Calendar calendar = CalendarSingleton.getCalendar();
 
-    @PostMapping("/kunder/work/save")
-    public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
-         /* TODO: Probably a better way of saving work. With work as request body.
-        Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
-        if (customer.isPresent()) {
-            work.setCustomer(customer.get());
-            calendar.addWork(work);
-        }
-         */
-
-        CustomerEntity customerEntity = customerRepository.createCustomer(customer);
-        calendar.addWork(workRepository.getLastInserted());
-
-        return customerEntity;
+    @PostMapping("/kunder/{customerId}/work/save")
+    public WorkEntity saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
+        return workRepository.addNewWorkEntity(customerId, work);
     }
 
     @PostMapping("/kunder/{customerId}/work/update")
@@ -62,23 +51,17 @@ public class WorkAPI {
     }
 
     @GetMapping("/kunder/upcoming")
-    public List<WorkEntity> getUpcomingWork()
-    {
-        if (workRepository.checkForActiveWork()!=null)
-        {
+    public List<WorkEntity> getUpcomingWork() {
+        if (workRepository.checkForActiveWork() != null) {
             return workRepository.checkForActiveWork();
-        }
-         else
-        {
+        } else {
             return null;
         }
     }
 
     @GetMapping("/kunder/ongoing")
-    public List<WorkEntity> getOngoingWork()
-    {
-        if (workRepository.checkForOngoingWork()!= null)
-        {
+    public List<WorkEntity> getOngoingWork() {
+        if (workRepository.checkForOngoingWork() != null) {
             return workRepository.checkForOngoingWork();
         } else {
             return null;

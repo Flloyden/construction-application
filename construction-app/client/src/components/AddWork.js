@@ -24,6 +24,16 @@ const AddWork = ({
     workList: currentCustomerWorkList,
     customerNotes: currentCustomerNotes,
   });
+  const [work, setWork] = useState({
+    id: "",
+    name: "",
+    numberOfDays: "",
+    materialNote: "",
+    offer: "",
+    startDate: "",
+    workStatus: "NOTSTARTED",
+    calendar: []
+  });
 
   const nameRef = useRef();
   const materialNoteRef = useRef();
@@ -41,7 +51,8 @@ const AddWork = ({
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
-    setNewList({
+
+    setWork({
       id: "",
       name: nameRef.current.value,
       numberOfDays: dayCountRef.current.value,
@@ -49,9 +60,9 @@ const AddWork = ({
       offer: image,
       startDate: startDate,
       workStatus: "NOTSTARTED",
-      calendar: [],
-    });
-    console.log(newList)
+      calendar: []
+    })
+    console.log(work)
   };
 
   const convertToBase64 = (file) => {
@@ -79,9 +90,9 @@ const AddWork = ({
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     // Pushes the new list into current lists
-    customer.workList.push(newList);
+    //customer.workList.push(newList);
     // Adds work to user with api call
-    ApiConnector.saveWork(customer)
+    ApiConnector.saveWork(currentCustomerId, work)
       .then((response) => {
         console.log(response);
         window.location.reload(false);
