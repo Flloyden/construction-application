@@ -5,7 +5,6 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,8 @@ public class WorkAPI {
 
     private final Calendar calendar = CalendarSingleton.getCalendar();
 
-    @PostMapping("/kunder/work/save")
-    public CustomerEntity saveWork(@RequestBody CustomerEntity customer) {
+    @PostMapping("/kunder/{customerId}/work/save")
+    public WorkEntity addNewWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
          /* TODO: Probably a better way of saving work. With work as request body.
         Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
         if (customer.isPresent()) {
@@ -35,10 +34,13 @@ public class WorkAPI {
         }
          */
 
+        /*
         CustomerEntity customerEntity = customerRepository.createCustomer(customer);
-        calendar.addWork(workRepository.getLastInserted());
+        Optional<WorkEntity> workToAdd = workRepository.getLastInserted();
+        workToAdd.ifPresent(work -> workRepository.addNewWorkEntity(work));
+         */
 
-        return customerEntity;
+        return workRepository.addNewWorkEntity(customerId, work);
     }
 
     @PostMapping("/kunder/{customerId}/work/update")
@@ -62,23 +64,17 @@ public class WorkAPI {
     }
 
     @GetMapping("/kunder/upcoming")
-    public List<WorkEntity> getUpcomingWork()
-    {
-        if (workRepository.checkForActiveWork()!=null)
-        {
+    public List<WorkEntity> getUpcomingWork() {
+        if (workRepository.checkForActiveWork() != null) {
             return workRepository.checkForActiveWork();
-        }
-         else
-        {
+        } else {
             return null;
         }
     }
 
     @GetMapping("/kunder/ongoing")
-    public List<WorkEntity> getOngoingWork()
-    {
-        if (workRepository.checkForOngoingWork()!= null)
-        {
+    public List<WorkEntity> getOngoingWork() {
+        if (workRepository.checkForOngoingWork() != null) {
             return workRepository.checkForOngoingWork();
         } else {
             return null;

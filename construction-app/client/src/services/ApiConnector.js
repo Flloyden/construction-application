@@ -34,8 +34,8 @@ class ApiConnector {
     return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/remove");
   }
 
-  saveWork(customer) {
-    return axios.post(CUSTOMER_API_BASE_URL + "/work/save", customer)
+  saveWork(customer, work) {
+    return axios.post(CUSTOMER_API_BASE_URL +"/" + customer + "/work/save", work)
   }
 
   changeWork(customer, work) {

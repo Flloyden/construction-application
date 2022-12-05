@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * A class that gives access to interaction with table Calendar in the DB (save, find, delete,
@@ -15,8 +16,12 @@ import java.time.LocalDate;
 public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
     CalendarEntity findFirstByDate(LocalDate date);
 
+    Optional<CalendarEntity> findFirstByOrderByDateDesc();
+
     void deleteAllByDate(LocalDate date);
 
     @Transactional
     void deleteAllByWorkId(long id);
+
+
 }

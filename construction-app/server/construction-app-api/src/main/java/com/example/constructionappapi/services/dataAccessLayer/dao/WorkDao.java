@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Repository
 public interface WorkDao extends JpaRepository<WorkEntity, Long> {
-    WorkEntity findFirstByOrderByIdDesc();
+    Optional<WorkEntity> findFirstByOrderByIdDesc();
 
     List<WorkEntity> findByStartDateBetween(LocalDate start, LocalDate end);
 

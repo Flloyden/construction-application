@@ -2,14 +2,20 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
+import com.example.constructionappapi.services.dataAccessLayer.dao.VacationCalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,22 +26,54 @@ public class WorkRepository {
     private WorkDao workDao;
     @Autowired
     private CustomerDao customerDao;
+    @Autowired
+    private CalendarDao calendarDao;
+    @Autowired
+    private VacationCalendarDao vacationCalendarDao;
+    @Autowired
+    private CustomerRepository customerRepository;
     private Calendar calendar = CalendarSingleton.getCalendar();
 
-    public WorkRepository()
-    {
+    public WorkRepository() {
         calendar.setWorkRepository(this);
     }
 
     /**
-     * Creates a Work "Instance" and saves it in our DB using a WorkEntity as param
+     * Creates a Work "Instance" and saves it in our DB using a CustomerEntity as param
      *
-     * @param work
      * @return
      */
+    public WorkEntity addNewWorkEntity(long customerId, WorkEntity work) {
+        Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
+        if (customer.isPresent()) {
+            work.setCustomer(customer.get());
 
-    public WorkEntity createWorkEntity(WorkEntity work) {
-        return workDao.save(work);
+            WorkEntity newWork = work;
+            if (newWork.getStartDate() == null) {
+                Optional<CalendarEntity> lastDateInCalendar = calendarDao.findFirstByOrderByDateDesc();
+
+                LocalDate startDateOfNewWork;
+                startDateOfNewWork = lastDateInCalendar.map(calendarEntity -> calendarEntity.getDate().plusDays(1)).orElseGet(LocalDate::now);
+
+                HashSet<LocalDate> vacationDates = new HashSet<>();
+                vacationCalendarDao.findAll().forEach(vacationCalendarEntity -> vacationDates.add(vacationCalendarEntity.getDate()));
+
+                while (vacationDates.contains(startDateOfNewWork) || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SATURDAY || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                    startDateOfNewWork = startDateOfNewWork.plusDays(1);
+                }
+
+                newWork.setStartDate(startDateOfNewWork);
+                newWork = workDao.save(newWork);
+            } else {
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!BEEEEEEEEEP!!!!!!!!!!!!!!!!!");
+            }
+
+            System.out.println("!!!!!!!!!!!!!!!Start date: " + newWork.getStartDate() + "!!!!!!!!!!!!!!!!!!!!!!!");
+            calendar.addWork(newWork);
+            return newWork;
+        }
+
+        return null;
     }
 
     /**
@@ -85,7 +123,7 @@ public class WorkRepository {
     }
 
 
-    public WorkEntity getLastInserted() {
+    public Optional<WorkEntity> getLastInserted() {
         return workDao.findFirstByOrderByIdDesc();
     }
 
@@ -97,31 +135,32 @@ public class WorkRepository {
 
             Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
             if (preUpdateWork.isPresent()) {
-                WorkEntity updatedWork = null;
-                //Checks if the date has been changed and updates the calendar if it has.
-                if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                    updatedWork = calendar.updateWork(work);
-                }
+                if (preUpdateWork.get().getWorkStatus() != Status.COMPLETED) {
+                    WorkEntity updatedWork = null;
+                    //Checks if the date has been changed and updates the calendar if it has.
+                    if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
+                        updatedWork = addNewWorkEntity(customerId, work);
+                        calendar.updateWork(work);
+                    }
 
-                return updatedWork;
+                    return updatedWork;
+                }
             }
         }
 
         return null;
     }
 
-    public List<WorkEntity> checkForActiveWork()
-    {
+    public List<WorkEntity> checkForActiveWork() {
         LocalDate today = LocalDate.now();
         today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
-                                                //Lägger därför en dag framåt från dagens datum.
+        //Lägger därför en dag framåt från dagens datum.
         LocalDate tenDaysForward = today.plusDays(10);
 
         return workDao.findByStartDateBetween(today, tenDaysForward);
     }
 
-    public List<WorkEntity> checkForOngoingWork()
-    {
+    public List<WorkEntity> checkForOngoingWork() {
         LocalDate today = LocalDate.now();
         today.plusDays(1);
         return workDao.findByStartDate(today);

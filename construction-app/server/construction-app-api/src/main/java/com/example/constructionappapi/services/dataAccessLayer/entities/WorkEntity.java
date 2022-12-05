@@ -47,7 +47,7 @@ public class WorkEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToNote")
-    private List<CustomerNoteEntity> customerNotes = new ArrayList<>(); //TODO: Might cause problems.
+    private List<CustomerNoteEntity> customerNotes = new ArrayList<>();
 
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;

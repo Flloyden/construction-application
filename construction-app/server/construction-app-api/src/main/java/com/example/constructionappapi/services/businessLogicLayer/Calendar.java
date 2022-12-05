@@ -71,16 +71,13 @@ public class Calendar {
      * @param work The new work-entity.
      * @return The updated work-entity.
      */
-    public WorkEntity updateWork(WorkEntity work) {
-        WorkEntity updatedWork = workRepository.createWorkEntity(work);
-        calendarRepository.deleteAllByWorkId(updatedWork.getId());
-        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == updatedWork.getId());
+    public boolean updateWork(WorkEntity work) {
+        calendarRepository.deleteAllByWorkId(work.getId());
+        calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
         moveCalendarItemBackwards(work.getStartDate());
 
-        addWork(updatedWork);
-
-        return workRepository.getWorkEntity(updatedWork.getId()).get();
+        return addWork(work);
     }
 
     public void removeWork(WorkEntity work) {

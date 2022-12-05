@@ -5,14 +5,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const ChangeWorkInfo = ({
-  currentCustomerId,
   setIsChangeOpen,
+  currentCustomerId,
   currentWorkId,
   currentWorkName,
   currentOffer,
+  currentStartDate,
   currentWorkDays,
   currentWorkMaterial,
-  currentStartDate,
   currentWorkStatus
 }) => {
   const [work] = useState({
@@ -20,13 +20,17 @@ const ChangeWorkInfo = ({
     name: currentWorkName,
     offer: currentOffer,
     startDate: currentStartDate,
-    workStatus: currentWorkStatus,
+    numberOfDays: currentWorkDays,
     materialNote: currentWorkMaterial,
+    workStatus: currentWorkStatus,
   });
+
   const nameRef = useRef();
   const materialNoteRef = useRef();
   const offer = useRef();
-  const [newList, setNewList] = useState();
+  const [newList, setNewList] = useState({
+    work
+  });
   const [image, setImage] = useState(currentOffer);
   const currentEndDateMoment = moment(currentStartDate, "YYYY-MM-DD")
     .add("days", currentWorkDays)
@@ -48,7 +52,7 @@ const ChangeWorkInfo = ({
     setNewList({
       id: currentWorkId,
       name: nameRef.current.value,
-      numberOfDays: dayCount,
+      numberOfDays: dayCountRef.current.value,
       materialNote: materialNoteRef.current.value,
       offer: image,
       startDate: startDate,
@@ -117,8 +121,10 @@ const ChangeWorkInfo = ({
               type="text"
               name="name"
               required
-              placeholder={work.name}
-              onChange={(e) => handleChange(e)}
+              defaultValue={work.name}
+              onChange={(e) => {
+                handleChange(e)
+                }}
             ></input>
           </div>
 
@@ -166,6 +172,7 @@ const ChangeWorkInfo = ({
                   className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   type="text"
                   name="materialNote"
+                  placeholder={currentWorkDays}
                   required
                   onChange={(e) => handleChange(e)}
                 ></input>
