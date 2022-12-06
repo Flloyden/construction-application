@@ -21,10 +21,10 @@ public class VacationAPI {
         return vacationRepository.saveVacation(vacationEntity);
     }
 
-    @DeleteMapping("/semester/{id}/edit")
-    public void editVacation(@PathVariable final Long id, @RequestBody VacationEntity vacationEntity) {
-        vacationRepository.deleteVacation(id);
-        vacationRepository.saveVacation(vacationEntity);
+    @PostMapping("/semester/{vacationId}/edit")
+    public VacationEntity updateVacation(@PathVariable final Long vacationId, @RequestBody VacationEntity vacationEntity) {
+        vacationRepository.deleteVacation(vacationId);
+        return vacationRepository.saveVacation(vacationEntity);
     }
 
     @GetMapping("/semester/{id}")
@@ -37,8 +37,8 @@ public class VacationAPI {
         return vacationRepository.getAllVacationEntities();
     }
 
-    @DeleteMapping("/semester/{id}/remove")
-    public void deleteVacation(@PathVariable final Long id) {
-        vacationRepository.deleteVacation(id);
+    @DeleteMapping("/semester/{vacationId}/remove")
+    public void deleteVacation(@PathVariable final Long vacationId) {
+        vacationRepository.deleteVacation(vacationId);
     }
 }
