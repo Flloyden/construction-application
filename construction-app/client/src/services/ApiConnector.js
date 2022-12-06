@@ -1,5 +1,4 @@
 import axios from "axios";
-import { assertTSExpressionWithTypeArguments } from "@babel/types";
 
 // Base url to get api
 const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
@@ -50,11 +49,11 @@ class ApiConnector {
   getUpcomingWork(){
     //Gets upcoming work based on todays date and ten days forward. 
      //Checks if any customer has work with startdate within 10 days.
-     return axios.get(CUSTOMER_API_BASE_URL + "/" + "upcoming");
+     return axios.get(CUSTOMER_API_BASE_URL + "/upcoming");
   }
 
   getOngoingWork(){
-    return axios.get(CUSTOMER_API_BASE_URL + "/" + "ongoing");
+    return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
   }
 
   // ACCOUNTING / WARRANTY
@@ -97,13 +96,18 @@ class ApiConnector {
     return axios.get(CALENDAR_API_BASE_URL + "/semester");
   }
 
+  deleteSemester(semesterId) {
+    //Gets all existing info about calendar from the database
+    return axios.delete(SEMESTER_API + "/" + semesterId + "/remove");
+  }
+
   saveNote(workId, noteList) {
     return axios.post(CUSTOMER_API_BASE_URL + "/anteckningar/save/" + workId, noteList)
   }
 
   deleteNote(noteId) {
     console.log(noteId)
-    return axios.delete("http://localhost:8080/api/v1/kunder/anteckningar/remove/" + noteId)
+    return axios.delete(CUSTOMER_API_BASE_URL + "/anteckningar/remove/" + noteId)
   }
 }
 

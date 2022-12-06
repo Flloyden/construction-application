@@ -11,6 +11,7 @@ import moment from "moment";
 import Holidays from "date-holidays";
 import { useNavigate } from "react-router-dom";
 import NavigateModal from "./NavigateModal";
+import SemesterModal from "./SemesterModal";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ export default function Calendar() {
   const [calendarInfo, setCalendarInfo] = useState(null);
   const [semesterInfo, setSemesterInfo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSemesterModalOpen, setIsSemesterModalOpen] = useState(false);
+  const [currentSemesterName, setCurrentSemesterName] = useState("");
+  const [semesterStartDate, setSemesterStartDate] = useState("");
+  const [currentSemesterId, setCurrentSemesterId] = useState("");
   const [currentCustomerName, setCurrentCustomerName] = useState("");
   const [currentCustomerId, setCurrentCustomerId] = useState("");
   const hd = new Holidays('SE');
@@ -87,6 +92,20 @@ export default function Calendar() {
     return isWeekend
   }
 
+  const deleteSemester = (e) => {
+    /**Saves the work and navigates back to the register */
+    e.preventDefault();
+    // Adds work to user with api call
+    ApiConnector.saveSemester(e)
+      .then((response) => {
+        console.log(response);
+        window.location.reload(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="w-full h-full">
       <BrowserView>
@@ -109,7 +128,14 @@ export default function Calendar() {
                 duration={{ days: 1 }}
                 eventClick={
                   function(arg){
-                    if ((arg.event.id).length < 1) {
+                    console.log(arg.event)
+                    if (arg.event._def.ui.backgroundColor === "#10b981") {
+                      setCurrentSemesterName(arg.event.extendedProps.description.name);
+                      setCurrentSemesterId(arg.event.id);
+                      setSemesterStartDate(arg.event.extendedProps.description.start)
+                      setIsSemesterModalOpen(true);
+                    }
+                     else if ((arg.event.id).length < 1) {
                       alert("Finns ingen kund på den valda kolumnen!")
                     } else {
                       setCurrentCustomerName(arg.event.extendedProps.description);
@@ -123,7 +149,7 @@ export default function Calendar() {
                     return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
                   }),
                   semesterInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, description: {name: item.vacationName, start: item.date}, borderColor: '#000', allDay: false}
                   }),
                   holiday.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
@@ -222,6 +248,15 @@ export default function Calendar() {
         allowNavigate={allowNavigate}
         currentName={currentCustomerName}
         currentId={currentCustomerId}
+      />
+      )}
+      {isSemesterModalOpen && (
+        <SemesterModal
+        setIsModalOpen={setIsSemesterModalOpen}
+        semesterStartDate={semesterStartDate}
+        currentName={currentSemesterName}
+        currentId={currentSemesterId}
+        deleteSemester={deleteSemester}
       />
       )}
     </div>
