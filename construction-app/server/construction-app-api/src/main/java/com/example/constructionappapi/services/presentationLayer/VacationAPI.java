@@ -21,6 +21,12 @@ public class VacationAPI {
         return vacationRepository.saveVacation(vacationEntity);
     }
 
+    @DeleteMapping("/semester/{id}/edit")
+    public void editVacation(@PathVariable final Long id, @RequestBody VacationEntity vacationEntity) {
+        vacationRepository.deleteVacation(id);
+        vacationRepository.saveVacation(vacationEntity);
+    }
+
     @GetMapping("/semester/{id}")
     public Optional<VacationEntity> getVacation(@PathVariable final Long id) {
         return vacationRepository.getVacation(id);
