@@ -12,6 +12,7 @@ import Holidays from "date-holidays";
 import { useNavigate } from "react-router-dom";
 import NavigateModal from "./NavigateModal";
 import SemesterModal from "./SemesterModal";
+import CalendarModal from "./CalendarModal";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Calendar() {
   const [semesterInfo, setSemesterInfo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSemesterModalOpen, setIsSemesterModalOpen] = useState(false);
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [currentSemesterName, setCurrentSemesterName] = useState("");
   const [semesterStartDate, setSemesterStartDate] = useState("");
   const [currentSemesterId, setCurrentSemesterId] = useState("");
@@ -137,7 +139,7 @@ export default function Calendar() {
                       setIsSemesterModalOpen(true);
                     }
                      else if ((arg.event.id).length < 1) {
-                      alert("Finns ingen kund på den valda kolumnen!")
+                      setIsCalendarModalOpen(true)
                     } else {
                       setCurrentCustomerName(arg.event.extendedProps.description);
                       setCurrentCustomerId(arg.event.id);
@@ -259,6 +261,11 @@ export default function Calendar() {
         currentId={currentSemesterId}
         currentSemesterDays={currentSemesterDays}
         deleteSemester={deleteSemester}
+      />
+      )}
+      {isCalendarModalOpen&& (
+        <CalendarModal
+        setIsModalOpen={setIsCalendarModalOpen}
       />
       )}
     </div>
