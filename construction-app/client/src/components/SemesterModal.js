@@ -84,13 +84,13 @@ const SemesterModal = (props) => {
           </div>
           <div className="flex px-4 gap-2   mx-auto text-white">
             <button
-              className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+              className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
               onClick={() => props.setIsModalOpen(false)}
             >
               Ändra
             </button>
             <button
-              className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+              className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
               onClick={() => deleteSemester(props.currentId)}
             >
               Ta bort
@@ -98,7 +98,7 @@ const SemesterModal = (props) => {
           </div>
           <div className="px-4 mx-auto">
             <button
-              className="bg-red-500 hover:bg-slate-700 text-white font-bold py-2 rounded duration-300 text-center w-full my-2"
+              className="bg-blue-500 hover:bg-slate-700 text-white font-bold py-2 rounded duration-300 text-center w-full my-2"
               onClick={() => props.setIsModalOpen(false)}
             >
               Avbryt
