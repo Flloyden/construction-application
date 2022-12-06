@@ -32,9 +32,9 @@ export default function Home() {
         </div>
       </div>
       <div className='mt-4 justify-between flex gap-4 text-white h-1/4'>
-        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => {setIsSemesterOpen(true)}}>Semester</button>
-        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => navigate("/skapakund")}>Ny kund</button>
-        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => navigate("/skapagaranti")}>Ny garanti</button>
+        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => {setIsSemesterOpen(true)}}>Lägg in semester</button>
+        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => navigate("/skapakund")}>Skapa ny kund</button>
+        <button className='bg-gray-800 rounded-md w-1/3 hover:opacity-80 duration-200' onClick={() => navigate("/skapagaranti")}>Skapa ny garanti</button>
       </div>
       {isSemesterOpen && (
         <Semester
