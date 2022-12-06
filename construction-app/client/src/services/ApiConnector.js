@@ -53,7 +53,7 @@ class ApiConnector {
   }
 
   getOngoingWork(){
-    return axios.get(CUSTOMER_API_BASE_URL + "/" + "ongoing");
+    return axios.get(CALENDAR_API_BASE_URL + "/" + "ongoing");
   }
 
   // ACCOUNTING / WARRANTY

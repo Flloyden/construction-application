@@ -96,6 +96,12 @@ public class WorkRepository{
     public List<WorkEntity> checkForOngoingWork()
     {
         LocalDate today = LocalDate.now();
+<<<<<<< Updated upstream
         return workDao.findByStartDateAndWorkStatus(today,1);
+=======
+        today.plusDays(1);
+        LocalDate moreDays = today.plusDays(10);
+        return workDao.findByStartDateBetween(today, moreDays);
+>>>>>>> Stashed changes
     }
 }

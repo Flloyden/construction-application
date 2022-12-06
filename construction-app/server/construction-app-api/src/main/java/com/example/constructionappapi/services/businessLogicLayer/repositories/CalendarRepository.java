@@ -35,6 +35,10 @@ public class CalendarRepository{
         return calendarDao.findFirstByDate(date);
     }
 
+    public List<CalendarEntity> findByDate(LocalDate date) {
+        return calendarDao.findByDate(date);
+    }
+
     public List<CalendarEntity> findAll() {
         return calendarDao.findAll();
     }

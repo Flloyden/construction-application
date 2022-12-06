@@ -70,6 +70,7 @@ public class WorkAPI {
     }
 
     @GetMapping("/kunder/upcoming")
+<<<<<<< Updated upstream
     public List<WorkEntity> getUpcomingWork()
     {
         if (workRepository.checkForActiveWork()!=null)
@@ -91,6 +92,15 @@ public class WorkAPI {
         } else {
             return null;
         }
+=======
+    public List<WorkEntity> getUpcomingWork() {
+        return workRepository.checkForActiveWork();
+    }
+
+    @GetMapping("/kunder/ongoing")
+    public List<WorkEntity> getOngoingWork() {
+        return workRepository.checkForOngoingWork();
+>>>>>>> Stashed changes
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")

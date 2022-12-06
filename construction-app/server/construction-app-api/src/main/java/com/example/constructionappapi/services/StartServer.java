@@ -3,13 +3,19 @@ package com.example.constructionappapi.services;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+<<<<<<< Updated upstream
+=======
+import java.time.LocalDate;
+>>>>>>> Stashed changes
 import java.util.*;
 
 @SpringBootApplication
@@ -41,6 +47,7 @@ public class StartServer {
                 accountRepository.createAccount(accountEntity);
             }
 
+<<<<<<< Updated upstream
             WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
             List<WorkEntity> test = workRepository.checkForOngoingWork();
             System.out.println(test.toString());
@@ -79,6 +86,18 @@ public class StartServer {
 
 
 
+=======
+            CalendarRepository calendarRepository = configurableApplicationContext.getBean(CalendarRepository.class);
+            CalendarEntity calendarEntity = calendarRepository.findFirstByDate(LocalDate.now());
+            System.out.println(LocalDate.now());
+
+            Tests tests = new Tests(configurableApplicationContext);
+            //tests.testSkipVacationDatesWhenRemovingWork();
+            //tests.testMoveWorkBackwardsOnRemoveVacation();
+            //tests.testAddVacation();
+            //tests.testMoveWorkForwardsOnAddVacation();
+            //tests.testAddWork();
+>>>>>>> Stashed changes
 
             calendar.printCalendar();
         } catch (Exception e) {
