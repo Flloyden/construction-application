@@ -6,18 +6,17 @@ import ApiConnector from "../services/ApiConnector";
 const SemesterModal = (props) => {
   let [startDate, setStartDate] = useState(new Date(props.semesterStartDate));
   const [semester, setSemester] = useState({
-    id: "",
-    name: "",
-    startDate: "",
-    numberOfDays: "",
+    id: props.currentId,
+    name: props.currentName,
+    startDate: props.startDate,
+    numberOfDays: props.currentSemesterDays,
   });
 
   const handleChange = (e) => {
+    let value = e.target.value;
     setSemester({
-      id: props.currentId,
-      name: props.currentName,
-      startDate: startDate,
-      numberOfDays: "",
+      ...semester,
+      [e.target.name]: value,
     });
     console.log(semester);
   };
@@ -57,10 +56,14 @@ const SemesterModal = (props) => {
               </label>
               <DatePicker
                 className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                name="startDate"
                 selected={startDate}
                 onChange={(date) => {
+                  setSemester({
+                    ...semester,
+                    startDate: new Date(date),
+                  });
                   setStartDate(date);
-                  handleChange(date);
                 }}
                 selectsStart
                 startDate={startDate}
@@ -72,6 +75,9 @@ const SemesterModal = (props) => {
               </label>
               <input
                 name="numberOfDays"
+                value={semester.numberOfDays}
+                required
+                onChange={handleChange}
                 className="mt-0 w-full rounded-lg block p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               />
             </div>

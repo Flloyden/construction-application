@@ -25,6 +25,7 @@ export default function Calendar() {
   const [currentSemesterId, setCurrentSemesterId] = useState("");
   const [currentCustomerName, setCurrentCustomerName] = useState("");
   const [currentCustomerId, setCurrentCustomerId] = useState("");
+  const [currentSemesterDays, setCurrentSemesterDays] = useState("");
   const hd = new Holidays('SE');
   var date = new Date();
   var year = date.getFullYear();
@@ -58,7 +59,6 @@ export default function Calendar() {
         setCalendarInfo(response.data);
         setSemesterInfo(res.data)
         console.log(response.data)
-        console.log(res.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -133,6 +133,7 @@ export default function Calendar() {
                       setCurrentSemesterName(arg.event.extendedProps.description.name);
                       setCurrentSemesterId(arg.event.id);
                       setSemesterStartDate(arg.event.extendedProps.description.start)
+                      setCurrentSemesterDays(arg.event.extendedProps.description.length)
                       setIsSemesterModalOpen(true);
                     }
                      else if ((arg.event.id).length < 1) {
@@ -149,8 +150,8 @@ export default function Calendar() {
                     return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
                   }),
                   semesterInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, description: {name: item.vacationName, start: item.date}, borderColor: '#000', allDay: false}
-                  }),
+                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
+                  }, console.log(semesterInfo)),
                   holiday.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),
@@ -256,6 +257,7 @@ export default function Calendar() {
         semesterStartDate={semesterStartDate}
         currentName={currentSemesterName}
         currentId={currentSemesterId}
+        currentSemesterDays={currentSemesterDays}
         deleteSemester={deleteSemester}
       />
       )}
