@@ -235,7 +235,9 @@ public class Calendar {
             s.append("{");
             s.append("\"vacationId\":").append("\"").append(entry.getValue().getId()).append("\",");
             s.append("\"vacationName\":").append("\"").append(entry.getValue().getName()).append("\",");
-            s.append("\"date\":").append("\"").append(entry.getKey().getDate()).append("\"");
+            s.append("\"date\":").append("\"").append(entry.getKey().getDate()).append("\",");
+            s.append("\"startDate\":").append("\"").append(entry.getValue().getStartDate()).append("\",");
+            s.append("\"numberOfDays\":").append("\"").append(entry.getValue().getNumberOfDays()).append("\"");
             s.append("}");
             if (entrySetVacation.hasNext()) s.append(",");
         }
