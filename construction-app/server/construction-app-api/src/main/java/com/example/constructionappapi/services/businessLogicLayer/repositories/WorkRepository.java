@@ -2,7 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationCalendarDao;
@@ -136,7 +136,7 @@ public class WorkRepository {
 
             Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
             if (preUpdateWork.isPresent()) {
-                if (preUpdateWork.get().getWorkStatus() != Status.COMPLETED) {
+                if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
                     WorkEntity updatedWork = null;
                     //Checks if the date has been changed and updates the calendar if it has.
                     if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {

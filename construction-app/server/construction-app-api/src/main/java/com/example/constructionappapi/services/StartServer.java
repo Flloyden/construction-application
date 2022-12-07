@@ -3,13 +3,17 @@ package com.example.constructionappapi.services;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.NoteSummaryRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.NoteSummaryEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Timer;
@@ -52,6 +56,7 @@ public class StartServer {
             //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();
             //tests.testAddWork();
+            tests.testAddFirstNoteToWork();
 
             calendar.printCalendar();
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
+import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 /**
- * A class creating and giving access to the table Note in DB
+ * A class creating and giving access to the table customer_note in DB
  */
 
 public class CustomerNoteEntity {
@@ -30,7 +31,7 @@ public class CustomerNoteEntity {
     private String timeEmployee;
     private String workName;
     private long workNumber;
-    private long noteStatus;
+    private NoteStatus noteStatus;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -40,6 +41,13 @@ public class CustomerNoteEntity {
     @JoinColumn(name = "work_id")
     @JsonBackReference(value = "workToNote")
     private WorkEntity workEntity;
+
+
+    @ManyToOne
+    @JoinColumn(name = "note_summary_id")
+    @JsonBackReference(value = "summaryToNote")
+    private NoteSummaryEntity noteSummaryEntity;
+
 
     public void setCustomerForNote(CustomerEntity customer) {
         this.customer = customer;

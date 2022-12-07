@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
-import com.example.constructionappapi.services.dataAccessLayer.Status;
+import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class WorkEntity {
     private String materialNote;
     @Lob
     private String offer;
-    private Status workStatus;
+    private WorkStatus workStatus;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonBackReference("customerToWork")
@@ -49,6 +49,15 @@ public class WorkEntity {
     @JsonManagedReference(value = "workToNote")
     private List<CustomerNoteEntity> customerNotes = new ArrayList<>();
 
+
+    @OneToMany(
+            mappedBy = "oneWork",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonManagedReference(value = "workToSummary")
+    private List<NoteSummaryEntity> noteSummaries = new ArrayList<>();
+
+
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
     }
@@ -59,6 +68,10 @@ public class WorkEntity {
 
     public CustomerEntity getCustomer() {
         return customer;
+    }
+
+    public List<NoteSummaryEntity> getNoteSummaries() {
+        return noteSummaries;
     }
 }
 
