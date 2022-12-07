@@ -69,6 +69,7 @@ public class WorkAPI {
         return workRepository.getAllWorkEntities();
     }
 
+<<<<<<< Updated upstream
     @GetMapping("/kunder/upcoming")
 <<<<<<< Updated upstream
     public List<WorkEntity> getUpcomingWork()
@@ -103,6 +104,8 @@ public class WorkAPI {
 >>>>>>> Stashed changes
     }
 
+=======
+>>>>>>> Stashed changes
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
     public void deleteWorkEntity(@PathVariable final Long id) {
         if (workRepository.getWorkEntity(id).isPresent()) {

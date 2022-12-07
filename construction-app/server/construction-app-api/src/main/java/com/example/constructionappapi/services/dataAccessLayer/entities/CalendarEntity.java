@@ -1,12 +1,15 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "calendar")
@@ -53,4 +56,9 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
     public int compareTo(CalendarEntity o) {
         return date.compareTo(o.date);
     }
+
+    public WorkEntity getWork() {
+        return work;
+    }
+
 }

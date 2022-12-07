@@ -83,6 +83,7 @@ public class WorkRepository{
         return workDao.findFirstByOrderByIdDesc();
     }
 
+<<<<<<< Updated upstream
     public List<WorkEntity> checkForActiveWork()
     {
         LocalDate today = LocalDate.now();
@@ -105,3 +106,31 @@ public class WorkRepository{
 >>>>>>> Stashed changes
     }
 }
+=======
+
+    public WorkEntity updateWork(long customerId, WorkEntity work) {
+        Optional<CustomerEntity> customer = customerDao.findById(customerId);
+        if (customer.isPresent()) {
+            work.setCustomer(customer.get());
+
+            Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
+            if (preUpdateWork.isPresent()) {
+                if (preUpdateWork.get().getWorkStatus() != Status.COMPLETED) {
+                    WorkEntity updatedWork = null;
+                    //Checks if the date has been changed and updates the calendar if it has.
+                    if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
+                        updatedWork = addNewWorkEntity(customerId, work);
+                        calendar.updateWork(work);
+                    }
+
+                    return updatedWork;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+}
+>>>>>>> Stashed changes

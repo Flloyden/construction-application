@@ -49,5 +49,20 @@ public class WorkEntity {
         this.customer = customer;
     }
 
+<<<<<<< Updated upstream
+=======
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getDate()
+    {
+        return startDate;
+    }
+>>>>>>> Stashed changes
 }
 

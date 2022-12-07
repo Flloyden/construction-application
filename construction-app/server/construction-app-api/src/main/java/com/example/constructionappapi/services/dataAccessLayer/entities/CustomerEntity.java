@@ -51,4 +51,12 @@ public class CustomerEntity {
     public List<WorkEntity> getWorkList() {
         return workList;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

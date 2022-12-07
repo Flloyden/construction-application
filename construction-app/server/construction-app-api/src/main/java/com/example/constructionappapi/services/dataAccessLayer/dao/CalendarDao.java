@@ -1,13 +1,17 @@
 package com.example.constructionappapi.services.dataAccessLayer.dao;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 import java.util.List;
 import java.util.Optional;
 >>>>>>> Stashed changes
@@ -20,6 +24,13 @@ import java.util.Optional;
 public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
     CalendarEntity findFirstByDate(LocalDate date);
 
+<<<<<<< Updated upstream
+=======
+    Optional<CalendarEntity> findFirstByOrderByDateDesc();
+
+    List<CalendarEntity> findByDateBetween(LocalDate start, LocalDate end);
+    @Transactional
+>>>>>>> Stashed changes
     void deleteAllByDate(LocalDate date);
 <<<<<<< Updated upstream
 =======
