@@ -101,6 +101,10 @@ class ApiConnector {
     return axios.delete(SEMESTER_API + "/" + semesterId + "/remove");
   }
 
+  editSemester(semesterId, semester) {
+    return axios.post(SEMESTER_API + "/" + semesterId + "/edit", semester)
+  }
+
   saveNote(workId, noteList) {
     return axios.post(CUSTOMER_API_BASE_URL + "/anteckningar/save/" + workId, noteList)
   }
