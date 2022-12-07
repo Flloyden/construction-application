@@ -43,6 +43,7 @@ public class WorkEntity {
     @JsonManagedReference(value = "workToCalendar")
     private List<CalendarEntity> calendar = new ArrayList<>();
     @OneToMany(
+            fetch=FetchType.EAGER,
             mappedBy = "workEntity",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
@@ -58,6 +59,9 @@ public class WorkEntity {
     private List<NoteSummaryEntity> noteSummaries = new ArrayList<>();
 
 
+    public List<CalendarEntity> getCalendarForWork() {
+        return calendar;
+    }
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
     }

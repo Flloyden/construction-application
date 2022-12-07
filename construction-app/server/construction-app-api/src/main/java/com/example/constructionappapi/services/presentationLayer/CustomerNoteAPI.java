@@ -21,9 +21,15 @@ public class CustomerNoteAPI {
         return customerNoteRepository.createCustomerNote(customerNote, workId);
     }
 
-    @GetMapping("kunder/anteckningar/{workId}/jobb")
+
+    @GetMapping("kunder/anteckningar/summarized/{workId}")
+    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(@PathVariable final long workId) {
+        return customerNoteRepository.getAllSummarizedNotesForWork(workId);
+    }
+
+    @GetMapping("kunder/anteckningar/notsummarized/{workId}")
     public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable final long workId) {
-        return customerNoteRepository.getAllNotesForWork(workId);
+        return customerNoteRepository.getAllNotSummarizedNotesForWork(workId);
     }
 
     @GetMapping("kunder/anteckningar/{customerId}/kund")

@@ -121,7 +121,7 @@ public class Tests {
         calendar.printCalendar();
     }
 
-    public void testAddFirstNoteToWork() {
+    public void testAddNotesCheckDate() {
         String ANSI_RED = "\u001B[31m";
         Calendar calendar = CalendarSingleton.getCalendar();
 
@@ -137,7 +137,7 @@ public class Tests {
         door = workRepository.addNewWorkEntity(customer.getId(), door);
         calendar.addWork(door);
 
-        WorkEntity fence = new WorkEntity(0L, "Fence", null, 6, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkEntity fence = new WorkEntity(0L, "Fence", null, 9, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         fence = workRepository.addNewWorkEntity(customer.getId(), fence);
         calendar.addWork(fence);
 
@@ -148,8 +148,14 @@ public class Tests {
 
         System.out.println(ANSI_RED + "Adding note." + ANSI_RED);
         CustomerNoteRepository customerNoteRepository = configurableApplicationContext.getBean(CustomerNoteRepository.class);
-        CustomerNoteEntity note = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Door", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
-        customerNoteRepository.createCustomerNote(note, door.getId());
+        CustomerNoteEntity note = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Roof", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
+        customerNoteRepository.createCustomerNote(note, roof.getId());
+
+        CustomerNoteEntity note2 = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Roof", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
+        customerNoteRepository.createCustomerNote(note2, roof.getId());
+
+        CustomerNoteEntity note3 = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Roof", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
+        customerNoteRepository.createCustomerNote(note3, roof.getId());
 
     }
 

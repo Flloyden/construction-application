@@ -21,11 +21,11 @@ public class NoteSummaryRepository {
 
 
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
+        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
 
         //TODO sätt datum korrekt
         //TODO alla notes till detta jobb inom denna månad skall sättas till SUMMARIZED
         //TODO alla notes till denna summary skall sättas
-        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
 
         noteSummary.setWorkForSummary(workEntity.get()); //assigna summary till work
 

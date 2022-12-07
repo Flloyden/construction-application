@@ -15,6 +15,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerNoteDao extends JpaRepository<CustomerNoteEntity, Long> {
     List<CustomerNoteEntity> findAllByCustomerId(Long customerId);
+    //List<CustomerNoteEntity> findAllByWorkId(Long workId);
 
     //CustomerNoteEntity findFirstByOrderByDatePostedDesc(Long workId);
 }

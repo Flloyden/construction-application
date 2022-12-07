@@ -258,6 +258,10 @@ public class Calendar {
     public void setVacationRepository(VacationRepository vacationRepository) {
         this.vacationRepository = vacationRepository;
     }
+
+    public HashMap<CalendarEntity, WorkEntity> getCalendarHashMap() {
+        return calendarDates;
+    }
 }
 
 
