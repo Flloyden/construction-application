@@ -100,8 +100,8 @@ export default function Notes(props) {
             </tbody>
           </table>
         </div>
-        <h2 className={resultSum.length > 0 ? "text-black text-2xl pt-5" : "hidden"}>Summerade</h2>
-        <div className={resultSum.length > 0 ? "w-full bg-gray-700 py-1 rounded-md" : "hidden"}>
+        <h2 className={resultSum.length > 0 ? "text-black text-2xl pt-5" : ""}>Summerade</h2>
+        <div className={resultSum.length > 0 ? "w-full bg-gray-700 py-1 rounded-md" : ""}>
           <table className="w-full text-left">
             <thead className="text-xs uppercase bg-gray-700 text-gray-400">
               <tr>
@@ -164,7 +164,7 @@ export default function Notes(props) {
         </div>
         <div className="w-full flex justify-center items-center align-middle mt-14">
           <button
-            className={resultReg.length > 0 && resultSum.length > 0 ? "bg-blue-500 text-white hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300": "hidden"}
+            className={resultReg.length > 0 && resultSum.length > 0 ? "bg-blue-500 text-white hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300": ""}
             onClick={props.showOldNotes}
           >
             {props.oldNotesToggle ? "Dölj gamla anteckningar" : "Visa gamla anteckningar"}

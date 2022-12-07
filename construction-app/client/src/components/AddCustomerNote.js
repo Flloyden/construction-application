@@ -73,19 +73,6 @@ export default function AddCustomerNote(
       <form onSubmit={handleSubmit}>
         <h1 className="text-2xl w-full text-white">Lägg till ny anteckning</h1>
         <div className="w-full flex gap-2">
-          <div className="mt-4 w-4/12">
-            <label className="mb-2 text-sm font-medium text-white">
-              Datum:{" "}
-            </label>
-            <input
-              className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-              type="text"
-              name="datePosted"
-              value={addNoteInfo.datePosted}
-              required
-              onChange={handleChange}
-            ></input>
-          </div>
 
           <div className="mt-4 w-4/12">
             <label className="mb-2 text-sm font-medium text-white">
