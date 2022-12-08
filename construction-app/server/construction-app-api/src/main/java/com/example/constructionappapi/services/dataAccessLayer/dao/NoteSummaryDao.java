@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A class that gives access to interaction with table note_summary in the DB (save, find, delete,
@@ -13,5 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface NoteSummaryDao extends JpaRepository<NoteSummaryEntity, Long> {
+
+    Optional<NoteSummaryEntity> findByWorkId(Long workId);
 
 }

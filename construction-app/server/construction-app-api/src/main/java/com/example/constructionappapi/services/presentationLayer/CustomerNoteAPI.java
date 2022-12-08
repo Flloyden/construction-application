@@ -28,7 +28,7 @@ public class CustomerNoteAPI {
     }
 
     @GetMapping("kunder/anteckningar/notsummarized/{workId}")
-    public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable final long workId) {
+    public List<CustomerNoteEntity> getAllNotSummarizedNotesForWork(@PathVariable final long workId) {
         return customerNoteRepository.getAllNotSummarizedNotesForWork(workId);
     }
 

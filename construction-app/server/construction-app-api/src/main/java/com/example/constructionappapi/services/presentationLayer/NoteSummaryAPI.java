@@ -25,5 +25,9 @@ public class NoteSummaryAPI {
         return noteSummaryRepository.createNoteSummary(noteSummary, workId);
     }
 
+    @GetMapping("kunder/anteckningar/summary/{workId}")
+    public List<NoteSummaryEntity> getSumForWork(@PathVariable final long workId) {
+        return noteSummaryRepository.getSumForWork(workId);
+    }
 
 }

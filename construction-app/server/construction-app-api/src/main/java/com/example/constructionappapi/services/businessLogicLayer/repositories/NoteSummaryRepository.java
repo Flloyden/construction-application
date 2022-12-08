@@ -68,4 +68,7 @@ public class NoteSummaryRepository {
     }
 
 
+    public List<NoteSummaryEntity> getSumForWork(long workId) {
+        return noteSummaryDao.findByWorkId(workId);
+    }
 }
