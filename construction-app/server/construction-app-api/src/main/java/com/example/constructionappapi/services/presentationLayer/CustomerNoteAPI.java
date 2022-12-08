@@ -26,6 +26,11 @@ public class CustomerNoteAPI {
         return customerNoteRepository.editCustomerNote(customerNote);
     }
 
+    @GetMapping("kunder/anteckningar/summarized/{sumNoteId}")
+    public List<CustomerNoteEntity> getAllNotesForOneSum(@PathVariable final long sumNoteId) {
+        return customerNoteRepository.getAllNotesForOneSum(sumNoteId);
+    }
+
     @GetMapping("kunder/anteckningar/notesForWork/{workId}")
     public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable final long workId) {
         return customerNoteRepository.getAllNotesByWorkId(workId);

@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
+import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ public class CustomerNoteRepository {
 
     @Autowired
     private CustomerNoteDao customerNoteDao;
-
     @Autowired
     private WorkDao workDao;
     @Autowired
@@ -87,6 +87,11 @@ public class CustomerNoteRepository {
             return null;
 
         }
+    }
+
+    public List<CustomerNoteEntity> getAllNotesForOneSum(long sumNoteId) {
+        return customerNoteDao.findAllBySummaryId(sumNoteId);
+
     }
 
     public List<CustomerNoteEntity> getAllNotesByWorkId(long workId) {

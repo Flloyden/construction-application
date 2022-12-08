@@ -17,5 +17,7 @@ public interface CustomerNoteDao extends JpaRepository<CustomerNoteEntity, Long>
     List<CustomerNoteEntity> findAllByCustomerId(Long customerId);
     List<CustomerNoteEntity> findAllByWorkId(Long workId);
 
+    List<CustomerNoteEntity> findAllBySummaryId(Long noteSummaryId);
+
     //CustomerNoteEntity findFirstByOrderByDatePostedDesc(Long workId);
 }

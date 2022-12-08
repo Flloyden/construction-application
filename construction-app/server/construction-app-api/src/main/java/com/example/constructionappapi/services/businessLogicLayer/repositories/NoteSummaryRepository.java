@@ -44,7 +44,7 @@ public class NoteSummaryRepository {
                         timeEmployeeSum += Long.parseLong(customerNoteEntity.getTimeEmployee());
 
                         customerNoteEntity.setNoteStatus(NoteStatus.SUMMARIZED); //sätt anteckningarna till avslutade
-                        customerNoteEntity.setNoteSummary(noteSummary); //varje avslutad anteckning får en summering
+                        customerNoteEntity.setSummary(noteSummary); //varje avslutad anteckning får en summering
                         summedNotes.add(customerNoteEntity); //för att lägga till anteckningarna till Summary
                     }
                 }

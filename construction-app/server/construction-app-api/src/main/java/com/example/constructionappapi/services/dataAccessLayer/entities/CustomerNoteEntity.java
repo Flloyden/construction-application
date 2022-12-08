@@ -45,7 +45,7 @@ public class CustomerNoteEntity {
     @ManyToOne
     @JoinColumn(name = "note_summary_id")
     @JsonBackReference(value = "summaryToNote")
-    private NoteSummaryEntity noteSummary;
+    private NoteSummaryEntity summary;
 
 
     public void setCustomerForNote(CustomerEntity customer) {
