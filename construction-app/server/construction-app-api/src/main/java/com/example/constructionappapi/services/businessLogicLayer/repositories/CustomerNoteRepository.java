@@ -87,7 +87,8 @@ public class CustomerNoteRepository {
 
 
 
-            /* -----------------TODO eg använda något sånt här, inte hårdkoda var nästa datum ska vara utan faktiskt kolla hur jobbet ligger....
+            /* -----------------TODO fixa använda något sånt här, inte hårdkoda var nästa datum ska vara utan faktiskt kolla hur jobbet ligger....
+            //pga detta sätt kan ej ha koll på om ett jobb som hamnar mitt i "detta" jobb. Kollar inte dom faktiska datumen för jobbet som anteckningen hör till
 
             HashMap<CalendarEntity, WorkEntity> calendarMap = calendar.getCalendarHashMap();
             List<CalendarEntity> workCalendar = workEntityFromId.get().getCalendarForWork();
@@ -137,7 +138,7 @@ public class CustomerNoteRepository {
         customerNoteDao.deleteById(noteId);
     }
 
-    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) {
+    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) { //TODO fixa använda dao, typ; customerNoteDao.findAllByWorkId(workId);
         Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
         List<CustomerNoteEntity> allNotes = workEntity.get().getCustomerNotes();
         List<CustomerNoteEntity> summarizedNotes = null;
@@ -154,7 +155,7 @@ public class CustomerNoteRepository {
 
     public List<CustomerNoteEntity> getAllNotSummarizedNotesForWork(long workId) {
         Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
-        List<CustomerNoteEntity> allNotes = workEntity.get().getCustomerNotes(); //customerNoteDao.findAllByWorkId(workId);
+        List<CustomerNoteEntity> allNotes = workEntity.get().getCustomerNotes(); //TODO fixa använda dao, typ; customerNoteDao.findAllByWorkId(workId);
         List<CustomerNoteEntity> nonSummarizedNotes = null;
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {

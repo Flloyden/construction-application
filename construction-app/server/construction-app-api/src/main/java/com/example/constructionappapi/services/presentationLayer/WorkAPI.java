@@ -31,7 +31,7 @@ public class WorkAPI {
     }
 
     @PostMapping("/kunder/{customerId}/work/update")
-    public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
+    public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) { //TODO ändra anteckningar om finns...?
         return workRepository.updateWork(customerId, work);
     }
 

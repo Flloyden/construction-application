@@ -1,8 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
-import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,12 +26,12 @@ public class NoteSummaryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate datePostedSum;
-    private Month monthSum;
+    private Month month; //monthSum
     private String timeSpendSum;
     private String kmDrivenSum;
     private String timeEmployeeSum;
-    private String workNameSum;
-    private long workNumberSum;
+    private String workName;
+    private long workNumber;
 
 
     @OneToMany(
@@ -48,6 +46,7 @@ public class NoteSummaryEntity {
     @JoinColumn(name = "work_id")
     @JsonBackReference(value = "workToSummary")
     private WorkEntity oneWork;
+
 
     public void setWorkForSummary(WorkEntity workEntity) {
         this.oneWork = workEntity;

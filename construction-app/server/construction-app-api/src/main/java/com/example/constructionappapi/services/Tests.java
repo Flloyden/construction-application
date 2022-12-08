@@ -4,18 +4,17 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerNoteRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.NoteSummaryRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import com.example.constructionappapi.services.presentationLayer.VacationAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 public class Tests {
@@ -133,7 +132,7 @@ public class Tests {
         System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
 
-        WorkEntity door = new WorkEntity(0L, "Door", null, 3, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkEntity door = new WorkEntity(0L, "Door", null, 6, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         door = workRepository.addNewWorkEntity(customer.getId(), door);
         calendar.addWork(door);
 
@@ -148,15 +147,19 @@ public class Tests {
 
         System.out.println(ANSI_RED + "Adding note." + ANSI_RED);
         CustomerNoteRepository customerNoteRepository = configurableApplicationContext.getBean(CustomerNoteRepository.class);
-        CustomerNoteEntity note = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Roof", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
+        CustomerNoteEntity note = new CustomerNoteEntity(0L, null, "test", "5", "5", "3", "Roof", 3, NoteStatus.NOTSUMMARIZED, customer, roof, null);
         customerNoteRepository.createCustomerNote(note, roof.getId());
 
-        CustomerNoteEntity note2 = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Roof", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
+        CustomerNoteEntity note2 = new CustomerNoteEntity(0L, null, "test", "3", "3", "2", "Roof", 3, NoteStatus.NOTSUMMARIZED, customer, roof, null);
         customerNoteRepository.createCustomerNote(note2, roof.getId());
 
-        CustomerNoteEntity note3 = new CustomerNoteEntity(0L, null, "test", "5", "5", "0", "Roof", 0L, NoteStatus.NOTSUMMARIZED, customer, door, null);
+        CustomerNoteEntity note3 = new CustomerNoteEntity(0L, null, "test", "4", "4", "1", "Roof", 3, NoteStatus.NOTSUMMARIZED, customer, roof, null);
         customerNoteRepository.createCustomerNote(note3, roof.getId());
 
+        System.out.println(ANSI_RED + "Adding sumNote for Roof December." + ANSI_RED);
+        NoteSummaryRepository noteSummaryRepository = configurableApplicationContext.getBean(NoteSummaryRepository.class);
+        NoteSummaryEntity sum = new NoteSummaryEntity(0L, LocalDate.now(), LocalDate.now().getMonth(), null, null, null, "Roof", 3,new ArrayList<>(), roof);
+        noteSummaryRepository.createNoteSummary(sum, roof.getId());
     }
 
     public void testAddWork() {
