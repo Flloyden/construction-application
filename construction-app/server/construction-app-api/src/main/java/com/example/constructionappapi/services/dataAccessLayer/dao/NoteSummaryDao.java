@@ -1,11 +1,9 @@
 package com.example.constructionappapi.services.dataAccessLayer.dao;
 
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.NoteSummaryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface NoteSummaryDao extends JpaRepository<NoteSummaryEntity, Long> {
 
-    Optional<NoteSummaryEntity> findByWorkId(Long workId);
+    Optional<NoteSummaryEntity> findByWorkNumber(Long workId);
 
 }

@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
+import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.NoteSummaryEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
@@ -13,62 +14,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class accessing the customer note_summary table in DB
+ */
 @Service
 public class NoteSummaryRepository {
 
     @Autowired
     private NoteSummaryDao noteSummaryDao;
     @Autowired
-    private WorkRepository workRepository;
+    private WorkDao workDao;
 
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
-        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
+        Optional<WorkEntity> work = workDao.findById(workId);
         List<CustomerNoteEntity> summedNotes = new ArrayList<>();
         long kmDrivenSum = 0;
         long timeSpentSum = 0;
         long timeEmployeeSum = 0;
 
-        if(workEntity.isPresent()){
-            List<CustomerNoteEntity> allNotes = workEntity.get().getCustomerNotes();
+        if(work.isPresent()){
+            List<CustomerNoteEntity> allNotes = work.get().getCustomerNotes();
             if(!allNotes.isEmpty()){
                 for (CustomerNoteEntity customerNoteEntity : allNotes) {
                     if(customerNoteEntity.getDatePosted().getMonth() == noteSummary.getMonth()){ //alla anteckningar för detta jobb med samma månad som summering
-                        System.out.println("-----------------från ifsats kolla månad");
+                        //räkna ihop all data
                         kmDrivenSum += Long.parseLong(customerNoteEntity.getKmDriven());
                         timeSpentSum += Long.parseLong(customerNoteEntity.getTimeSpend());
                         timeEmployeeSum += Long.parseLong(customerNoteEntity.getTimeEmployee());
-                        customerNoteEntity.setNoteSummaryEntity(noteSummary); //varje avslutad anteckning har en summering
-                        System.out.println("1");
-                        System.out.println("månad note " + customerNoteEntity.getDatePosted().getMonth());
-                        System.out.println("månad för summeringen " + noteSummary.getMonth());
+
                         customerNoteEntity.setNoteStatus(NoteStatus.SUMMARIZED); //sätt anteckningarna till avslutade
-                        System.out.println("2");
-                        summedNotes.add(customerNoteEntity);
-                        System.out.println("3");
+                        customerNoteEntity.setNoteSummary(noteSummary); //varje avslutad anteckning får en summering
+                        summedNotes.add(customerNoteEntity); //för att lägga till anteckningarna till Summary
                     }
                 }
 
                 noteSummary.setKmDrivenSum(String.valueOf(kmDrivenSum));
                 noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
                 noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
+
+                //TODO tänker jag fel att lägga till från båda hållen?
+                noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
+                noteSummary.setWorkForSummary(work.get()); //assigna summary till work
+                return noteSummaryDao.save(noteSummary);
             }
 
         }
-
-        System.out.println("4");
-        //lägg till anteckningar till NoteSummary
-        noteSummary.setCustomerNotes(summedNotes);
-
-        System.out.println("5");
-        noteSummary.setWorkForSummary(workEntity.get()); //assigna summary till work
-
-        System.out.println("6");
-        return noteSummaryDao.save(noteSummary);
+        return null; //om jobbId inte existerar
     }
 
 
-    public List<NoteSummaryEntity> getSumForWork(long workId) {
-        return noteSummaryDao.findByWorkId(workId);
+    public Optional<NoteSummaryEntity> getSumForWork(long workId) {
+        Optional<NoteSummaryEntity> sum = noteSummaryDao.findByWorkNumber(workId);
+        return sum;
     }
 }

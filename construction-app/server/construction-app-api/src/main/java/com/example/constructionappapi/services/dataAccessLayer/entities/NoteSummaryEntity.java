@@ -35,7 +35,7 @@ public class NoteSummaryEntity {
 
 
     @OneToMany(
-            mappedBy = "noteSummaryEntity",
+            mappedBy = "noteSummary",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference("summaryToNote")

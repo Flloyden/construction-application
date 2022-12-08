@@ -79,7 +79,7 @@ public class Calendar {
         moveCalendarItemBackwards(work.getStartDate());
 
 
-        //workRepository.getWorkEntity(updatedWork.getId()).get();
+        //workRepository.getWork(updatedWork.getId()).get();
         return addWork(work);
     }
 

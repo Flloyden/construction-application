@@ -105,7 +105,7 @@ class ApiConnector {
     return axios.post(CUSTOMER_API_BASE_URL + "/anteckningar/save/" + workId, noteList)
   }
 
-  deleteNote(noteId) {
+  deleteNote(noteId) { //Skall ej kunna göras?
     console.log(noteId)
     return axios.delete(CUSTOMER_API_BASE_URL + "/anteckningar/remove/" + noteId)
   }

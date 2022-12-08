@@ -43,8 +43,8 @@ public class WorkEntity {
     @JsonManagedReference(value = "workToCalendar")
     private List<CalendarEntity> calendar = new ArrayList<>();
     @OneToMany(
-            fetch=FetchType.EAGER,
-            mappedBy = "workEntity",
+            fetch=FetchType.EAGER, //TODO funkar inte i längden?
+            mappedBy = "work",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToNote")

@@ -7,13 +7,12 @@ import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Class accessing the customer note table in DB
@@ -36,9 +35,9 @@ public class CustomerNoteRepository {
     private Calendar calendar;
 
 
+    @Transactional //krävs för getDateForNewNote();
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNoteEntity, long workId) {
-        Optional<WorkEntity> workEntityFromId = workRepository.getWorkEntity(workId);
-
+        Optional<WorkEntity> work = workDao.findById(workId);
         LocalDate dateToAdd = getDateForNewNote(workId);
 
         if(dateToAdd == null){
@@ -46,101 +45,56 @@ public class CustomerNoteRepository {
         }
 
         customerNoteEntity.setDatePosted(dateToAdd);
-
-        CustomerEntity customerEntity = workEntityFromId.get().getCustomer(); //hämta customer till det jobbet
-
+        CustomerEntity customerEntity = work.get().getCustomer(); //hämta customer till det jobbet
         customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
-        customerNoteEntity.setWorkForNote(workEntityFromId.get()); //assigna note till work
+        customerNoteEntity.setWorkForNote(work.get()); //assigna note till work
 
         return customerNoteDao.save(customerNoteEntity);
 
     }
 
+    public CustomerNoteEntity editCustomerNote(CustomerNoteEntity customerNote) {
+        return customerNoteDao.save(customerNote);
+    }
+
 
     public LocalDate getDateForNewNote(long workId){
 
-        Optional<WorkEntity> workEntityFromId = workRepository.getWorkEntity(workId);
-        List<CustomerNoteEntity> allNotesForThisWork = workEntityFromId.get().getCustomerNotes();
+        Optional<WorkEntity> work = workDao.findById(workId);
+        List<CustomerNoteEntity> allNotesForThisWork = work.get().getCustomerNotes();
 
-        //om detta är första anteckningen för jobbet
-        if(workEntityFromId.get().getCustomerNotes().isEmpty()){
-            return (workEntityFromId.get().getStartDate()); //datum för anteckningen blir första dagen på jobbet
+        if(work.get().getCustomerNotes().isEmpty()){ //om detta är första anteckningen för jobbet så blir datum för anteckningen första dagen på jobbet
+            return (work.get().getStartDate());
         }
-        else { //annars sätt datumet på anteckningen till dagen efter senaste anteckningen
+        else { //annars sätt datumet på anteckningen till jobbdagen efter senaste anteckningen
             LocalDate dateLastNote = null;
+
             for (int i = 0; i < allNotesForThisWork.size(); i++) {
-                if(i == (allNotesForThisWork.size()) - 1){ //Hämta datum på senaste anteckningen
+                if(i == (allNotesForThisWork.size()) - 1){ //Hämta datum på senaste anteckningen //TODO detta går att göra snyggare med korrekt funktion i Dao
                     dateLastNote = allNotesForThisWork.get(i).getDatePosted();
                 }
             }
-            System.out.println("--------------------------DATELASTNOTE: " + dateLastNote.toString());
 
-            LocalDate dateToAdd2 = dateLastNote.plusDays(1); //nästa anteckningsdatum
+            List<CalendarEntity> workCalendar = work.get().getCalendarForWork(); //kalender för jobbet som anteckningen tillhör
 
-            //om semester eller helger ligger i vägen.
-            while(vacationDates.containsKey(new VacationCalendarEntity(dateToAdd2)) || dateToAdd2.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAdd2.getDayOfWeek() == DayOfWeek.SUNDAY){
-                dateToAdd2 = dateToAdd2.plusDays(1);
-            }
-
-            System.out.println("---------------------DATETOADD: " + dateToAdd2);
-            return dateToAdd2;
-
-
-
-            /* -----------------TODO fixa använda något sånt här, inte hårdkoda var nästa datum ska vara utan faktiskt kolla hur jobbet ligger....
-            //pga detta sätt kan ej ha koll på om ett jobb som hamnar mitt i "detta" jobb. Kollar inte dom faktiska datumen för jobbet som anteckningen hör till
-
-            HashMap<CalendarEntity, WorkEntity> calendarMap = calendar.getCalendarHashMap();
-            List<CalendarEntity> workCalendar = workEntityFromId.get().getCalendarForWork();
-            System.out.println("------------------------test");
-
-            for (int i = 0; i < workCalendar.size(); i++) {
-                System.out.println("----------------test2");
-                LocalDate date = workCalendar.get(i).getDate();
-                if(date.compareTo(dateLastNote) > 0 ){ //"date occurs after dateLastNote"
-                    System.out.println(date);
-                    System.out.println("--------------test3");
-                    return date;
+            //kolla igenom alla datum i jobbkalender och hitta första datumet efter senaste anteckningen
+            for(CalendarEntity calendarEntity : workCalendar) {
+                if (calendarEntity.getDate().isAfter(dateLastNote)) { //datumet efter förra anteckningen
+                    System.out.println(calendarEntity.getDate().toString());
+                    return calendarEntity.getDate();
                 }
             }
-
-            for(CalendarEntity calendarEntity : workCalendar)
-            {
-                System.out.println("--------------test2");
-                LocalDate dateCal = calendarEntity.getDate();
-                if(dateCal.compareTo(dateLastNote) > 0 ){ //"dateCal occurs after dateLastNote"
-                    System.out.println(dateCal);
-                    System.out.println("--------------test3");
-                    return dateCal;
-                }
-            }
-
-
-            //hämta datum på när nästa jobbdag är
-            for (Map.Entry<CalendarEntity, WorkEntity> entry : calendarMap.entrySet()) {
-                CalendarEntity calendarEntity = entry.getKey();
-                WorkEntity workEntity = entry.getValue();
-                LocalDate date = calendarEntity.getDate();
-                if(workEntity.getCustomerNotes().contains(customerNoteEntity.getDatePosted().)){
-
-                }
-            }
-            */
+            return null;
 
         }
     }
 
-    public List<CustomerNoteEntity> getAllNotesByCustomerId(long customerId) {
-        return customerNoteDao.findAllByCustomerId(customerId);
+    public List<CustomerNoteEntity> getAllNotesByWorkId(long workId) {
+        return customerNoteDao.findAllByWorkId(workId);
     }
 
-    public void deleteNote(Long noteId) {
-        customerNoteDao.deleteById(noteId);
-    }
-
-    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) { //TODO fixa använda dao, typ; customerNoteDao.findAllByWorkId(workId);
-        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
-        List<CustomerNoteEntity> allNotes = workEntity.get().getCustomerNotes();
+    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) {
+        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByWorkId(workId);
         List<CustomerNoteEntity> summarizedNotes = null;
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
@@ -154,9 +108,8 @@ public class CustomerNoteRepository {
     }
 
     public List<CustomerNoteEntity> getAllNotSummarizedNotesForWork(long workId) {
-        Optional<WorkEntity> workEntity = workRepository.getWorkEntity(workId);
-        List<CustomerNoteEntity> allNotes = workEntity.get().getCustomerNotes(); //TODO fixa använda dao, typ; customerNoteDao.findAllByWorkId(workId);
-        List<CustomerNoteEntity> nonSummarizedNotes = null;
+        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByWorkId(workId);
+        List<CustomerNoteEntity> nonSummarizedNotes = new ArrayList<>();
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
@@ -167,4 +120,43 @@ public class CustomerNoteRepository {
 
         return nonSummarizedNotes;
     }
+
+    public List<CustomerNoteEntity> getAllNotesByCustomerId(long customerId) {
+        return customerNoteDao.findAllByCustomerId(customerId);
+    }
+
+    public List<CustomerNoteEntity> getAllSummarizedNotesForCustomer(long customerId) {
+        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByCustomerId(customerId);
+        List<CustomerNoteEntity> summarizedNotes = null;
+
+        for (CustomerNoteEntity customerNoteEntity : allNotes) {
+            NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
+            if(noteStatus == NoteStatus.SUMMARIZED){
+                summarizedNotes.add(customerNoteEntity);
+            }
+        }
+
+        return summarizedNotes;
+    }
+
+    public List<CustomerNoteEntity> getAllNotSummarizedNotesForCustomer(long customerId) {
+        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByCustomerId(customerId);
+        List<CustomerNoteEntity> nonSummarizedNotes = new ArrayList<>();
+
+        for (CustomerNoteEntity customerNoteEntity : allNotes) {
+            NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
+            if(noteStatus == NoteStatus.NOTSUMMARIZED){
+                nonSummarizedNotes.add(customerNoteEntity);
+            }
+        }
+
+        return nonSummarizedNotes;
+    }
+
+
+
+    public void deleteNote(Long noteId) {
+        customerNoteDao.deleteById(noteId);
+    }
+
 }

@@ -22,5 +22,4 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     List<WorkEntity> findByStartDateBetween(LocalDate start, LocalDate end);
 
     List<WorkEntity> findByStartDate(LocalDate startdate);
-
 }

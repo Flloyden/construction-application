@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.dataAccessLayer.entities;
 
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,20 +39,20 @@ public class CustomerNoteEntity {
     @ManyToOne
     @JoinColumn(name = "work_id")
     @JsonBackReference(value = "workToNote")
-    private WorkEntity workEntity;
+    private WorkEntity work;
 
 
     @ManyToOne
     @JoinColumn(name = "note_summary_id")
     @JsonBackReference(value = "summaryToNote")
-    private NoteSummaryEntity noteSummaryEntity;
+    private NoteSummaryEntity noteSummary;
 
 
     public void setCustomerForNote(CustomerEntity customer) {
         this.customer = customer;
     }
     public void setWorkForNote(WorkEntity workEntity) {
-        this.workEntity = workEntity;
+        this.work = workEntity;
     }
 
 }

@@ -13,9 +13,12 @@ import com.example.constructionappapi.services.presentationLayer.VacationAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Tests {
     private final ConfigurableApplicationContext configurableApplicationContext;
@@ -120,7 +123,7 @@ public class Tests {
         calendar.printCalendar();
     }
 
-    public void testAddNotesCheckDate() {
+    public void testAddNotesCheckDateAndGetSum() {
         String ANSI_RED = "\u001B[31m";
         Calendar calendar = CalendarSingleton.getCalendar();
 
@@ -140,12 +143,12 @@ public class Tests {
         fence = workRepository.addNewWorkEntity(customer.getId(), fence);
         calendar.addWork(fence);
 
-        WorkEntity roof = new WorkEntity(0L, "Roof", null, 2, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkEntity roof = new WorkEntity(0L, "Roof", null, 4, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         roof = workRepository.addNewWorkEntity(customer.getId(), roof);
         calendar.addWork(roof);
         calendar.printCalendar();
 
-        System.out.println(ANSI_RED + "Adding note." + ANSI_RED);
+        System.out.println(ANSI_RED + "Adding notes." + ANSI_RED);
         CustomerNoteRepository customerNoteRepository = configurableApplicationContext.getBean(CustomerNoteRepository.class);
         CustomerNoteEntity note = new CustomerNoteEntity(0L, null, "test", "5", "5", "3", "Roof", 3, NoteStatus.NOTSUMMARIZED, customer, roof, null);
         customerNoteRepository.createCustomerNote(note, roof.getId());
@@ -160,6 +163,9 @@ public class Tests {
         NoteSummaryRepository noteSummaryRepository = configurableApplicationContext.getBean(NoteSummaryRepository.class);
         NoteSummaryEntity sum = new NoteSummaryEntity(0L, LocalDate.now(), LocalDate.now().getMonth(), null, null, null, "Roof", 3,new ArrayList<>(), roof);
         noteSummaryRepository.createNoteSummary(sum, roof.getId());
+
+        System.out.println(ANSI_RED + "getting sumNote for Roof." + ANSI_RED);
+        Optional<NoteSummaryEntity> sumObj = noteSummaryRepository.getSumForWork(roof.getId());
     }
 
     public void testAddWork() {
