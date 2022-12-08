@@ -152,18 +152,22 @@ public class WorkRepository {
         return null;
     }
 
-    public List<WorkEntity> checkForActiveWork() {
-        LocalDate today = LocalDate.now();
-        today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
-        //Lägger därför en dag framåt från dagens datum.
-        LocalDate tenDaysForward = today.plusDays(10);
 
-        return workDao.findByStartDateBetween(today, tenDaysForward);
-    }
 
     public List<WorkEntity> checkForOngoingWork() {
         LocalDate today = LocalDate.now();
         today.plusDays(1);
         return workDao.findByStartDate(today);
+    }
+
+    public List<WorkEntity> checkForUpcomingWork() {
+        LocalDate today = LocalDate.now();
+        today = today.plusDays(1);
+        LocalDate thirtyDaysForward = today.plusDays(30);
+
+        List<WorkEntity> work = workDao.findByStartDate(today);
+       long id = work.get(0).getId();
+
+        return workDao.findByIdIsNotAndStartDateBetween(id, today, thirtyDaysForward);
     }
 }

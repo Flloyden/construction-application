@@ -60,5 +60,9 @@ public class WorkEntity {
     public CustomerEntity getCustomer() {
         return customer;
     }
+
+    public long getId() {
+        return id;
+    }
 }
 

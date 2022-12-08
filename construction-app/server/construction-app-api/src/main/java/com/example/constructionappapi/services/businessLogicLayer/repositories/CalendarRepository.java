@@ -69,4 +69,8 @@ public class CalendarRepository {
         calendarDao.deleteAllByWorkId(id);
         calendarDao.findAllById(Collections.singleton(id));
     }
+
+    public List<CalendarEntity> findByDateBetween(LocalDate today, LocalDate thirtyDaysForward) {
+        return calendarDao.findByDateBetween(today,thirtyDaysForward);
+    }
 }

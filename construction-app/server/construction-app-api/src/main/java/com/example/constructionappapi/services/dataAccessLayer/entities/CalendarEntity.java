@@ -53,4 +53,13 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
     public int compareTo(CalendarEntity o) {
         return date.compareTo(o.date);
     }
+
+    public WorkEntity getWork() {
+        return work;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + work.getId() + "\n" + work.getCustomer();
+    }
 }
