@@ -50,7 +50,7 @@ public class StartServer {
             //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();
             //tests.testAddWork();
-            tests.testAddNotesCheckDateAndGetSum();
+            //tests.testAddNotesCheckDateAndGetSum();
 
             calendar.printCalendar();
         } catch (Exception e) {
