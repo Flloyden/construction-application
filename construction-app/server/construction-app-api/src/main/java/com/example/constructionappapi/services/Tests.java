@@ -139,7 +139,7 @@ public class Tests {
         door = workRepository.addNewWorkEntity(customer.getId(), door);
         calendar.addWork(door);
 
-        WorkEntity fence = new WorkEntity(0L, "Fence", null, 9, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        WorkEntity fence = new WorkEntity(0L, "Fence", null, 8, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         fence = workRepository.addNewWorkEntity(customer.getId(), fence);
         calendar.addWork(fence);
 
