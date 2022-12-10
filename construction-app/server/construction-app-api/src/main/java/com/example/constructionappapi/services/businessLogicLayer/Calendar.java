@@ -113,7 +113,7 @@ public class Calendar {
 
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
-        CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
+        Optional<CalendarEntity> calendarEntity = calendarRepository.findFirstByDate(date);
 
         while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
             newDate = newDate.plusDays(1);

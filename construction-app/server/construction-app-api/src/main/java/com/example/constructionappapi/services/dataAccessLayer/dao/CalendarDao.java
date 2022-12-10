@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @Repository
 public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
-    CalendarEntity findFirstByDate(LocalDate date);
+    Optional<CalendarEntity> findFirstByDate(LocalDate date);
 
     Optional<CalendarEntity> findFirstByOrderByDateDesc();
     @Transactional

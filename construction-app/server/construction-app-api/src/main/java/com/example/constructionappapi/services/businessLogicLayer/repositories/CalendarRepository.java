@@ -45,7 +45,7 @@ public class CalendarRepository {
 
     }
 
-    public CalendarEntity findFirstByDate(LocalDate date) {
+    public Optional<CalendarEntity> findFirstByDate(LocalDate date) {
         return calendarDao.findFirstByDate(date);
     }
 
