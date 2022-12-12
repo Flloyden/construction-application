@@ -64,6 +64,7 @@ const Work = (props) => {
               setIsChangeOpen(true);
             }}
           >
+            {/** FIxa så att det ej går att ändra när status är slutfört */}
             <RiPencilFill />
           </button>
           <button
@@ -73,6 +74,7 @@ const Work = (props) => {
               setIsOpen(true);
             }}
           >
+            {/** FIxa så att det ej går att ändra när status är slutfört */}
             <RiCloseLine />
           </button>
         </div>

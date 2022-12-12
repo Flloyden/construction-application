@@ -19,7 +19,7 @@ export default function Settings() {
     // Gets all the clients on page load once per load
     setLoading(true);
     if (getValue === null) {
-      setDarkToggle(false);
+      setDarkToggle(true);
     } else if (getValue === "true") {
       setDarkToggle(true);
     } else {
