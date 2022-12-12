@@ -64,5 +64,6 @@ public class WorkEntity {
     public long getId() {
         return id;
     }
+
 }
 

@@ -8,6 +8,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,4 +66,10 @@ public class CustomerRepository {
     public void deleteCustomer(Long id) {
         customerDao.deleteById(id); //Deletes customer by ID
     }
+
+    public List<CustomerEntity> getOngoingWorkTest()
+    {
+        return customerDao.findCustomersWithWorkAndCalendarForToday();
+    }
+
 }

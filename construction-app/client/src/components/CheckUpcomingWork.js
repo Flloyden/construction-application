@@ -13,9 +13,11 @@ export default function CheckUpcomingWork() {
       setLoading(true);
       // Tries to get data from api
       try {
-        const response = await ApiConnector.getUpcomingWork();
-        setUpcomingWork(response.data);
-        console.log(response.data);
+        //const response = await ApiConnector.getUpcomingWork();
+        const testData = await ApiConnector.getUpcomingWork();
+        setUpcomingWork(testData.data);
+        //console.log(response.data);
+        console.log(testData.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -26,32 +28,25 @@ export default function CheckUpcomingWork() {
   }, []);
 
   function getUpcomingWork() { 
-    //if(upcomingWork.length > 1) // Skapar en lista med alla kommande jobb
-    //{                           // Hade behövt hjälp med att displaya det
-      //const work = [];
-      //for (let i = 0; i < upcomingWork.length; i++) 
-      //{
-        //let sortedDates = upcomingWork.sort(
-          //(a, b) =>
-            //new Date(...a.startDate.split("/").reverse()) -
-            //new Date(...b.startDate.split("/").reverse())
-        //);
-        //work[i] = sortedDates[i].name + " - " + sortedDates[i].startDate + " | "; 
-    //}
-    //return work;
-  //}
-    /**Gets upcoming upcomingWork within ten days of today's date */
-   
+  if(upcomingWork == null ||  typeof upcomingWork == undefined)
+  {
+    return "";
+  }
     let sortedDates = upcomingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
     );
+    //var activeId = sortedDates[0]
     return sortedDates[0].name + " - " + sortedDates[0].startDate;
   }
 
   function getCustomerId() {
     /**Gets the customer id with nearest expiring date by sorting the array */
+    if(upcomingWork == null)
+    {
+      return "";
+    }
     let sortedDates = upcomingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
@@ -73,7 +68,7 @@ export default function CheckUpcomingWork() {
     <div className="w-full h-full">
       {!loading && (
         <div className="w-full h-full">
-          {upcomingWork.length < 1 ? (
+          {upcomingWork == null ? (
             <p className="align-center justify-center items-center flex w-full h-full">Finns inga kommande jobb</p>
           ) : (
             <div

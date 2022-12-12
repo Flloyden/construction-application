@@ -2,21 +2,32 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarRepository;
+<<<<<<< Updated upstream
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+=======
+import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
+>>>>>>> Stashed changes
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< Updated upstream
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+=======
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> Stashed changes
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -24,6 +35,7 @@ import java.util.Optional;
 public class CalendarAPI {
     @Autowired
     private CalendarRepository calendarRepository;
+    private CustomerRepository customerRepository;
 
     @GetMapping(value = "/kalender/work",
             produces = "application/json")
@@ -37,6 +49,7 @@ public class CalendarAPI {
         return calendarRepository.getAllVacationDates();
     }
 
+<<<<<<< Updated upstream
     @GetMapping("/kalender/ongoing")
     public Optional<CalendarEntity> getOngoingWork()
     {
@@ -85,5 +98,17 @@ public class CalendarAPI {
             objList.add(obj);
         }
         return objList;
+=======
+    @GetMapping("/kalender/upcoming")
+    public List<Object> getUpcomingWork()
+    {
+        List<Object> listOfEntities = new ArrayList<>();
+        List<CalendarEntity> calendarEntity = calendarRepository.getUpcomingWork();
+        for (int i = 0;i<calendarEntity.size();i++)
+        {
+           listOfEntities.add(calendarEntity.get(i));
+        }
+        return listOfEntities;
+>>>>>>> Stashed changes
     }
 }

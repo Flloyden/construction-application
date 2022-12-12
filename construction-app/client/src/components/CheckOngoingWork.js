@@ -14,10 +14,12 @@ export default function CheckOngoingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getOngoingWork();
-        setOngoingWork(response.data);
-        console.log(response.data);
+        const testData = await ApiConnector.getOngoingWorkTest();
+        setOngoingWork(testData.data);
+        console.log(testData.data);
         // Logs error if api cal not successful
       } catch (error) {
+        console.log(error);
         console.log(error);
       }
       setLoading(false);
@@ -27,12 +29,31 @@ export default function CheckOngoingWork() {
 
   function getOngoingWork() {
     /**Gets upcoming ongoingWork within ten days of today's date */
+    if(ongoingWork == null)
+  {
+    return "";
+  }  
     let sortedDates = ongoingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
     );
-    return sortedDates[0].name + " - " + sortedDates[0].startDate;
+
+    let sortedDatesLength = sortedDates[0].workList.length;
+    const date = new Date();
+    const formattedDate = date.toISOString().split('T')[0];
+
+    for(let i = 0; i<sortedDatesLength;i++)
+    {
+      for(let j = 0; i<sortedDates[i].workList[i].calendar.length;j++)
+      {
+        if(sortedDates[i].workList[i].calendar[j].date == formattedDate) //Om worklisten har datum(date) som matchar dagens datum
+        {
+          return sortedDates[0].workList[i].name + " - " + sortedDates[i].address; //retunerar den worklistens namn och adress
+        }
+      }
+    }
+    return "";
   }
 
   function getCustomerId() {

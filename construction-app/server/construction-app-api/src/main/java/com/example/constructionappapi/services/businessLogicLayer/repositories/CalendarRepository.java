@@ -4,10 +4,12 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +44,6 @@ public class CalendarRepository {
     }
     public String getAllCalendarEntites() {
         return calendar.toString();
-
     }
 
     public Optional<CalendarEntity> findFirstByDate(LocalDate date) {
@@ -70,7 +71,14 @@ public class CalendarRepository {
         calendarDao.findAllById(Collections.singleton(id));
     }
 
+<<<<<<< Updated upstream
     public List<CalendarEntity> findByDateBetween(LocalDate today, LocalDate thirtyDaysForward) {
         return calendarDao.findByDateBetween(today,thirtyDaysForward);
+=======
+    public List<CalendarEntity> getUpcomingWork() {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        LocalDate thirtyDaysForward = tomorrow.plusDays(30);
+        return calendarDao.findByDateBetween(tomorrow, thirtyDaysForward);
+>>>>>>> Stashed changes
     }
 }
