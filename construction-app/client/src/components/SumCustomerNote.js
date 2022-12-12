@@ -72,7 +72,7 @@ export default function SumCustomerNote(
       value = value.split(",");
       setSumNoteInfo({
         ...sumNoteInfo,
-        month: value[0].toUpperCase(),
+        month: value[1],
       });
     }
     console.log(sumNoteInfo);

@@ -26,7 +26,7 @@ public class NoteSummaryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate datePostedSum;
-    private Month month; //monthSum
+    private long month;
     private String timeSpendSum;
     private String kmDrivenSum;
     private String timeEmployeeSum;

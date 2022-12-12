@@ -28,6 +28,7 @@ public class NoteSummaryRepository {
 
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
+        noteSummary.setDatePostedSum(LocalDate.now());
         Optional<WorkEntity> work = workDao.findById(workId);
         List<CustomerNoteEntity> summedNotes = new ArrayList<>();
         long kmDrivenSum = 0;
@@ -38,7 +39,7 @@ public class NoteSummaryRepository {
             List<CustomerNoteEntity> allNotes = work.get().getCustomerNotes();
             if(!allNotes.isEmpty()){
                 for (CustomerNoteEntity customerNoteEntity : allNotes) {
-                    if(customerNoteEntity.getDatePosted().getMonth() == noteSummary.getMonth()){ //alla anteckningar för detta jobb med samma månad som summering
+                    if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth()){ //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
                         kmDrivenSum += Long.parseLong(customerNoteEntity.getKmDriven());
                         timeSpentSum += Long.parseLong(customerNoteEntity.getTimeSpend());
@@ -53,7 +54,6 @@ public class NoteSummaryRepository {
                 noteSummary.setKmDrivenSum(String.valueOf(kmDrivenSum));
                 noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
                 noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
-                noteSummary.setDatePostedSum(LocalDate.now());
 
                 //TODO tänker jag fel att lägga till från båda hållen?
                 noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
