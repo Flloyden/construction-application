@@ -65,4 +65,9 @@ public class CustomerRepository {
     public void deleteCustomer(Long id) {
         customerDao.deleteById(id); //Deletes customer by ID
     }
+
+    public List<CustomerEntity> getOngoingWorkTest()
+    {
+        return customerDao.findCustomersWithWorkAndCalendarForToday();
+    }
 }

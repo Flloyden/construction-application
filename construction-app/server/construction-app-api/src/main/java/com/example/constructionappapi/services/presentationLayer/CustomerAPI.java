@@ -36,4 +36,10 @@ public class CustomerAPI {
     public void deleteCustomer(@PathVariable final Long id) {
         customerRepository.deleteCustomer(id); // Ska det vara return här?
     }
+
+    @GetMapping("/kunder/ongoingWork")
+    public List<CustomerEntity> getOngoingWorkTest()
+    {
+        return customerRepository.getOngoingWorkTest();
+    }
 }

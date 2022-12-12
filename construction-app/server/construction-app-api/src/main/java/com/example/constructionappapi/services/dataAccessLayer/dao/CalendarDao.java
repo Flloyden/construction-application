@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,4 +23,6 @@ public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
 
     @Transactional
     void deleteAllByWorkId(long id);
+
+    List<CalendarEntity> findByDateBetween(LocalDate tomorrow, LocalDate thirtyDaysForward);
 }
