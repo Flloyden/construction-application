@@ -46,11 +46,22 @@ public class CustomerEntity {
     @JsonManagedReference("customerToNote")
     private List<CustomerNoteEntity> customerNotes = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JsonManagedReference(value = "customerToSummary")
+    private List<NoteSummaryEntity> noteSummaries = new ArrayList<>();
+
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
     }
 
     public List<WorkEntity> getWorkList() {
         return workList;
+    }
+
+    public CustomerEntity getCustomerObject(long customerId){
+        return this;
     }
 }

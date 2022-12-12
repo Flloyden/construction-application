@@ -47,6 +47,11 @@ public class NoteSummaryEntity {
     @JsonBackReference(value = "workToSummary")
     private WorkEntity oneWork;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @JsonBackReference(value = "customerToSummary")
+    private CustomerEntity customer;
+
 
     public void setWorkForSummary(WorkEntity workEntity) {
         this.oneWork = workEntity;

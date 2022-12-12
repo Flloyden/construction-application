@@ -1,8 +1,10 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.NoteSummaryEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
@@ -30,6 +32,7 @@ public class NoteSummaryRepository {
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
         noteSummary.setDatePostedSum(LocalDate.now());
         Optional<WorkEntity> work = workDao.findById(workId);
+
         List<CustomerNoteEntity> summedNotes = new ArrayList<>();
         long kmDrivenSum = 0;
         long timeSpentSum = 0;
@@ -55,6 +58,9 @@ public class NoteSummaryRepository {
                 noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
                 noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
 
+                CustomerEntity customerEntity = work.get().getCustomer();
+                noteSummary.setCustomer(customerEntity);
+
                 //TODO tänker jag fel att lägga till från båda hållen?
                 noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
                 noteSummary.setWorkForSummary(work.get()); //assigna summary till work
@@ -68,6 +74,11 @@ public class NoteSummaryRepository {
 
     public Optional<NoteSummaryEntity> getSumForWork(long workId) {
         Optional<NoteSummaryEntity> sum = noteSummaryDao.findByWorkNumber(workId);
+        return sum;
+    }
+
+    public List<NoteSummaryEntity> getSumsForCustomer(long customerId) {
+        List<NoteSummaryEntity> sum = noteSummaryDao.findAllByCustomerId(customerId);
         return sum;
     }
 }

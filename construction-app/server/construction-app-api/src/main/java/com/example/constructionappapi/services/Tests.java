@@ -45,7 +45,7 @@ public class Tests {
         vacationAPI.saveVacation(vacationEntity);
 
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
 
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
@@ -64,7 +64,7 @@ public class Tests {
         vacationAPI.saveVacation(vacationEntity);
 
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
 
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
@@ -89,7 +89,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
 
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
@@ -107,7 +107,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
 
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
@@ -128,7 +128,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         customer = customerRepository.createCustomer(customer);
 
@@ -176,7 +176,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         customer = customerRepository.createCustomer(customer);
 
@@ -202,7 +202,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         customer = customerRepository.createCustomer(customer);
 
@@ -231,7 +231,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         customer = customerRepository.createCustomer(customer);
 
