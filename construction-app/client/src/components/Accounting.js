@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import AddWaranty from "./AddWarranty";
 import WarrantyModal from "./WarrantyModal";
+import { FaTrash } from "react-icons/fa";
 
 const Accounting = () => {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   // Declaring variables
   const navigate = useNavigate();
   const [warranties, setWarranties] = useState(null);
@@ -14,6 +24,7 @@ const Accounting = () => {
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
+  const [newWarrantyModalOpen, setNewWarrantyModalOpen] = useState(false);
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -72,11 +83,11 @@ const Accounting = () => {
   };
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white">
       <div className="overflow-x-auto relative">
-        <div className="flex pb-4 justify-between gap-4">
+        <div className="flex pb-4 justify-between gap-4 rounded">
           <input
-            className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            className="rounded block w-full p-2.5 bg-white dark:bg-gray-800 dark:text-white placeholder-gray-500 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             placeholder="Sök garanti efter namn.."
             title="Type in a name"
             type="search"
@@ -84,21 +95,21 @@ const Accounting = () => {
             onChange={filter}
           ></input>
           <button
-            className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-48"
-            onClick={() => navigate("/skapagaranti")}
+            className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 duration-300 text-center w-48"
+            onClick={() => setNewWarrantyModalOpen(true)}
           >
             <span className="text-center">
               <p>Ny garanti</p>
             </span>
           </button>
         </div>
-        <table className="w-full text-sm text-left text-gray-400">
-          <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+        <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 dark:text-white shadow-xl rounded">
+        <thead className="text-xs uppercase  text-gray-500 shadow-md rounded border-b-2 border-gray-300">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="py-3 px-6 w-fit">
                 Namn
               </th>
               <th scope="col" className="py-3 px-6">
@@ -111,22 +122,22 @@ const Accounting = () => {
             <tr></tr>
           </thead>
           {!loading && (
-            <tbody>
+            <tbody className="shadow-xl rounded hover:bg-gray-900 text-black dark:text-white">
               {foundWarrenties && foundWarrenties.length > 0
                 ? foundWarrenties.map((warranty) => (
                     <tr
                       key={warranty.id}
-                      className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
+                        className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
                         onClick={(e) => passId(warranty.id)}
                       >
                         {warranty.id}
                       </th>
                       <td
-                        className="py-4 px-6 text-white"
+                        className="py-4 px-6 whitespace-nowrap"
                         onClick={(e) => passId(warranty.id)}
                       >
                         {warranty.name}
@@ -137,10 +148,10 @@ const Accounting = () => {
                       >
                         {warranty.warranty_date}
                       </td>
-                      <td className="py-4 px-9">
-                        <ImCross
+                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                        <FaTrash
                           data-modal-toggle="defaultModal"
-                          className="text-2xl float-right hover:text-red-500"
+                          className="text-2xl hover:text-red-500"
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentWarrantyId(warranties.id);
@@ -153,17 +164,17 @@ const Accounting = () => {
                 : warranties.map((warranties) => (
                     <tr
                       key={warranties.id}
-                      className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
+                        className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
                         onClick={(e) => passId(warranties.id)}
                       >
                         {warranties.id}
                       </th>
                       <td
-                        className="py-4 px-6 text-white"
+                        className="py-4 px-6 whitespace-nowrap"
                         onClick={(e) => passId(warranties.id)}
                       >
                         {warranties.name}
@@ -174,10 +185,10 @@ const Accounting = () => {
                       >
                         {warranties.warranty_date}
                       </td>
-                      <td className="py-4 px-9">
-                        <ImCross
+                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                        <FaTrash
                           data-modal-toggle="defaultModal"
-                          className="text-2xl float-right hover:text-red-500"
+                          className="text-2xl hover:text-red-500"
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentWarrantyId(warranties.id);
@@ -198,6 +209,9 @@ const Accounting = () => {
           currentWarrantyName={currentWarrantyName}
           currentWarrantyId={currentWarrantyId}
         />
+      )}
+      {newWarrantyModalOpen && (
+        <AddWaranty setIsModalOpen={setNewWarrantyModalOpen} />
       )}
     </div>
   );

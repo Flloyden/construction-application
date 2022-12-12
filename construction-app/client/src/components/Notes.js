@@ -5,6 +5,15 @@ import ApiConnector from "../services/ApiConnector";
 import NoteModal from "./NoteModal";
 
 export default function Notes(props) {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   const copy = [...props.currentCustomer.customerNotes];
   const [isOpen, setIsOpen] = useState(false);
   const [currentId, setCurrentId] = useState();
@@ -35,9 +44,9 @@ export default function Notes(props) {
     return (
       <div>
         <h2 className="text-2xl pt-10 pb-2">Anteckningar</h2>
-        <div className="bg-gray-700 py-1 rounded-md">
-          <table className="w-full text-sm text-left text-gray-400">
-            <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+        <div className="bg-white pt-1 rounded-md dark:bg-gray-800">
+          <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 shadow-md rounded">
+            <thead className="text-xs uppercase  text-gray-500  rounded border-b-2 border-gray-300">
               <tr>
                 <th scope="col" className="py-3 px-6">
                   Datum
@@ -62,11 +71,11 @@ export default function Notes(props) {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="rounded hover:bg-gray-900">
               {result.map((item, i) => {
                 return (
                   <tr
-                    className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                  className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200"
                     key={i}
                   >
                     <th
@@ -100,10 +109,10 @@ export default function Notes(props) {
             </tbody>
           </table>
         </div>
-        <h2 className={resultSum.length > 0 ? "text-black text-2xl pt-5" : ""}>Summerade</h2>
-        <div className={resultSum.length > 0 ? "w-full bg-gray-700 py-1 rounded-md" : ""}>
-          <table className="w-full text-left">
-            <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+        <h2 className={resultSum.length > 0 ? "text-black text-2xl pt-10" : "hidden"}>Summerade</h2>
+        <div className={resultSum.length > 0 ? "w-full bg-gray-700 py-1 rounded-md" : "hidden"}>
+          <table className="w-full text-sm text-left bg-white text-gray-00 rounded shadow-md">
+          <thead className="text-xs uppercase  text-gray-500 rounded border-b-2 border-gray-300">
               <tr>
                 <th scope="col" className="py-3 px-6">
                   Datum
@@ -164,7 +173,7 @@ export default function Notes(props) {
         </div>
         <div className="w-full flex justify-center items-center align-middle mt-14">
           <button
-            className={resultReg.length > 0 && resultSum.length > 0 ? "bg-blue-500 text-white hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300": ""}
+            className={resultReg.length > 0 && resultSum.length > 0 ? "bg-blue-500 text-white hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300": "hidden"}
             onClick={props.showOldNotes}
           >
             {props.oldNotesToggle ? "Dölj gamla anteckningar" : "Visa gamla anteckningar"}

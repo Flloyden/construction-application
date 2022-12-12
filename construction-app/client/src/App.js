@@ -13,17 +13,19 @@ import '../src/styles/index.css';
 import AddWarant from './components/AddWarranty';
 import Warranty from './components/Warranty';
 import Settings from './components/Settings';
+import NewHome from './components/NewHome';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <div className='flex'>
+        <div className='flex bg-blue-50 h-screen'>
           <Login />
           <Routes>
             <Route element={<PrivateRoutes />}>
               <Route path="/" element={<Home />} />
               <Route index element={<Home />} />
+              <Route path='/newhome' element={<NewHome />} />
               <Route path='/kunder' element={<CustomerRegister />} />
               <Route path='/garantier' element={<Accounting />} />
               <Route path='/skapakund' element={<AddCustomer />} />

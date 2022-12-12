@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
+import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import AddCustomer from "./AddCustomer";
 import Modal from "./Modal";
 
 const CustomerRegister = () => {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   const navigate = useNavigate();
   const [customers, setCustomers] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,6 +23,7 @@ const CustomerRegister = () => {
   const [currentCustomerName, setCurrentCustomerName] = useState("");
   const [name, setName] = useState("");
   const [foundUsers, setFoundUsers] = useState(customers);
+  const [newCustomerModalOpen, setNewCustomerModalOpen] = useState(false);
 
   useEffect(() => {
     // Gets all the clients on page load once per load
@@ -67,11 +78,11 @@ const CustomerRegister = () => {
   };
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white">
       <div className="overflow-x-auto relative">
-        <div className="flex pb-4 justify-between gap-4">
+        <div className="flex pb-4 justify-between gap-4 rounded">
           <input
-            className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            className="rounded block w-full p-2.5 bg-white dark:bg-gray-800 dark:text-white placeholder-gray-500 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             placeholder="Sök kund efter namn.."
             title="Type in a name"
             type="search"
@@ -79,16 +90,16 @@ const CustomerRegister = () => {
             onChange={filter}
           ></input>
           <button
-            className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-48"
-            onClick={() => navigate("/skapakund")}
+            className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 duration-300 text-center w-48"
+            onClick={() => setNewCustomerModalOpen(true)}
           >
             <span className="text-center">
               <p>Ny kund</p>
             </span>
           </button>
         </div>
-        <table className="w-full text-sm text-left text-gray-400">
-          <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+        <table className="w-full text-sm text-left bg-white text-gray-00 shadow-xl rounded dark:bg-gray-800 dark:text-white">
+          <thead className="text-xs uppercase  text-gray-500 shadow-md rounded border-b-2 border-gray-300">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
@@ -108,25 +119,40 @@ const CustomerRegister = () => {
             </tr>
           </thead>
           {!loading && (
-            <tbody>
+            <tbody className="shadow-xl rounded hover:bg-gray-900 text-black dark:text-white">
               {foundUsers && foundUsers.length > 0
                 ? foundUsers.map((user) => (
                     <tr
                       key={user.id}
-                      className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="bg-white border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 dark:bg-gray-800 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
+                        className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
                         onClick={(e) => passId(user.id)}
                       >
                         {user.id}
                       </th>
-                      <td className="py-4 px-6 text-white" onClick={(e) => passId(user.id)}>{user.name}</td>
-                      <td className="py-4 px-6" onClick={(e) => passId(user.id)}>{user.address}</td>
-                      <td className="py-4 px-6" onClick={(e) => passId(user.id)}>{user.creationDate}</td>
-                      <td className="flex justify-around items-stretch py-4">
-                        <ImCross
+                      <td
+                        className="py-4 px-6"
+                        onClick={(e) => passId(user.id)}
+                      >
+                        {user.name}
+                      </td>
+                      <td
+                        className="py-4 px-6"
+                        onClick={(e) => passId(user.id)}
+                      >
+                        {user.address}
+                      </td>
+                      <td
+                        className="py-4 px-6"
+                        onClick={(e) => passId(user.id)}
+                      >
+                        {user.creationDate}
+                      </td>
+                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                        <FaTrash
                           data-modal-toggle="defaultModal"
                           className="text-2xl hover:text-red-500"
                           onClick={() => {
@@ -141,22 +167,35 @@ const CustomerRegister = () => {
                 : customers.map((customer) => (
                     <tr
                       key={customer.id}
-                      className="border-b bg-gray-800 border-gray-700 cursor-pointer hover:bg-opacity-90 duration-200"
+                      className="bg-white border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 text-black dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap text-white cursor-pointer"
+                        className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
                         onClick={(e) => passId(customer.id)}
                       >
                         {customer.id}
                       </th>
-                      <td className="py-4 px-6 text-white" onClick={(e) => passId(customer.id)}>
+                      <td
+                        className="py-4 px-6"
+                        onClick={(e) => passId(customer.id)}
+                      >
                         {customer.name}
                       </td>
-                      <td className="py-4 px-6" onClick={(e) => passId(customer.id)}>{customer.address}</td>
-                      <td className="py-4 px-6" onClick={(e) => passId(customer.id)}>{customer.creationDate}</td>
-                      <td className="flex justify-around items-stretch py-4">
-                        <ImCross
+                      <td
+                        className="py-4 px-6"
+                        onClick={(e) => passId(customer.id)}
+                      >
+                        {customer.address}
+                      </td>
+                      <td
+                        className="py-4 px-6"
+                        onClick={(e) => passId(customer.id)}
+                      >
+                        {customer.creationDate}
+                      </td>
+                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                        <FaTrash
                           data-modal-toggle="defaultModal"
                           className="text-2xl hover:text-red-500"
                           onClick={() => {
@@ -179,6 +218,9 @@ const CustomerRegister = () => {
           currentName={currentCustomerName}
           currentId={currentCustomerId}
         />
+      )}
+      {newCustomerModalOpen && (
+        <AddCustomer setIsModalOpen={setNewCustomerModalOpen} />
       )}
     </div>
   );

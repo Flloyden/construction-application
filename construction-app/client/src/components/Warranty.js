@@ -5,9 +5,18 @@ import { MdOutlineDateRange, MdOutlineReceiptLong } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import ChangeWarrantyInfo from "./ChangeWarrantyInfo";
-import Modal from "./Modal";
+import WarrantyModal from "./WarrantyModal";
 
 export default function Warranty() {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   const navigate = useNavigate();
   const location = useLocation();
   const [warranty, setWarranty] = useState(null);
@@ -57,56 +66,51 @@ export default function Warranty() {
   };
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
-      <div className="rounded-lg w-full h-full p-4">
-        <h1 className="text-4xl">Garanti-information</h1>
+    <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50">
+      <div className="rounded-lg w-full h-full">
+        <h1 className="text-4xl">Garantiinformation</h1>
         {!loading && (
-          <div className="flex flex-wrap">
-            <div className="w-3/6 pr-10 pb-10">
-              <div className="flex px-4 py-4 justify-between border-b-2">
+          <div className="flex flex-wrap w-full gap-6">
+            <div className="text-left flex flex-wrap w-min justify-between items-center pr-6">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                  <BiRename className="text-3xl mr-4 mt-0.5" />
-                  <p className="text-2xl font-bold">Garanti</p>
+                  <BiRename className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl ml-auto my-auto">
-                  {warranty.name}
-                </span>
+                <span className="text-1xl my-auto">{warranty.name}</span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                  <AiOutlineNumber className="text-3xl mr-4 mt-0.5" />
-                  <p className="text-2xl font-bold">Registreringsnummer</p>
+                  <AiOutlineNumber className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl ml-auto my-auto">
+                <span className="text-1xl my-auto">
                   {warranty.registration_number}
                 </span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+              <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
-                  <MdOutlineDateRange className="text-3xl mr-4 mt-0.5" />
-                  <p className="text-2xl font-bold">Utgångsdatum</p>
+                  <MdOutlineDateRange className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl ml-auto my-auto">
+                <span className="text-1xl my-auto">
                   {warranty.warranty_date}
                 </span>
               </div>
-              <div className="flex px-4 py-4 justify-between border-b-2">
+              <div className="flex py-2 justify-start items-center w-full border-b-2 pb-6">
                 <div className="flex">
-                  <MdOutlineReceiptLong className="text-3xl mr-4 mt-0.5" />
-                  <p className="text-2xl font-bold">Kvitto</p>
+                  <MdOutlineReceiptLong className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl ml-auto my-auto">
+                <span className="text-1xl my-auto">
                   <div className="flex">
                     <button
                       onClick={toggleReceipt}
-                      className="bg-slate-700 hover:bg-slate-800 py-2 px-4 rounded duration-300 text-center text-1xl text-white w-48 h-12"
+                      className="bg-blue-600 rounded text-white hover:bg-blue-500 py-2 px-4 duration-300 text-center text-1xl w-48 h-10"
                     >
                       {showReceipt ? "Stäng" : "Visa kvitto"}
                     </button>
                     <div
                       className={
                         showReceipt
-                          ? "w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
+                          ? "bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20"
                           : "content-parent"
                       }
                       onClick={() => setShowReceipt(false)}
@@ -123,37 +127,23 @@ export default function Warranty() {
                   </div>
                 </span>
               </div>
-              <div className="flex w-full gap-2 mt-2">
+              <div className="flex w-full gap-2 mt-6">
                 <button
-                  className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
-                  onClick={() => {
-                    setIsOpen(true);
-                  }}
-                >
-                  Ta bort
-                </button>
-                <button
-                  className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                  className="bg-blue-600 hover:bg-blue-500 font-bold py-2 px-4 rounded duration-300 text-center text-white w-1/2"
                   onClick={() => {
                     setIsChangeWarrantyOpen(true);
                   }}
                 >
                   Ändra
                 </button>
-              </div>
-            </div>
-            <div className="w-3/6">
-              <h2 className="text-3xl">Anteckningar</h2>
-              <div className="notes">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Phasellus vulputate condimentum tellus, in euismod lectus
-                  blandit et. Etiam aliquam congue erat, et vulputate nisl
-                  ornare vitae. Sed ut mi sem. Nam fermentum arcu vel sapien
-                  vehicula efficitur. In vel dictum turpis. Quisque mollis, nunc
-                  eget feugiat ornare, odio turpis sodales sapien, at maximus
-                  purus quam tempus sapien. In consectetur tempus pellentesque.
-                </p>
+                <button
+                  className="bg-red-600 hover:bg-red-500 font-bold py-2 px-4 rounded duration-300 text-center text-white w-1/2"
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
+                >
+                  Ta bort
+                </button>
               </div>
             </div>
           </div>
@@ -170,10 +160,10 @@ export default function Warranty() {
         />
       )}
       {isOpen && (
-        <Modal
+        <WarrantyModal
           setIsOpen={setIsOpen}
           deleteThis={deleteThis}
-          currentName={warranty.name}
+          currentWarrantyName={warranty.name}
           currenId={currentId}
         />
       )}

@@ -14,6 +14,15 @@ import Notes from "./Notes";
 import SumCustomerNote from "./SumCustomerNote";
 
 export default function Customer() {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   const navigate = useNavigate();
   const location = useLocation();
   const [customer, setCustomer] = useState(null);
@@ -71,7 +80,7 @@ export default function Customer() {
   };
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white">
       <div className="rounded-lg w-full h-full">
         <h1 className="text-4xl">Kundinformation</h1>
         {!loading && (
@@ -117,9 +126,9 @@ export default function Customer() {
                   {customer.propertyDesignation}
                 </span>
               </div>
-              <div className="flex gap-2 justify-end items-center pb-8 w-full">
+              <div className="flex gap-2 justify-end items-center pb-8 mt-4 w-full">
                 <button
-                  className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                  className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-2/4 duration-300"
                   onClick={() => {
                     setIsChangeOpen(true);
                   }}
@@ -127,7 +136,7 @@ export default function Customer() {
                   Ändra
                 </button>
                 <button
-                  className="bg-red-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                  className="bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
                   data-modal-toggle="defaultModal"
                   onClick={() => {
                     setIsOpen(true);
@@ -142,9 +151,9 @@ export default function Customer() {
                   <h2 className="text-3xl pb-2">Jobb</h2>
                 </div>
                 <div className="flex flex-wrap gap-4 items-center pb-10 h-fit mx-auto justify-start">
-                  <div className="flex w-full h-min py-4 items-center justify-center bg-white border border-gray-200 rounded-lg shadow-md lg:max-w-md hover:scale-105 duration-300">
+                  <div className="flex w-full h-min py-4 items-center justify-center bg-white dark:bg-gray-800 border border-gray-200 rounded-lg shadow-md lg:max-w-md hover:scale-105 duration-300">
                     <GrAddCircle
-                      className="text-9xl ml-2 cursor-pointer hover:rotate-90 hover:opacity-100 duration-500 opacity-20"
+                      className="text-9xl ml-2 cursor-pointer hover:rotate-90 hover:opacity-100 duration-500 opacity-20 dark:opacity-100"
                       onClick={() => {
                         setIsWorkOpen(true);
                       }}
@@ -155,7 +164,7 @@ export default function Customer() {
                     .reverse()
                     .map((workName) => (
                       <div
-                        className="w-full h-fit bg-white border border-gray-200 rounded-lg shadow-md lg:max-w-md duration-300"
+                        className="w-full h-fit bg-white dark:bg-gray-700 border-gray-200 rounded shadow-md lg:max-w-md duration-300"
                         key={workName.id}
                       >
                         <Work
@@ -170,7 +179,7 @@ export default function Customer() {
             </div>
             <div className={customer.workList.length > 0 ? "flex-1 h-max" : "hidden"}>
               <div className="flex flex-wrap">
-                <div className="w-3/4">
+                <div className="w-8/12">
                   <AddCustomerNote
                     currentCustomerId={customer.id}
                     currentCustomerName={customer.name}
@@ -182,7 +191,7 @@ export default function Customer() {
                     currentCustomerNotes={customer.customerNotes}
                   />
                 </div>
-                <div className="w-1/4 h-full pl-1 pb-1">
+                <div className="w-4/12 h-full pl-1 pb-1">
                   <SumCustomerNote
                     currentCustomerId={customer.id}
                     currentCustomerName={customer.name}
