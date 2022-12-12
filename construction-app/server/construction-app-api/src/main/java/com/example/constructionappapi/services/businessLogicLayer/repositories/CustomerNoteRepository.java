@@ -99,12 +99,15 @@ public class CustomerNoteRepository {
     }
 
     public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) {
+        System.out.println("---------------------------hejhej");
         List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByWorkId(workId);
-        List<CustomerNoteEntity> summarizedNotes = null;
+        List<CustomerNoteEntity> summarizedNotes = new ArrayList<>();
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
+            System.out.println("----------------hej2");
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
             if(noteStatus == NoteStatus.SUMMARIZED){
+                System.out.println("---------------sumnote hej");
                 summarizedNotes.add(customerNoteEntity);
             }
         }
