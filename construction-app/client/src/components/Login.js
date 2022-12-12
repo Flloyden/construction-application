@@ -56,6 +56,7 @@ const Login = () => {
       })
         localStorage.setItem('accessToken', response['accessToken']);
         localStorage.setItem('user', JSON.stringify(response['user']));
+        localStorage.setItem('active', 0);
         if (isMobile) {
           navigate("/kalender");
         } else {
@@ -75,6 +76,7 @@ const Login = () => {
     // Removes the key from localstorage
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
+    localStorage.removeItem("active");
     // Navigates back to login
     navigate("/login");
     window.location.reload(false);
