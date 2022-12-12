@@ -8,7 +8,7 @@ const SemesterModal = (props) => {
   const [semester, setSemester] = useState({
     id: props.currentId,
     name: props.currentName,
-    startDate: props.startDate,
+    startDate: startDate,
     numberOfDays: props.currentSemesterDays,
   });
 
@@ -19,6 +19,17 @@ const SemesterModal = (props) => {
       [e.target.name]: value,
     });
     console.log(semester);
+  };
+
+  const editSemester = async () => {
+    // Deletes a client with given id and updates the id
+    try {
+      await ApiConnector.editSemester(props.currentId, semester);
+      window.location.reload(false);
+    } catch (error) {
+      console.log(error);
+    }
+    props.setIsModalOpen(false);
   };
 
   const deleteSemester = async () => {
@@ -49,6 +60,18 @@ const SemesterModal = (props) => {
           <div className="text-black p-4 text-2xl text-center flex items-center h-full">
             <p className="mx-auto text-center font-bold">{props.currentName}</p>
           </div>
+          <div className="w-full px-4 mb-2">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Namn:{" "}
+              </label>
+              <input
+                name="name"
+                value={semester.name}
+                required
+                onChange={handleChange}
+                className="mt-0 w-full rounded-lg block p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
           <div className="flex px-4 mb-4 gap-2">
             <div className="w-1/2">
               <label className="block mb-2 text-sm font-medium text-gray-700">
@@ -85,7 +108,7 @@ const SemesterModal = (props) => {
           <div className="flex px-4 gap-2   mx-auto text-white">
             <button
               className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-              onClick={() => props.setIsModalOpen(false)}
+              onClick={() => editSemester(props.currentId)}
             >
               Ändra
             </button>
