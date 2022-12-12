@@ -5,7 +5,7 @@ const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
 const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
 const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
-const NOTES_API = "http://localhost:8080/kunder/anteckningar/save";
+const NOTES_API = "http://localhost:8080/api/v1/kunder/anteckningar";
 const SEMESTER_API = "http://localhost:8080/api/v1/semester"
 
 class ApiConnector {
@@ -112,6 +112,11 @@ class ApiConnector {
   deleteNote(noteId) { //Skall ej kunna göras?
     console.log(noteId)
     return axios.delete(CUSTOMER_API_BASE_URL + "/anteckningar/remove/" + noteId)
+  }
+
+  sumNote(workId, noteSum) {
+    console.log(workId)
+    return axios.post(NOTES_API + "/summary/save/" + workId, noteSum)
   }
 }
 

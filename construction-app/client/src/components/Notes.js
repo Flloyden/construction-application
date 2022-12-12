@@ -17,14 +17,16 @@ export default function Notes(props) {
   const copy = [...props.currentCustomer.customerNotes];
   const [isOpen, setIsOpen] = useState(false);
   const [currentId, setCurrentId] = useState();
-  const resultSum = copy.filter((item) => item.noteStatus === 1);
-  const resultReg = copy.filter((item) => item.noteStatus === 0);
+  const resultSum = copy.filter((item) => item.noteStatus === "SUMMARIZED");
+  const resultReg = copy.filter((item) => item.noteStatus === "NOTSUMMARIZED");
   const selectedOnes = resultSum.map((item) => {
     return item.workNumber;
   });
   const result = resultReg.filter((col) => {
     return !selectedOnes.find((selected) => selected === col.workNumber);
   });
+
+  console.log(copy)
 
   const deleteThis = async () => {
     // Deletes a client with given id and updates the id
@@ -73,6 +75,7 @@ export default function Notes(props) {
             </thead>
             <tbody className="rounded hover:bg-gray-900">
               {result.map((item, i) => {
+                console.log(item)
                 return (
                   <tr
                   className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200"

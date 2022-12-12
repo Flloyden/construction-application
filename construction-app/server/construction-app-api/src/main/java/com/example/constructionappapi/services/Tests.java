@@ -159,6 +159,7 @@ public class Tests {
         CustomerNoteEntity note3 = new CustomerNoteEntity(0L, null, "test", "4", "4", "1", "Roof", 3, NoteStatus.NOTSUMMARIZED, customer, roof, null);
         customerNoteRepository.createCustomerNote(note3, roof.getId());
 
+        /*
         System.out.println(ANSI_RED + "Adding sumNote for Roof December." + ANSI_RED);
         NoteSummaryRepository noteSummaryRepository = configurableApplicationContext.getBean(NoteSummaryRepository.class);
         NoteSummaryEntity sum = new NoteSummaryEntity(0L, LocalDate.now(), LocalDate.now().getMonth(), null, null, null, "Roof", 3,new ArrayList<>(), roof);
@@ -166,6 +167,8 @@ public class Tests {
 
         System.out.println(ANSI_RED + "getting sumNote for Roof." + ANSI_RED);
         Optional<NoteSummaryEntity> sumObj = noteSummaryRepository.getSumForWork(roof.getId());
+
+         */
     }
 
     public void testAddWork() {

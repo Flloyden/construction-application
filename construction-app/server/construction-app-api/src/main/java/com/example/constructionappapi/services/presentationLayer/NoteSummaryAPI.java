@@ -21,12 +21,12 @@ public class NoteSummaryAPI {
     private NoteSummaryRepository noteSummaryRepository;
 
 
-    @PostMapping("kunder/anteckningar/summary/save/{workId}")
+    @PostMapping("/kunder/anteckningar/summary/save/{workId}")
     public NoteSummaryEntity createNoteSummary(@RequestBody NoteSummaryEntity noteSummary, @PathVariable final long workId) {
         return noteSummaryRepository.createNoteSummary(noteSummary, workId);
     }
 
-    @GetMapping("kunder/anteckningar/summary/{workId}")
+    @GetMapping("/kunder/anteckningar/summary/{workId}")
     public Optional<NoteSummaryEntity> getSumForWork(@PathVariable final long workId) {
         return noteSummaryRepository.getSumForWork(workId);
     }

@@ -34,10 +34,13 @@ export default function SumCustomerNote(
 
   const [sumNoteInfo, setSumNoteInfo] = useState({
     id: "",
+    datePostedSum: "",
     month: "",
-    monthId: "",
+    timeSpendSum: "",
+    kmDrivenSum: "",
+    timeEmployeeSum: "",
     workName: "",
-    workId: "",
+    workNumber: "",
   });
 
   const months = [
@@ -57,23 +60,19 @@ export default function SumCustomerNote(
 
   const [currentMonth, setCurrentMonth] = useState("");
   const [currentWork, setCurrentWork] = useState("");
+  const [Id, setId] = useState("");
 
   const handleChange = (e) => {
     let value = e.target.value;
     console.log(value);
     if (e.target.name === "work") {
       value = value.split(",");
-      setSumNoteInfo({
-        ...sumNoteInfo,
-        workName: value[0],
-        workId: value[1],
-      });
+      setId(value[1])
     } else {
       value = value.split(",");
       setSumNoteInfo({
         ...sumNoteInfo,
-        month: value[0],
-        monthId: value[1],
+        month: value[0].toUpperCase(),
       });
     }
     console.log(sumNoteInfo);
@@ -83,7 +82,7 @@ export default function SumCustomerNote(
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     // Adds work to user with api call
-    ApiConnector.saveNote(sumNoteInfo.workNumber, sumNoteInfo)
+    ApiConnector.sumNote(Id, sumNoteInfo)
       .then((response) => {
         console.log(response);
         window.location.reload(false);

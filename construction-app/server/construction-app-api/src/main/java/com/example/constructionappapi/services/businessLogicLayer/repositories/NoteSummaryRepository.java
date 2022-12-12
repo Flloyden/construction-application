@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +53,7 @@ public class NoteSummaryRepository {
                 noteSummary.setKmDrivenSum(String.valueOf(kmDrivenSum));
                 noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
                 noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
+                noteSummary.setDatePostedSum(LocalDate.now());
 
                 //TODO tänker jag fel att lägga till från båda hållen?
                 noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
