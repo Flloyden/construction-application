@@ -61,6 +61,9 @@ public class NoteSummaryRepository {
                 CustomerEntity customerEntity = work.get().getCustomer();
                 noteSummary.setCustomer(customerEntity);
 
+                String workName = work.get().getName();
+                noteSummary.setWorkName(workName);
+
                 //TODO tänker jag fel att lägga till från båda hållen?
                 noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
                 noteSummary.setWorkForSummary(work.get()); //assigna summary till work
