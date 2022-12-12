@@ -6,6 +6,15 @@ import Logout from "./Logout";
 import { isMobile } from "react-device-detect";
 
 const Login = () => {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   // Declaring variables
   // eslint-disable-next-line
   const [loginValue, setLoginValue] = useState({
@@ -96,7 +105,7 @@ const Login = () => {
                   onChange={e => setUserName(e.target.value)}
                   type="email"
                   placeholder="Användarnamn"
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
               </div>
               <div className="mt-4">
@@ -107,12 +116,12 @@ const Login = () => {
                 onChange={e => setPassword(e.target.value)}
                   type="password"
                   placeholder="Lösenord"
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
               </div>
               <div className="mt-4 w-full">
                 <button
-                  className="bg-blue-600 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-full"
+                  className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
                   disabled={loading}
                   onClick={handleLogin}
                 >

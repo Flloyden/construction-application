@@ -8,12 +8,9 @@ const NoteModal = ({
 }) => {
   return (
     <>
-      <div
-        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0 z-20"
-        onClick={() => setIsOpen(false)}
-      />
-      <div className="bg-slate-700 top-1/4 left-1/3 fixed ml-36 rounded-lg z-30">
-        <div className="w-96 bg-white h-80 rounded-lg z-30">
+      <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
+      <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
+      <div className="bg-white rounded w-fit shadow-lg p-6">
           <div className="text-center text-4xl p-4 text-red-600">
             <h5>Varning</h5>
           </div>
@@ -24,17 +21,17 @@ const NoteModal = ({
             <RiCloseLine />
           </button>
           <div className="text-black p-4 text-2xl text-center">
-            Är du säker du vill ta bort anteckningen?
+            Är du säker du vill <br></br> ta bort anteckningen?
           </div>
-          <div className="flex w-9/12 gap-2 justify-end absolute inset-x-0 bottom-4 mx-auto text-white">
+          <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
             <button
-              className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+              className="bg-gray-500 hover:bg-gray-600 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
               onClick={() => setIsOpen(false)}
             >
               Avbryt
             </button>
             <button
-              className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+              className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-2/4 duration-300"
               onClick={() => deleteThis(currentId)}
             >
               Ta bort

@@ -12,6 +12,15 @@ export default function SumCustomerNote(
   currentCustomerWorkList,
   currentCustomerNotes
 ) {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   const [customer] = useState({
     id: currentCustomerId,
     name: currentCustomerName,
@@ -28,7 +37,7 @@ export default function SumCustomerNote(
     month: "",
     monthId: "",
     workName: "",
-    workId: "", 
+    workId: "",
   });
 
   const months = [
@@ -49,28 +58,28 @@ export default function SumCustomerNote(
   const [currentMonth, setCurrentMonth] = useState("");
   const [currentWork, setCurrentWork] = useState("");
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     let value = e.target.value;
-    console.log(value)
+    console.log(value);
     if (e.target.name === "work") {
-      value = value.split(',')
+      value = value.split(",");
       setSumNoteInfo({
         ...sumNoteInfo,
         workName: value[0],
-        workId: value[1]
+        workId: value[1],
       });
     } else {
-      value = value.split(',')
+      value = value.split(",");
       setSumNoteInfo({
         ...sumNoteInfo,
         month: value[0],
-        monthId: value[1]
+        monthId: value[1],
       });
     }
-    console.log(sumNoteInfo)
+    console.log(sumNoteInfo);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     // Adds work to user with api call
@@ -82,66 +91,75 @@ export default function SumCustomerNote(
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   return (
-    <div className="w-full bg-gray-700 rounded-md p-4 pb-5">
+    <div className="w-full bg-white dark:bg-gray-800 rounded p-4 shadow">
       <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl w-full text-white">Summera</h1>
-
-      <div className="w-full flex gap-2">
-        <div className="mt-4 w-6/12">
-          <label className="mb-2 text-sm font-medium text-white">Jobb: </label>
-          <select
-            type="select"
-            name="work"
-            value={currentWork}
-            required
-            onChange={(item) => {setCurrentWork(item.value); handleChange(item)}}
-            className="form-select rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option defaultValue>Välj jobb</option>
-            {customer.name.currentCustomerWorkList
-              .slice(0)
-              .reverse()
-              .map((item, i) => {
+        <div className="w-10/12">
+          <h1 className="font-bold dark:text-white">Summera</h1>
+        </div>
+        <div className="w-full flex gap-2">
+          <div className="mt-4 w-6/12">
+            <label className="mb-2 text-sm font-medium text-white">
+              Jobb:{" "}
+            </label>
+            <select
+              type="select"
+              name="work"
+              value={currentWork}
+              required
+              onChange={(item) => {
+                setCurrentWork(item.value);
+                handleChange(item);
+              }}
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+            >
+              <option defaultValue>Välj jobb</option>
+              {customer.name.currentCustomerWorkList
+                .slice(0)
+                .reverse()
+                .map((item, i) => {
+                  return (
+                    <option key={item.id} value={[item.name, item.id]}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+          <div className="mt-4 w-6/12">
+            <label className="mb-2 text-sm font-medium text-white">
+              Månad:{" "}
+            </label>
+            <select
+              value={currentMonth}
+              required
+              onChange={(item) => {
+                setCurrentMonth(item.value);
+                handleChange(item);
+              }}
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+            >
+              <option defaultValue>Välj månad</option>
+              {months.map((item, i) => {
                 return (
                   <option key={item.id} value={[item.name, item.id]}>
                     {item.name}
                   </option>
                 );
               })}
-          </select>
+            </select>
+          </div>
         </div>
-        <div className="mt-4 w-6/12">
-          <label className="mb-2 text-sm font-medium text-white">Månad: </label>
-          <select
-            value={currentMonth}
-            required
-            onChange={(item) => {setCurrentMonth(item.value); handleChange(item)}}
-            className="form-select rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option defaultValue>Välj månad</option>
-            {months.map((item, i) => {
-              return (
-                <option key={item.id} value={[item.name, item.id]}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      </div>
-      <div className="flex w-full gap-2">
         <div className="flex w-full gap-2 mt-8 justify-end inset-x-0 bottom-4 mx-auto">
-          <button
-            type="submit"
-            className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white"
-          >
-            Summera
-          </button>
+            <button
+              type="submit"
+              className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-full duration-300"
+            >
+              Spara
+            </button>
         </div>
-      </div>
       </form>
     </div>
   );

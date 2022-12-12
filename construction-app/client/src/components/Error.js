@@ -2,9 +2,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default function Error() {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
    
   return (
-    <div className='text 2x1 font-semibold flex-1 h-screen'>
+    <div className='text 2x1 font-semibold flex-1 h-screen bg-white'>
       <div className='w-full'>
       <img src='404.png' alt='Error img' className='w-full' />
       </div>

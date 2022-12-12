@@ -1,17 +1,8 @@
 import { useRef, useState } from "react";
 import ApiConnector from "../services/ApiConnector";
+import { RiCloseLine } from "react-icons/ri";
 
-const AddWork = ({
-  setIsWorkOpen,
-  currentCustomerName,
-  currentCustomerId,
-  currentCustomerAddress,
-  currentCustomerPhone,
-  currentCustomerProperty,
-  currentCustomerSSN,
-  currentCustomerWorkList,
-  currentCustomerNotes,
-}) => {
+const AddWork = (props) => {
   const [work, setWork] = useState({
     id: "",
     name: "",
@@ -61,7 +52,7 @@ const AddWork = ({
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     // Adds work to user with api call
-    ApiConnector.saveWork(currentCustomerId, work)
+    ApiConnector.saveWork(props.currentCustomerId, work)
       .then((response) => {
         console.log(response);
         window.location.reload(false);
@@ -73,20 +64,29 @@ const AddWork = ({
 
   return (
     <>
-      <div
-        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0"
-        onClick={() => setIsWorkOpen(false)}
-      />
-      <div className="bg-white fixed inset-0 flex items-center justify-center w-2/4 h-max m-auto rounded-lg p-4">
-        <div className="w-full">
-          <form onSubmit={handleSubmit}>
-            <h1 className="text-4xl">Lägg till nytt jobb</h1>
+      <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
+      <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
+        <form onSubmit={handleSubmit} className="bg-white rounded">
+          <div className="flex border-b-2 px-6 py-3 items-center justify-center">
+            <div className="w-10/12">
+              <h1 className="font-bold">Nytt jobb</h1>
+            </div>
+            <div className="w-2/12 text-right flex justify-end">
+              <button
+                className="text-3xl opacity-70 hover:opacity-100 duration-300"
+                onClick={() => props.setIsWorkOpen(false)}
+              >
+                <RiCloseLine />
+              </button>
+            </div>
+          </div>
+          <div className="w-fit shadow-lg rounded-md p-6">
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">
-                Namn på jobb:{" "}
+                Namn på jobb:{" "}<span className="text-red-700 font-black">*</span>
               </label>
               <input
-                className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 type="text"
                 name="name"
                 value={work.name}
@@ -100,61 +100,59 @@ const AddWork = ({
               Offert:{" "}
             </label>
             <input
-              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="file"
               name="offer"
               accept="image/png, image/jpg, image/jpeg, application/pdf"
-              //value={image}
-              required
-              onChange={(item) => {handleFile(item)}}
+              onChange={(item) => {
+                handleFile(item);
+              }}
             ></input>
 
             <div className="mt-4">
-              <div className="flex gap-2">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Antal dagar:
+                  Antal dagar: <span className="text-red-700 font-black">*</span>
                 </label>
                 <input
                   ref={dayCountRef}
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  className="rounded block w-1/4 p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   type="text"
                   name="numberOfDays"
                   value={work.numberOfDays}
                   required
                   onChange={handleChange}
                 ></input>
-              </div>
             </div>
 
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">
                 Material:{" "}
               </label>
-              <input
-                className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                type="text"
+              <textarea
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                type="textarea"
                 name="materialNote"
                 value={work.materialNote}
                 required
                 onChange={handleChange}
-              ></input>
+              ></textarea>
             </div>
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
-                className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-                onClick={() => setIsWorkOpen(false)}
+                className="bg-gray-600 hover:bg-gray-500 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                onClick={() => props.setIsWorkOpen(false)}
               >
                 Avbryt
               </button>
               <button
                 type="submit"
-                className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-2/4 duration-300"
               >
                 Spara
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </>
   );

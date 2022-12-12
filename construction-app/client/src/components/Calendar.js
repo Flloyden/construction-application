@@ -15,6 +15,15 @@ import SemesterModal from "./SemesterModal";
 import CalendarModal from "./CalendarModal";
 
 export default function Calendar() {
+  if (
+    localStorage.theme === "true" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [calendarInfo, setCalendarInfo] = useState(null);
@@ -109,9 +118,9 @@ export default function Calendar() {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-min bg-blue-50 dark:bg-white">
       <BrowserView>
-        <div className="p-7 text 2x1 font-semibold flex-1 h-screen">
+        <div className="p-7 text 2x1 font-semibold flex-1 h-full pb-30">
           {!loading && (
             <div className="h-full">
               <div className="flex gap-4 pb-4">
