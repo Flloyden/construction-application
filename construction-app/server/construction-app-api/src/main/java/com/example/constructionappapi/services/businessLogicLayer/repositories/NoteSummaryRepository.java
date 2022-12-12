@@ -58,6 +58,8 @@ public class NoteSummaryRepository {
                 noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
                 noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
 
+                noteSummary.setWorkNumber(workId);
+
                 CustomerEntity customerEntity = work.get().getCustomer();
                 noteSummary.setCustomer(customerEntity);
 
