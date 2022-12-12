@@ -49,10 +49,9 @@ public class StartServer {
             //tests.testMoveWorkBackwardsOnRemoveVacation();
             //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();
-            //tests.testAddWork();
+            //tests.testRemoveWork();
             //tests.testAddNotesCheckDateAndGetSum();
 
-            calendar.printCalendar();
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }

@@ -3,10 +3,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
-import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
-import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
-import com.example.constructionappapi.services.dataAccessLayer.dao.VacationCalendarDao;
-import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
+import com.example.constructionappapi.services.dataAccessLayer.dao.*;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
@@ -28,6 +25,8 @@ public class WorkRepository {
     private CustomerDao customerDao;
     @Autowired
     private CalendarDao calendarDao;
+    @Autowired
+    private CustomerNoteDao customerNoteDao;
     @Autowired
     private VacationCalendarDao vacationCalendarDao;
     @Autowired
@@ -63,12 +62,8 @@ public class WorkRepository {
                 }
 
                 newWork.setStartDate(startDateOfNewWork);
-
-            } else {
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!BEEEEEEEEEP!!!!!!!!!!!!!!!!!");
             }
 
-            System.out.println("!!!!!!!!!!!!!!!Start date: " + newWork.getStartDate() + "!!!!!!!!!!!!!!!!!!!!!!!");
             newWork = workDao.save(newWork);
             calendar.addWork(newWork);
             return newWork;
@@ -117,17 +112,16 @@ public class WorkRepository {
     public void deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
         if (work.isPresent()) {
-            workDao.delete(work.get());
-            calendar.removeWork(work.get());
+            if (customerNoteDao.findFirstByWork(work.get()).isEmpty()) {
+                workDao.delete(work.get());
+                calendar.removeWork(work.get());
+            }
         }
     }
 
-
     public Optional<WorkEntity> getLastInserted() {
-
         return workDao.findFirstByOrderByIdDesc();
     }
-
 
     public WorkEntity updateWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
@@ -137,14 +131,12 @@ public class WorkRepository {
             Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
             if (preUpdateWork.isPresent()) {
                 if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
-                    WorkEntity updatedWork = null;
                     //Checks if the date has been changed and updates the calendar if it has.
                     if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                        updatedWork = addNewWorkEntity(customerId, work);
                         calendar.updateWork(work);
                     }
 
-                    return updatedWork;
+                    return addNewWorkEntity(customerId, work);
                 }
             }
         }

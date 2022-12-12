@@ -75,13 +75,17 @@ public class VacationRepository {
      *
      * @param id
      */
-    public void deleteVacation(Long id) {
+    public boolean deleteVacation(Long id) {
         Optional<VacationEntity> vacationEntity = vacationDao.findById(id);
 
         if (vacationEntity.isPresent()) {
             vacationDao.deleteById(id);
             calendar.removeVacation(vacationEntity.get());
+        }else {
+            return false;
         }
+
+        return true;
     }
 
     public List<VacationEntity> findAllVacationEntities() {

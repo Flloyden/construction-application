@@ -72,14 +72,11 @@ public class Calendar {
      * @return The updated work-entity.
      */
     public boolean updateWork(WorkEntity work) {
-        //WorkEntity updatedWork = workRepository.createWorkEntity(work);
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
         moveCalendarItemBackwards(work.getStartDate());
 
-
-        //workRepository.getWork(updatedWork.getId()).get();
         return addWork(work);
     }
 
@@ -196,7 +193,6 @@ public class Calendar {
 
         System.out.println();
     }
-
 
     public String workToString() {
         StringBuilder s = new StringBuilder();
