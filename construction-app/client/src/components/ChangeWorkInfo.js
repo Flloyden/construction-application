@@ -3,50 +3,44 @@ import ApiConnector from "../services/ApiConnector";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { RiCloseLine } from "react-icons/ri";
 
-const ChangeWorkInfo = ({
-  currentCustomerId,
-  setIsChangeOpen,
-  currentWorkId,
-  currentWorkName,
-  currentOffer,
-  currentWorkDays,
-  currentWorkMaterial,
-  currentStartDate,
-  currentWorkStatus
-}) => {
+const ChangeWorkInfo = (props) => {
   const [work] = useState({
-    id: currentWorkId,
-    name: currentWorkName,
-    offer: currentOffer,
-    startDate: currentStartDate,
-    workStatus: currentWorkStatus,
-    materialNote: currentWorkMaterial,
+    id: props.currentWorkId,
+    name: props.currentWorkName,
+    offer: props.currentOffer,
+    startDate: props.currentStartDate,
+    workStatus: props.currentWorkStatus,
+    materialNote: props.currentWorkMaterial,
+    numberOfDays: props.currentWorkDays,
   });
   const nameRef = useRef();
   const materialNoteRef = useRef();
   const offer = useRef();
-  const [newList, setNewList] = useState();
-  const [image, setImage] = useState(currentOffer);
-  const currentEndDateMoment = moment(currentStartDate, "YYYY-MM-DD")
-    .add("days", currentWorkDays)
+  const [image, setImage] = useState(props.currentOffer);
+  const currentEndDateMoment = moment(props.currentStartDate, "YYYY-MM-DD")
+    .add("days", props.currentWorkDays)
     .format("YYYY-MM-DD");
-  let [startDate, setStartDate] = useState(new Date(currentStartDate));
-  let [endDate, setEndDate] = useState(new Date(currentEndDateMoment));
-  const [selected, setSelected] = useState(currentWorkStatus);
+  let [startDate, setStartDate] = useState(new Date(props.currentStartDate));
+  let [endDate] = useState(new Date(currentEndDateMoment));
+  const [selected, setSelected] = useState(props.currentWorkStatus);
   const dayCountRef = useRef();
+  const [newList, setNewList] = useState({
+    id: work.id,
+    name: work.name,
+    numberOfDays: work.numberOfDays,
+    materialNote: work.materialNote,
+    offer: work.offer,
+    startDate: work.startDate,
+    workStatus: work.workStatus,
+    calendar: [],
+  });
 
   const handleChange = (e) => {
     /**Gets the current input every keystroke */
-
-    // Gets the startdate, enddate and calculates amount of days
-    const startDateMoment = moment(startDate, "YYYY-MM-DD").unix();
-    const endDateMoment = moment(endDate, "YYYY-MM-DD").unix();
-    const dayCount = (endDateMoment - startDateMoment) / 86400 + 1;
-    console.log(image);
-
     setNewList({
-      id: currentWorkId,
+      id: props.currentWorkId,
       name: nameRef.current.value,
       numberOfDays: dayCountRef.current.value,
       materialNote: materialNoteRef.current.value,
@@ -79,11 +73,11 @@ const ChangeWorkInfo = ({
     setImage(base64);
   };
 
-  const saveChanges = (e) => {
+  const handleSubmit = (e) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
     // Makes the change with the help of api call
-    ApiConnector.changeWork(currentCustomerId, newList)
+    ApiConnector.changeWork(props.currentCustomerId, newList)
       .then((response) => {
         console.log(response);
         window.location.reload(false);
@@ -100,166 +94,177 @@ const ChangeWorkInfo = ({
 
   return (
     <>
-      <div
-        className="w-screen h-screen bg-slate-700 bg-opacity-70 fixed top-0 left-0 z-10"
-        onClick={() => setIsChangeOpen(false)}
-      />
-      <div className="bg-white fixed inset-0 flex items-center justify-center w-2/4 h-max m-auto rounded-lg p-4 z-20">
-        <div className="w-full">
-          <h1 className="text-4xl">Ändra jobbinformation</h1>
-          <div className="mt-4">
+      <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
+      <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
+        <form onSubmit={handleSubmit} className="bg-white rounded">
+          <div className="flex border-b-2 px-6 py-3 items-center justify-center">
+            <div className="w-10/12">
+              <h1 className="font-bold">Ändra information</h1>
+            </div>
+            <div className="w-2/12 text-right flex justify-end">
+              <button
+                className="text-3xl opacity-70 hover:opacity-100 duration-300"
+                onClick={() => props.setIsChangeOpen(false)}
+              >
+                <RiCloseLine />
+              </button>
+            </div>
+          </div>
+          <div className="w-fit shadow-lg rounded-md p-6">
+            <div className="mt-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Namn på jobb: <span className="text-red-700 font-black">*</span>
+              </label>
+              <input
+                ref={nameRef}
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                type="text"
+                name="name"
+                required
+                value={newList.name}
+                onChange={(e) => handleChange(e)}
+              ></input>
+            </div>
+
+            <div className="mt-4"></div>
             <label className="block mb-2 text-sm font-medium text-gray-700">
-              Namn på jobb:{" "}
+              Offert: (Befintlig ersätts om ny laddas upp){" "}
             </label>
             <input
-              ref={nameRef}
-              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              type="text"
-              name="name"
-              required
-              placeholder={work.name}
-              onChange={(e) => handleChange(e)}
+              ref={offer}
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              type="file"
+              name="offer"
+              accept="image/png, image/jpg, image/jpeg, application/pdf"
+              onChange={(e) => handleFile(e)}
             ></input>
-          </div>
 
-          <div className="mt-4"></div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Offert:{" "}
-          </label>
-          <input
-            ref={offer}
-            className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-            type="file"
-            name="offer"
-            accept="image/png, image/jpg, image/jpeg, application/pdf"
-            onChange={(e) => handleFile(e)}
-          ></input>
-
-          <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              Arbetsdatum:{" "}
-            </label>
-            <div className="flex gap-2">
-              <label onClick={handleChange}>
-                <p className="block mb-2 text-sm font-medium text-gray-700">
-                  Startdatum:
-                </p>
-                <DatePicker
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                  selected={startDate}
-                  onChange={(date) => {
-                    setStartDate(date);
-                    handleChange(date);
-                  }}
-                  selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              </label>
-
-              <label onClick={handleChange}>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Antal dagar:
+            <div className="mt-4">
+              <div className="flex gap-2">
+                <label onClick={handleChange}>
+                  <p className="block mb-2 text-sm font-medium text-gray-700">
+                    Startdatum:{" "}
+                    <span className="text-red-700 font-black">*</span>
+                  </p>
+                  <DatePicker
+                    className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                    selected={startDate}
+                    onChange={(date) => {
+                      setStartDate(date);
+                      handleChange(date);
+                    }}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                  />
                 </label>
+
+                <label onClick={handleChange}>
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                    Antal dagar:{" "}
+                    <span className="text-red-700 font-black">*</span>
+                  </label>
+                  <input
+                    ref={dayCountRef}
+                    className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                    type="text"
+                    name="materialNote"
+                    required
+                    value={newList.numberOfDays}
+                    onChange={(e) => handleChange(e)}
+                  ></input>
+                </label>
+              </div>
+            </div>
+            <p className="mt-4 block text-sm font-medium text-gray-700">
+              Jobbstatus:
+            </p>
+            <div className="flex gap-4">
+              <div className="w-1/3">
                 <input
-                  ref={dayCountRef}
-                  className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                  type="text"
-                  name="materialNote"
-                  required
-                  onChange={(e) => handleChange(e)}
-                ></input>
-              </label>
-            </div>
-          </div>
-          <p className="mt-4 block text-sm font-medium text-gray-700">
-            Jobbstatus:
-          </p>
-          <div className="flex gap-4">
-            <div className="w-1/3">
-              <input
-                type="radio"
-                id="NOTSTARTED"
-                name="choose"
-                value="NOTSTARTED"
-                checked={selected === "NOTSTARTED"}
-                onChange={changeWorkStatus}
-                className="peer hidden"
-              />
-              <label
-                htmlFor="NOTSTARTED"
-                className="block hover:bg-gray-500 bg-gray-700 cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
-              >
-                Ej påbörjat
-              </label>
+                  type="radio"
+                  id="NOTSTARTED"
+                  name="choose"
+                  value="NOTSTARTED"
+                  checked={selected === "NOTSTARTED"}
+                  onChange={changeWorkStatus}
+                  className="peer hidden"
+                />
+                <label
+                  htmlFor="NOTSTARTED"
+                  className="block hover:bg-gray-500 bg-gray-400 cursor-pointer select-none rounded p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+                >
+                  Ej påbörjat
+                </label>
+              </div>
+
+              <div className="w-1/3">
+                <input
+                  type="radio"
+                  id="STARTED"
+                  name="choose"
+                  value="STARTED"
+                  onChange={changeWorkStatus}
+                  checked={selected === "STARTED"}
+                  className="peer hidden"
+                />
+                <label
+                  htmlFor="STARTED"
+                  className="block hover:bg-gray-500 bg-gray-400 cursor-pointer select-none rounded p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+                >
+                  Pågående
+                </label>
+              </div>
+
+              <div className="w-1/3">
+                <input
+                  type="radio"
+                  id="COMPLETED"
+                  name="choose"
+                  value="COMPLETED"
+                  onChange={changeWorkStatus}
+                  checked={selected === "COMPLETED"}
+                  className="peer hidden"
+                />
+                <label
+                  htmlFor="COMPLETED"
+                  className="block hover:bg-gray-500 bg-gray-400 cursor-pointer select-none rounded p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+                >
+                  Slutfört
+                </label>
+              </div>
             </div>
 
-            <div className="w-1/3">
-              <input
-                type="radio"
-                id="STARTED"
-                name="choose"
-                value="STARTED"
-                onChange={changeWorkStatus}
-                checked={selected === "STARTED"}
-                className="peer hidden"
-              />
-              <label
-                htmlFor="STARTED"
-                className="block hover:bg-gray-500 bg-gray-700 cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
-              >
-                Pågående
+            <div className="mt-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Material:{" "}
               </label>
+              <input
+                ref={materialNoteRef}
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                type="text"
+                name="materialNote"
+                value={newList.materialNote}
+                required
+                onChange={(e) => handleChange(e)}
+              ></input>
             </div>
-
-            <div className="w-1/3">
-              <input
-                type="radio"
-                id="COMPLETED"
-                name="choose"
-                value="COMPLETED"
-                onChange={changeWorkStatus}
-                checked={selected === "COMPLETED"}
-                className="peer hidden"
-              />
-              <label
-                htmlFor="COMPLETED"
-                className="block hover:bg-gray-500 bg-gray-700 cursor-pointer select-none rounded-xl p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
+            <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
+              <button
+                className="bg-gray-500 hover:bg-gray-600 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                onClick={() => props.setIsChangeOpen(false)}
               >
-                Slutfört
-              </label>
+                Avbryt
+              </button>
+              <button
+                type="submit"
+                className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-2/4 duration-300"
+              >
+                Spara
+              </button>
             </div>
           </div>
-
-          <div className="mt-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              Material:{" "}
-            </label>
-            <input
-              ref={materialNoteRef}
-              className="rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              type="text"
-              name="materialNote"
-              placeholder={currentWorkMaterial}
-              required
-              onChange={(e) => handleChange(e)}
-            ></input>
-          </div>
-          <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
-            <button
-              className="bg-red-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-              onClick={() => setIsChangeOpen(false)}
-            >
-              Avbryt
-            </button>
-            <button
-              className="bg-green-500 hover:bg-slate-700 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
-              onClick={saveChanges}
-            >
-              Spara
-            </button>
-          </div>
-        </div>
+        </form>
       </div>
     </>
   );

@@ -10,3 +10,16 @@
     cursor: pointer;
     opacity: 0.5;
 }
+
+.fc .fc-toolbar-title {
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.newHome .fc .fc-toolbar {
+    justify-content: space-around;
+}
+
+.newHome .fc .fc-list-event {
+    cursor: pointer;
+}

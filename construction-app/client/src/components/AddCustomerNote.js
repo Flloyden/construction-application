@@ -21,7 +21,7 @@ export default function AddCustomerNote(
     workList: currentCustomerWorkList,
     customerNotes: currentCustomerNotes,
   });
-  
+
   const [currentWork, setCurrentWork] = useState("");
   const [addNoteInfo, setAddNoteInfo] = useState({
     id: "",
@@ -35,26 +35,26 @@ export default function AddCustomerNote(
     noteStatus: 0,
   });
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     let value = e.target.value;
-    console.log(value)
+    console.log(value);
     if (e.target.name === "select") {
-      value = value.split(',')
+      value = value.split(",");
       setAddNoteInfo({
         ...addNoteInfo,
         workName: value[0],
-        workNumber: value[1]
+        workNumber: value[1],
       });
     } else {
       setAddNoteInfo({
         ...addNoteInfo,
-        [e.target.name]: value
+        [e.target.name]: value,
       });
     }
-    console.log(addNoteInfo)
+    console.log(addNoteInfo);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     // Adds work to user with api call
@@ -66,16 +66,17 @@ export default function AddCustomerNote(
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   return (
-    <div className="w-full bg-gray-700 rounded-md p-4">
+    <div className="w-full bg-white dark:bg-gray-800 dark:text-white rounded p-4 shadow">
       <form onSubmit={handleSubmit}>
-        <h1 className="text-2xl w-full text-white">Lägg till ny anteckning</h1>
+        <div className="w-10/12">
+          <h1 className="font-bold">Ny anteckning</h1>
+        </div>
         <div className="w-full flex gap-2">
-
           <div className="mt-4 w-4/12">
-            <label className="mb-2 text-sm font-medium text-white">
+            <label className="mb-2 text-sm font-medium text-black dark:text-white">
               Jobb:{" "}
             </label>
             <select
@@ -83,8 +84,11 @@ export default function AddCustomerNote(
               name="select"
               value={currentWork}
               required
-              onChange={(item) => {setCurrentWork(item.value); handleChange(item)}}
-              className="form-select rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              onChange={(item) => {
+                setCurrentWork(item.value);
+                handleChange(item);
+              }}
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             >
               <option defaultValue>Välj jobb</option>
               {customer.name.currentCustomerWorkList
@@ -100,10 +104,10 @@ export default function AddCustomerNote(
             </select>
           </div>
 
-          <div className="mt-4 w-2/12">
-            <label className="mb-2 text-sm font-medium text-white">Tid: </label>
+          <div className="mt-4 w-3/12">
+            <label className="mb-2 text-sm font-medium">Tid: </label>
             <input
-              className="rounded-lg block w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="text"
               name="timeSpend"
               value={addNoteInfo.timeSpend}
@@ -112,12 +116,12 @@ export default function AddCustomerNote(
             ></input>
           </div>
 
-          <div className="mt-4 w-2/12">
-            <label className="mb-2 text-sm font-medium text-white">
+          <div className="mt-4 w-3/12">
+            <label className="mb-2 text-sm font-medium">
               Körning:{" "}
             </label>
             <input
-              className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="text"
               name="kmDriven"
               value={addNoteInfo.kmDriven}
@@ -126,12 +130,12 @@ export default function AddCustomerNote(
             ></input>
           </div>
 
-          <div className="mt-4 w-2/12">
-            <label className="mb-2 text-sm font-medium text-white">
+          <div className="mt-4 w-3/12">
+            <label className="mb-2 text-sm font-medium">
               Anställd tid:{" "}
             </label>
             <input
-              className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="text"
               name="timeEmployee"
               value={addNoteInfo.timeEmployee}
@@ -142,11 +146,11 @@ export default function AddCustomerNote(
         </div>
         <div className="flex w-full gap-2">
           <div className="mt-2 w-10/12">
-            <label className="mb-2 text-sm font-medium text-white">
+            <label className="mb-2 text-sm font-medium">
               Kommentar:{" "}
             </label>
             <input
-              className="rounded-lg w-full p-2.5 bg-white border-white placeholder-gray-400 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              className="rounded block w-full p-1.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="text"
               name="note"
               value={addNoteInfo.note}
@@ -156,7 +160,7 @@ export default function AddCustomerNote(
           <div className="flex w-2/12 gap-2 mt-8 justify-end inset-x-0 bottom-4 mx-auto">
             <button
               type="submit"
-              className="bg-green-500 hover:opacity-50 font-bold py-2 px-4 rounded duration-300 text-center w-full text-white"
+              className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-full duration-300"
             >
               Spara
             </button>
