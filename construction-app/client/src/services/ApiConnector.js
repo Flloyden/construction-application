@@ -115,8 +115,15 @@ class ApiConnector {
   }
 
   sumNote(workId, noteSum) {
-    console.log(workId)
     return axios.post(NOTES_API + "/summary/save/" + workId, noteSum)
+  }
+
+  getSummedNotes(customerId) {
+    return axios.get(NOTES_API + "/summary/customer/" + customerId)
+  }
+
+  getOldNotes(workId) {
+    return axios.get(NOTES_API + "/notesForWork/summarized/" + workId )
   }
 }
 

@@ -52,7 +52,7 @@ const Work = (props) => {
       return "Slutfört";
     }
   }
-
+  console.log(props)
   return (
     <div className={checkWorkStatus()}>
       <div className="flex w-full justify-between bg-gray-300 dark:bg-gray-800 bg-opacity-90 rounded-t align-middle items-center">
