@@ -42,7 +42,7 @@ public class NoteSummaryRepository {
             List<CustomerNoteEntity> allNotes = work.get().getCustomerNotes();
             if(!allNotes.isEmpty()){
                 for (CustomerNoteEntity customerNoteEntity : allNotes) {
-                    if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth()){ //alla anteckningar för detta jobb med samma månad som summering
+                    if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED){ //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
                         kmDrivenSum += Long.parseLong(customerNoteEntity.getKmDriven());
                         timeSpentSum += Long.parseLong(customerNoteEntity.getTimeSpend());
