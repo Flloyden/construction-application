@@ -126,8 +126,8 @@ class ApiConnector {
     return axios.get(NOTES_API + "/notesForWork/summarized/" + workId )
   }
 
-  editNote() {
-    return axios.post(NOTES_API + "/" +  + "/edit")
+  editNote(noteId, note) {
+    return axios.post(NOTES_API + "/edit/" + noteId, note)
   }
 }
 

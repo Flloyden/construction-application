@@ -15,8 +15,8 @@ export default function RegularNotes(props) {
   const [currentTime, setCurrentTime] = useState('');
   const [currentEmployee, setCurrentEmployee] = useState('');
   const [currentKm, setCurrentKm] = useState('');
+  const [currentWorkNumber, setCurrentWorkNumber] = useState('');
   
-  console.log(currentNote)
   const deleteThis = async () => {
     // Deletes a client with given id and updates the id
     try {
@@ -27,8 +27,6 @@ export default function RegularNotes(props) {
     }
     setIsOpen(false);
   };
-
-  console.log(props.notes)
 
   if (props.notes.length < 1) {
     return <div></div>;
@@ -86,6 +84,7 @@ export default function RegularNotes(props) {
                           setCurrentId(item.id);
                           setCurrentDate(item.datePosted)
                           setCurrentTime(item.timeSpend)
+                          setCurrentWorkNumber(item.workNumber)
                           setCurrentName(item.workName)
                           setCurrentKm(item.kmDriven)
                           setCurrentEmployee(item.timeEmployee)
@@ -127,6 +126,7 @@ export default function RegularNotes(props) {
             setIsChangeOpen={setIsChangeOpen}
             currentId={currentId}
             currentNote={currentNote}
+            currentWorkNumber={currentWorkNumber}
           />
         )}
       </div>
