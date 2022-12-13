@@ -92,6 +92,35 @@ const ChangeWorkInfo = (props) => {
     setSelected(e.target.value);
   }
 
+  function disableDate() {
+    if (props.currentWorkStatus === "STARTED") {
+      return "hidden"
+    } else {
+      return;
+    }
+  }
+
+  function getDate() {
+    const thisDate = props.currentStartDate
+    if (props.currentWorkStatus === "STARTED") {
+      return <input
+      className="rounded block w-full border border-white p-2.5 placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
+      disabled
+      placeholder={thisDate}
+    ></input>
+    } else {
+      return;
+    }
+  }
+
+  function checkWorkStatus() {
+    if (props.currentWorkStatus === "STARTED") {
+      return "hidden"
+    } else {
+      return "w-full"
+    }
+  }
+
   return (
     <>
       <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
@@ -146,6 +175,8 @@ const ChangeWorkInfo = (props) => {
                     Startdatum:{" "}
                     <span className="text-red-700 font-black">*</span>
                   </p>
+                  {getDate()}
+                  <div className={disableDate()}>
                   <DatePicker
                     className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                     selected={startDate}
@@ -157,6 +188,7 @@ const ChangeWorkInfo = (props) => {
                     startDate={startDate}
                     endDate={endDate}
                   />
+                  </div>
                 </label>
 
                 <label onClick={handleChange}>
@@ -180,7 +212,7 @@ const ChangeWorkInfo = (props) => {
               Jobbstatus:
             </p>
             <div className="flex gap-4">
-              <div className="w-1/3">
+              <div className={checkWorkStatus()}>
                 <input
                   type="radio"
                   id="NOTSTARTED"
@@ -198,7 +230,7 @@ const ChangeWorkInfo = (props) => {
                 </label>
               </div>
 
-              <div className="w-1/3">
+              <div className="w-full">
                 <input
                   type="radio"
                   id="STARTED"
@@ -216,7 +248,7 @@ const ChangeWorkInfo = (props) => {
                 </label>
               </div>
 
-              <div className="w-1/3">
+              <div className="w-full">
                 <input
                   type="radio"
                   id="COMPLETED"

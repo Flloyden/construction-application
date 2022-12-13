@@ -62,9 +62,11 @@ export default function SumCustomerNote(
   const [currentWork, setCurrentWork] = useState("");
   const [Id, setId] = useState("");
 
+  const copy = [...customer.name.currentCustomerWorkList];
+  const filteredList = copy.filter((item) => item.workStatus !== "COMPLETED");
+
   const handleChange = (e) => {
     let value = e.target.value;
-    console.log(value);
     if (e.target.name === "work") {
       value = value.split(",");
       setId(value[1])
@@ -75,7 +77,6 @@ export default function SumCustomerNote(
         month: value[1],
       });
     }
-    console.log(sumNoteInfo);
   };
 
   const handleSubmit = (e) => {
@@ -115,7 +116,7 @@ export default function SumCustomerNote(
               className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             >
               <option defaultValue>Välj jobb</option>
-              {customer.name.currentCustomerWorkList
+              {filteredList
                 .slice(0)
                 .reverse()
                 .map((item, i) => {

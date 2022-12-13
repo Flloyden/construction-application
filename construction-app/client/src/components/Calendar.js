@@ -69,7 +69,6 @@ export default function Calendar() {
         const res = await ApiConnector.getSemester();
         setCalendarInfo(response.data);
         setSemesterInfo(res.data)
-        console.log(response.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -139,7 +138,6 @@ export default function Calendar() {
                 duration={{ days: 1 }}
                 eventClick={
                   function(arg){
-                    console.log(arg.event)
                     if (arg.event._def.ui.backgroundColor === "#10b981") {
                       setCurrentSemesterName(arg.event.extendedProps.description.name);
                       setCurrentSemesterId(arg.event.id);
@@ -162,7 +160,7 @@ export default function Calendar() {
                   }),
                   semesterInfo.map((item) => {
                     return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
-                  }, console.log(semesterInfo)),
+                  }),
                   holiday.map((item) => {
                     return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
                   }),

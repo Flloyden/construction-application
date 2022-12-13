@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import { BrowserView, MobileView } from "react-device-detect";
 import Logout from "./Logout";
 import { isMobile } from "react-device-detect";
+import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
   if (
@@ -27,6 +28,7 @@ const Login = () => {
   const auth = { token: getValue };
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
 
   async function loginUser(credentials) {
     console.log(JSON.stringify(credentials))
@@ -40,7 +42,7 @@ const Login = () => {
       .then(data => data.json())
    }
 
-  const handleLogin = async e => {
+  const handleSubmit = async e => {
     /**Handles the login function when the login button is pressed */
     e.preventDefault();
     setLoading(true);
@@ -96,8 +98,9 @@ const Login = () => {
         </div>
       ) : (
         <>
-          <div className="absolute w-screen h-full bg-slate-700 bg-opacity-70 top-0 left-0">
-            <div className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-11/12 h-max m-auto rounded-lg p-4" : "bg-white fixed inset-0 items-center justify-center w-1/4 h-max m-auto rounded-lg p-4"}>
+          <div className="absolute w-screen h-full bg-gray-500 bg-opacity-70 top-0 left-0">
+            <div className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4" : "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"}>
+            <form onSubmit={handleSubmit} className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6">
               <h1 className="text-2xl">Thomas Erikssons byggnadsservice</h1>
               <div className="mt-4">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
@@ -105,7 +108,7 @@ const Login = () => {
                 </label>
                 <input
                   onChange={e => setUserName(e.target.value)}
-                  type="email"
+                  type="text"
                   placeholder="Användarnamn"
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
@@ -121,18 +124,29 @@ const Login = () => {
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
               </div>
+              <div className="flex justify-end w-full mt-1">
+                <h1 className="w-max text-blue-600 hover:cursor-pointer hover:text-blue-400" onClick={() => {
+                        setIsChangePasswordOpen(true);
+                      }}>Glömt lösenord?</h1>
+              </div>
               <div className="mt-4 w-full">
                 <button
                   className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
                   disabled={loading}
-                  onClick={handleLogin}
+                  type="submit"
                 >
                   Logga in
                 </button>
               </div>
+              </form>
             </div>
           </div>
         </>
+      )}
+      {isChangePasswordOpen && (
+        <ForgotPassword
+        setIsChangePasswordOpen={setIsChangePasswordOpen}
+        />
       )}
     </div>
   );

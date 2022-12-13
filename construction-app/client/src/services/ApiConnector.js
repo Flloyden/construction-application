@@ -125,6 +125,10 @@ class ApiConnector {
   getOldNotes(workId) {
     return axios.get(NOTES_API + "/notesForWork/summarized/" + workId )
   }
+
+  editNote() {
+    return axios.post(NOTES_API + "/" +  + "/edit")
+  }
 }
 
 export default new ApiConnector();

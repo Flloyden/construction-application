@@ -2,11 +2,21 @@ import React, { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { RiPencilFill } from "react-icons/ri";
 import ApiConnector from "../services/ApiConnector";
+import ChangeNote from "./ChangeNote";
 import NoteModal from "./NoteModal";
 
 export default function RegularNotes(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentId, setCurrentId] = useState();
+  const [isChangeOpen, setIsChangeOpen] = useState(false);
+  const [currentId, setCurrentId] = useState('');
+  const [currentNote, setCurrentNote] = useState();
+  const [currentDate, setCurrentDate] = useState('');
+  const [currentName, setCurrentName] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+  const [currentEmployee, setCurrentEmployee] = useState('');
+  const [currentKm, setCurrentKm] = useState('');
+  
+  console.log(currentNote)
   const deleteThis = async () => {
     // Deletes a client with given id and updates the id
     try {
@@ -17,6 +27,8 @@ export default function RegularNotes(props) {
     }
     setIsOpen(false);
   };
+
+  console.log(props.notes)
 
   if (props.notes.length < 1) {
     return <div></div>;
@@ -54,12 +66,12 @@ export default function RegularNotes(props) {
             {props.notes.map((item, i) => {
               return (
                 <tr
-                  className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200"
+                  className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300 duration-200"
                   key={i}
                 >
                   <th
                     scope="row"
-                    className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
+                    className="py-4 px-6 font-medium whitespace-nowrap"
                   >
                     {item.datePosted}
                   </th>
@@ -70,7 +82,16 @@ export default function RegularNotes(props) {
                   <td className="py-4 px-6">{item.note}</td>
                   <td className="flex justify-around py-2 items-end">
                     <div className="flex justify-end">
-                      <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 mr-2 text-blue-600 h-fit hover:bg-slate-200">
+                      <button className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 mr-2 text-blue-600 h-fit hover:bg-slate-200" onClick={() => {
+                          setCurrentId(item.id);
+                          setCurrentDate(item.datePosted)
+                          setCurrentTime(item.timeSpend)
+                          setCurrentName(item.workName)
+                          setCurrentKm(item.kmDriven)
+                          setCurrentEmployee(item.timeEmployee)
+                          setCurrentNote(item.note)
+                          setIsChangeOpen(true);
+                        }}>
                         <RiPencilFill />
                       </button>
                       <button
@@ -90,12 +111,24 @@ export default function RegularNotes(props) {
           </tbody>
         </table>
         {isOpen && (
-        <NoteModal
-          setIsOpen={setIsOpen}
-          deleteThis={deleteThis}
-          currentId={currentId}
-        />
-      )}
+          <NoteModal
+            setIsOpen={setIsOpen}
+            deleteThis={deleteThis}
+            currentId={currentId}
+          />
+        )}
+        {isChangeOpen && (
+          <ChangeNote
+            currentDate={currentDate}
+            currentName={currentName}
+            currentTime={currentTime}
+            currentEmployee={currentEmployee}
+            currentKm={currentKm}
+            setIsChangeOpen={setIsChangeOpen}
+            currentId={currentId}
+            currentNote={currentNote}
+          />
+        )}
       </div>
     );
   }

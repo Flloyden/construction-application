@@ -39,7 +39,7 @@ const Work = (props) => {
     } else if (props.workName.workStatus === "STARTED") {
       return "opacity-100 relative h-full";
     } else if (props.workName.workStatus === "COMPLETED") {
-      return "opacity-10 relative h-full hover:opacity-100 duration-300";
+      return "opacity-30 relative h-full hover:opacity-100 duration-300";
     }
   }
 
@@ -52,14 +52,34 @@ const Work = (props) => {
       return "Slutfört";
     }
   }
-  console.log(props)
+
+  function checkEditStatus() {
+    if (props.workName.workStatus === "NOTSTARTED") {
+      return "text-2xl bg-white rounded border shadow-md px-1 py-1 mt-2 text-blue-600 h-fit hover:bg-slate-200";
+    } else if (props.workName.workStatus === "STARTED") {
+      return "text-2xl bg-white rounded border shadow-md px-1 py-1 mr-2 mt-0 text-blue-600 h-fit hover:bg-slate-200";
+    } else if (props.workName.workStatus === "COMPLETED") {
+      return "hidden";
+    }
+  }
+
+  function checkDeleteStatus() {
+    if (props.workName.workStatus === "NOTSTARTED") {
+      return "text-2xl bg-white rounded-md border shadow-md px-1 py-1 m-2 text-red-600 h-fit hover:bg-slate-200";
+    } else if (props.workName.workStatus === "STARTED") {
+      return "hidden";
+    } else if (props.workName.workStatus === "COMPLETED") {
+      return "hidden";
+    }
+  }
+
   return (
     <div className={checkWorkStatus()}>
       <div className="flex w-full justify-between bg-gray-300 dark:bg-gray-800 bg-opacity-90 rounded-t align-middle items-center">
         <h1 className="p-4 text-black dark:text-white font-bold">{props.label}</h1>
-        <div className="flex justify-end">
+        <div className={"flex justify-end"}>
           <button
-            className="text-2xl bg-white rounded border shadow-md px-1 py-1 mt-2 text-blue-600 h-fit hover:bg-slate-200"
+            className={checkEditStatus()}
             onClick={() => {
               setIsChangeOpen(true);
             }}
@@ -68,7 +88,7 @@ const Work = (props) => {
             <RiPencilFill />
           </button>
           <button
-            className="text-2xl bg-white rounded-md border shadow-md px-1 py-1 m-2 text-red-600 h-fit hover:bg-slate-200"
+            className={checkDeleteStatus()}
             data-modal-toggle="defaultModal"
             onClick={() => {
               setIsOpen(true);

@@ -6,11 +6,12 @@ export const data = [
   ["Kommande", 16],
   ["Pågående", 1],
   ["Slutförda", 38],
+  ["Semester", 13],
 ];
 
 export const options = {
   chartArea: {
-    height: "100%",
+    height: "80%",
     width: "100%",
     top: 1,
     left: 0,
@@ -24,7 +25,7 @@ export const options = {
   pieHole: 0.8,
   is3D: false,
   pieSliceText: "none",
-  colors: ['#fb923c', '#a855f7', '#3b82f6'],
+  colors: ['#fb923c', '#a855f7', '#3b82f6', '#22c55e'],
   enableInteractivity: false
 };
 

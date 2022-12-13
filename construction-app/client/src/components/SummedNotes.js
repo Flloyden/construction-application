@@ -16,7 +16,6 @@ export default function SummedNotes(props) {
         const response = await ApiConnector.getSummedNotes(
           props.currentCustomer
         );
-        console.log(response.data);
         setNotes(response.data);
       } catch (error) {
         console.log(error);
@@ -52,20 +51,20 @@ export default function SummedNotes(props) {
                   Antälld tid
                 </th>
                 <th scope="col" className="max-w-fit text-center">
-                  Åtgärd
+                  Akriv
                 </th>
               </tr>
             </thead>
             <tbody className="rounded hover:bg-gray-900">
-              {notes.map((item, i) => {
+              {notes.slice(0).reverse().map((item, i) => {
                 return (
                   <tr
-                    className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200"
+                    className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300"
                     key={i}
                   >
                     <th
                       scope="row"
-                      className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
+                      className="py-4 px-6 font-medium whitespace-nowrap"
                     >
                       {item.datePostedSum}
                     </th>
@@ -73,7 +72,7 @@ export default function SummedNotes(props) {
                     <td className="py-4 px-6">{item.timeSpendSum}</td>
                     <td className="py-4 px-6">{item.kmDrivenSum}</td>
                     <td className="py-4 px-6">{item.timeEmployeeSum}</td>
-                    <td className="flex justify-around py-2 items-end">
+                    <td className="flex justify-around align-middle py-2 items-end">
                       <div
                         className="flex justify-end"
                         onClick={() => {
@@ -81,7 +80,7 @@ export default function SummedNotes(props) {
                           setCurrentWorkId(item.workNumber);
                         }}
                       >
-                        <p className="px-1 py-1 h-fit">Visa anteckningar</p>
+                        <p className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer">Öppna</p>
                       </div>
                     </td>
                   </tr>

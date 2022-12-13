@@ -138,7 +138,9 @@ export default function NewHome() {
             <div className="text-2xl font-bold">Översikt</div>
             <div className="mt-10 flex items-center justify-between">
               <div className="flex items-center">
-                <div className="rounded-full p-6 bg-blue-600 w-max">bild</div>
+                <div className="rounded-full p-6 w-20 h-20 bg-blue-600 flex align-middle justify-center items-center">
+                  <h1 className="text-4xl font-normal tracking-wider">TE</h1>
+                </div>
                 <div className="ml-4">
                   <div className="text-2xl">
                     <h1>
@@ -178,7 +180,7 @@ export default function NewHome() {
                     <div className="flex justify-between gap-52">
                       <h1 className="whitespace-nowrap">Pågånde jobb</h1>
                       <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
-                        Gå till kunden {">"}{" "}
+                        Gå till kund {">"}{" "}
                       </h1>
                     </div>
                     <p className="font-normal">Adam Lloyd - Fönsterbyte</p>
@@ -188,7 +190,7 @@ export default function NewHome() {
                     <div className="flex justify-between gap-52">
                       <h1 className="whitespace-nowrap">Kommande jobb</h1>
                       <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
-                        Gå till kunden {">"}{" "}
+                        Gå till kund {">"}{" "}
                       </h1>
                     </div>
                     <p className="font-normal">Adam Lloyd - Fönsterbyte</p>
@@ -205,18 +207,16 @@ export default function NewHome() {
           <div className="flex gap-4 mt-4">
             <div className="bg-white dark:bg-gray-800 w-1/2 p-6 rounded border-2 shadow">
               <div className="">
-                <h1>Garantier sammanfattning</h1>
+                <h1>Garantier</h1>
               </div>
               <div className="flex justify-between pt-4 gap-4 text-white">
                 <div className="w-1/3 h-28 bg-gradient-to-r from-amber-400 to-orange-400 rounded overflow-x-hidden">
                   <div className="">
                     <h1 className="text-start pl-4 pt-4">Aktiva</h1>
-                    <div className="flex">
-                      <p className="text-4xl pl-4 pt-4">27</p>
-                      <div className="">
-                        <div className="ml-16 mt-4 w-10 h-10 rounded-full">
-                          <BsFillFlagFill className="ml-2 text-5xl opacity-70" />
-                        </div>
+                    <div className="flex justify-between">
+                      <p className="text-4xl pl-4 pt-4">31</p>
+                      <div className="mt-4 w-10 h-10 rounded-full">
+                        <BsFillFlagFill className="ml-1 text-5xl opacity-70" />
                       </div>
                     </div>
                   </div>
@@ -225,12 +225,10 @@ export default function NewHome() {
                 <div className="w-1/3 h-28 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded overflow-x-hidden">
                   <div className="">
                     <h1 className="text-start pl-4 pt-4">Utgånget</h1>
-                    <div className="flex">
-                      <p className="text-4xl pl-4 pt-4">4</p>
-                      <div className="">
-                        <div className="ml-24 mt-4 w-10 h-10 rounded-full">
-                          <BsFillArrowRightCircleFill className="text-5xl opacity-70" />
-                        </div>
+                    <div className="flex justify-between">
+                      <p className="text-4xl pl-4 pt-4">31</p>
+                      <div className="mt-4 w-10 h-10 rounded-full">
+                        <BsFillArrowRightCircleFill className="ml-1 text-5xl opacity-70" />
                       </div>
                     </div>
                   </div>
@@ -239,12 +237,10 @@ export default function NewHome() {
                 <div className="w-1/3 h-28 bg-gradient-to-r from-cyan-500 to-blue-500 rounded overflow-x-hidden">
                   <div className="">
                     <h1 className="text-start pl-4 pt-4">Totalt</h1>
-                    <div className="flex">
+                    <div className="flex justify-between">
                       <p className="text-4xl pl-4 pt-4">31</p>
-                      <div className="">
-                        <div className="ml-20 mt-4 w-10 h-10 rounded-full">
-                          <BsFillCheckCircleFill className="text-5xl opacity-70" />
-                        </div>
+                      <div className="mt-4 w-10 h-10 rounded-full">
+                        <BsFillCheckCircleFill className="ml-1 text-5xl opacity-70" />
                       </div>
                     </div>
                   </div>
@@ -266,28 +262,35 @@ export default function NewHome() {
             </div>
             <div className="bg-white dark:bg-gray-800 w-1/2 rounded border-2 shadow">
               <div className="p-6">
-                <h1>Jobb sammanfattning</h1>
+                <h1>Jobb & Semester</h1>
                 <div className="flex mt-2">
                   <div className="w-1/3 pb-2">
                     <div className="flex gap-4">
                       <div className="w-5 h-5 bg-gradient-to-r from-amber-400 to-orange-400 rounded mt-2" />
                       <div className="">
                         <h1 className="text-2xl font-bold">10</h1>
-                        <p>Kommande</p>
+                        <p className="font-normal">Kommande jobb</p>
                       </div>
                     </div>
-                    <div className="flex gap-4 mt-6">
+                    <div className="flex gap-4 mt-2">
                       <div className="w-5 h-5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mt-2" />
                       <div className="">
                         <h1 className="text-2xl font-bold">1</h1>
-                        <p>Pågående</p>
+                        <p className="font-normal">Pågående jobb</p>
                       </div>
                     </div>
-                    <div className="flex gap-4 mt-6">
+                    <div className="flex gap-4 mt-2">
                       <div className="w-5 h-5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded mt-2" />
                       <div className="">
                         <h1 className="text-2xl font-bold">27</h1>
-                        <p>Slutförda</p>
+                        <p className="font-normal">Slutförda jobb</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 mt-2">
+                      <div className="w-5 h-5 bg-gradient-to-r from-emerald-300 to-green-500 rounded mt-2" />
+                      <div className="">
+                        <h1 className="text-2xl font-bold">7</h1>
+                        <p className="font-normal">Semesterdagar</p>
                       </div>
                     </div>
                   </div>

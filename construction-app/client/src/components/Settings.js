@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Password from "./Password";
+import SettingsCalendar from "./SettingsCalendar";
 
 export default function Settings() {
   if (
@@ -39,7 +41,7 @@ export default function Settings() {
         <div className="rounded-lg w-full h-full">
           <h1 className="text-4xl dark:text-black">Inställningar</h1>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">
-            <h1>Generellt</h1>
+            <h1 className="text-2xl">Generellt - SPINNER BANKANDE HAMMARE?</h1>
             <div className="flex align-middle justify-start items-center pt-4">
               <span className="text-sm font-medium pr-2">
                 Mörkt läge
@@ -57,7 +59,8 @@ export default function Settings() {
             </div>
           </div>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">
-            <h1>Konto</h1>
+            <h1 className="text-2xl">Konto</h1>
+            <Password />
           </div>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">
             <h1>Översikt</h1>
@@ -66,7 +69,8 @@ export default function Settings() {
             <h1>Kunder</h1>
           </div>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">
-            <h1>Kalender</h1>
+            <h1 className="text-2xl">Kalender</h1>
+            <SettingsCalendar />
           </div>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">
             <h1>Garantier</h1>

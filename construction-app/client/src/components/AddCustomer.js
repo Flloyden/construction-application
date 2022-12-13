@@ -27,7 +27,6 @@ const AddCustomer = (props) => {
       ...customer,
       [e.target.name]: value,
     });
-    console.log(customer);
   };
 
   const handleSubmit = (e) => {

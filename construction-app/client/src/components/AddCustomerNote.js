@@ -35,9 +35,11 @@ export default function AddCustomerNote(
     noteStatus: 0,
   });
 
+  const copy = [...customer.name.currentCustomerWorkList];
+  const filteredList = copy.filter((item) => item.workStatus !== "COMPLETED");
+
   const handleChange = (e) => {
     let value = e.target.value;
-    console.log(value);
     if (e.target.name === "select") {
       value = value.split(",");
       setAddNoteInfo({
@@ -51,7 +53,6 @@ export default function AddCustomerNote(
         [e.target.name]: value,
       });
     }
-    console.log(addNoteInfo);
   };
 
   const handleSubmit = (e) => {
@@ -91,7 +92,7 @@ export default function AddCustomerNote(
               className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
             >
               <option defaultValue>Välj jobb</option>
-              {customer.name.currentCustomerWorkList
+              {filteredList
                 .slice(0)
                 .reverse()
                 .map((item, i) => {
