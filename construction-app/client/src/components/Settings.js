@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DarkMode from "./DarkMode";
 import Password from "./Password";
 import SettingsCalendar from "./SettingsCalendar";
@@ -14,31 +14,8 @@ export default function Settings() {
     document.documentElement.classList.remove("dark");
   }
 
-  const [darkToggle, setDarkToggle] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getValue = localStorage.getItem("theme");
-    // Gets all the clients on page load once per load
-    setLoading(true);
-    if (getValue === null) {
-      setDarkToggle(true);
-    } else if (getValue === "true") {
-      setDarkToggle(true);
-    } else {
-      setDarkToggle(false);
-    }
-    setLoading(false);
-  }, [darkToggle]);
-
-  const setDarkMode = () => {
-    setDarkToggle(!darkToggle);
-    localStorage.setItem("theme", !darkToggle);
-  };
-
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white dark:text-white">
-      {!loading && (
         <div className="rounded-lg w-full h-full">
           <h1 className="text-4xl dark:text-black">Inställningar</h1>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">
@@ -63,7 +40,6 @@ export default function Settings() {
             <h1>Garantier</h1>
           </div>
         </div>
-      )}
     </div>
   );
 }
