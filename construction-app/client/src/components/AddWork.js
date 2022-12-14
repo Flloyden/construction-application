@@ -83,7 +83,7 @@ const AddWork = (props) => {
           <div className="w-fit shadow-lg rounded-md p-6">
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">
-                Namn på jobb:{" "}<span className="text-red-700 font-black">*</span>
+                Namn på jobb: <span className="text-red-700 font-black">*</span>
               </label>
               <input
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -110,18 +110,18 @@ const AddWork = (props) => {
             ></input>
 
             <div className="mt-4">
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Antal dagar: <span className="text-red-700 font-black">*</span>
-                </label>
-                <input
-                  ref={dayCountRef}
-                  className="rounded block w-1/4 p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  type="text"
-                  name="numberOfDays"
-                  value={work.numberOfDays}
-                  required
-                  onChange={handleChange}
-                ></input>
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Antal dagar: <span className="text-red-700 font-black">*</span>
+              </label>
+              <input
+                ref={dayCountRef}
+                className="rounded block w-1/4 p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                type="text"
+                name="numberOfDays"
+                value={work.numberOfDays}
+                required
+                onChange={handleChange}
+              ></input>
             </div>
 
             <div className="mt-4">

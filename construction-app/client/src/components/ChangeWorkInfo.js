@@ -15,10 +15,6 @@ const ChangeWorkInfo = (props) => {
     materialNote: props.currentWorkMaterial,
     numberOfDays: props.currentWorkDays,
   });
-  const nameRef = useRef();
-  const materialNoteRef = useRef();
-  const offer = useRef();
-  const [image, setImage] = useState(props.currentOffer);
   const currentEndDateMoment = moment(props.currentStartDate, "YYYY-MM-DD")
     .add("days", props.currentWorkDays)
     .format("YYYY-MM-DD");
@@ -38,16 +34,10 @@ const ChangeWorkInfo = (props) => {
   });
 
   const handleChange = (e) => {
-    /**Gets the current input every keystroke */
+    let value = e.target.value;
     setNewList({
-      id: props.currentWorkId,
-      name: nameRef.current.value,
-      numberOfDays: dayCountRef.current.value,
-      materialNote: materialNoteRef.current.value,
-      offer: image,
-      startDate: startDate,
-      workStatus: selected,
-      calendar: [],
+      ...newList,
+      [e.target.name]: value,
     });
     console.log(newList);
   };
@@ -70,7 +60,11 @@ const ChangeWorkInfo = (props) => {
     /**Gets the file from input and makes it into base64 and saves it */
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
-    setImage(base64);
+    setNewList({
+      ...newList,
+      offer: base64,
+    });
+    return base64;
   };
 
   const handleSubmit = (e) => {
@@ -80,7 +74,7 @@ const ChangeWorkInfo = (props) => {
     ApiConnector.changeWork(props.currentCustomerId, newList)
       .then((response) => {
         console.log(response);
-        window.location.reload(false);
+        //window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
@@ -90,24 +84,30 @@ const ChangeWorkInfo = (props) => {
   function changeWorkStatus(e) {
     console.log(e.target.value);
     setSelected(e.target.value);
+    setNewList({
+      ...newList,
+      workStatus: e.target.value,
+    });
   }
 
   function disableDate() {
     if (props.currentWorkStatus === "STARTED") {
-      return "hidden"
+      return "hidden";
     } else {
       return;
     }
   }
 
   function getDate() {
-    const thisDate = props.currentStartDate
+    const thisDate = props.currentStartDate;
     if (props.currentWorkStatus === "STARTED") {
-      return <input
-      className="rounded block w-full border border-white p-2.5 bg-white placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
-      disabled
-      placeholder={thisDate}
-    ></input>
+      return (
+        <input
+          className="rounded block w-full border border-white p-2.5 bg-white placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
+          disabled
+          placeholder={thisDate}
+        ></input>
+      );
     } else {
       return;
     }
@@ -115,9 +115,9 @@ const ChangeWorkInfo = (props) => {
 
   function checkWorkStatus() {
     if (props.currentWorkStatus === "STARTED") {
-      return "hidden"
+      return "hidden";
     } else {
-      return "w-full"
+      return "w-full";
     }
   }
 
@@ -145,13 +145,12 @@ const ChangeWorkInfo = (props) => {
                 Namn på jobb: <span className="text-red-700 font-black">*</span>
               </label>
               <input
-                ref={nameRef}
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 type="text"
                 name="name"
-                required
                 value={newList.name}
-                onChange={(e) => handleChange(e)}
+                required
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -160,38 +159,41 @@ const ChangeWorkInfo = (props) => {
               Offert: (Befintlig ersätts om ny laddas upp){" "}
             </label>
             <input
-              ref={offer}
               className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="file"
               name="offer"
               accept="image/png, image/jpg, image/jpeg, application/pdf"
-              onChange={(e) => handleFile(e)}
+              onChange={(item) => {
+                handleFile(item);
+              }}
             ></input>
 
             <div className="mt-4">
               <div className="flex gap-2">
-                <label onClick={handleChange}>
+                <div className="mt-0">
                   <p className="block mb-2 text-sm font-medium text-gray-700">
                     Startdatum:{" "}
                     <span className="text-red-700 font-black">*</span>
                   </p>
                   {getDate()}
                   <div className={disableDate()}>
-                  <DatePicker
-                    className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                    selected={startDate}
-                    onChange={(date) => {
-                      setStartDate(date);
-                      handleChange(date);
-                    }}
-                    selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
-                  />
+                    <DatePicker
+                      className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                      selected={startDate}
+                      onChange={(date) => {
+                        setNewList({
+                          ...newList,
+                          startDate: new Date(date),
+                        });
+                        setStartDate(date);
+                      }}
+                      selectsStart
+                      startDate={startDate}
+                      endDate={endDate}
+                    />
                   </div>
-                </label>
-
-                <label onClick={handleChange}>
+                </div>
+                <div className="mt-0">
                   <label className="block mb-2 text-sm font-medium text-gray-700">
                     Antal dagar:{" "}
                     <span className="text-red-700 font-black">*</span>
@@ -200,12 +202,12 @@ const ChangeWorkInfo = (props) => {
                     ref={dayCountRef}
                     className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                     type="text"
-                    name="materialNote"
-                    required
+                    name="numberOfDays"
                     value={newList.numberOfDays}
-                    onChange={(e) => handleChange(e)}
+                    required
+                    onChange={handleChange}
                   ></input>
-                </label>
+                </div>
               </div>
             </div>
             <p className="mt-4 block text-sm font-medium text-gray-700">
@@ -271,15 +273,14 @@ const ChangeWorkInfo = (props) => {
               <label className="block mb-2 text-sm font-medium text-gray-700">
                 Material:{" "}
               </label>
-              <input
-                ref={materialNoteRef}
+              <textarea
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                type="text"
+                type="textarea"
                 name="materialNote"
                 value={newList.materialNote}
                 required
-                onChange={(e) => handleChange(e)}
-              ></input>
+                onChange={handleChange}
+              ></textarea>
             </div>
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
