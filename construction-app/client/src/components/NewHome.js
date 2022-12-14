@@ -1,8 +1,3 @@
-import {
-  BsFillFlagFill,
-  BsFillArrowRightCircleFill,
-  BsFillCheckCircleFill,
-} from "react-icons/bs";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import listPlugin from "@fullcalendar/list";
 import moment from "moment";
@@ -19,6 +14,7 @@ import CircleChart from "./CircleChart";
 import Semester from "./Semester";
 import AddCustomer from "./AddCustomer";
 import AddWaranty from "./AddWarranty";
+import WarrantyHomePage from "./WarrantyHomePage";
 
 export default function NewHome() {
   if (
@@ -161,13 +157,24 @@ export default function NewHome() {
                 </div>
               </div>
               <div className="mt-4 justify-end flex gap-4 text-white h-1/4">
-                <button className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap" onClick={() => {setIsSemesterOpen(true)}}>
+                <button
+                  className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
+                  onClick={() => {
+                    setIsSemesterOpen(true);
+                  }}
+                >
                   Lägg in semester
                 </button>
-                <button className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap" onClick={() => setNewCustomerModalOpen(true)}>
+                <button
+                  className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
+                  onClick={() => setNewCustomerModalOpen(true)}
+                >
                   Skapa ny kund
                 </button>
-                <button className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap" onClick={() => setNewWarrantyModalOpen(true)}>
+                <button
+                  className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
+                  onClick={() => setNewWarrantyModalOpen(true)}
+                >
                   Skapa ny garanti
                 </button>
               </div>
@@ -215,43 +222,8 @@ export default function NewHome() {
               <div className="">
                 <h1>Garantier</h1>
               </div>
-              <div className="flex justify-between pt-4 gap-4 text-white">
-                <div className="w-1/3 h-28 bg-gradient-to-r from-amber-400 to-orange-400 rounded overflow-x-hidden">
-                  <div className="">
-                    <h1 className="text-start pl-4 pt-4">Aktiva</h1>
-                    <div className="flex justify-between">
-                      <p className="text-4xl pl-4 pt-4">31</p>
-                      <div className="mt-4 w-10 h-10 rounded-full">
-                        <BsFillFlagFill className="ml-1 text-5xl opacity-70" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="w-1/3 h-28 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded overflow-x-hidden">
-                  <div className="">
-                    <h1 className="text-start pl-4 pt-4">Utgånget</h1>
-                    <div className="flex justify-between">
-                      <p className="text-4xl pl-4 pt-4">31</p>
-                      <div className="mt-4 w-10 h-10 rounded-full">
-                        <BsFillArrowRightCircleFill className="ml-1 text-5xl opacity-70" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-1/3 h-28 bg-gradient-to-r from-cyan-500 to-blue-500 rounded overflow-x-hidden">
-                  <div className="">
-                    <h1 className="text-start pl-4 pt-4">Totalt</h1>
-                    <div className="flex justify-between">
-                      <p className="text-4xl pl-4 pt-4">31</p>
-                      <div className="mt-4 w-10 h-10 rounded-full">
-                        <BsFillCheckCircleFill className="ml-1 text-5xl opacity-70" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <WarrantyHomePage />
 
               <div className="w-full mt-8 mx-auto">
                 <div className="border-2 rounded p-2 shadow">
@@ -266,6 +238,7 @@ export default function NewHome() {
                 </div>
               </div>
             </div>
+            
             <div className="bg-white dark:bg-gray-800 w-1/2 rounded border-2 shadow">
               <div className="p-6">
                 <h1>Jobb & Semester</h1>
@@ -309,10 +282,7 @@ export default function NewHome() {
               eventSources={[
                 calendarInfo.map((item) => {
                   return {
-                    title:
-                      item.customerName +
-                      " - " +
-                      item.workName,
+                    title: item.customerName + " - " + item.workName,
                     start: item.date,
                     borderColor: "#3b82f6",
                     id: item.customerId,
@@ -322,8 +292,7 @@ export default function NewHome() {
                 }),
                 semesterInfo.map((item) => {
                   return {
-                    title:
-                      item.vacationName,
+                    title: item.vacationName,
                     start: item.date,
                     borderColor: "#10b981",
                     id: item.vacationId,
@@ -412,11 +381,7 @@ export default function NewHome() {
       {isCalendarModalOpen && (
         <CalendarModal setIsModalOpen={setIsCalendarModalOpen} />
       )}
-      {isSemesterOpen && (
-        <Semester
-          setIsSemesterOpen={setIsSemesterOpen}
-        />
-      )}
+      {isSemesterOpen && <Semester setIsSemesterOpen={setIsSemesterOpen} />}
       {newCustomerModalOpen && (
         <AddCustomer setIsModalOpen={setNewCustomerModalOpen} />
       )}

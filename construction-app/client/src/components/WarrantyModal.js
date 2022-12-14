@@ -2,7 +2,7 @@ import React from "react";
 
 const WarrantyModal = ({
   setIsOpen,
-  deleteThis,
+  deleteWarranty,
   currentWarrantyName,
   currentWarrantyId,
 }) => {
@@ -27,7 +27,7 @@ const WarrantyModal = ({
             </button>
             <button
               className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-2/4 duration-300"
-              onClick={() => deleteThis(currentWarrantyId)}
+              onClick={() => deleteWarranty(currentWarrantyId)}
             >
               Ta bort
             </button>
