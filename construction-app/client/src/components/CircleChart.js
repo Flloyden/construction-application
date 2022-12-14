@@ -130,7 +130,7 @@ export default function CircleChart() {
             <Chart chartType="PieChart" data={data} options={options} />
             <div className="absolute text-center">
               <h1 className="text-4xl">{workList.length + semesterList}</h1>
-              <h1>Totalt</h1>
+              <h1 className="font-normal">Totalt</h1>
             </div>
           </div>
         </div>
