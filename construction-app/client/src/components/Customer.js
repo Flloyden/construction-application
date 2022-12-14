@@ -153,7 +153,7 @@ export default function Customer() {
                 <div className="flex flex-wrap gap-4 items-center pb-10 h-fit mx-auto justify-start">
                   <div className="flex w-full h-min py-4 items-center justify-center bg-white dark:bg-gray-800 border border-gray-200 rounded-lg shadow-md lg:max-w-md hover:scale-105 duration-300">
                     <GrAddCircle
-                      className="text-9xl ml-2 cursor-pointer hover:rotate-90 hover:opacity-100 duration-500 opacity-20 dark:opacity-100"
+                      className="text-9xl ml-2 cursor-pointer hover:rotate-90 hover:opacity-100 duration-500 opacity-20 dark:invert"
                       onClick={() => {
                         setIsWorkOpen(true);
                       }}

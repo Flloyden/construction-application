@@ -5,9 +5,9 @@ export default function Password() {
   return (
     <div className="w-max mt-4">
       <h1>Ändra lösenord</h1>
-      <form className="bg-white rounded">
+      <form className="bg-white rounded dark:bg-gray-800">
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Gammalt lösenord: <span className="text-red-700 font-black">*</span>{" "}
           </label>
           <input
@@ -18,7 +18,7 @@ export default function Password() {
           ></input>
         </div>
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Nytt lösenord: <span className="text-red-700 font-black">*</span>{" "}
           </label>
           <input
@@ -29,7 +29,7 @@ export default function Password() {
           ></input>
         </div>
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Bekräfta nytt lösenord:{" "}
             <span className="text-red-700 font-black">*</span>{" "}
           </label>
