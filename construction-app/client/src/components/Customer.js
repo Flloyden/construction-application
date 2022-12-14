@@ -38,6 +38,7 @@ export default function Customer() {
   const [oldNotesToggle, setOldNotesToggle] = useState(false);
 
   useEffect(() => {
+    document.title = "Kund - " + currentCustomerId
     // Gets all the customers on page load once per load
     const fetchData = async () => {
       setLoading(true);

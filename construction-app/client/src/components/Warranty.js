@@ -33,6 +33,7 @@ export default function Warranty() {
   };
 
   useEffect(() => {
+    document.title = "Garanti - " + currentId
     // Gets all the clients on page load
     const fetchData = async () => {
       setLoading(true);

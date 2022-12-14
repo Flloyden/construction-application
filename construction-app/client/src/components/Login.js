@@ -7,6 +7,7 @@ import { isMobile } from "react-device-detect";
 import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
+  document.title = "Thomas Erikssons byggnadsserice | Bokföringssystem"
   if (
     localStorage.theme === "true" ||
     (!("theme" in localStorage) &&
