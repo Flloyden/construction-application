@@ -183,8 +183,8 @@ export default function NewHome() {
 
           <div className="bg-white dark:bg-gray-800 shadow border-2 mt-4 rounded">
             <div className="p-6">
-              <div className="flex gap-10">
-                <div className="w-min">
+              <div className="flex gap-10 justify-between">
+                <div className="w-1/2">
                   <div className="pb-6">
                     <h1>Jobböversikt</h1>
                     <p className="font-normal">December 2022 - Juli 2023</p>
@@ -210,7 +210,7 @@ export default function NewHome() {
                     <p className="font-normal">2022-12-08 - 2022-12-20</p>
                   </div>
                 </div>
-                <div className="w-2/3">
+                <div className="w-1/2">
                   <BarChart />
                 </div>
               </div>

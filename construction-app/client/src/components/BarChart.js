@@ -1,96 +1,187 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ApiConnector from "../services/ApiConnector";
+import moment from "moment";
 
 export default function BarChart() {
+  const [loading, setLoading] = useState(true);
+  const [calendarInfo, setCalendarInfo] = useState(null);
+  const today = new Date();
+  const todayYear = moment(today).format("YYYY")
+  const todayMonth = moment(today).format("MM")
+  const nextMonth = moment(today).add(1, 'M').format("MM")
+  const nextNextMonth = moment(today).add(6, 'M').format("MM")
+  const nextNextNextMonth = moment(today).add(6, 'M').format("MM")
+  const nextNextNextNextMonth = moment(today).add(6, 'M').format("MM")
+  const endYear = moment(today).add(6, 'M').format("YYYY")
+  const endMonth = moment(today).add(6, 'M').format("MM")
+
+  const thisMonth = moment(today).format("YYYY-MM");
+  const secondMonth = moment(today).add(1, 'M').format("YYYY-MM");
+  const thirdMonth = moment(today).add(2, 'M').format("YYYY-MM");
+  const fourthMonth = moment(today).add(3, 'M').format("YYYY-MM");
+  const fifthMonth = moment(today).add(4, 'M').format("YYYY-MM");
+  const sixMonth = moment(today).add(5, 'M').format("YYYY-MM");
+
+  console.log(thisMonth)
+  console.log(secondMonth)
+  console.log(thirdMonth)
+  console.log(fourthMonth)
+  console.log(fifthMonth)
+  console.log(sixMonth)
+
+  console.log(calendarInfo)
+
+  const day = moment(today).format("YYYY-MM")
+  console.log(day)
+
+
+  function getMonthName(monthNumber) {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+    return date.toLocaleString('sv-SE', { month: 'long' });
+  }
+
+  //const checkActive = calendarInfo.filter((item) => moment(new Date(item.date)).format("YYYY-MM") > day)
+  //console.log(checkActive)
+
+  useEffect(() => {
+    // Gets all the warrenties on page load and runs only once
+    const fetchData = async () => {
+      setLoading(true);
+      // Tries to get data from api
+      try {
+        const response = await ApiConnector.getCalendar();
+        setCalendarInfo(response.data);
+        // Logs error if api cal not successful
+      } catch (error) {
+        console.log(error);
+      }
+      setLoading(false);
+      
+    };
+    fetchData();
+  }, []);
+
+  function checkMonthlyWork(e) {
+    if (calendarInfo.length > 0) {
+      if (e === thisMonth) {
+        const check1 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thisMonth)
+        console.log(check1)
+        return check1.length.toString()
+      } else if (e === secondMonth) {
+        const check2 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === secondMonth)
+        console.log(check2)
+        return check2.length.toString()
+      } else if (e === thirdMonth) {
+        const check3 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thirdMonth)
+        console.log(check3)
+        return check3.length.toString()
+      } else if (e === fourthMonth) {
+        const check4 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fourthMonth)
+        console.log(check4)
+        return check4.length.toString()
+      } else if (e === fifthMonth) {
+        const check5 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fifthMonth)
+        console.log(check5)
+        return check5.length.toString()
+      } else if (e === sixMonth) {
+        const check6 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === sixMonth)
+        console.log(check6)
+        return check6.length.toString()
+      } else {
+        return "0";
+      }
+    } else {
+      return "0";
+    }
+  }
+
+  function checkMonthlyHeight(e) {
+    if (calendarInfo.length > 0) {
+      if (e === thisMonth) {
+        const check1 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thisMonth)
+        console.log(check1)
+        return {height: check1.length * 10}
+      } else if (e === secondMonth) {
+        const check2 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === secondMonth)
+        console.log(check2)
+        return {height: check2.length * 10}
+      } else if (e === thirdMonth) {
+        const check3 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thirdMonth)
+        console.log(check3)
+        return {height: check3.length * 10}
+      } else if (e === fourthMonth) {
+        const check4 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fourthMonth)
+        console.log(check4)
+        return {height: check4.length * 10}
+      } else if (e === fifthMonth) {
+        const check5 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fifthMonth)
+        console.log(check5)
+        return {height: check5.length * 10}
+      } else if (e === sixMonth) {
+        const check6 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === sixMonth)
+        console.log(check6)
+        return {height: check6.length * 10}
+      } else {
+        return "0";
+      }
+    } else {
+      return "0";
+    }
+  }
+
   return (
+    <>
+    {!loading && (
     <div className="flex flex-col items-center w-full h-full">
-      <h2 className="text-xl font-bold">Månadsjobb</h2>
-      <span className="text-sm font-semibold text-gray-500">2022</span>
-      <div className="flex items-end flex-grow w-full mt-2 space-x-2 sm:space-x-3">
+      <h2 className="text-xl font-bold">Arbetsdagar</h2>
+      <span className="text-sm font-semibold text-gray-500">{getMonthName(todayMonth)} {todayYear} - {getMonthName(endMonth)} {endYear}</span>
+      <div className="flex items-end flex-grow w-full mt-7 space-x-2 sm:space-x-3">
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            37
+            {checkMonthlyWork(thisMonth)}
           </span>
-          <div className="relative flex justify-center w-full h-16 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Jan</span>
+          <div className={"relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500"} style={checkMonthlyHeight(thisMonth)}></div>
+          <span className="absolute bottom-0 text-xs font-bold">{getMonthName(todayMonth)}</span>
         </div>
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            45
+          {checkMonthlyWork(secondMonth)}
           </span>
-          <div className="relative flex justify-center w-full h-20 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Feb</span>
+          <div className={"relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500"} style={checkMonthlyHeight(secondMonth)}></div>
+          <span className="absolute bottom-0 text-xs font-bold">{getMonthName(nextMonth)}</span>
         </div>
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            47
+          {checkMonthlyWork(thirdMonth)}
           </span>
-          <div className="relative flex justify-center w-full h-20 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Mar</span>
+          <div className={"relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500"} style={checkMonthlyHeight(thirdMonth)}></div>
+          <span className="absolute bottom-0 text-xs font-bold">{getMonthName(nextNextMonth)}</span>
         </div>
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            50
+          {checkMonthlyWork(fourthMonth)}
           </span>
-          <div className="relative flex justify-center w-full h-24 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Apr</span>
+          <div className={"relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500"} style={checkMonthlyHeight(fourthMonth)}></div>
+          <span className="absolute bottom-0 text-xs font-bold">{getMonthName(nextNextNextMonth)}</span>
         </div>
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            47
+          {checkMonthlyWork(fifthMonth)}
           </span>
-          <div className="relative flex justify-center w-full h-20 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Maj</span>
+          <div className={"relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500"} style={checkMonthlyHeight(fifthMonth)}></div>
+          <span className="absolute bottom-0 text-xs font-bold">{getMonthName(nextNextNextNextMonth)}</span>
         </div>
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            55
+          {checkMonthlyWork(sixMonth)}
           </span>
-          <div className="relative flex justify-center w-full h-24 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Jun</span>
-        </div>
-        <div className="relative flex flex-col items-center flex-grow pb-5 group">
-          <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            60
-          </span>
-          <div className="relative flex justify-center w-full h-20 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Jul</span>
-        </div>
-        <div className="relative flex flex-col items-center flex-grow pb-5 group">
-          <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            57
-          </span>
-          <div className="relative flex justify-center w-full h-24 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Aug</span>
-        </div>
-        <div className="relative flex flex-col items-center flex-grow pb-5 group">
-          <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            67
-          </span>
-          <div className="relative flex justify-center w-full h-32 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Sep</span>
-        </div>
-        <div className="relative flex flex-col items-center flex-grow pb-5 group">
-          <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            65
-          </span>
-          <div className="relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500  h-28"></div>
-          <span className="absolute bottom-0 text-xs font-bold">Oct</span>
-        </div>
-        <div className="relative flex flex-col items-center flex-grow pb-5 group">
-          <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            70
-          </span>
-          <div className="relative flex justify-center w-full h-40 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Nov</span>
-        </div>
-        <div className="relative flex flex-col items-center flex-grow pb-5 group">
-          <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-            75
-          </span>
-          <div className="relative flex justify-center w-full h-40 bg-gradient-to-b from-cyan-500 to-blue-500 "></div>
-          <span className="absolute bottom-0 text-xs font-bold">Dec</span>
+          <div className={"relative flex justify-center w-full bg-gradient-to-b from-cyan-500 to-blue-500"} style={checkMonthlyHeight(sixMonth)}></div>
+          <span className="absolute bottom-0 text-xs font-bold">{getMonthName(endMonth)}</span>
         </div>
       </div>
     </div>
+    )}
+    </>
   );
 }
