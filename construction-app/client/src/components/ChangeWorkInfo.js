@@ -104,7 +104,7 @@ const ChangeWorkInfo = (props) => {
     const thisDate = props.currentStartDate
     if (props.currentWorkStatus === "STARTED") {
       return <input
-      className="rounded block w-full border border-white p-2.5 placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
+      className="rounded block w-full border border-white p-2.5 bg-white placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
       disabled
       placeholder={thisDate}
     ></input>

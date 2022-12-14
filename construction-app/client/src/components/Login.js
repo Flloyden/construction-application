@@ -25,6 +25,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const getValue = localStorage.getItem('accessToken');
+  const getTheme = localStorage.getItem("theme");
   const auth = { token: getValue };
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
@@ -59,6 +60,11 @@ const Login = () => {
         localStorage.setItem('accessToken', response['accessToken']);
         localStorage.setItem('user', JSON.stringify(response['user']));
         localStorage.setItem('active', 0);
+        if (getTheme === null) {
+          localStorage.setItem("theme", false);
+        } else {
+          
+        }
         if (isMobile) {
           navigate("/kalender");
         } else {
