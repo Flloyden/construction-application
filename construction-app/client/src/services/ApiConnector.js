@@ -37,6 +37,10 @@ class ApiConnector {
     return axios.post(CUSTOMER_API_BASE_URL + "/" + customer +  "/work/save", work)
   }
 
+  getWork() {
+    return axios.get(CUSTOMER_API_BASE_URL + "/work")
+  }
+
   changeWork(customer, work) {
     return axios.post(CUSTOMER_API_BASE_URL + "/" + customer + "/work/update/", work)
   }
