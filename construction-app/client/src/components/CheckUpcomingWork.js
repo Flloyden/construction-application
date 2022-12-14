@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import { activeId } from './CheckOngoingWork';
 
 export default function CheckUpcomingWork() {
   const [loading, setLoading] = useState(true);
@@ -13,12 +14,9 @@ export default function CheckUpcomingWork() {
       setLoading(true);
       // Tries to get data from api
       try {
-        //const response = await ApiConnector.getUpcomingWork();
-        const testData = await ApiConnector.getUpcomingWork();
-        setUpcomingWork(testData.data);
-        //console.log(response.data);
-        console.log(testData.data);
-        // Logs error if api cal not successful
+        const response = await ApiConnector.getUpcomingWork();
+        setUpcomingWork(response.data);   
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -28,17 +26,24 @@ export default function CheckUpcomingWork() {
   }, []);
 
   function getUpcomingWork() { 
-  if(upcomingWork == null ||  typeof upcomingWork == undefined)
+  if(upcomingWork == null)
   {
     return "";
   }
-    let sortedDates = upcomingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
-    //var activeId = sortedDates[0]
-    return sortedDates[0].name + " - " + sortedDates[0].startDate;
+
+  let sortedDates = upcomingWork.sort(
+    (a, b) =>
+      new Date(...a.startDate.split("/").reverse()) -
+      new Date(...b.startDate.split("/").reverse())
+  );
+ 
+  let calendarLength = sortedDates[0].calendar.length;  
+  if(calendarLength != 0)
+  {
+    return sortedDates[0].name + " | " + sortedDates[0].calendar[0].date + " - " + sortedDates[0].calendar[calendarLength-1].date;
+  } else{
+    return "Finns inget jobb inom 10 dagar";
+  }
   }
 
   function getCustomerId() {
@@ -47,12 +52,8 @@ export default function CheckUpcomingWork() {
     {
       return "";
     }
-    let sortedDates = upcomingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
-    return sortedDates[0].id;
+   
+    return upcomingWork[0].id;
   }
   const passId = (e) => {
     // Passes the right id to the customer url

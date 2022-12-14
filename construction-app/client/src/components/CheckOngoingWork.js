@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import { RiCalendarLine } from "react-icons/ri";
+
+let activeId;
 
 export default function CheckOngoingWork() {
   const [loading, setLoading] = useState(true);
@@ -14,12 +17,10 @@ export default function CheckOngoingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getOngoingWork();
-        const testData = await ApiConnector.getOngoingWorkTest();
-        setOngoingWork(testData.data);
-        console.log(testData.data);
+        setOngoingWork(response.data);
+        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
-        console.log(error);
         console.log(error);
       }
       setLoading(false);
@@ -39,21 +40,14 @@ export default function CheckOngoingWork() {
         new Date(...b.startDate.split("/").reverse())
     );
 
-    let sortedDatesLength = sortedDates[0].workList.length;
-    const date = new Date();
-    const formattedDate = date.toISOString().split('T')[0];
-
-    for(let i = 0; i<sortedDatesLength;i++)
+    let calendarLength = sortedDates[0].calendar.length;  
+    if(calendarLength != 0)
     {
-      for(let j = 0; i<sortedDates[i].workList[i].calendar.length;j++)
-      {
-        if(sortedDates[i].workList[i].calendar[j].date == formattedDate) //Om worklisten har datum(date) som matchar dagens datum
-        {
-          return sortedDates[0].workList[i].name + " - " + sortedDates[i].address; //retunerar den worklistens namn och adress
-        }
-      }
+      return sortedDates[0].name + " | " + sortedDates[0].calendar[0].date + " - " + sortedDates[0].calendar[calendarLength-1].date;
+    } else{
+      return "Finns inget pågående jobb";
     }
-    return "";
+    
   }
 
   function getCustomerId() {
@@ -74,6 +68,8 @@ export default function CheckOngoingWork() {
       navigate(`/kunder/${e}`, { state: { clientId: e } });
     }
   };
+
+  
 
   return (
     <div className="w-full h-full">
@@ -97,3 +93,5 @@ export default function CheckOngoingWork() {
     </div>
   );
 }
+
+export { activeId };

@@ -1,8 +1,10 @@
 package com.example.constructionappapi.services.dataAccessLayer.dao;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,4 +24,14 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     List<WorkEntity> findByStartDateBetween(LocalDate start, LocalDate end);
 
     List<WorkEntity> findByStartDate(LocalDate startdate);
+
+    @Query(value = "SELECT customer.*, work.*, calendar.* " +
+            "FROM customer " +
+            "INNER JOIN work ON customer.id = work.customer_id " +
+            "INNER JOIN calendar ON work.id = calendar.work_id " +
+            "WHERE DATE(calendar.date) = CURRENT_DATE",
+            nativeQuery = true
+    )
+
+    List<WorkEntity> findWorkEntityForToday();
 }

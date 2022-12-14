@@ -47,18 +47,17 @@ class ApiConnector {
   }
 
   getUpcomingWork(){
-    //Gets upcoming work based on todays date and ten days forward. 
+    //Gets upcoming work based on tomorrows date and ten days forward. 
      //Checks if any customer has work with startdate within 10 days.
-     return axios.get(CALENDAR_API_BASE_URL + "/upcomingWork");
+     return axios.get(CUSTOMER_API_BASE_URL + "/upcoming");
   }
 
+  //Gets ongoing work based on todays date.
+  //Checks if any customer has work that has date = todays date
   getOngoingWork(){
     return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
   }
 
-  getOngoingWorkTest(){
-    return axios.get(CUSTOMER_API_BASE_URL + "/ongoingWork");
-  }
 
   // ACCOUNTING / WARRANTY
   saveWarranty(warranty) {

@@ -154,8 +154,6 @@ public class WorkRepository {
     }
 
     public List<WorkEntity> checkForOngoingWork() {
-        LocalDate today = LocalDate.now();
-        today.plusDays(1);
-        return workDao.findByStartDate(today);
+        return workDao.findWorkEntityForToday();
     }
 }

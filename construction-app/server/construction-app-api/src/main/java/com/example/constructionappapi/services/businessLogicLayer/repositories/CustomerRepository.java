@@ -8,8 +8,11 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
  * Class accessing the customer table in DB
@@ -70,4 +73,12 @@ public class CustomerRepository {
     {
         return customerDao.findCustomersWithWorkAndCalendarForToday();
     }
+
+   public List<CustomerEntity> getUpcomingWorkTest()
+   {
+       LocalDate tomorrow = LocalDate.now();
+       tomorrow = tomorrow.plusDays(1);
+       LocalDate tenDaysForward = tomorrow.plusDays(10);
+       return customerDao.findCustomersWithWorkAndCalendarBetweenStartDateAndEndDate(tomorrow,tenDaysForward);
+   }
 }
