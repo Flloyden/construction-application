@@ -138,7 +138,7 @@ export default function NewHome() {
         <div className="w-3/4 rounded">
           <div className="bg-white dark:bg-gray-800 shadow rounded border-2 p-4">
             <div className="text-2xl font-bold">Översikt</div>
-            <div className="mt-10 flex items-center justify-between">
+            <div className="mt-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="rounded-full p-6 w-20 h-20 bg-blue-600 flex align-middle justify-center items-center">
                   <h1 className="text-4xl font-normal tracking-wider">TE</h1>
