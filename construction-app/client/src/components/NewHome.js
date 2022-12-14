@@ -65,10 +65,8 @@ export default function NewHome() {
   }
 
   useEffect(() => {
-    console.log("KDHBF");
     // Gets all the warrenties on page load and runs only once
     const fetchData = async () => {
-      console.log("jhsbdf");
       setLoading(true);
       // Tries to get data from api
       try {
@@ -76,8 +74,6 @@ export default function NewHome() {
         const res = await ApiConnector.getSemester();
         setCalendarInfo(response.data);
         setSemesterInfo(res.data);
-        console.log(response.data);
-        console.log("jhsbdf");
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -132,8 +128,18 @@ export default function NewHome() {
     return isWeekend;
   };
 
+  function checkDarkMode() {
+    const getValue = localStorage.getItem("theme");
+    console.log(getValue);
+    if (getValue === "true") {
+      return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 darkMode";
+    } else {
+      return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 newHome";
+    }
+  }
+
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white dark:text-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white dark:text-white">
       <div className="flex gap-4 rounded">
         <div className="w-3/4 rounded">
           <div className="bg-white dark:bg-gray-800 shadow rounded border-2 p-4">
@@ -238,7 +244,7 @@ export default function NewHome() {
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-white dark:bg-gray-800 w-1/2 rounded border-2 shadow">
               <div className="p-6">
                 <h1>Jobb & Semester</h1>
@@ -247,7 +253,7 @@ export default function NewHome() {
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 newHome">
+        <div className={checkDarkMode()}>
           {!loading && (
             <FullCalendar
               plugins={[listPlugin]}
@@ -294,16 +300,17 @@ export default function NewHome() {
                   return {
                     title: item.vacationName,
                     start: item.date,
-                    borderColor: "#10b981",
+                    color: "#10b981",
                     id: item.vacationId,
                     description: {
                       name: item.vacationName,
                       start: item.startDate,
                       length: item.numberOfDays,
                     },
+                    borderColor: "#10b981",
                     allDay: false,
                   };
-                }, console.log(semesterInfo)),
+                }),
                 holiday.map((item) => {
                   return {
                     title: item.name,

@@ -22,19 +22,6 @@ export default function BarChart() {
   const fifthMonth = moment(today).add(4, 'M').format("YYYY-MM");
   const sixMonth = moment(today).add(5, 'M').format("YYYY-MM");
 
-  console.log(thisMonth)
-  console.log(secondMonth)
-  console.log(thirdMonth)
-  console.log(fourthMonth)
-  console.log(fifthMonth)
-  console.log(sixMonth)
-
-  console.log(calendarInfo)
-
-  const day = moment(today).format("YYYY-MM")
-  console.log(day)
-
-
   function getMonthName(monthNumber) {
     const date = new Date();
     date.setMonth(monthNumber - 1);
@@ -66,27 +53,21 @@ export default function BarChart() {
     if (calendarInfo.length > 0) {
       if (e === thisMonth) {
         const check1 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thisMonth)
-        console.log(check1)
         return check1.length.toString()
       } else if (e === secondMonth) {
         const check2 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === secondMonth)
-        console.log(check2)
         return check2.length.toString()
       } else if (e === thirdMonth) {
         const check3 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thirdMonth)
-        console.log(check3)
         return check3.length.toString()
       } else if (e === fourthMonth) {
         const check4 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fourthMonth)
-        console.log(check4)
         return check4.length.toString()
       } else if (e === fifthMonth) {
         const check5 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fifthMonth)
-        console.log(check5)
         return check5.length.toString()
       } else if (e === sixMonth) {
         const check6 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === sixMonth)
-        console.log(check6)
         return check6.length.toString()
       } else {
         return "0";
@@ -100,27 +81,21 @@ export default function BarChart() {
     if (calendarInfo.length > 0) {
       if (e === thisMonth) {
         const check1 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thisMonth)
-        console.log(check1)
         return {height: check1.length * 10}
       } else if (e === secondMonth) {
         const check2 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === secondMonth)
-        console.log(check2)
         return {height: check2.length * 10}
       } else if (e === thirdMonth) {
         const check3 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thirdMonth)
-        console.log(check3)
         return {height: check3.length * 10}
       } else if (e === fourthMonth) {
         const check4 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fourthMonth)
-        console.log(check4)
         return {height: check4.length * 10}
       } else if (e === fifthMonth) {
         const check5 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fifthMonth)
-        console.log(check5)
         return {height: check5.length * 10}
       } else if (e === sixMonth) {
         const check6 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === sixMonth)
-        console.log(check6)
         return {height: check6.length * 10}
       } else {
         return "0";

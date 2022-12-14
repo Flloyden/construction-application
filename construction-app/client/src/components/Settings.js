@@ -15,7 +15,7 @@ export default function Settings() {
   }
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white dark:text-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white dark:text-white">
         <div className="rounded-lg w-full h-full">
           <h1 className="text-4xl dark:text-black">Inställningar</h1>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-4 rounded shadow border">

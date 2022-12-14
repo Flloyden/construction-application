@@ -20,6 +20,18 @@
     justify-content: space-around;
 }
 
-.newHome .fc .fc-list-event {
+.newHome > .fc .fc-list-event {
+    cursor: pointer;
+}
+
+.darkMode .fc .fc-toolbar {
+    justify-content: space-around;
+}
+
+.darkMode > .fc .fc-list-sticky .fc-list-day > * {
+    background: #0c3046;
+}
+
+.darkMode > .fc .fc-list-event {
     cursor: pointer;
 }
