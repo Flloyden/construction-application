@@ -8,8 +8,11 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
  * Class accessing the customer table in DB
@@ -65,4 +68,17 @@ public class CustomerRepository {
     public void deleteCustomer(Long id) {
         customerDao.deleteById(id); //Deletes customer by ID
     }
+
+    public List<CustomerEntity> getOngoingWorkTest()
+    {
+        return customerDao.findCustomersWithWorkAndCalendarForToday();
+    }
+
+   public List<CustomerEntity> getUpcomingWorkTest()
+   {
+       LocalDate tomorrow = LocalDate.now();
+       tomorrow = tomorrow.plusDays(1);
+       LocalDate tenDaysForward = tomorrow.plusDays(10);
+       return customerDao.findCustomersWithWorkAndCalendarBetweenStartDateAndEndDate(tomorrow,tenDaysForward);
+   }
 }

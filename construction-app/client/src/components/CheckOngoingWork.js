@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import { RiCalendarLine } from "react-icons/ri";
+
+let activeId;
 
 export default function CheckOngoingWork() {
   const [loading, setLoading] = useState(true);
@@ -26,13 +29,25 @@ export default function CheckOngoingWork() {
   }, []);
 
   function getOngoingWork() {
-    /**Gets upcoming ongoingWork within ten days of today's date */
+    /*Gets upcoming ongoingWork within ten days of today's date*/
+    if(ongoingWork == null)
+  {
+    return "";
+  }
     let sortedDates = ongoingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
     );
-    return sortedDates[0].name + " - " + sortedDates[0].startDate;
+
+    let calendarLength = sortedDates[0].calendar.length;  
+    if(calendarLength != 0)
+    {
+      return sortedDates[0].name + " | " + sortedDates[0].calendar[0].date + " - " + sortedDates[0].calendar[calendarLength-1].date;
+    } else{
+      return "Finns inget pågående jobb";
+    }
+    
   }
 
   function getCustomerId() {
@@ -53,6 +68,8 @@ export default function CheckOngoingWork() {
       navigate(`/kunder/${e}`, { state: { clientId: e } });
     }
   };
+
+  
 
   return (
     <div className="w-full h-full">
@@ -76,3 +93,5 @@ export default function CheckOngoingWork() {
     </div>
   );
 }
+
+export { activeId };
