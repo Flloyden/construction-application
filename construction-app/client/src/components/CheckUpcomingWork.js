@@ -38,9 +38,18 @@ export default function CheckUpcomingWork() {
   );
  
   let calendarLength = sortedDates[0].calendar.length;  
-  if(calendarLength != 0)
+  if(calendarLength !== 0)
   {
-    return sortedDates[0].name + " | " + sortedDates[0].calendar[0].date + " - " + sortedDates[0].calendar[calendarLength-1].date;
+    return (
+      <div className="font-normal">
+          <p>{"Namn på kund - " + sortedDates[0].name}</p>
+          <p>
+            {sortedDates[0].calendar[0].date +
+              " - " +
+              sortedDates[0].calendar[calendarLength - 1].date}
+          </p>
+        </div>
+    )
   } else{
     return "Finns inget jobb inom 10 dagar";
   }
@@ -48,7 +57,8 @@ export default function CheckUpcomingWork() {
 
   function getCustomerId() {
     /*Gets the customer id with nearest expiring date by sorting the array*/
-    if(upcomingWork == null)
+    console.log(upcomingWork)
+    if(upcomingWork === null)
     {
       return "";
     }
@@ -65,24 +75,34 @@ export default function CheckUpcomingWork() {
   };
 
   return (
-    <div className="w-full h-full">
+    <>
       {!loading && (
-        <div className="w-full h-full">
+        <div className="mt-6">
           {upcomingWork.length < 1 ? (
-            <p className="align-center justify-center items-center flex w-full h-full">Finns inga kommande jobb</p>
-          ) : (
-            <div
-              className="align-center justify-center items-center flex w-full h-full hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white"
-              onClick={(e) => passId(getCustomerId())}
-            >
-              <div>
-                <p className="border-b-2 py-2">Kommande jobb</p>
-                <p className="mt-2">{getUpcomingWork()}</p>
+            <div className="border-2 rounded p-2 shadow mt-6">
+              <div className="flex justify-between gap-52">
+                <h1 className="whitespace-nowrap">Pågånde jobb</h1>
+                <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
+                </h1>
               </div>
+              <p className="font-normal pb-6">Finns inga kommande jobb</p>
+            </div>
+          ) : (
+            <div className="border-2 rounded p-2 shadow">
+              <div className="flex justify-between gap-52">
+                <h1 className="whitespace-nowrap">Kommande jobb</h1>
+                <h1
+                  className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap"
+                  onClick={(e) => passId(getCustomerId())}
+                >
+                  Gå till kund {">"}{" "}
+                </h1>
+              </div>
+              {getUpcomingWork()}
             </div>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }

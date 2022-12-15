@@ -39,6 +39,7 @@ export default function BarChart() {
       try {
         const response = await ApiConnector.getCalendar();
         setCalendarInfo(response.data);
+        console.log(response.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -78,7 +79,7 @@ export default function BarChart() {
   }
 
   function checkMonthlyHeight(e) {
-    if (calendarInfo.length > 0) {
+    if (calendarInfo.length >= 0) {
       if (e === thisMonth) {
         const check1 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thisMonth)
         return {height: check1.length * 10}

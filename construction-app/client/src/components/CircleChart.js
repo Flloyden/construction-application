@@ -28,7 +28,7 @@ export default function CircleChart() {
   const [semesterList, setSemesterList] = useState();
 
   function checkLength(e) {
-    if (workList.length > 0) {
+    if (workList.length >= 0) {
       if (e === "upcoming") {
         const check = workList.filter((item) => item.workStatus === "NOTSTARTED")
         if (check.length > 0) {

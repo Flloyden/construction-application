@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
-import { RiCalendarLine } from "react-icons/ri";
 
 let activeId;
 
@@ -30,24 +29,30 @@ export default function CheckOngoingWork() {
 
   function getOngoingWork() {
     /*Gets upcoming ongoingWork within ten days of today's date*/
-    if(ongoingWork == null)
-  {
-    return "";
-  }
+    if (ongoingWork == null) {
+      return "";
+    }
     let sortedDates = ongoingWork.sort(
       (a, b) =>
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
     );
 
-    let calendarLength = sortedDates[0].calendar.length;  
-    if(calendarLength != 0)
-    {
-      return sortedDates[0].name + " | " + sortedDates[0].calendar[0].date + " - " + sortedDates[0].calendar[calendarLength-1].date;
-    } else{
+    let calendarLength = sortedDates[0].calendar.length;
+    if (calendarLength !== 0) {
+      return (
+        <div className="font-normal">
+          <p>{sortedDates[0].name + " - Namn på jobb"}</p>
+          <p>
+            {sortedDates[0].calendar[0].date +
+              " - " +
+              sortedDates[0].calendar[calendarLength - 1].date}
+          </p>
+        </div>
+      );
+    } else {
       return "Finns inget pågående jobb";
     }
-    
   }
 
   function getCustomerId() {
@@ -69,28 +74,37 @@ export default function CheckOngoingWork() {
     }
   };
 
-  
-
   return (
-    <div className="w-full h-full">
+    <>
       {!loading && (
-        <div className="w-full h-full">
+        <div>
           {ongoingWork.length < 1 ? (
-            <p className="align-center justify-center items-center flex w-full h-full">Finns inga pågående jobb</p>
-          ) : (
-            <div
-              className="align-center justify-center items-center flex w-full h-full hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white"
-              onClick={(e) => passId(getCustomerId())}
-            >
-              <div>
-                <p className="border-b-2 py-2">Pågående jobb</p>
-                <p className="mt-2">{getOngoingWork()}</p>
+            <div className="border-2 rounded p-2 shadow">
+              <div className="flex justify-between gap-52">
+                <h1 className="whitespace-nowrap">Pågånde jobb</h1>
+                <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
+                  
+                </h1>
               </div>
+              <p className="font-normal pb-6">Finns inget pågående jobb</p>
+            </div>
+          ) : (
+            <div className="border-2 rounded p-2 shadow">
+              <div className="flex justify-between gap-52">
+                <h1 className="whitespace-nowrap">Pågånde jobb</h1>
+                <h1
+                  className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap"
+                  onClick={(e) => passId(getCustomerId())}
+                >
+                  Gå till kund {">"}{" "}
+                </h1>
+              </div>
+              {getOngoingWork()}
             </div>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
 

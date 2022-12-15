@@ -31,7 +31,12 @@ export default function CheckWarranties() {
         new Date(...a.warranty_date.split("/").reverse()) -
         new Date(...b.warranty_date.split("/").reverse())
     );
-    return sortedDates[0].name + " - " + sortedDates[0].warranty_date;
+    return (
+      <div className="font-normal">
+        <p>{sortedDates[0].name}</p>
+        <p>{sortedDates[0].warranty_date}</p>
+      </div>
+    );
   }
 
   function getId() {
@@ -54,24 +59,35 @@ export default function CheckWarranties() {
   };
 
   return (
-    <div className="w-full h-full">
+    <>
       {!loading && (
-        <div className="w-full h-full">
+        <div className="w-full mt-8 mx-auto">
           {warranties.length < 1 ? (
-            <p className="align-center justify-center items-center flex w-full h-full">Finns inga garantier</p>
-          ) : (
-            <div
-              className="align-center justify-center items-center flex w-full h-full hover:bg-gray-800 duration-300 hover:cursor-pointer hover:text-white"
-              onClick={(e) => passId(getId())}
-            >
-              <div>
-                <p className="border-b-2 py-2">Utgående garanti</p>
-                <p className="mt-2">{getWarranty()}</p>
+            <div className="border-2 rounded p-2 shadow">
+              <div className="flex justify-between">
+                <h1 className="whitespace-nowrap">Utgående garanti</h1>
+                <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
+                  {" "}
+                </h1>
               </div>
+              <p className="font-normal pb-6">Finns ingen garanti</p>
+            </div>
+          ) : (
+            <div className="border-2 rounded p-2 shadow">
+              <div className="flex justify-between">
+                <h1 className="whitespace-nowrap">Utgående garanti</h1>
+                <h1
+                  className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap"
+                  onClick={(e) => passId(getId())}
+                >
+                  Gå till garanti {">"}{" "}
+                </h1>
+              </div>
+              {getWarranty()}
             </div>
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
