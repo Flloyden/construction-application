@@ -74,7 +74,7 @@ const ChangeWorkInfo = (props) => {
     ApiConnector.changeWork(props.currentCustomerId, newList)
       .then((response) => {
         console.log(response);
-        //window.location.reload(false);
+        window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);

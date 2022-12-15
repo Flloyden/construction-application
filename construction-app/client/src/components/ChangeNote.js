@@ -30,7 +30,7 @@ export default function ChangeNote(props) {
       .then((response) => {
         console.log(response);
         console.log(newNote)
-        //window.location.reload(false);
+        window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
