@@ -26,7 +26,7 @@ export default function ChangeNote(props) {
     };
     console.log(newNote)
     // Adds work to user with api call
-    ApiConnector.editNote(props.currentId, newNote)
+    ApiConnector.saveNote(props.currentWorkNumber, newNote)
       .then((response) => {
         console.log(response);
         console.log(newNote)
