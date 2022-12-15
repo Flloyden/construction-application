@@ -69,4 +69,11 @@ public class CalendarRepository {
         calendarDao.deleteAllByWorkId(id);
         calendarDao.findAllById(Collections.singleton(id));
     }
+
+    public List<CalendarEntity> getUpcomingWork() {
+        LocalDate tomorrow = LocalDate.now();
+        tomorrow = tomorrow.plusDays(1);
+        LocalDate thirtyDaysForward = tomorrow.plusDays(30);
+        return calendarDao.findByDateBetween(tomorrow, thirtyDaysForward);
+    }
 }

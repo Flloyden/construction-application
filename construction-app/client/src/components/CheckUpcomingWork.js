@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
+import { activeId } from './CheckOngoingWork';
 
 export default function CheckUpcomingWork() {
   const [loading, setLoading] = useState(true);
@@ -14,9 +15,8 @@ export default function CheckUpcomingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getUpcomingWork();
-        setUpcomingWork(response.data);
+        setUpcomingWork(response.data);   
         console.log(response.data);
-        // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
       }
@@ -26,40 +26,35 @@ export default function CheckUpcomingWork() {
   }, []);
 
   function getUpcomingWork() { 
-    //if(upcomingWork.length > 1) // Skapar en lista med alla kommande jobb
-    //{                           // Hade behövt hjälp med att displaya det
-      //const work = [];
-      //for (let i = 0; i < upcomingWork.length; i++) 
-      //{
-        //let sortedDates = upcomingWork.sort(
-          //(a, b) =>
-            //new Date(...a.startDate.split("/").reverse()) -
-            //new Date(...b.startDate.split("/").reverse())
-        //);
-        //work[i] = sortedDates[i].name + " - " + sortedDates[i].startDate + " | "; 
-    //}
-    //return work;
-  //}
-    /**Gets upcoming upcomingWork within ten days of today's date */
-   
-    let sortedDates = upcomingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
-    return sortedDates[0].name + " - " + sortedDates[0].startDate;
+  if(upcomingWork == null)
+  {
+    return "";
+  }
+
+  let sortedDates = upcomingWork.sort(
+    (a, b) =>
+      new Date(...a.startDate.split("/").reverse()) -
+      new Date(...b.startDate.split("/").reverse())
+  );
+ 
+  let calendarLength = sortedDates[0].calendar.length;  
+  if(calendarLength != 0)
+  {
+    return sortedDates[0].name + " | " + sortedDates[0].calendar[0].date + " - " + sortedDates[0].calendar[calendarLength-1].date;
+  } else{
+    return "Finns inget jobb inom 10 dagar";
+  }
   }
 
   function getCustomerId() {
-    /**Gets the customer id with nearest expiring date by sorting the array */
-    let sortedDates = upcomingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
-    return sortedDates[0].id;
+    /*Gets the customer id with nearest expiring date by sorting the array*/
+    if(upcomingWork == null)
+    {
+      return "";
+    }
+   
+    return upcomingWork[0].id;
   }
-
   const passId = (e) => {
     // Passes the right id to the customer url
     if (upcomingWork.length < 1) {
