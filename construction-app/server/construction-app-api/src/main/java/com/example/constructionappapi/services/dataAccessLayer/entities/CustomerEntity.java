@@ -29,7 +29,10 @@ public class CustomerEntity {
     private long id; //automatically incrementing id
     private String name;
     private String address;
+    private String mail;
     private String phoneNumber;
+    private String city;
+    private String zip;
     private String propertyDesignation;
     private String socialSecurityNumber;
     private LocalDate creationDate = LocalDate.now();  //TODO: Need to check so that value doesn't get overwritten when saving a customer.
