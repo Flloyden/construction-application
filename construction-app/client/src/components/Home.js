@@ -133,7 +133,6 @@ export default function Home() {
 
   function checkDarkMode() {
     const getValue = localStorage.getItem("theme");
-    console.log(getValue);
     if (getValue === "true") {
       return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 darkMode";
     } else {

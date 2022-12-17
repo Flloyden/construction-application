@@ -163,10 +163,10 @@ const CustomerRegister = () => {
                       >
                         {user.creationDate}
                       </td>
-                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                      <td className="flex justify-around items-stretch py-4">
                         <FaTrash
                           data-modal-toggle="defaultModal"
-                          className="text-2xl hover:text-red-500"
+                          className={checkWorkList(user.workList)}
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentCustomerId(user.id);

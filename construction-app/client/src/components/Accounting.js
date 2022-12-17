@@ -148,7 +148,7 @@ const Accounting = () => {
                       >
                         {warranty.warranty_date}
                       </td>
-                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                      <td className="flex justify-around items-stretch py-4">
                         <FaTrash
                           data-modal-toggle="defaultModal"
                           className="text-2xl hover:text-red-500"
@@ -185,7 +185,7 @@ const Accounting = () => {
                       >
                         {warranties.warranty_date}
                       </td>
-                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                      <td className="flex justify-around items-stretch py-4">
                         <FaTrash
                           data-modal-toggle="defaultModal"
                           className="text-2xl hover:text-red-500"
