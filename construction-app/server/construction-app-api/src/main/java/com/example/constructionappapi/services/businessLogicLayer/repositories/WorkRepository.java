@@ -133,7 +133,7 @@ public class WorkRepository {
                 if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
                     //Checks if the date has been changed and updates the calendar if it has.
                     if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                        calendar.updateWork(work);
+                        calendar.updateWork(preUpdateWork.get().getStartDate(), work);
                     }
 
                     return addNewWorkEntity(customerId, work);

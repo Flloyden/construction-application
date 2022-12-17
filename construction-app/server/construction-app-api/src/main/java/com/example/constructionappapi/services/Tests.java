@@ -223,34 +223,30 @@ public class Tests {
 
     public void testWorkDateChange() {
         String ANSI_RED = "\u001B[31m";
-        Calendar calendar = CalendarSingleton.getCalendar();
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
-        CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-        customer = customerRepository.createCustomer(customer);
+        CustomerAPI customerAPI = configurableApplicationContext.getBean(CustomerAPI.class);
+        customer = customerAPI.createCustomer(customer);
 
         System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
-        WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
+        WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
 
-        WorkEntity door = new WorkEntity(0L, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        door = workRepository.addNewWorkEntity(customer.getId(), door);
-        calendar.addWork(door);
+        WorkEntity door = new WorkEntity(0L, "Door", null, 5, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        door = workAPI.saveWork(customer.getId(), door);
 
-        WorkEntity fence = new WorkEntity(0L, "Fence", LocalDate.of(2023, 5, 25), 10, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        fence = workRepository.addNewWorkEntity(customer.getId(), fence);
-        calendar.addWork(fence);
+        WorkEntity fence = new WorkEntity(0L, "Fence", null, 5, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        fence = workAPI.saveWork(customer.getId(), fence);
 
-        WorkEntity roof = new WorkEntity(0L, "Roof", LocalDate.of(2023, 5, 29), 2, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        roof = workRepository.addNewWorkEntity(customer.getId(), roof);
-        calendar.addWork(roof);
-        calendar.printCalendar();
+        WorkEntity roof = new WorkEntity(0L, "Roof", null, 5, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        roof = workAPI.saveWork(customer.getId(), roof);
+
+        CalendarSingleton.getCalendar().printCalendar();
 
         System.out.println(ANSI_RED + "Calling update work." + ANSI_RED);
-        WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
-        door.setStartDate(LocalDate.of(2023, 6, 5));
-        workAPI.updateWork(customer.getId(), door);
-        calendar.updateWork(door);
-        calendar.printCalendar();
+        fence.setStartDate(fence.getStartDate().plusDays(10));
+        workAPI.updateWork(customer.getId(), fence);
+
+        CalendarSingleton.getCalendar().printCalendar();
     }
 }

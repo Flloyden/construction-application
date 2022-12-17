@@ -71,11 +71,11 @@ public class Calendar {
      * @param work The new work-entity.
      * @return The updated work-entity.
      */
-    public boolean updateWork(WorkEntity work) {
+    public boolean updateWork(LocalDate oldStartDate, WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
-        moveCalendarItemBackwards(work.getStartDate());
+        moveCalendarItemBackwards(oldStartDate);
 
         return addWork(work);
     }
@@ -145,7 +145,7 @@ public class Calendar {
             //Stop if we reached the last date that a work item was moved to.
             if (!possibleDate.isAfter(lastDateMovedTo)) break;
             //Stop if the start date of the work-item being moved is reached.
-            if (workToMove.getStartDate().isAfter(possibleDate)) break;
+            //if (workToMove.getStartDate().isAfter(possibleDate)) break;
             //Stop if the work-item being moved is the same as the one for which the date is being checked.
             if (calendarDates.get(new CalendarEntity(possibleDate)) == workToMove) break;
             //Stop if reached today's date.
