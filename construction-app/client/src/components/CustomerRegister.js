@@ -77,6 +77,18 @@ const CustomerRegister = () => {
     setName(keyword);
   };
 
+  function checkWorkList(e) {
+    if (e.length > 0) {
+      if (e.map((item) => {return (item.workStatus)}).includes("STARTED") || e.map((item) => {return (item.workStatus)}).includes("COMPLETED")) {
+        return "hidden"
+      } else {
+        return "text-2xl hover:text-red-500"
+      }
+    } else {
+      return "text-2xl hover:text-red-500"
+    }
+  }
+
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white">
       <div className="overflow-x-auto relative">
@@ -194,10 +206,10 @@ const CustomerRegister = () => {
                       >
                         {customer.creationDate}
                       </td>
-                      <td className="flex justify-around items-stretch py-4 border-l-2">
+                      <td className="flex justify-around items-stretch py-4">
                         <FaTrash
                           data-modal-toggle="defaultModal"
-                          className="text-2xl hover:text-red-500"
+                          className={checkWorkList(customer.workList)}
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentCustomerId(customer.id);
