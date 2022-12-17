@@ -80,6 +80,18 @@ export default function Customer() {
     setOldNotesToggle(!oldNotesToggle);
   };
 
+  function checkWorkList(e) {
+    if (e.length > 0) {
+      if (e.map((item) => {return (item.workStatus)}).includes("STARTED") || e.map((item) => {return (item.workStatus)}).includes("COMPLETED")) {
+        return "hidden"
+      } else {
+        return "bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-full"
+      }
+    } else {
+      return "bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-full"
+    }
+  }
+
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white">
       <div className="rounded-lg w-full h-full">
@@ -105,13 +117,13 @@ export default function Customer() {
                 <div className="flex">
                   <MdLocationOn className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl my-auto">{customer.address}</span>
+                <span className="text-1xl my-auto">{customer.address}, {customer.city}, {customer.zip}</span>
               </div>
               <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
                   <MdEmail className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
-                <span className="text-1xl my-auto">{customer.name}</span>
+                <span className="text-1xl my-auto">{customer.mail}</span>
               </div>
               <div className="flex py-2 justify-start items-center w-full">
                 <div className="flex">
@@ -129,7 +141,7 @@ export default function Customer() {
               </div>
               <div className="flex gap-2 justify-end items-center pb-8 mt-4 w-full">
                 <button
-                  className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-2/4 duration-300"
+                  className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
                   onClick={() => {
                     setIsChangeOpen(true);
                   }}
@@ -137,7 +149,7 @@ export default function Customer() {
                   Ändra
                 </button>
                 <button
-                  className="bg-red-600 hover:bg-red-700 font-bold py-2 px-4 rounded duration-300 text-center text-white w-2/4"
+                  className={checkWorkList(customer.workList)}
                   data-modal-toggle="defaultModal"
                   onClick={() => {
                     setIsOpen(true);
