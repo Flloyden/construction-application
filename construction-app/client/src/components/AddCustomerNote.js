@@ -36,7 +36,7 @@ export default function AddCustomerNote(
   });
 
   const copy = [...customer.name.currentCustomerWorkList];
-  const filteredList = copy.filter((item) => item.workStatus !== "COMPLETED");
+  const filteredList = copy.filter((item) => item.workStatus !== "COMPLETED" && item.workStatus !== "NOTSTARTED");
 
   const handleChange = (e) => {
     let value = e.target.value;

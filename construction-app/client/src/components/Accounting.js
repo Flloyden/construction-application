@@ -104,7 +104,7 @@ const Accounting = () => {
           </button>
         </div>
         <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 dark:text-white shadow-xl rounded">
-        <thead className="text-xs uppercase  text-gray-500 shadow-md rounded border-b-2 border-gray-300">
+          <thead className="text-xs uppercase  text-gray-500 shadow-md rounded border-b-2 border-gray-300">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
@@ -112,8 +112,14 @@ const Accounting = () => {
               <th scope="col" className="py-3 px-6 w-fit">
                 Namn
               </th>
+              <th scope="col" className="py-3 px-6 w-fit">
+                Registreringsnummer
+              </th>
               <th scope="col" className="py-3 px-6">
                 Utgångsdatum
+              </th>
+              <th scope="col" className="py-3 px-6 text-center">
+                Kvitto
               </th>
               <th scope="col" className="py-3 px-6 float-right">
                 Åtgärd
@@ -143,10 +149,23 @@ const Accounting = () => {
                         {warranty.name}
                       </td>
                       <td
+                        className="py-4 px-6 whitespace-nowrap"
+                        onClick={(e) => passId(warranty.id)}
+                      >
+                        {warranty.registration_number}
+                      </td>
+                      <td
                         className="py-4 px-6 w-full"
                         onClick={(e) => passId(warranty.id)}
                       >
                         {warranty.warranty_date}
+                      </td>
+                      <td className="px-6 w-full">
+                        <div className="flex justify-end" onClick={() => {}}>
+                          <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer">
+                            Visa
+                          </p>
+                        </div>
                       </td>
                       <td className="flex justify-around items-stretch py-4">
                         <FaTrash
@@ -180,10 +199,23 @@ const Accounting = () => {
                         {warranties.name}
                       </td>
                       <td
+                        className="py-4 px-6 whitespace-nowrap"
+                        onClick={(e) => passId(warranties.id)}
+                      >
+                        {warranties.registration_number}
+                      </td>
+                      <td
                         className="py-4 px-6 w-full"
                         onClick={(e) => passId(warranties.id)}
                       >
                         {warranties.warranty_date}
+                      </td>
+                      <td className="px-6 w-full">
+                        <div className="flex justify-end" onClick={() => {}}>
+                          <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
+                            Visa kvitto
+                          </p>
+                        </div>
                       </td>
                       <td className="flex justify-around items-stretch py-4">
                         <FaTrash
