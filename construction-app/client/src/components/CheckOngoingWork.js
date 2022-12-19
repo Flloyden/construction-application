@@ -34,16 +34,39 @@ export default function CheckOngoingWork() {
         new Date(...a.startDate.split("/").reverse()) -
         new Date(...b.startDate.split("/").reverse())
     );
+ 
+    const date = new Date();
 
-    let calendarLength = sortedDates[0].workList[0].calendar.length;
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    
+    // This arrangement can be altered based on how we want the date's format to appear.
+    let currentDate = `${year}-${month}-${day}`;
+    let calendarLength = ongoingWork[0].workList[0].calendar.length;
+    let workListLength = ongoingWork[0].workList.length;
+    let activeWork;
+     // Skapa en for loop som kollar igenom worklist och varje calendar array och kollar vilket work som innehåller dagens datum
+    // Gör sedan det aktiva jobbets id till activeId;
+    for(let i = 0;i<workListLength;i++)
+    {
+      for(let j = 0;j<ongoingWork[0].workList[i].calendar.length;j++)
+      {
+        if(ongoingWork[0].workList[i].calendar[j].date == currentDate);
+        activeId = ongoingWork[0].workList[i].id;
+        activeWork = ongoingWork[0].workList[i];
+        break;
+      }
+    }
+
     if (calendarLength !== 0) {
       return (
         <div className="font-normal">
-          <p>{sortedDates[0].name + " - " + sortedDates[0].workList[0].name}</p>
+          <p>{sortedDates[0].name + " - " + activeWork.name}</p>
           <p>
-            {sortedDates[0].workList[0].calendar[0].date +
+            {activeWork.calendar[0].date +
               " - " +
-              sortedDates[0].workList[0].calendar[calendarLength - 1].date}
+              activeWork.calendar[calendarLength - 1].date}
           </p>
         </div>
       );
