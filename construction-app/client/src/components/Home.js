@@ -193,9 +193,8 @@ export default function Home() {
             <div className="p-6">
               <div className="flex gap-10 justify-between">
                 <div className="w-1/2 pr-4">
-                  <div className="pb-6">
-                    <h1>Jobböversikt</h1>
-                    <p className="font-normal">December 2022 - Juli 2023</p>
+                  <div className="pb-16">
+                    <h1 className="text-xl font-bold">Jobböversikt</h1>
                   </div>
                   <CheckOngoingWork />
                   <CheckUpcomingWork />
@@ -210,7 +209,7 @@ export default function Home() {
           <div className="flex gap-4 mt-4">
             <div className="bg-white dark:bg-gray-800 w-1/2 p-6 rounded border-2 shadow">
               <div className="">
-                <h1>Garantier</h1>
+                <h1 className="text-xl font-bold">Garantier</h1>
               </div>
               <WarrantyHomePage />
               <CheckWarranties />
@@ -218,7 +217,7 @@ export default function Home() {
 
             <div className="bg-white dark:bg-gray-800 w-1/2 rounded border-2 shadow">
               <div className="p-6">
-                <h1>Jobb & Semester</h1>
+                <h1 className="text-xl font-bold">Jobb & Semester</h1>
                 <CircleChart />
               </div>
             </div>

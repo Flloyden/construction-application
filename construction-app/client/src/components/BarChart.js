@@ -109,7 +109,7 @@ export default function BarChart() {
     <>
     {!loading && (
     <div className="flex flex-col items-center w-full h-full">
-      <h2 className="text-xl font-bold">Arbetsdagar</h2>
+      <h1>Arbetsdagar</h1>
       <span className="text-sm font-semibold text-gray-500">{getMonthName(todayMonth)} {todayYear} - {getMonthName(endMonth)} {endYear}</span>
       <div className="flex items-end flex-grow w-full mt-7 space-x-2 sm:space-x-3">
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
