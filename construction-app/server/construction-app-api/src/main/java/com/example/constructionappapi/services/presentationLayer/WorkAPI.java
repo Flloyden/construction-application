@@ -56,12 +56,13 @@ public class WorkAPI {
         if (workRepository.checkForUpcomingWork() != null) {
             List<WorkEntity> work = workRepository.checkForUpcomingWork();
             List<CustomerEntity> customerEntities =  new ArrayList<>();
-            customerEntities.add(work.get(0).getCustomer());
-            return customerEntities;
-        } else {
-            return null;
+            if (work.size() != 0) {
+                customerEntities.add(work.get(0).getCustomer());
+                return customerEntities;
+            }
         }
-    }
+        return null;
+        }
 
     @GetMapping("/kunder/ongoing")
     public List<CustomerEntity> getOngoingWork() {
