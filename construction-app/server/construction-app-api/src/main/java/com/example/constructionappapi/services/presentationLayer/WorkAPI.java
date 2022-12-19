@@ -67,12 +67,13 @@ public class WorkAPI {
     public List<CustomerEntity> getOngoingWork() {
         if (workRepository.checkForOngoingWork() != null) {
             List<WorkEntity> work = workRepository.checkForOngoingWork();
-            List<CustomerEntity> customerEntities =  new ArrayList<>();
-            customerEntities.add(work.get(0).getCustomer());
-            return customerEntities;
-        } else {
-            return null;
+            List<CustomerEntity> customerEntities = new ArrayList<>();
+            if (work.size() != 0) {
+                customerEntities.add(work.get(0).getCustomer());
+                return customerEntities;
+            }
         }
+        return null;
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
