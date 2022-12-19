@@ -85,13 +85,11 @@ const AddCustomer = (props) => {
               <div className="mt-4 w-1/2">
                 <label className="block mt-1 whitespace-nowrap text-sm font-medium text-gray-700">
                   Pers.nr: (ÅÅÅÅMMDD-XXXX){" "}
-                  <span className="text-red-700 font-black">*</span>{" "}
                 </label>
                 <input
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   type="text"
                   name="socialSecurityNumber"
-                  required
                   value={customer.socialSecurityNumber}
                   onChange={(e) => handleChange(e)}
                 ></input>
@@ -104,7 +102,6 @@ const AddCustomer = (props) => {
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   type="text"
                   name="phoneNumber"
-                  required
                   value={customer.phoneNumber}
                   onChange={(e) => handleChange(e)}
                 ></input>
@@ -118,7 +115,6 @@ const AddCustomer = (props) => {
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 type="text"
                 name="mail"
-                required
                 value={customer.mail}
                 onChange={(e) => handleChange(e)}
               ></input>
@@ -129,13 +125,12 @@ const AddCustomer = (props) => {
             </p>
             <div className="mt-4 w-full">
               <label className="block mt-1 text-sm font-medium text-gray-700">
-                Gatuadress: <span className="text-red-700 font-black">*</span>{" "}
+                Gatuadress: {" "}
               </label>
               <input
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 type="text"
                 name="address"
-                required
                 value={customer.address}
                 onChange={(e) => handleChange(e)}
               ></input>
@@ -143,26 +138,24 @@ const AddCustomer = (props) => {
             <div className="flex w-full gap-2 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <div className="mt-4 w-1/2">
                 <label className="block mt-1 text-sm font-medium text-gray-700">
-                  Stad: <span className="text-red-700 font-black">*</span>{" "}
+                  Stad: {" "}
                 </label>
                 <input
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   type="text"
                   name="city"
-                  required
                   value={customer.city}
                   onChange={(e) => handleChange(e)}
                 ></input>
               </div>
               <div className="mt-4 w-1/2">
                 <label className="block mt-1 text-sm font-medium text-gray-700">
-                  Postnummer: <span className="text-red-700 font-black">*</span>{" "}
+                  Postnummer: {" "}
                 </label>
                 <input
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   type="text"
                   name="zip"
-                  required
                   value={customer.zip}
                   onChange={(e) => handleChange(e)}
                 ></input>

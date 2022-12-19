@@ -8,9 +8,7 @@ export default function CookiePolicy() {
         Vi använder inte cookies för att spara någon form av personlig
         information om våra användare. Vi använder endast cookies för att
         förbättra användarupplevelsen på vår webbplats. Genom att använda vår
-        webbplats accepterar du vår användning av cookies enligt denna policy.
-        Om du har några frågor eller funderingar angående vår cookie policy är du
-        välkommen att kontakta oss.
+        webbplats accepterar du användning av cookies.
       </p>
     </div>
   );

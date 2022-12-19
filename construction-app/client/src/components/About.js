@@ -17,11 +17,6 @@ export default function About() {
         inom React och IntelliJ. Vi hoppas att företaget blir nöjda med vårt
         arbete.
         </p>
-        <p className="font-normal text-justify mt-2">
-        Om du är intresserad av att lära dig mer om
-        webbapplikationen eller har några frågor, tveka inte att kontakta oss.
-        Vi är glada att hjälpa dig!
-        </p>
     </div>
   );
 }
