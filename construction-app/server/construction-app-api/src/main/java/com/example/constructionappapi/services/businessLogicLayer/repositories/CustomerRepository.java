@@ -22,6 +22,8 @@ public class CustomerRepository {
 
     @Autowired
     private CustomerDao customerDao;
+    @Autowired
+    private WorkRepository workRepository;
 
     /**
      * Adds the CustomerEntity-object to the WorkEntity-/CustomerNoteEntity-objects, to set foreign-key in the tables,
@@ -66,19 +68,27 @@ public class CustomerRepository {
     }
 
     public void deleteCustomer(Long id) {
-        customerDao.deleteById(id); //Deletes customer by ID
+        Optional<CustomerEntity> customer = getCustomer(id);
+        if (customer.isPresent()) {
+            List<WorkEntity> workEntities = workRepository.getAllWorkEntitiesByCustomerId(id);
+            if (workEntities != null && !workEntities.isEmpty()) {
+                for (WorkEntity workEntity : workEntities) {
+                    workRepository.deleteWorkEntity(workEntity.getId());
+                }
+            }
+
+            customerDao.deleteById(id); //Deletes customer by ID
+        }
     }
 
-    public List<CustomerEntity> getOngoingWorkTest()
-    {
+    public List<CustomerEntity> getOngoingWorkTest() {
         return customerDao.findCustomersWithWorkAndCalendarForToday();
     }
 
-   public List<CustomerEntity> getUpcomingWorkTest()
-   {
-       LocalDate tomorrow = LocalDate.now();
-       tomorrow = tomorrow.plusDays(1);
-       LocalDate tenDaysForward = tomorrow.plusDays(10);
-       return customerDao.findCustomersWithWorkAndCalendarBetweenStartDateAndEndDate(tomorrow,tenDaysForward);
-   }
+    public List<CustomerEntity> getUpcomingWorkTest() {
+        LocalDate tomorrow = LocalDate.now();
+        tomorrow = tomorrow.plusDays(1);
+        LocalDate tenDaysForward = tomorrow.plusDays(10);
+        return customerDao.findCustomersWithWorkAndCalendarBetweenStartDateAndEndDate(tomorrow, tenDaysForward);
+    }
 }

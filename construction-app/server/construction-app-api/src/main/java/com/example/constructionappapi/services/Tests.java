@@ -202,8 +202,30 @@ public class Tests {
         roof = workAPI.saveWork(customer.getId(), roof);
 
         CalendarSingleton.getCalendar().printCalendar();
-
  */
+    }
+
+    public void testRemoveCustomer() {
+        String ANSI_RED = "\u001B[31m";
+
+        System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "test", "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
+        CustomerAPI customerAPI = configurableApplicationContext.getBean(CustomerAPI.class);
+        customer = customerAPI.createCustomer(customer);
+
+        System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
+        WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
+
+        WorkEntity door = new WorkEntity(0L, "Door", null, 3, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        door = workAPI.saveWork(customer.getId(), door);
+
+        WorkEntity fence = new WorkEntity(0L, "Fence", null, 6, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        fence = workAPI.saveWork(customer.getId(), fence);
+
+        WorkEntity roof = new WorkEntity(0L, "Roof", null, 2, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        roof = workAPI.saveWork(customer.getId(), roof);
+
+        customerAPI.deleteCustomer(customer.getId());
     }
 
     public void testRemoveWork() {

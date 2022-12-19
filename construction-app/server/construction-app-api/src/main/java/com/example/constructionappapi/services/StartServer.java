@@ -51,6 +51,7 @@ public class StartServer {
             //tests.testMoveWorkForwardsOnAddVacation();
             //tests.testRemoveWork();
             //tests.testAddNotesCheckDateAndGetSum();
+            //tests.testRemoveCustomer();
 
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);

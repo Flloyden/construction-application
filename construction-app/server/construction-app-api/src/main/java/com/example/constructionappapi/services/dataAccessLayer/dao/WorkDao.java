@@ -1,12 +1,9 @@
 package com.example.constructionappapi.services.dataAccessLayer.dao;
 
-import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,4 +31,6 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     )
 
     List<WorkEntity> findWorkEntityForToday();
+
+    List<WorkEntity> findAllByCustomerId(Long id);
 }

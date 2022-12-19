@@ -29,8 +29,7 @@ public class WorkRepository {
     private CustomerNoteDao customerNoteDao;
     @Autowired
     private VacationCalendarDao vacationCalendarDao;
-    @Autowired
-    private CustomerRepository customerRepository;
+
     private final Calendar calendar = CalendarSingleton.getCalendar();
 
     public WorkRepository() {
@@ -43,7 +42,7 @@ public class WorkRepository {
      * @return
      */
     public WorkEntity addNewWorkEntity(long customerId, WorkEntity work) {
-        Optional<CustomerEntity> customer = customerRepository.getCustomer(customerId);
+        Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
 
@@ -155,5 +154,9 @@ public class WorkRepository {
 
     public List<WorkEntity> checkForOngoingWork() {
         return workDao.findWorkEntityForToday();
+    }
+
+    public List<WorkEntity> getAllWorkEntitiesByCustomerId(Long id) {
+        return workDao.findAllByCustomerId(id);
     }
 }
