@@ -62,13 +62,13 @@ export default function ChangeNote(props) {
                 <label className="block mt-1 text-sm font-medium text-gray-700">
                   Jobb:{" "}
                 </label>
-                <input required disabled value={work}></input>
+                <input required disabled value={work} className="bg-white"></input>
               </div>
               <div className="mt-0">
                 <label className="block mt-1 text-sm font-medium text-gray-700">
                   Datum:{" "}
                 </label>
-                <input required disabled value={date}></input>
+                <input required disabled value={date} className="bg-white"></input>
               </div>
             </div>
             <div className="flex gap-2">
