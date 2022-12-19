@@ -10,6 +10,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEnti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,18 +52,24 @@ public class WorkAPI {
     }
 
     @GetMapping("/kunder/upcoming")
-    public List<WorkEntity> getUpcomingWork() {
-        if (workRepository.checkForActiveWork() != null) {
-            return workRepository.checkForActiveWork();
+    public List<CustomerEntity> getUpcomingWork() {
+        if (workRepository.checkForUpcomingWork() != null) {
+            List<WorkEntity> work = workRepository.checkForUpcomingWork();
+            List<CustomerEntity> customerEntities =  new ArrayList<>();
+            customerEntities.add(work.get(0).getCustomer());
+            return customerEntities;
         } else {
             return null;
         }
     }
 
     @GetMapping("/kunder/ongoing")
-    public List<WorkEntity> getOngoingWork() {
+    public List<CustomerEntity> getOngoingWork() {
         if (workRepository.checkForOngoingWork() != null) {
-            return workRepository.checkForOngoingWork();
+            List<WorkEntity> work = workRepository.checkForOngoingWork();
+            List<CustomerEntity> customerEntities =  new ArrayList<>();
+            customerEntities.add(work.get(0).getCustomer());
+            return customerEntities;
         } else {
             return null;
         }

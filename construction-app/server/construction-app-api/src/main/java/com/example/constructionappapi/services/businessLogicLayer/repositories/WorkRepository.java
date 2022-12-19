@@ -144,7 +144,7 @@ public class WorkRepository {
         return null;
     }
 
-    public List<WorkEntity> checkForActiveWork() {
+    public List<WorkEntity> checkForUpcomingWork() {
         LocalDate today = LocalDate.now();
         today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
         //Lägger därför en dag framåt från dagens datum.

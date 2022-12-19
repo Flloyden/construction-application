@@ -27,6 +27,7 @@ public class Tests {
     }
 
     public void testAddVacation() {
+        /*
         VacationEntity vacationEntity1 = new VacationEntity(0L, "test", LocalDate.now(), 10, null);
         VacationEntity vacationEntity2 = new VacationEntity(0L, "test", LocalDate.now(), 10, null);
         VacationEntity vacationEntity3 = new VacationEntity(0L, "test", LocalDate.now().plusDays(20), 10, null);
@@ -34,11 +35,13 @@ public class Tests {
         vacationAPI.saveVacation(vacationEntity1);
         vacationAPI.saveVacation(vacationEntity2);
         vacationAPI.saveVacation(vacationEntity3);
+
+         */
     }
 
     public void testSkipVacationDatesWhenAddingWork() {
         Calendar calendar = CalendarSingleton.getCalendar();
-
+/*
         VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
@@ -53,11 +56,13 @@ public class Tests {
         calendar.addWork(door);
 
         calendar.printCalendar();
+
+ */
     }
 
     public void testSkipVacationDatesWhenRemovingWork() {
         Calendar calendar = CalendarSingleton.getCalendar();
-
+/*
         VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
@@ -82,11 +87,13 @@ public class Tests {
         calendar.printCalendar();
 
         calendar.printVacationCalendar();
+
+ */
     }
 
     public void testMoveWorkForwardsOnAddVacation() {
         Calendar calendar = CalendarSingleton.getCalendar();
-
+/*
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
@@ -100,11 +107,13 @@ public class Tests {
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
         calendar.printCalendar();
+
+ */
     }
 
     public void testMoveWorkBackwardsOnRemoveVacation() {
         Calendar calendar = CalendarSingleton.getCalendar();
-
+/*
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
@@ -120,12 +129,14 @@ public class Tests {
 
         vacationAPI.deleteVacation(vacationEntity.getId());
         calendar.printCalendar();
+        /*
+ */
     }
 
     public void testAddNotesCheckDateAndGetSum() {
         String ANSI_RED = "\u001B[31m";
         Calendar calendar = CalendarSingleton.getCalendar();
-
+/*
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
@@ -172,7 +183,7 @@ public class Tests {
 
     public void testAddWork() {
         String ANSI_RED = "\u001B[31m";
-
+/*
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerAPI customerAPI = configurableApplicationContext.getBean(CustomerAPI.class);
@@ -191,11 +202,13 @@ public class Tests {
         roof = workAPI.saveWork(customer.getId(), roof);
 
         CalendarSingleton.getCalendar().printCalendar();
+
+ */
     }
 
     public void testRemoveWork() {
         String ANSI_RED = "\u001B[31m";
-
+/*
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
 
@@ -220,9 +233,12 @@ public class Tests {
 
         System.out.println(ANSI_RED + "Removing work." + ANSI_RED);
         workAPI.deleteWorkEntity(fence.getId());
+
+ */
     }
 
     public void testWorkDateChange() {
+        /*
         String ANSI_RED = "\u001B[31m";
         Calendar calendar = CalendarSingleton.getCalendar();
 
@@ -253,5 +269,7 @@ public class Tests {
         workAPI.updateWork(customer.getId(), door);
         calendar.updateWork(door);
         calendar.printCalendar();
+
+         */
     }
 }
