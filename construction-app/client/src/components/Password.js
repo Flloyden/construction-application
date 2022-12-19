@@ -3,10 +3,11 @@ import React from "react";
 export default function Password() {
 
   return (
-    <div className="w-max mt-4">
-      <h1>Ändra lösenord</h1>
+    <div className="w-max mt-10">
+      <h1 className="text-2xl">Konto</h1>
+      <h1 className="pt-4">Ändra lösenord</h1>
       <form className="bg-white rounded dark:bg-gray-800">
-        <div className="mt-4">
+        <div className="mt-0">
           <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Gammalt lösenord: <span className="text-red-700 font-black">*</span>{" "}
           </label>

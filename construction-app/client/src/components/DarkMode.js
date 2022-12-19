@@ -16,7 +16,6 @@ export default function DarkMode() {
 
   useEffect(() => {
     const getValue = localStorage.getItem("theme");
-    console.log(getValue);
     // Gets all the clients on page load once per load
     setLoading(true);
     if (getValue === null) {
@@ -39,7 +38,7 @@ export default function DarkMode() {
     <>
       {!loading && (
         <div className="flex align-middle justify-start items-center pt-4">
-          <span className="text-sm font-medium pr-2">Mörkt läge</span>
+          <h1 className="pr-20">Mörkt läge</h1>
           <label className="inline-flex relative items-center cursor-pointer toggleDarkBtn">
             <input
               type="checkbox"

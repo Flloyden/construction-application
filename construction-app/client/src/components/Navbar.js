@@ -29,6 +29,12 @@ export default function Navbar(props) {
     { title: "Inställningar", src: <FiSettings />, link: "/settings"},
   ];
 
+  if (currentLocation.pathname.includes('/kunder/')) {
+    localStorage.setItem('active', 1);
+  } else if (currentLocation.pathname.includes('/garantier/')) {
+    localStorage.setItem('active', 2);
+  }
+
   // Checks the endpoint and changes the page tilte and header
   useEffect(() => {
     const titleMap = [

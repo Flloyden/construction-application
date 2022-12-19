@@ -20,27 +20,12 @@ export default function Settings() {
     <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white dark:text-white">
       <div className="rounded-lg w-full h-full">
         <h1 className="text-4xl dark:text-black">Inställningar</h1>
-        <div className="grid-cols-2 grid gap-4  mb-6">
+        <div className="grid-cols-2 grid gap-4 mb-6">
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
             <h1 className="text-2xl">Generellt</h1>
             <DarkMode />
-          </div>
-          <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
-            <h1 className="text-2xl">Konto</h1>
-            <Password />
-          </div>
-          <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
-            <h1 className="text-2xl">Översikt</h1>
-          </div>
-          <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
-            <h1 className="text-2xl">Kunder</h1>
-          </div>
-          <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
-            <h1 className="text-2xl">Kalender</h1>
             <SettingsCalendar />
-          </div>
-          <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
-            <h1 className="text-2xl">Garantier</h1>
+            <Password />
           </div>
           <div className="w-full h-fit bg-white dark:bg-gray-800 mt-4 p-6 rounded shadow border">
             <h1 className="text-2xl">Om</h1>

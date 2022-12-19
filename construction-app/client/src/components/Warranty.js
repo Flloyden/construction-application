@@ -43,7 +43,6 @@ export default function Warranty() {
           navigate("/error");
         } else {
           setWarranty(response.data);
-          console.log(response.data);
         }
       } catch (error) {
         console.log(error);

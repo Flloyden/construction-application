@@ -1,8 +1,9 @@
 import React from "react";
 export default function SettingsCalendar() {
   return (
-    <div className="w-48 mt-4">
-      <div className="flex w-full justify-between">
+    <div className="w-48 mt-10">
+      <h1 className="text-2xl">Kalender</h1>
+      <div className="flex w-full justify-between pt-4">
         <h1>Färg på jobb</h1>
         <div className="w-5 h-5 bg-blue-700 rounded"></div>
       </div>

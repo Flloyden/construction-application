@@ -15,8 +15,7 @@ export default function CheckUpcomingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getUpcomingWork();
-        setUpcomingWork(response.data);   
-        console.log(response.data);
+        setUpcomingWork(response.data);
       } catch (error) {
         console.log(error);
       }

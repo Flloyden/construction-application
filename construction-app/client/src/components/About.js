@@ -8,7 +8,7 @@ export default function About() {
         Webbapplikationen är skapad av en grupp skolstudenter som använt
         React och IntelliJ för att bygga en enkel, användarvänlig och
         funktionell lösning för ett privat företag. Applikationen gör det
-        möjligt för företaget att hålla koll på sina kunder, garantier och se en
+        möjligt för företaget att hålla koll på sina kunder, garantier samt en
         kalender för kommande händelser.
         </p>
         <p className="font-normal text-justify mt-2">
