@@ -33,16 +33,16 @@ export default function CheckUpcomingWork() {
       new Date(...b.startDate.split("/").reverse())
   );
  
-  let calendarLength = sortedDates[0].workList[1].calendar.length;  
+  let calendarLength = sortedDates[0].workList[0].calendar.length;  
   if(calendarLength !== 0)
   {
     return (
       <div className="font-normal">
-          <p>{sortedDates[0].name + " - " + sortedDates[0].workList[1].name}</p>
+          <p>{sortedDates[0].name + " - " + sortedDates[0].workList[0].name}</p>
           <p>
-            {sortedDates[0].workList[1].calendar[0].date +
+            {sortedDates[0].workList[0].calendar[0].date +
               " - " +
-              sortedDates[0].workList[1].calendar[calendarLength - 1].date}
+              sortedDates[0].workList[0].calendar[calendarLength - 1].date}
           </p>
         </div>
     )
