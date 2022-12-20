@@ -26,29 +26,32 @@ public class WorkEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private LocalDate startDate;
+    private LocalDate softStartDate;
+    private LocalDate hardStartDate;
     private int numberOfDays;
     private String materialNote;
     @Lob
     private String offer;
     private WorkStatus workStatus;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonBackReference("customerToWork")
     private CustomerEntity customer;
+
     @OneToMany(
             mappedBy = "work",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToCalendar")
     private List<CalendarEntity> calendar = new ArrayList<>();
+
     @OneToMany(
             mappedBy = "work",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToNote")
     private List<CustomerNoteEntity> customerNotes = new ArrayList<>();
-
 
     @OneToMany(
             mappedBy = "oneWork",
@@ -57,10 +60,10 @@ public class WorkEntity {
     @JsonManagedReference(value = "workToSummary")
     private List<NoteSummaryEntity> noteSummaries = new ArrayList<>();
 
-
     public List<CalendarEntity> getCalendarForWork() {
         return calendar;
     }
+
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
     }
@@ -75,6 +78,11 @@ public class WorkEntity {
 
     public List<NoteSummaryEntity> getNoteSummaries() {
         return noteSummaries;
+    }
+
+    public LocalDate getStartDate() {
+        if (hardStartDate != null) return hardStartDate;
+        else return softStartDate;
     }
 }
 
