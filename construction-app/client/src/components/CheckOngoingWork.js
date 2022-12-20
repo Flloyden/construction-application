@@ -17,6 +17,7 @@ export default function CheckOngoingWork() {
       try {
         const response = await ApiConnector.getOngoingWork();
         setOngoingWork(response.data);
+        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -52,19 +53,23 @@ export default function CheckOngoingWork() {
     {
       for(let j = 0;j<ongoingWork[0].workList[i].calendar.length;j++)
       {
-        if(ongoingWork[0].workList[i].calendar[j].date == currentDateString);
-        activeId = ongoingWork[0].workList[i].id;
-        activeWorkListIndex = i;
-        break;
+        if(ongoingWork[0].workList[i].calendar[j].date == currentDateString)
+        {
+          activeId = ongoingWork[0].workList[i].id;
+          activeWorkListIndex = i;
+          break;
+        } 
       }
     }
+    /*
     console.log(ongoingWork[0].workList[0].calendar[1].date);
     if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
     {
-      console.log("true");aed3qawd
+      console.log("true");
     }else{
       console.log("false");
     }
+    */
 
     if (calendarLength !== 0) {
       return (
