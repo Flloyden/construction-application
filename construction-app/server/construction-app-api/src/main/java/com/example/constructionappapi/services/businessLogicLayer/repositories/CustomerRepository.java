@@ -68,8 +68,7 @@ public class CustomerRepository {
     }
 
     public void deleteCustomer(Long id) {
-        Optional<CustomerEntity> customer = getCustomer(id);
-        if (customer.isPresent()) {
+        if (customerDao.existsById(id)) {
             List<WorkEntity> workEntities = workRepository.getAllWorkEntitiesByCustomerId(id);
             if (workEntities != null && !workEntities.isEmpty()) {
                 for (WorkEntity workEntity : workEntities) {
