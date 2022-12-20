@@ -35,20 +35,14 @@ export default function CheckOngoingWork() {
         new Date(...b.startDate.split("/").reverse())
     );
  
-    const date = new Date();
-
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    
-    // This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${year}-${month}-${day}`;
     let calendarLength = ongoingWork[0].workList[0].calendar.length;
     let workListLength = ongoingWork[0].workList.length;
     let activeWorkListIndex;
     const currentDateString = new Date().toISOString().slice(0,10);
+
      // Skapa en for loop som kollar igenom worklist och varje calendar array och kollar vilket work som innehåller dagens datum
     // Gör sedan det aktiva jobbets id till activeId;
+
     for(let i = 0;i<workListLength;i++)
     {
       for(let j = 0;j<ongoingWork[0].workList[i].calendar.length;j++)
@@ -61,16 +55,7 @@ export default function CheckOngoingWork() {
         } 
       }
     }
-    /*
-    console.log(ongoingWork[0].workList[0].calendar[1].date);
-    if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
-    {
-      console.log("true");
-    }else{
-      console.log("false");
-    }
-    */
-
+  
     if (calendarLength !== 0) {
       return (
         <div className="font-normal">
