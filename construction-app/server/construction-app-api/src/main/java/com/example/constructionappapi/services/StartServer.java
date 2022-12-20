@@ -45,11 +45,14 @@ public class StartServer {
             }
 
             Tests tests = new Tests(configurableApplicationContext);
-            //tests.testSkipVacationDatesWhenRemovingWork();
-            //tests.testMoveWorkBackwardsOnRemoveVacation();
+            //tests.testAddWork();
+            //tests.testRemoveWork();
+            //tests.testWorkDateChange();
+
             //tests.testAddVacation();
             //tests.testMoveWorkForwardsOnAddVacation();
-            //tests.testRemoveWork();
+            //tests.testSkipVacationDatesWhenRemovingWork();
+            //tests.testMoveWorkBackwardsOnRemoveVacation();
             //tests.testAddNotesCheckDateAndGetSum();
             //tests.testRemoveCustomer();
 

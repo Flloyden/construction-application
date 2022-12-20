@@ -30,7 +30,6 @@ public class Calendar {
     }
 
     public boolean addWork(WorkEntity work) {
-        //Check if the work item is already in the hashmap. TODO: Dunno if needed.
         for (WorkEntity workEntity : calendarDates.values()) {
             if (workEntity.getId() == work.getId()) return false;
         }
@@ -50,7 +49,6 @@ public class Calendar {
 
             /*If the date where the new work is getting added already contains something the content that is already there needs
               to be shuffled forward x days decided by the daysToShuffleForward variable.*/
-            //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
                 shuffleForward(dateToAddTo, daysToShuffleForward);
             } else daysToShuffleForward--;/*If the spot where new work is being added is free all future work that needs to be
@@ -71,11 +69,11 @@ public class Calendar {
      * @param work The new work-entity.
      * @return The updated work-entity.
      */
-    public boolean updateWork(WorkEntity work) {
+    public boolean updateWork(LocalDate oldStartDate, WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
-        moveCalendarItemBackwards(work.getStartDate());
+        moveCalendarItemBackwards(oldStartDate);
 
         return addWork(work);
     }
@@ -89,7 +87,6 @@ public class Calendar {
         int daysToAdd = vacation.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
 
-        long n = 0L;
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = vacation.getStartDate().plusDays(i);
 
@@ -128,24 +125,20 @@ public class Calendar {
     }
 
     public void moveCalendarItemBackwards(LocalDate startDate) {
-        //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
-        LocalDate[] lastDateMovedTo = {LocalDate.MIN};
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
             if (calendarEntity.getDate().isAfter(startDate)) {
-                lastDateMovedTo[0] = moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity, lastDateMovedTo[0]);
+                moveCalendarItemBackwards(calendarDates.get(calendarEntity), calendarEntity);
             }
         });
     }
 
-    public LocalDate moveCalendarItemBackwards(WorkEntity workToMove, CalendarEntity calendarEntity, LocalDate lastDateMovedTo) {
+    public void moveCalendarItemBackwards(WorkEntity workToMove, CalendarEntity calendarEntity) {
         LocalDate possibleDate = calendarEntity.getDate().minusDays(1L);
         LocalDate freeCalendarSpot = null;
 
         while (true) {
-            //Stop if we reached the last date that a work item was moved to.
-            if (!possibleDate.isAfter(lastDateMovedTo)) break;
             //Stop if the start date of the work-item being moved is reached.
-            if (workToMove.getStartDate().isAfter(possibleDate)) break;
+            if (workToMove.getHardStartDate() != null && workToMove.getHardStartDate().isAfter(possibleDate)) break;
             //Stop if the work-item being moved is the same as the one for which the date is being checked.
             if (calendarDates.get(new CalendarEntity(possibleDate)) == workToMove) break;
             //Stop if reached today's date.
@@ -168,10 +161,7 @@ public class Calendar {
             calendarEntity.setDate(freeCalendarSpot);
             calendarDates.put(calendarEntity, calendarEntity.getWork());
             calendarRepository.save(calendarEntity);
-            return freeCalendarSpot;
         }
-
-        return lastDateMovedTo;
     }
 
     public void printCalendar() {
@@ -213,7 +203,6 @@ public class Calendar {
             s.append("}");
             if (entrySetWork.hasNext()) s.append(",");
         }
-
 
         s.append("]");
 
