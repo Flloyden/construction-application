@@ -61,7 +61,7 @@ export default function CheckOngoingWork() {
     console.log(ongoingWork[0].workList[0].calendar[1].date);
     if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
     {
-      console.log("true");aed3qawd
+      console.log("true");
     }else{
       console.log("false");
     }
