@@ -19,7 +19,7 @@ export default function ForgotPassword(props) {
       <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
       <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
         <form onSubmit={handleSubmit} className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded">
-          <div className="flex border-b-2 px-6 py-3 items-center justify-between align-middle">
+          <div className="flex border-b-2 px-6 py-4 items-center justify-between align-middle">
             <div className="w-min whitespace-nowrap">
                 <h1 className="text-2xl">Glömt lösenord</h1>
             </div>
