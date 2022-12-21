@@ -76,5 +76,9 @@ public class WorkEntity {
     public List<NoteSummaryEntity> getNoteSummaries() {
         return noteSummaries;
     }
+
+    public void setSummary(NoteSummaryEntity noteSummary){
+        this.noteSummaries.add(noteSummary);
+    }
 }
 

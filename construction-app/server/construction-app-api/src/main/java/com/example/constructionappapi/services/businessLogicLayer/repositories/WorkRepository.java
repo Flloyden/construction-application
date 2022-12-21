@@ -9,6 +9,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Customer
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -141,6 +142,25 @@ public class WorkRepository {
         }
 
         return null;
+    }
+
+    @Transactional
+    public boolean updateWorkStatus(){
+
+        List<WorkEntity> workNotCompleted = workDao.findStartedWork();
+        System.out.println("--------------Hello from updateWorkStatus!");
+
+        for (WorkEntity workEntity : workNotCompleted) {
+            System.out.println("---------hejfrånloop------------");
+            //TODO tänk igenom detta om d funkar för alla situationer
+            if(!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()){
+                workEntity.setWorkStatus(WorkStatus.COMPLETED);
+                System.out.println("-------------------hej från ifsats");
+                return true;
+            }
+
+        }
+        return false;
     }
 
     public List<WorkEntity> checkForUpcomingWork() {

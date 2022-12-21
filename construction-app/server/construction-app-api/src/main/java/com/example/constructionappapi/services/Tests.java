@@ -205,6 +205,14 @@ public class Tests {
  */
     }
 
+    public void testSetWorkStatusToCompleted(){
+        String ANSI_RED = "\u001B[31m";
+
+        System.out.println(ANSI_RED + "Changing workstatus to completed" + ANSI_RED);
+        WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
+        workAPI.updateWorkStatus();
+    }
+
     public void testRemoveCustomer() {
         String ANSI_RED = "\u001B[31m";
 

@@ -3,6 +3,7 @@ package com.example.constructionappapi.services;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class StartServer {
@@ -24,9 +28,16 @@ public class StartServer {
             TimerTask repeatedTask = new TimerTask() {
                 public void run() {
                     System.out.println("Task performed on " + new Date());
+                    //TODO uppdatera status på jobb
                 }
             };
             Timer timer = new Timer("Timer");
+/*
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleAtFixedRate(repeatedTask, 8, 8, TimeUnit.HOURS);
+
+ */
+
 
             long delay = 1000L;
             long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
@@ -52,6 +63,7 @@ public class StartServer {
             //tests.testRemoveWork();
             //tests.testAddNotesCheckDateAndGetSum();
             //tests.testRemoveCustomer();
+            tests.testSetWorkStatusToCompleted();
 
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
