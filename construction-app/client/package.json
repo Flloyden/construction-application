@@ -16,6 +16,7 @@
     "date-holidays": "^3.16.10",
     "flowbite": "^1.5.3",
     "react": "^18.2.0",
+    "react-color": "^2.19.3",
     "react-datepicker": "^4.8.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
