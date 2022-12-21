@@ -5,6 +5,7 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class WorkAPI {
 
     @PostMapping("/kunder/{customerId}/work/save")
     public WorkEntity saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
-        return workRepository.saveWork(customerId, work);
+        return workRepository.addNewWorkEntity(customerId, work);
     }
 
     @PostMapping("/kunder/{customerId}/work/update")

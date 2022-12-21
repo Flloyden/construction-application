@@ -22,8 +22,6 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
 
     List<WorkEntity> findBySoftStartDateOrHardStartDate(LocalDate softStartDate, LocalDate hardStartDate);
 
-    List<WorkEntity> findByStartDate(LocalDate startdate);
-
     @Query(value = "SELECT customer.*, work.*, calendar.* " +
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +

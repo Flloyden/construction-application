@@ -9,7 +9,8 @@ const AddWork = (props) => {
     numberOfDays: "",
     materialNote: "",
     offer: "",
-    startDate: "",
+    softStartDate: "",
+    hardStartDate: "",
     workStatus: "NOTSTARTED",
     calendar: [],
   });
