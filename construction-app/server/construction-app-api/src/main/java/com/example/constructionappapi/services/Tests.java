@@ -294,4 +294,36 @@ public class Tests {
 
          */
     }
+
+    public void testChangeNumberOfDaysOnWork() {
+        String ANSI_RED = "\u001B[31m";
+        Calendar calendar = CalendarSingleton.getCalendar();
+
+        System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
+        CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
+        customer = customerRepository.createCustomer(customer);
+
+        System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
+        WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
+
+        WorkEntity door = new WorkEntity(0L, "Door", LocalDate.of(2023, 5, 22), 10, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        door = workRepository.addNewWorkEntity(customer.getId(), door);
+        calendar.addWork(door);
+
+        WorkEntity fence = new WorkEntity(0L, "Fence", LocalDate.of(2023, 5, 25), 10, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        fence = workRepository.addNewWorkEntity(customer.getId(), fence);
+        calendar.addWork(fence);
+
+        WorkEntity roof = new WorkEntity(0L, "Roof", LocalDate.of(2023, 5, 29), 2, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        roof = workRepository.addNewWorkEntity(customer.getId(), roof);
+        calendar.addWork(roof);
+        calendar.printCalendar();
+
+        System.out.println(ANSI_RED + "Calling update work." + ANSI_RED);
+        WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
+        door.setNumberOfDays(15);
+        workAPI.updateWork(customer.getId(), door);
+        calendar.printCalendar();
+    }
 }
