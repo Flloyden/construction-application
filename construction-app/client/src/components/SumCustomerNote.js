@@ -155,7 +155,7 @@ export default function SumCustomerNote(
         <div className="flex w-full gap-2 mt-8 justify-end inset-x-0 bottom-4 mx-auto">
             <button
               type="submit"
-              className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-full duration-300"
+              className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
             >
               Spara
             </button>
