@@ -134,7 +134,7 @@ const Login = () => {
                         setIsChangePasswordOpen(true);
                       }}>Glömt lösenord?</h1>
               </div>
-              <div className="mt-4 w-full">
+              <div className="mt-2 w-full">
                 <button
                   className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
                   disabled={loading}
