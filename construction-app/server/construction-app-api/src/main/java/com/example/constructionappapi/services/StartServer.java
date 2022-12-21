@@ -28,7 +28,7 @@ public class StartServer {
             TimerTask repeatedTask = new TimerTask() {
                 public void run() {
                     System.out.println("Task performed on " + new Date());
-                    //TODO uppdatera status på jobb
+                    //workRepository.updateWorkStatus() skall köras i g/dagen, förmodligen smart köra task:en strax efter midnatt varje dag
                 }
             };
             Timer timer = new Timer("Timer");
@@ -63,7 +63,7 @@ public class StartServer {
             //tests.testRemoveWork();
             //tests.testAddNotesCheckDateAndGetSum();
             //tests.testRemoveCustomer();
-            tests.testSetWorkStatusToCompleted();
+            //tests.testSetWorkStatusToCompleted();
 
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
