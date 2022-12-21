@@ -31,9 +31,9 @@ const Login = () => {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+  const [showWrongLogin, setShowWrongLogin] = useState(false);
 
   async function loginUser(credentials) {
-    console.log(JSON.stringify(credentials))
     return fetch('http://localhost:8080/api/v1/login', {
       method: 'POST',
       headers: {
@@ -52,12 +52,7 @@ const Login = () => {
       username,
       password
     });
-    console.log(response)
     if ('accessToken' in response) {
-      console.log("Success", response.message, "success", {
-        buttons: false,
-        timer: 2000,
-      })
         localStorage.setItem('accessToken', response['accessToken']);
         localStorage.setItem('user', JSON.stringify(response['user']));
         localStorage.setItem('active', 0);
@@ -72,11 +67,9 @@ const Login = () => {
           window.location.href = "/"
         }
     } else {
-      alert("Failed", response.message, "error");
-      console.log("Failed", response.message, "error");
+      setShowWrongLogin((showWrongLogin) => !showWrongLogin)
     }
     setLoading(false);
-    console.log(loading);
   };
 
   const handleLogout = (e) => {
@@ -131,8 +124,13 @@ const Login = () => {
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
               </div>
-              <div className="flex justify-end w-full mt-1">
-                <h1 className="w-max text-blue-600 hover:cursor-pointer hover:text-blue-400" onClick={() => {
+              <div className="flex justify-between w-full mt-2">
+                <div>
+              {showWrongLogin && (
+                <div className="bg-red-500 px-4 rounded text-white py-1">Felaktig inloggning</div>
+              )}
+              </div>
+                <h1 className="w-max py-1 text-blue-600 hover:cursor-pointer hover:text-blue-400" onClick={() => {
                         setIsChangePasswordOpen(true);
                       }}>Glömt lösenord?</h1>
               </div>
