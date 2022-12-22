@@ -66,12 +66,13 @@ public class WorkRepository {
                 newWork.setStartDate(startDateOfNewWork);
             }
 
-            if(newWork.getStartDate().equals(LocalDate.now())){
+            if (newWork.getStartDate().equals(LocalDate.now())) {
                 newWork.setWorkStatus(WorkStatus.STARTED);
             }
 
             newWork = workDao.save(newWork);
             calendar.addWork(newWork);
+            updateStartingDates();
             return newWork;
         }
 
@@ -114,13 +115,13 @@ public class WorkRepository {
      *
      * @param id
      */
-
     public void deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
         if (work.isPresent()) {
             if (customerNoteDao.findFirstByWork(work.get()).isEmpty()) {
                 workDao.delete(work.get());
                 calendar.removeWork(work.get());
+                updateStartingDates();
             }
         }
     }
@@ -135,12 +136,12 @@ public class WorkRepository {
             work.setCustomer(customer.get());
 
             List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
-            if(!noteList.isEmpty()){
+            if (!noteList.isEmpty()) {
                 work.setCustomerNotes(noteList);
             }
 
             List<NoteSummaryEntity> sumList = noteSummaryDao.findAllByWorkNumber(work.getId());
-            if(!sumList.isEmpty()){
+            if (!sumList.isEmpty()) {
                 work.setNoteSummaries(sumList);
             }
 
@@ -149,7 +150,16 @@ public class WorkRepository {
                 if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
                     //Checks if the date has been changed and updates the calendar if it has.
                     if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                        calendar.updateWork(work);
+
+                        if (preUpdateWork.get().getStartDate().equals(work.getStartDate())) {
+                            if (work.getNumberOfDays() < preUpdateWork.get().getNumberOfDays()) {
+                                calendar.reduceNumberOfDays(work, preUpdateWork.get().getNumberOfDays() - work.getNumberOfDays());
+                            } else if (work.getNumberOfDays() > preUpdateWork.get().getNumberOfDays()) {
+                                calendar.increaseNumberOfDays(work, work.getNumberOfDays() - preUpdateWork.get().getNumberOfDays());
+                            }
+                        } else {
+                            calendar.changeStartingDate(work);
+                        }
                     }
 
                     return addNewWorkEntity(customerId, work);
@@ -160,22 +170,36 @@ public class WorkRepository {
         return null;
     }
 
+    private void updateStartingDates(){
+         workDao.findAllUncompletedWork().forEach(work -> {
+             Optional<CalendarEntity> calendarEntity =  calendarDao.findFirstByWorkIdOrderByDate(work.getId());
+             calendarEntity.ifPresent(entity -> {
+                 if (!work.getStartDate().equals(entity.getDate())){
+                     work.setStartDate(entity.getDate());
+
+                     workDao.save(work);
+                 }
+             });
+
+         });
+    }
+
     @Transactional
-    public boolean updateWorkStatus(){
+    public boolean updateWorkStatus() {
 
         List<WorkEntity> startedWork = workDao.findStartedWork();
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : startedWork) {
             //TODO tänk igenom detta om d funkar för alla situationer
-            if(!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()){
+            if (!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()) {
                 workEntity.setWorkStatus(WorkStatus.COMPLETED);
                 return true;
             }
         }
 
-        for (WorkEntity workEntity: workNotStarted) {
-            if(workEntity.getStartDate().equals(LocalDate.now())){
+        for (WorkEntity workEntity : workNotStarted) {
+            if (workEntity.getStartDate().equals(LocalDate.now())) {
                 workEntity.setWorkStatus(WorkStatus.STARTED);
                 return true;
             }

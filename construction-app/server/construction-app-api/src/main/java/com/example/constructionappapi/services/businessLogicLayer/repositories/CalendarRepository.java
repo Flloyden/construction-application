@@ -40,6 +40,7 @@ public class CalendarRepository {
     public String getAllVacationDates() {
         return calendar.vacationToString();
     }
+
     public String getAllCalendarEntites() {
         return calendar.toString();
 
@@ -75,5 +76,16 @@ public class CalendarRepository {
         tomorrow = tomorrow.plusDays(1);
         LocalDate thirtyDaysForward = tomorrow.plusDays(30);
         return calendarDao.findByDateBetween(tomorrow, thirtyDaysForward);
+    }
+
+    public Optional<CalendarEntity> deleteLastByWorkId(long workId) {
+        Optional<CalendarEntity> calendarEntity = calendarDao.findFirstByWorkIdOrderByDateDesc(workId);
+        calendarEntity.ifPresent(entity -> calendarDao.delete(entity));
+
+        return calendarEntity;
+    }
+
+    public Optional<CalendarEntity> findFirstByWorkIdByOrderByDateDesc(long workId) {
+        return calendarDao.findFirstByWorkIdOrderByDateDesc(workId);
     }
 }

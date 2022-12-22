@@ -28,6 +28,12 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     )
     List<WorkEntity> findStartedWork();
 
+    @Query(
+            value = "SELECT * FROM work WHERE NOT work.work_status = 2",
+            nativeQuery = true
+    )
+    List<WorkEntity> findAllUncompletedWork();
+
 
     @Query(
             value = "SELECT * FROM work WHERE work.work_status = 0",

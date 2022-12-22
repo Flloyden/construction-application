@@ -21,11 +21,16 @@ public class Calendar {
     public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
     public HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
 
+    public HashSet<WorkEntity> workSet = new HashSet<>();
+
     /**
      * Retrieves calendar items from the database and populates the hash-map with them.
      */
     public void initializeCalendar() {
-        calendarRepository.findAll().forEach(calendarEntity -> calendarDates.put(calendarEntity, calendarEntity.getWork()));
+        calendarRepository.findAll().forEach(calendarEntity -> {
+            calendarDates.put(calendarEntity, calendarEntity.getWork());
+            workSet.add(calendarEntity.getWork());
+        });
         vacationRepository.findAllVacationCalendarEntities().forEach(vacationCalendarEntity -> vacationDates.put(vacationCalendarEntity, vacationCalendarEntity.getVacation()));
     }
 
@@ -35,11 +40,46 @@ public class Calendar {
             if (workEntity.getId() == work.getId()) return false;
         }
 
+        workSet.add(work);
+        addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
+        /*
         int daysToAdd = work.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
         long n = 0L;
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = work.getStartDate().plusDays(i + n);
+
+            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
+                dateToAddTo = dateToAddTo.plusDays(1);
+                n++;
+            }
+
+            CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
+
+            //If the date where the new work is getting added already contains something the content that is already there needs
+            //to be shuffled forward x days decided by the daysToShuffleForward variable.
+            //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
+            if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
+                shuffleForward(dateToAddTo, daysToShuffleForward);
+            } else daysToShuffleForward--;
+            //If the spot where new work is being added is free all future work that needs to be
+            //shuffled forward should be shuffled forward one day less.
+
+            //Add work to the specified date.
+            calendarEntity = calendarRepository.save(calendarEntity);
+            //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
+            calendarDates.put(calendarEntity, work);
+        }
+         */
+
+        return true;
+    }
+
+    private void addDaysToCalendar(int numberOfDaysToAdd, LocalDate startDate, WorkEntity work) {
+        int daysToShuffleForward = numberOfDaysToAdd;
+        long n = 0L;
+        for (int i = 0; i < numberOfDaysToAdd; i++) {
+            LocalDate dateToAddTo = startDate.plusDays(i + n);
 
             while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
                 dateToAddTo = dateToAddTo.plusDays(1);
@@ -61,26 +101,39 @@ public class Calendar {
             //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work);
         }
-
-        return true;
     }
 
     /**
      * Updates the dates for a work in the calendar by removing the old dates and then adding the new ones.
      *
      * @param work The new work-entity.
-     * @return The updated work-entity.
      */
-    public boolean updateWork(WorkEntity work) {
+    public void changeStartingDate(WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
 
         moveCalendarItemBackwards(work.getStartDate());
 
-        return addWork(work);
+        addWork(work);
+    }
+
+    public void increaseNumberOfDays(WorkEntity work, int numberOfDays) {
+
+        Optional<CalendarEntity> calendarEntity = calendarRepository.findFirstByWorkIdByOrderByDateDesc(work.getId());
+        calendarEntity.ifPresent(entity -> addDaysToCalendar(numberOfDays, calendarEntity.get().getDate(), work));
+    }
+
+    public void reduceNumberOfDays(WorkEntity work, int numberOfDays) {
+        for (int i = 0; i < numberOfDays; i++) {
+            Optional<CalendarEntity> calendarEntityToRemove = calendarRepository.deleteLastByWorkId(work.getId());
+            calendarEntityToRemove.ifPresent(entity -> calendarDates.remove(calendarEntityToRemove.get()));
+        }
+
+        moveCalendarItemBackwards(work.getStartDate());
     }
 
     public void removeWork(WorkEntity work) {
+        workSet.remove(work);
         calendarDates.entrySet().removeIf(item -> item.getValue().getId() == work.getId());
         moveCalendarItemBackwards(work.getStartDate());
     }
@@ -257,6 +310,10 @@ public class Calendar {
 
     public HashMap<CalendarEntity, WorkEntity> getCalendarHashMap() {
         return calendarDates;
+    }
+
+    public HashSet<WorkEntity> getWorkSet() {
+        return workSet;
     }
 }
 

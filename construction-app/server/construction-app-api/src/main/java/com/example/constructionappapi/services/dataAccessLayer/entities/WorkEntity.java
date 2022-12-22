@@ -21,10 +21,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkEntity {
+public class WorkEntity implements Comparable<WorkEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private LocalDate startDate;
     private int numberOfDays;
@@ -60,6 +60,7 @@ public class WorkEntity {
     public List<CalendarEntity> getCalendarForWork() {
         return calendar;
     }
+
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
     }
@@ -76,8 +77,26 @@ public class WorkEntity {
         return noteSummaries;
     }
 
-    public void setSummary(NoteSummaryEntity noteSummary){
+    public void setSummary(NoteSummaryEntity noteSummary) {
         this.noteSummaries.add(noteSummary);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != WorkEntity.class) return false;
+
+        WorkEntity workEntity = (WorkEntity) obj;
+        return id.equals(workEntity.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public int compareTo(WorkEntity o) {
+        return id.compareTo(o.getId());
     }
 }
 
