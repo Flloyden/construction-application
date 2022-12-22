@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { MdOutlineExitToApp } from "react-icons/md"
 import ApiConnector from "../services/ApiConnector";
 
 export default function Logout(props) {
@@ -32,6 +33,19 @@ export default function Logout(props) {
     };
     fetchData();
   }, []);
+
+  function checkNav() {
+    const getItem = localStorage.getItem("nav")
+    if (getItem === "true") {
+      return (
+        <MdOutlineExitToApp className="text-4xl mx-auto rotate-180" />
+      )
+    } else {
+      return (
+        <p>Logga ut</p>
+      )
+    }
+  }
   
   return (
     <>
@@ -44,7 +58,7 @@ export default function Logout(props) {
         className={isMobile ? "bg-blue-600 text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300" : "bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 w-full duration-300"}
         onClick={props.handleLogout}
       >
-        Logga ut
+        {checkNav()}
       </button>
     </div>
     )}
