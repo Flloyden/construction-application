@@ -78,6 +78,13 @@ public class AccountAPI {
         return s.toString();
     }
 
+    @PostMapping("/user/update")
+    public void updateUserInfo(@RequestBody AccountEntity account) {
+        accountRepository.updateUserInfo(account);
+
+        System.out.println(account);
+    }
+
     @GetMapping("/account/{id}")
     public Optional<AccountEntity> getAccount(@PathVariable final Long id) {
         return accountRepository.getAccount(id);
