@@ -93,7 +93,7 @@ export default function Navbar(props) {
   return (
     <div className={navToggle ? `w-72 h-full bg-white border-r-2 dark:bg-gray-800 duration-200` : `w-32 h-full bg-white border-r-2 dark:bg-gray-800 duration-200`}>
       <div className={navToggle ? "w-72 h-full fixed p-5 pt-8 bg-white border-r-2 shadow-xl dark:bg-gray-800 duration-200" : "w-32 h-full fixed p-5 pt-8 bg-white border-r-2 shadow-xl dark:bg-gray-800 duration-200"}>
-      <button className="p-2 text-2xl bg-white shadow rounded border mt-3 absolute -right-5" type="submit" onClick={() => { toggleNav() }}><FcExpand className={navToggle ? "rotate-[90deg] duration-200" : "rotate-[270deg] duration-200"} /></button>
+      <button className="p-2 text-2xl bg-white shadow rounded border border-slate-400 mt-3 absolute -right-5 dark:bg-gray-800 dark:border-gray-600" type="submit" onClick={() => { toggleNav() }}><FcExpand className={navToggle ? "rotate-[90deg] duration-200" : "rotate-[270deg] duration-200"} /></button>
         <div className="flex-none gap-x-4 items-center w-full h-full relative text-black dark:text-white">
           {checkNav()}
           <ul
