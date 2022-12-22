@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
@@ -28,9 +29,11 @@ public class NoteSummaryRepository {
     @Autowired
     private WorkDao workDao;
 
+    @Autowired
+    private CustomerNoteDao customerNoteDao;
+
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
-        noteSummary.setDatePostedSum(LocalDate.now());
         Optional<WorkEntity> work = workDao.findById(workId);
 
         List<CustomerNoteEntity> summedNotes = new ArrayList<>();
@@ -39,9 +42,10 @@ public class NoteSummaryRepository {
         long timeEmployeeSum = 0;
 
         if(work.isPresent()){
-            List<CustomerNoteEntity> allNotes = work.get().getCustomerNotes();
-            if(!allNotes.isEmpty()){
-                for (CustomerNoteEntity customerNoteEntity : allNotes) {
+            List<CustomerNoteEntity> allNotesForWork = customerNoteDao.findAllByWorkId(workId);
+                    //work.get().getCustomerNotes();
+            if(!allNotesForWork.isEmpty()){
+                for (CustomerNoteEntity customerNoteEntity : allNotesForWork) {
                     if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED){ //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
                         kmDrivenSum += Long.parseLong(customerNoteEntity.getKmDriven());
@@ -51,28 +55,30 @@ public class NoteSummaryRepository {
                         customerNoteEntity.setNoteStatus(NoteStatus.SUMMARIZED); //sätt anteckningarna till avslutade
                         customerNoteEntity.setSummary(noteSummary); //varje avslutad anteckning får en summering
                         summedNotes.add(customerNoteEntity); //för att lägga till anteckningarna till Summary
+
+
+                        noteSummary.setKmDrivenSum(String.valueOf(kmDrivenSum));
+                        noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
+                        noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
+
+                        noteSummary.setDatePostedSum(LocalDate.now());
+                        noteSummary.setWorkNumber(workId);
+
+                        CustomerEntity customerEntity = work.get().getCustomer();
+                        noteSummary.setCustomer(customerEntity);
+
+                        String workName = work.get().getName();
+                        noteSummary.setWorkName(workName);
+                        noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
+                        noteSummary.setWorkForSummary(work.get()); //assigna summary till work
+                        //work.get().setSummary(noteSummary);
                     }
                 }
-
-                noteSummary.setKmDrivenSum(String.valueOf(kmDrivenSum));
-                noteSummary.setTimeSpendSum(String.valueOf(timeSpentSum));
-                noteSummary.setTimeEmployeeSum(String.valueOf(timeEmployeeSum));
-
-                noteSummary.setWorkNumber(workId);
-
-                CustomerEntity customerEntity = work.get().getCustomer();
-                noteSummary.setCustomer(customerEntity);
-
-                String workName = work.get().getName();
-                noteSummary.setWorkName(workName);
-                noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
-                noteSummary.setWorkForSummary(work.get()); //assigna summary till work
-                //work.get().setSummary(noteSummary);
                 return noteSummaryDao.save(noteSummary);
             }
 
         }
-        return null; //om jobbId inte existerar
+        return null;
     }
 
 

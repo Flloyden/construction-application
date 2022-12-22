@@ -46,8 +46,7 @@ public class CustomerNoteRepository {
         }
 
         LocalDate dateToAdd;
-        if(//customerNoteDao.findAllByWorkId(workId).isEmpty()
-                !customerNoteDao.existsById(customerNoteEntity.getId())){ //om ny anteckning
+        if(!customerNoteDao.existsById(customerNoteEntity.getId())){ //om ny anteckning
             dateToAdd = getDateForNewNote(workId);
 
             if(dateToAdd == null){
@@ -55,10 +54,10 @@ public class CustomerNoteRepository {
             }
 
             customerNoteEntity.setDatePosted(dateToAdd);
-        }//else{ //om gammal anteckning som redigeras
-           // Optional<CustomerNoteEntity> oldNote = customerNoteDao.findById(customerNoteEntity.getId());
-           // oldNote.get().setDatePosted(oldNote.get().getDatePosted());
-        //}
+        }else{ //om gammal anteckning som redigeras
+            Optional<CustomerNoteEntity> oldNote = customerNoteDao.findById(customerNoteEntity.getId());
+            customerNoteEntity.setDatePosted(oldNote.get().getDatePosted());
+        }
 
         CustomerEntity customerEntity = work.get().getCustomer(); //hämta customer till det jobbet
         customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
