@@ -28,20 +28,9 @@ export default function CheckOngoingWork() {
 
   function getOngoingWork() {
     /*Gets upcoming ongoingWork within ten days of today's date*/
-    let sortedDates = ongoingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
- 
-    const date = new Date();
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
     
     // This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${year}-${month}-${day}`;
     let calendarLength = ongoingWork[0].workList[0].calendar.length;
     let workListLength = ongoingWork[0].workList.length;
     let activeWorkListIndex;
@@ -52,19 +41,20 @@ export default function CheckOngoingWork() {
     {
       for(let j = 0;j<ongoingWork[0].workList[i].calendar.length;j++)
       {
-        if(ongoingWork[0].workList[i].calendar[j].date == currentDateString);
+        if(ongoingWork[0].workList[i].calendar[j].date === currentDateString);
         activeId = ongoingWork[0].workList[i].id;
         activeWorkListIndex = i;
         break;
       }
     }
-    console.log(ongoingWork[0].workList[0].calendar[1].date);
-    if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
-    {
-      console.log("true");
-    }else{
-      console.log("false");
-    }
+    //console.log(ongoingWork[0].workList[0].calendar[1].date);
+    console.log(ongoingWork)
+    //if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
+    //{
+      //console.log("true");
+    //}else{
+      //console.log("false");
+    //}
 
     if (calendarLength !== 0) {
       return (

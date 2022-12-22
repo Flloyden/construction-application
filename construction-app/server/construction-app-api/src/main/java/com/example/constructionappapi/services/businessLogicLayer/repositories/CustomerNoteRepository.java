@@ -38,7 +38,13 @@ public class CustomerNoteRepository {
 
     @Transactional //krävs för getDateForNewNote();
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNoteEntity, long workId) {
+
         Optional<WorkEntity> work = workDao.findById(workId);
+
+        if(work.get().getNumberOfDays() == work.get().getCustomerNotes().size()){
+            return null;
+        }
+
         LocalDate dateToAdd;
         if(//customerNoteDao.findAllByWorkId(workId).isEmpty()
                 !customerNoteDao.existsById(customerNoteEntity.getId())){ //om ny anteckning

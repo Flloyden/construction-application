@@ -23,6 +23,7 @@ export default function CheckUpcomingWork() {
     };
     fetchData();
   }, []);
+  console.log(upcomingWork)
 
   function getUpcomingWork() { 
 
@@ -37,7 +38,7 @@ export default function CheckUpcomingWork() {
 
     for(let i = 0;i<sortedDates[0].workList.length;i++)
     {
-      if(sortedDates[0].workList[i].id != activeId)
+      if(sortedDates[0].workList[i].id !== activeId)
       {
         activeWork = sortedDates[0].workList[i];
       }

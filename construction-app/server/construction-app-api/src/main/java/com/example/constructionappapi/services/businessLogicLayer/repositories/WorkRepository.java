@@ -133,7 +133,6 @@ public class WorkRepository {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
-            System.out.println("-------------------customer: " +customer.get().getName());
 
             List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
             if(!noteList.isEmpty()){
@@ -147,7 +146,6 @@ public class WorkRepository {
 
             Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
             if (preUpdateWork.isPresent()) {
-                System.out.println("--------------------japp finns preUpdateWork");
                 if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
                     //Checks if the date has been changed and updates the calendar if it has.
                     if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
@@ -165,15 +163,22 @@ public class WorkRepository {
     @Transactional
     public boolean updateWorkStatus(){
 
-        List<WorkEntity> workNotCompleted = workDao.findStartedWork();
+        List<WorkEntity> startedWork = workDao.findStartedWork();
+        List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
-        for (WorkEntity workEntity : workNotCompleted) {
+        for (WorkEntity workEntity : startedWork) {
             //TODO tänk igenom detta om d funkar för alla situationer
             if(!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()){
                 workEntity.setWorkStatus(WorkStatus.COMPLETED);
                 return true;
             }
+        }
 
+        for (WorkEntity workEntity: workNotStarted) {
+            if(workEntity.getStartDate().equals(LocalDate.now())){
+                workEntity.setWorkStatus(WorkStatus.STARTED);
+                return true;
+            }
         }
         return false;
     }
