@@ -141,12 +141,11 @@ export default function Home() {
   }
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white dark:text-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white dark:text-white">
       <div className="flex gap-4 rounded">
         <div className="w-3/4 rounded">
           <div className="bg-white dark:bg-gray-800 shadow rounded border-2 p-4">
-            <div className="text-2xl font-bold">Översikt</div>
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-0 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="rounded-full p-6 w-20 h-20 bg-blue-600 flex align-middle justify-center items-center">
                   <h1 className="text-4xl font-normal tracking-wider">TE</h1>
@@ -193,7 +192,7 @@ export default function Home() {
             <div className="p-6">
               <div className="flex gap-10 justify-between">
                 <div className="w-1/2 pr-4">
-                  <div className="pb-16">
+                  <div className="pb-4">
                     <h1 className="text-xl font-bold">Jobböversikt</h1>
                   </div>
                   <CheckOngoingWork />

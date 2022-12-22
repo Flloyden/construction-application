@@ -5,9 +5,10 @@ import { BrowserView, MobileView } from "react-device-detect";
 import Logout from "./Logout";
 import { isMobile } from "react-device-detect";
 import ForgotPassword from "./ForgotPassword";
+import image from "../BiTs-logo.png";
 
 const Login = () => {
-  document.title = "Thomas Erikssons byggnadsserice | Bokföringssystem"
+  document.title = "BiTs | Thomas Erikssons byggnadsserice"
   if (
     localStorage.theme === "true" ||
     (!("theme" in localStorage) &&
@@ -101,8 +102,9 @@ const Login = () => {
           <div className="absolute w-screen h-full bg-gray-500 bg-opacity-70 top-0 left-0">
             <div className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4" : "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"}>
             <form onSubmit={handleSubmit} className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6">
+              <img src={image} alt="logo" width={"30%"} className="mx-auto pb-2" />
               <h1 className="text-2xl">Thomas Erikssons byggnadsservice</h1>
-              <div className="mt-4">
+              <div className="mt-2">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Användarnamn:
                 </label>

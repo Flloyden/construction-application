@@ -32,7 +32,7 @@ export default function ForgotPassword(props) {
               </button>
             </div>
           </div>
-          <div className="w-full shadow-lg rounded-md p-6">
+          <div className="w-full shadow-lg rounded-md p-8">
             <div className="w-full gap-2 text-white">
               <label className="block text-sm font-medium text-gray-700">
                 Email:
@@ -44,13 +44,13 @@ export default function ForgotPassword(props) {
                 />
               </label>
             </div>
-            <div className="my-10 mx-4 text-center">
+            <div className="my-14 mx-4 text-center">
                 <p>Genom att återställa lösenordet skickas ett nytt</p>
                 <p>lösenord till den angivna mailadressen.</p>
             </div>
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
-                className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-full duration-300"
+                className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
                 type="submit"
               >
                 Återställ lösenord
