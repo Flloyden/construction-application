@@ -22,7 +22,8 @@ export default function Navbar(props) {
   }
   // Declaring variables
   let currentLocation = useLocation();
-  const [navToggle, setNavToggle] = useState(false);
+  
+  const [navToggle, setNavToggle] = useState(true);
   // Menus
   const Menus = [
     { title: "Översikt", src: <AiOutlineHome />, link: "/" },
@@ -44,6 +45,11 @@ export default function Navbar(props) {
       { path: "/help", title: "BiTs | Hjälp" },
       { path: "/settings", title: "BiTs | Inställningar" },
     ];
+    if (localStorage.nav === "true") {
+      setNavToggle(false)
+    } else {
+      setNavToggle(true)
+    }
     const currentTitle = titleMap.find(
       (item) => item.path === currentLocation.pathname
     );
@@ -69,7 +75,7 @@ export default function Navbar(props) {
 
   function toggleNav() {
     setNavToggle(!navToggle)
-    console.log(navToggle)
+    localStorage.setItem("nav", navToggle);
   }
 
   function checkNav() {
