@@ -140,6 +140,14 @@ class ApiConnector {
   editNote(noteId, note) {
     return axios.post(NOTES_API + "/edit/" + noteId, note)
   }
+
+  getUser(user) {
+    return axios.get("http://localhost:8080/api/v1/user/" + user)
+  }
+
+  updateUser(user) {
+    return axios.post("http://localhost:8080/api/v1/user/update", user)
+  }
 }
 
 export default new ApiConnector();

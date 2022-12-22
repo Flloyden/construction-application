@@ -62,7 +62,11 @@ export default function AddCustomerNote(
     ApiConnector.saveNote(addNoteInfo.workNumber, addNoteInfo)
       .then((response) => {
         console.log(response);
-        window.location.reload(false);
+        if(response.data.length < 1) {
+          alert("Går ej att lägga till fler anteckningar än det finns jobbdagar.")
+        } else {
+          window.location.reload(false);
+        }
       })
       .catch((error) => {
         console.log(error);
