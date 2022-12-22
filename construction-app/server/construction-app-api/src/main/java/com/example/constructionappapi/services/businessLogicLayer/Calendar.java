@@ -20,9 +20,10 @@ public class Calendar {
 
     //public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
     public HashMap<CalendarEntity, Long> calendarDates = new HashMap<>();
+    public HashMap<Long, WorkEntity> workMap = new HashMap<>();
     public HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
 
-    public HashMap<Long, WorkEntity> workMap = new HashMap<>();
+
 
     /**
      * Retrieves calendar items from the database and populates the hash-map with them.
