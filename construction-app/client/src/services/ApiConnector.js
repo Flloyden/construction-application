@@ -63,7 +63,7 @@ class ApiConnector {
     return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
   }
 
-  updateWorkStatusToCompleted() {
+  updateWorkStatus() {
     return axios.post(CUSTOMER_API_BASE_URL + "/work/update_status")
   }
 
