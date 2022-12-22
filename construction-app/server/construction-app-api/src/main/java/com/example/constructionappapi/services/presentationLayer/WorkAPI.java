@@ -36,9 +36,14 @@ public class WorkAPI {
         return workRepository.updateWork(customerId, work);
     }
 
-    @PostMapping("/kunder/work/update_status")
-    public boolean updateWorkStatus() {
-        return workRepository.updateWorkStatus();
+    @PostMapping("/kunder/work/update_workstatus_completed")
+    public boolean findWorkAndUpdateToCompleted() {
+        return workRepository.findWorkAndUpdateToCompleted();
+    }
+
+    @PostMapping("/kunder/work/update_workstatus_started")
+    public boolean findWorkAndUpdateToStarted() {
+        return workRepository.findWorkAndUpdateToStarted();
     }
 
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")

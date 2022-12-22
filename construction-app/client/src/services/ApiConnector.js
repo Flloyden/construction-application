@@ -63,8 +63,8 @@ class ApiConnector {
     return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
   }
 
-  updateWorkStatus() {
-    return axios.post(CUSTOMER_API_BASE_URL + "/work/update_status")
+  findWorkAndUpdateToCompleted() {
+    return axios.post(CUSTOMER_API_BASE_URL + "/work/update_workstatus_completed")
   }
 
   // ACCOUNTING / WARRANTY

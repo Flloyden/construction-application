@@ -2,13 +2,10 @@ package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerNoteRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
-import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
@@ -241,7 +238,7 @@ public class Tests {
 
         System.out.println(ANSI_RED + "Changing workstatus to completed" + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
-        workAPI.updateWorkStatus();
+        workAPI.findWorkAndUpdateToCompleted();
     }
 
     public void testRemoveCustomer() {
