@@ -35,8 +35,8 @@ public class AccountAPI {
             s.append("\"accessToken\":").append("\"").append(UUID.randomUUID()).append("\"").append(",");
             s.append("\"user\":").append("{");
             s.append("\"id\":").append(account.getId()).append(",");
-            s.append("\"username\":").append("\"").append(account.getUsername()).append("\"");
-            s.append("\"email\":").append("\"").append(account.getEmail()).append("\"");
+            s.append("\"username\":").append("\"").append(account.getUsername()).append("\",");
+            s.append("\"email\":").append("\"").append(account.getEmail()).append("\",");
             s.append("\"profileImage\":").append("\"").append(account.getProfileImage()).append("\"");
             s.append("}");
             s.append("}");
@@ -63,8 +63,8 @@ public class AccountAPI {
             s.append("\"accessToken\":").append("\"").append(UUID.randomUUID()).append("\"").append(",");
             s.append("\"user\":").append("{");
             s.append("\"id\":").append(account.getId()).append(",");
-            s.append("\"username\":").append("\"").append(account.getUsername()).append("\"");
-            s.append("\"email\":").append("\"").append(account.getEmail()).append("\"");
+            s.append("\"username\":").append("\"").append(account.getUsername()).append("\",");
+            s.append("\"email\":").append("\"").append(account.getEmail()).append("\",");
             s.append("\"profileImage\":").append("\"").append(account.getProfileImage()).append("\"");
             s.append("}");
             s.append("}");
