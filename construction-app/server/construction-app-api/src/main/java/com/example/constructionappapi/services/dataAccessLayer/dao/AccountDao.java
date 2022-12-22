@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.dataAccessLayer.dao;
 
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
@@ -12,4 +13,6 @@ import java.util.Optional;
  */
 public interface AccountDao extends JpaRepository<AccountEntity, Long> {
     Optional<AccountEntity> findFirstByUsernameAndPassword(String username, String password);
+
+    UserDetails findFirstByEmail(String email);
 }

@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 import com.example.constructionappapi.services.dataAccessLayer.dao.AccountDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +43,9 @@ public class AccountRepository {
             entity.setProfileImage(account.getProfileImage());
             accountDao.save(entity);
         });
+    }
+
+    public UserDetails findUserByEmail(String email) {
+        return accountDao.findFirstByEmail(email);
     }
 }
