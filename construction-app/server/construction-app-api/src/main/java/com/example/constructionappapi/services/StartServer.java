@@ -56,15 +56,9 @@ public class StartServer {
             }
 
             Tests tests = new Tests(configurableApplicationContext);
-            //tests.testSkipVacationDatesWhenRemovingWork();
-            //tests.testMoveWorkBackwardsOnRemoveVacation();
-            //tests.testAddVacation();
-            //tests.testMoveWorkForwardsOnAddVacation();
-            //tests.testRemoveWork();
-            //tests.testAddNotesCheckDateAndGetSum();
-            //tests.testRemoveCustomer();
-            //tests.testSetWorkStatusToCompleted();
+            tests.testAddWork();
             //tests.testChangeNumberOfDaysOnWork();
+
 
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);

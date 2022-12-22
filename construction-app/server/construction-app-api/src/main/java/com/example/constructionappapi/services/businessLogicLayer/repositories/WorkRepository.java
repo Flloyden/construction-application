@@ -72,7 +72,6 @@ public class WorkRepository {
 
             newWork = workDao.save(newWork);
             calendar.addWork(newWork);
-            updateStartingDates();
             return newWork;
         }
 
@@ -150,7 +149,6 @@ public class WorkRepository {
                 if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
                     //Checks if the date has been changed and updates the calendar if it has.
                     if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-
                         if (preUpdateWork.get().getStartDate().equals(work.getStartDate())) {
                             if (work.getNumberOfDays() < preUpdateWork.get().getNumberOfDays()) {
                                 calendar.reduceNumberOfDays(work, preUpdateWork.get().getNumberOfDays() - work.getNumberOfDays());
@@ -162,6 +160,8 @@ public class WorkRepository {
                         }
                     }
 
+                    updateStartingDates();
+                    calendar.getWorkMap().get(work).update();
                     return addNewWorkEntity(customerId, work);
                 }
             }
@@ -170,23 +170,21 @@ public class WorkRepository {
         return null;
     }
 
-    private void updateStartingDates(){
-         workDao.findAllUncompletedWork().forEach(work -> {
-             Optional<CalendarEntity> calendarEntity =  calendarDao.findFirstByWorkIdOrderByDate(work.getId());
-             calendarEntity.ifPresent(entity -> {
-                 if (!work.getStartDate().equals(entity.getDate())){
-                     work.setStartDate(entity.getDate());
-
-                     workDao.save(work);
-                 }
-             });
-
-         });
+    public void updateStartingDates() {
+        workDao.findAllUncompletedWork().forEach(work -> {
+            Optional<CalendarEntity> calendarEntity = calendarDao.findFirstByWorkIdOrderByDate(work.getId());
+            calendarEntity.ifPresent(entity -> {
+                if (!work.getStartDate().equals(entity.getDate())) {
+                    work.setStartDate(entity.getDate());
+                    calendar.getWorkMap().get(work.getId()).setStartDate(work.getStartDate());
+                    workDao.save(work);
+                }
+            });
+        });
     }
 
     @Transactional
     public boolean updateWorkStatus() {
-
         List<WorkEntity> startedWork = workDao.findStartedWork();
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
