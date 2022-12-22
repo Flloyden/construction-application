@@ -29,7 +29,6 @@ export default function SettingsProfile() {
       ...newUserInfo,
       [e.target.name]: value,
     });
-    console.log(newUserInfo);
   };
 
   const convertToBase64 = (file) => {
@@ -54,14 +53,12 @@ export default function SettingsProfile() {
       ...newUserInfo,
       profileImage: base64,
     });
-    console.log(base64)
     return base64;
   };
 
   const handleSubmit = (e) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
-    console.log(newUserInfo);
     // Makes the change with the help of api call
     ApiConnector.updateUser(newUserInfo)
       .then((response) => {

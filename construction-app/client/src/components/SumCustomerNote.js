@@ -87,7 +87,11 @@ export default function SumCustomerNote(
       .then((response) => {
         ApiConnector.findWorkAndUpdateToCompleted();
         console.log(response);
-        window.location.reload(false);
+        if(response.data.datePostedSum === null) {
+          alert("Kolla så att rätt månad är angiven")
+        } else {
+          window.location.reload(false);
+        }
       })
       .catch((error) => {
         console.log(error);
