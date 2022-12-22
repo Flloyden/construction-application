@@ -81,22 +81,22 @@ export default function BarChart() {
     if (calendarInfo.length >= 0) {
       if (e === thisMonth) {
         const check1 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thisMonth)
-        return {height: check1.length * 10}
+        return {height: check1.length * 7}
       } else if (e === secondMonth) {
         const check2 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === secondMonth)
-        return {height: check2.length * 10}
+        return {height: check2.length * 7}
       } else if (e === thirdMonth) {
         const check3 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === thirdMonth)
-        return {height: check3.length * 10}
+        return {height: check3.length * 7}
       } else if (e === fourthMonth) {
         const check4 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fourthMonth)
-        return {height: check4.length * 10}
+        return {height: check4.length * 7}
       } else if (e === fifthMonth) {
         const check5 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === fifthMonth)
-        return {height: check5.length * 10}
+        return {height: check5.length * 7}
       } else if (e === sixMonth) {
         const check6 = calendarInfo.filter((item) => moment(item.date).format("YYYY-MM") === sixMonth)
-        return {height: check6.length * 10}
+        return {height: check6.length * 7}
       } else {
         return "0";
       }
@@ -111,7 +111,7 @@ export default function BarChart() {
     <div className="flex flex-col items-center w-full h-full">
       <h1>Arbetsdagar</h1>
       <span className="text-sm font-semibold text-gray-500">{getMonthName(todayMonth)} {todayYear} - {getMonthName(endMonth)} {endYear}</span>
-      <div className="flex items-end flex-grow w-full mt-7 space-x-2 sm:space-x-3">
+      <div className="flex items-end flex-grow w-full pt-7 space-x-2 sm:space-x-3">
         <div className="relative flex flex-col items-center flex-grow pb-5 group">
           <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
             {checkMonthlyWork(thisMonth)}

@@ -13,6 +13,8 @@ import '../src/styles/index.css';
 import AddWarant from './components/AddWarranty';
 import Warranty from './components/Warranty';
 import Settings from './components/Settings';
+import About from './components/About';
+import Help from './components/Help';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
               <Route path='/kalender' element={<Calendar />} />
               <Route path='/kunder/:id' element={<Customer />} />
               <Route path='/garantier/:id' element={<Warranty />} />
+              <Route path='/om' element={<About />} />
+              <Route path='/help' element={<Help />} />
               <Route path='/settings' element={<Settings />} />
             </Route>
             <Route element={<Error />} path="*"/>
