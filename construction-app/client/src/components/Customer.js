@@ -92,6 +92,18 @@ export default function Customer() {
     }
   }
 
+  function checkItem(e) {
+    if (e.length > 1) {
+      return (
+        "flex py-2 justify-start items-center w-full"
+      )
+    } else {
+      return (
+        "hidden"
+      )
+    }
+  }
+
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-min bg-blue-50 dark:bg-white">
       <div className="rounded-lg w-full h-full">
@@ -119,13 +131,13 @@ export default function Customer() {
                 </div>
                 <span className="text-1xl my-auto">{customer.address}, {customer.city}, {customer.zip}</span>
               </div>
-              <div className="flex py-2 justify-start items-center w-full">
+              <div className={checkItem(customer.mail)}>
                 <div className="flex">
                   <MdEmail className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
                 <span className="text-1xl my-auto">{customer.mail}</span>
               </div>
-              <div className="flex py-2 justify-start items-center w-full">
+              <div className={checkItem(customer.phoneNumber)}>
                 <div className="flex">
                   <BsTelephoneFill className="text-4xl mr-4 mt-0.5 pl-2" />
                 </div>
