@@ -184,9 +184,8 @@ public class WorkRepository {
     }
 
     @Transactional
-    public boolean updateWorkStatus() {
+    public boolean findWorkAndUpdateToCompleted() {
         List<WorkEntity> startedWork = workDao.findStartedWork();
-        List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : startedWork) {
             //TODO tänk igenom detta om d funkar för alla situationer
@@ -195,6 +194,11 @@ public class WorkRepository {
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean findWorkAndUpdateToStarted() {
+        List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : workNotStarted) {
             if (workEntity.getStartDate().equals(LocalDate.now())) {
@@ -215,7 +219,7 @@ public class WorkRepository {
     }
 
     public List<WorkEntity> checkForOngoingWork() {
-        return workDao.findStartedWork();
+        return workDao.findWorkEntityForToday();
     }
 
     public List<WorkEntity> getAllWorkEntitiesByCustomerId(Long id) {

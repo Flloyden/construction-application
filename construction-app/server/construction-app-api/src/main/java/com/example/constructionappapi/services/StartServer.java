@@ -24,7 +24,7 @@ public class StartServer {
             TimerTask repeatedTask = new TimerTask() {
                 public void run() {
                     System.out.println("Task performed on " + new Date());
-                    //workRepository.updateWorkStatus() skall köras i g/dagen, förmodligen smart köra task:en strax efter midnatt varje dag
+                    //workRepository.findWorkAndUpdateToStarted() skall köras i g/dagen, förmodligen smart köra task:en strax efter midnatt varje dag
                 }
             };
             Timer timer = new Timer("Timer");

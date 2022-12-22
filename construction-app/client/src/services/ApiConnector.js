@@ -63,8 +63,8 @@ class ApiConnector {
     return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
   }
 
-  updateWorkStatus() {
-    return axios.post(CUSTOMER_API_BASE_URL + "/work/update_status")
+  findWorkAndUpdateToCompleted() {
+    return axios.post(CUSTOMER_API_BASE_URL + "/work/update_workstatus_completed")
   }
 
   // ACCOUNTING / WARRANTY
@@ -139,6 +139,14 @@ class ApiConnector {
 
   editNote(noteId, note) {
     return axios.post(NOTES_API + "/edit/" + noteId, note)
+  }
+
+  getUser(user) {
+    return axios.get("http://localhost:8080/api/v1/user/" + user)
+  }
+
+  updateUser(user) {
+    return axios.post("http://localhost:8080/api/v1/user/update", user)
   }
 }
 

@@ -18,6 +18,7 @@ import WarrantyHomePage from "./WarrantyHomePage";
 import CheckOngoingWork from "./CheckOngoingWork";
 import CheckUpcomingWork from "./CheckUpcomingWork";
 import CheckWarranties from "./CheckWarranties";
+import UserInfo from "./UserInfo";
 
 export default function Home() {
   if (
@@ -146,23 +147,7 @@ export default function Home() {
         <div className="w-3/4 rounded">
           <div className="bg-white dark:bg-gray-800 shadow rounded border-2 p-4">
             <div className="mt-0 flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="rounded-full p-6 w-20 h-20 bg-blue-600 flex align-middle justify-center items-center">
-                  <h1 className="text-4xl font-normal tracking-wider">TE</h1>
-                </div>
-                <div className="ml-4">
-                  <div className="text-2xl">
-                    <h1>
-                      Hej, <span className="font-bold">Thomas</span>
-                    </h1>
-                  </div>
-                  <div className="mt-2">
-                    <p className="font-normal">
-                      Utforksa dina aktiviteter en stund.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <UserInfo />
               <div className="mt-4 justify-end flex gap-4 text-white h-1/4">
                 <button
                   className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
