@@ -30,10 +30,10 @@ public class AccountEntity implements UserDetails {
     @Lob
     private String profileImage;
 
-    private boolean enabled;
-    private boolean accountNonExpired;
-    private boolean credentialsNonExpired;
-    private boolean accountNonLocked;
+    private boolean enabled = true;
+    private boolean accountNonExpired = true;
+    private boolean credentialsNonExpired = true;
+    private boolean accountNonLocked = true;
     private UserRole role;
 
     @Override
