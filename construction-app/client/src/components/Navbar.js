@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers, FiSettings } from "react-icons/fi";
+import { FcExpand } from "react-icons/fc";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { BsQuestionCircle, BsInfoSquare } from "react-icons/bs";
 import Logout from "./Logout";
 import image from "../BiTs-logo.png";
+import logo from "../favicon.png";
 
 export default function Navbar(props) {
   if (
@@ -20,6 +22,7 @@ export default function Navbar(props) {
   }
   // Declaring variables
   let currentLocation = useLocation();
+  const [navToggle, setNavToggle] = useState(false);
   // Menus
   const Menus = [
     { title: "Översikt", src: <AiOutlineHome />, link: "/" },
@@ -64,11 +67,29 @@ export default function Navbar(props) {
     return parseInt(getValue);
   };
 
+  function toggleNav() {
+    setNavToggle(!navToggle)
+    console.log(navToggle)
+  }
+
+  function checkNav() {
+    if (navToggle) {
+      return (
+        <img src={image} alt="logo" width={"60%"} className="mx-auto" />
+      )
+    } else {
+      return (
+        <img src={logo} alt="logo" className="mx-auto" />
+      )
+    }
+  }
+
   return (
-    <div className={`w-72 h-full bg-white border-r-2 dark:bg-gray-800`}>
-      <div className="w-72 h-full fixed p-5 pt-8 bg-white border-r-2 shadow-xl dark:bg-gray-800">
+    <div className={navToggle ? `w-72 h-full bg-white border-r-2 dark:bg-gray-800 duration-200` : `w-32 h-full bg-white border-r-2 dark:bg-gray-800 duration-200`}>
+      <div className={navToggle ? "w-72 h-full fixed p-5 pt-8 bg-white border-r-2 shadow-xl dark:bg-gray-800 duration-200" : "w-32 h-full fixed p-5 pt-8 bg-white border-r-2 shadow-xl dark:bg-gray-800 duration-200"}>
+      <button className="p-2 text-2xl bg-white shadow rounded border mt-3 absolute -right-5" type="submit" onClick={() => { toggleNav() }}><FcExpand className={navToggle ? "rotate-[90deg] duration-200" : "rotate-[270deg] duration-200"} /></button>
         <div className="flex-none gap-x-4 items-center w-full h-full relative text-black dark:text-white">
-          <img src={image} alt="logo" width={"60%"} className="mx-auto" />
+          {checkNav()}
           <ul
             className={`text-gray-700 dark:text-white origin-left font-medium text-xl w-full pt-4`}
           >
@@ -89,7 +110,7 @@ export default function Navbar(props) {
                   to={menu.link}
                 >
                   <span className="text-3xl w-100">{menu.src}</span>
-                  <span className="pl-4 w-100">{menu.title}</span>
+                  <span className={navToggle ? "pl-4 w-100" : "hidden"}>{menu.title}</span>
                 </Link>
               </li>
             ))}
