@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountRepository{
+public class AccountRepository {
     @Autowired
     private AccountDao accountDao;
 
     public Optional<AccountEntity> findFirstByUsernameAndPassword(String username, String password) {
         return accountDao.findFirstByUsernameAndPassword(username, password);
     }
+
     public AccountEntity createAccount(AccountEntity account) {
         return accountDao.save(account);
     }
@@ -30,5 +31,16 @@ public class AccountRepository{
 
     public void deleteAccount(Long id) {
         accountDao.deleteById(id);
+    }
+
+    public void updateUserInfo(AccountEntity account) {
+        Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
+
+        accountEntity.ifPresent(entity -> {
+            entity.setUsername(account.getUsername());
+            entity.setEmail(account.getEmail());
+            entity.setProfileImage(account.getProfileImage());
+            accountDao.save(entity);
+        });
     }
 }

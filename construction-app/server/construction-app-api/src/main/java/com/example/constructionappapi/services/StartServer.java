@@ -35,9 +35,7 @@ public class StartServer {
 /*
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(repeatedTask, 8, 8, TimeUnit.HOURS);
-
  */
-
 
             long delay = 1000L;
             long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
@@ -48,7 +46,7 @@ public class StartServer {
 
             //TODO: Remove when done with project.
             //Adds an account to the database on server-start to make testing easier.
-            AccountEntity accountEntity = new AccountEntity(0, "admin", "admin");
+            AccountEntity accountEntity = new AccountEntity(0, "admin", "admin", "", "admin@admin.com");
             AccountRepository accountRepository = configurableApplicationContext.getBean(AccountRepository.class);
             Optional<AccountEntity> accountEntityOptional = accountRepository.findFirstByUsernameAndPassword("admin", "admin");
             if (accountEntityOptional.isEmpty()) {
@@ -56,16 +54,8 @@ public class StartServer {
             }
 
             Tests tests = new Tests(configurableApplicationContext);
-            //tests.testSkipVacationDatesWhenRemovingWork();
-            //tests.testMoveWorkBackwardsOnRemoveVacation();
-            //tests.testAddVacation();
-            //tests.testMoveWorkForwardsOnAddVacation();
-            //tests.testRemoveWork();
-            //tests.testAddNotesCheckDateAndGetSum();
-            //tests.testRemoveCustomer();
-            //tests.testSetWorkStatusToCompleted();
+            //tests.testAddWork();
             //tests.testChangeNumberOfDaysOnWork();
-
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }

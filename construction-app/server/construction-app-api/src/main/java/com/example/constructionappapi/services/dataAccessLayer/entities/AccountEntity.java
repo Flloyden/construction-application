@@ -20,4 +20,7 @@ public class AccountEntity {
     private long id;
     private String username;
     private String password;
+    @Lob
+    private String profileImage;
+    private String email;
 }
