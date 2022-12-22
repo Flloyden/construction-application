@@ -35,9 +35,7 @@ public class StartServer {
 /*
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(repeatedTask, 8, 8, TimeUnit.HOURS);
-
  */
-
 
             long delay = 1000L;
             long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
@@ -56,7 +54,7 @@ public class StartServer {
             }
 
             Tests tests = new Tests(configurableApplicationContext);
-            tests.testAddWork();
+            //tests.testAddWork();
             //tests.testChangeNumberOfDaysOnWork();
 
 
