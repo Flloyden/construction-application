@@ -38,8 +38,8 @@ public class AccountRepository {
 
         accountEntity.ifPresent(entity -> {
             entity.setUsername(account.getUsername());
-            entity.setEmail(account.getUsername());
-            entity.setProfileImage(account.getUsername());
+            entity.setEmail(account.getEmail());
+            entity.setProfileImage(account.getProfileImage());
             accountDao.save(entity);
         });
     }
