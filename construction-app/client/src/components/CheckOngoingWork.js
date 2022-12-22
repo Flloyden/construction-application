@@ -58,13 +58,13 @@ export default function CheckOngoingWork() {
         break;
       }
     }
-    console.log(ongoingWork[0].workList[0].calendar[1].date);
-    if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
-    {
-      console.log("true");
-    }else{
-      console.log("false");
-    }
+    //console.log(ongoingWork[0].workList[0].calendar[1].date);
+    //if(currentDateString==ongoingWork[0].workList[1].calendar[3].date)
+    //{
+      //console.log("true");
+    //}else{
+      //console.log("false");
+    //}
 
     if (calendarLength !== 0) {
       return (

@@ -193,7 +193,7 @@ public class WorkRepository {
     }
 
     public List<WorkEntity> checkForOngoingWork() {
-        return workDao.findWorkEntityForToday();
+        return workDao.findStartedWork();
     }
 
     public List<WorkEntity> getAllWorkEntitiesByCustomerId(Long id) {
