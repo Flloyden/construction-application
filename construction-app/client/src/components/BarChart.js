@@ -9,11 +9,11 @@ export default function BarChart() {
   const todayYear = moment(today).format("YYYY")
   const todayMonth = moment(today).format("MM")
   const nextMonth = moment(today).add(1, 'M').format("MM")
-  const nextNextMonth = moment(today).add(6, 'M').format("MM")
-  const nextNextNextMonth = moment(today).add(6, 'M').format("MM")
-  const nextNextNextNextMonth = moment(today).add(6, 'M').format("MM")
-  const endYear = moment(today).add(6, 'M').format("YYYY")
-  const endMonth = moment(today).add(6, 'M').format("MM")
+  const nextNextMonth = moment(today).add(2, 'M').format("MM")
+  const nextNextNextMonth = moment(today).add(3, 'M').format("MM")
+  const nextNextNextNextMonth = moment(today).add(4, 'M').format("MM")
+  const endYear = moment(today).add(5, 'M').format("YYYY")
+  const endMonth = moment(today).add(5, 'M').format("MM")
 
   const thisMonth = moment(today).format("YYYY-MM");
   const secondMonth = moment(today).add(1, 'M').format("YYYY-MM");
