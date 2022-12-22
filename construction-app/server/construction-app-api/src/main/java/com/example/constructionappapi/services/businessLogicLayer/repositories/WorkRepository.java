@@ -162,7 +162,6 @@ public class WorkRepository {
 
                     updateStartingDates();
                     calendar.getWorkMap().get(work.getId()).update(work);
-                    calendar.printWorkMap();
                     return addNewWorkEntity(customerId, work);
                 }
             }
