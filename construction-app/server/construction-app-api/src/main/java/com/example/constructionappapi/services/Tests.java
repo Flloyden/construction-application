@@ -197,24 +197,24 @@ public class Tests {
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "54321", "test", "9999999", "9999999", "9999999", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerAPI customerAPI = configurableApplicationContext.getBean(CustomerAPI.class);
         customer = customerAPI.createCustomer(customer);
 
         System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
 
-        WorkEntity door = new WorkEntity(0L, "Door", null, null, 3, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        WorkEntity door = new WorkEntity(0L, "Door", null, null, 3, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
         door = workAPI.saveWork(customer.getId(), door);
 
-        WorkEntity fence = new WorkEntity(0L, "Fence", null, null, 6, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        WorkEntity fence = new WorkEntity(0L, "Fence", null, null, 6, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
         fence = workAPI.saveWork(customer.getId(), fence);
 
-        WorkEntity window = new WorkEntity(0L, "Window", null, null, 2, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        WorkEntity window = new WorkEntity(0L, "Window", null, null, 2, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
         window.setHardStartDate(fence.getStartDate().plusDays(5));
         window = workAPI.saveWork(customer.getId(), window);
 
-        WorkEntity roof = new WorkEntity(0L, "Roof", null, null, 2, "testNote", null, WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
+        WorkEntity roof = new WorkEntity(0L, "Roof", null, null, 2, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
         roof = workAPI.saveWork(customer.getId(), roof);
 
         CalendarSingleton.getCalendar().printCalendar();
