@@ -38,7 +38,6 @@ public class WorkEntity {
     private CustomerEntity customer;
     @OneToMany(
             mappedBy = "work",
-            cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToCalendar")
     private List<CalendarEntity> calendar = new ArrayList<>();

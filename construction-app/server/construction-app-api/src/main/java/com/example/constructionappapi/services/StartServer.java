@@ -64,7 +64,7 @@ public class StartServer {
             //tests.testAddNotesCheckDateAndGetSum();
             //tests.testRemoveCustomer();
             //tests.testSetWorkStatusToCompleted();
-            tests.testChangeNumberOfDaysOnWork();
+            //tests.testChangeNumberOfDaysOnWork();
 
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
