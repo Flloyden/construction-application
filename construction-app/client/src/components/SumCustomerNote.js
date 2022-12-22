@@ -32,6 +32,7 @@ export default function SumCustomerNote(
     customerNotes: currentCustomerNotes,
   });
 
+  const [showWrongInput, setShowWrongInput] = useState(false);
   const [sumNoteInfo, setSumNoteInfo] = useState({
     id: "",
     datePostedSum: "",
@@ -88,7 +89,7 @@ export default function SumCustomerNote(
         ApiConnector.findWorkAndUpdateToCompleted();
         console.log(response);
         if(response.data.datePostedSum === null) {
-          alert("Kolla så att rätt månad är angiven")
+          setShowWrongInput((showWrongInput) => !showWrongInput);
         } else {
           window.location.reload(false);
         }
@@ -99,6 +100,7 @@ export default function SumCustomerNote(
   };
 
   return (
+    <div>
     <div className="w-full bg-white dark:bg-gray-800 rounded p-4 shadow">
       <form onSubmit={handleSubmit}>
         <div className="w-10/12">
@@ -167,5 +169,11 @@ export default function SumCustomerNote(
         </div>
       </form>
     </div>
+    {showWrongInput && (
+      <div className="bg-red-600 px-4 w-full rounded mt-1 flex items-center align-middle justify-center text-white py-2">
+        <p className="">Kolla så att rätt månad är angiven</p>
+      </div>
+    )}
+  </div>
   );
 }

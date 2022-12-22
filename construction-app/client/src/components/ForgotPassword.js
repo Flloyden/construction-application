@@ -39,6 +39,7 @@ export default function ForgotPassword(props) {
                 <input
                   type={email}
                   value={email}
+                  required
                   className="rounded block w-full mt-2 p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   onChange={(e) => setEmail(e.target.value)}
                 />

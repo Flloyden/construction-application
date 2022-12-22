@@ -116,7 +116,8 @@ const AddWork = (props) => {
               <input
                 ref={dayCountRef}
                 className="rounded block w-1/4 p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                type="text"
+                type="number"
+                min={0}
                 name="numberOfDays"
                 value={work.numberOfDays}
                 required

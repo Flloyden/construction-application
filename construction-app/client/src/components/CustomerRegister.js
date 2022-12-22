@@ -155,7 +155,7 @@ const CustomerRegister = () => {
                         className="py-4 px-6"
                         onClick={(e) => passId(user.id)}
                       >
-                        {user.address}
+                        {user.address}, {user.zip}, {user.city}
                       </td>
                       <td
                         className="py-4 px-6"
@@ -198,7 +198,7 @@ const CustomerRegister = () => {
                         className="py-4 px-6"
                         onClick={(e) => passId(customer.id)}
                       >
-                        {customer.address}
+                        {customer.address}, {customer.zip}, {customer.city}
                       </td>
                       <td
                         className="py-4 px-6"
