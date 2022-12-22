@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
@@ -37,9 +38,16 @@ public class CustomerNoteRepository {
 
     @Transactional //krävs för getDateForNewNote();
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNoteEntity, long workId) {
+
         Optional<WorkEntity> work = workDao.findById(workId);
+
+        if(work.get().getNumberOfDays() == work.get().getCustomerNotes().size()){
+            return null;
+        }
+
         LocalDate dateToAdd;
-        if(!customerNoteDao.existsById(customerNoteEntity.getId())){ //om ny anteckning
+        if(//customerNoteDao.findAllByWorkId(workId).isEmpty()
+                !customerNoteDao.existsById(customerNoteEntity.getId())){ //om ny anteckning
             dateToAdd = getDateForNewNote(workId);
 
             if(dateToAdd == null){
@@ -47,7 +55,10 @@ public class CustomerNoteRepository {
             }
 
             customerNoteEntity.setDatePosted(dateToAdd);
-        }
+        }//else{ //om gammal anteckning som redigeras
+           // Optional<CustomerNoteEntity> oldNote = customerNoteDao.findById(customerNoteEntity.getId());
+           // oldNote.get().setDatePosted(oldNote.get().getDatePosted());
+        //}
 
         CustomerEntity customerEntity = work.get().getCustomer(); //hämta customer till det jobbet
         customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
@@ -74,17 +85,20 @@ public class CustomerNoteRepository {
             LocalDate dateLastNote = null;
 
             for (int i = 0; i < allNotesForThisWork.size(); i++) {
-                if(i == (allNotesForThisWork.size()) - 1){ //Hämta datum på senaste anteckningen //TODO detta går att göra snyggare med korrekt funktion i Dao
+                if(i == (allNotesForThisWork.size()) - 1){ //Hämta datum på senaste anteckningen //TODO detta går att göra snyggare med korrekt funktion i Dao?
                     dateLastNote = allNotesForThisWork.get(i).getDatePosted();
                 }
             }
 
-            List<CalendarEntity> workCalendar = work.get().getCalendarForWork(); //kalender för jobbet som anteckningen tillhör
+            List<CalendarEntity> workCalendar = work.get().getCalendar();
+                    //calendarDao.findAllByWorkId(workId) ; //kalender för jobbet som anteckningen tillhör
 
+            if(workCalendar.isEmpty()){
+                System.out.println("-----------------workCalendar empty!!!!");
+            }
             //kolla igenom alla datum i jobbkalender och hitta första datumet efter senaste anteckningen
             for(CalendarEntity calendarEntity : workCalendar) {
                 if (calendarEntity.getDate().isAfter(dateLastNote)) { //datumet efter förra anteckningen
-                    System.out.println(calendarEntity.getDate().toString());
                     return calendarEntity.getDate();
                 }
             }
@@ -103,15 +117,12 @@ public class CustomerNoteRepository {
     }
 
     public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) {
-        System.out.println("---------------------------hejhej");
         List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByWorkId(workId);
         List<CustomerNoteEntity> summarizedNotes = new ArrayList<>();
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
-            System.out.println("----------------hej2");
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
             if(noteStatus == NoteStatus.SUMMARIZED){
-                System.out.println("---------------sumnote hej");
                 summarizedNotes.add(customerNoteEntity);
             }
         }

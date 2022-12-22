@@ -85,6 +85,7 @@ export default function SumCustomerNote(
     // Adds work to user with api call
     ApiConnector.sumNote(Id, sumNoteInfo)
       .then((response) => {
+        ApiConnector.updateWorkStatusToCompleted();
         console.log(response);
         window.location.reload(false);
       })

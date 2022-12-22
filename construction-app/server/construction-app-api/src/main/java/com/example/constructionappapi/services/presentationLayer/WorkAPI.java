@@ -36,6 +36,11 @@ public class WorkAPI {
         return workRepository.updateWork(customerId, work);
     }
 
+    @PostMapping("/kunder/work/update_status")
+    public boolean updateWorkStatus() {
+        return workRepository.updateWorkStatus();
+    }
+
     @PutMapping("/kunder/{customer_id}/work/edit/{id}")
     public WorkEntity editWorkEntity(@RequestBody WorkEntity work) {
         return workRepository.editWorkEntity(work);

@@ -22,6 +22,19 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
 
     List<WorkEntity> findByStartDate(LocalDate startdate);
 
+    @Query(
+            value = "SELECT * FROM work WHERE work.work_status = 1",
+            nativeQuery = true
+    )
+    List<WorkEntity> findStartedWork();
+
+
+    @Query(
+            value = "SELECT * FROM work WHERE work.work_status = 0",
+            nativeQuery = true
+    )
+    List<WorkEntity> findNotStartedWork();
+
     @Query(value = "SELECT customer.*, work.*, calendar.* " +
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +

@@ -65,10 +65,9 @@ public class NoteSummaryRepository {
 
                 String workName = work.get().getName();
                 noteSummary.setWorkName(workName);
-
-                //TODO tänker jag fel att lägga till från båda hållen?
                 noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
                 noteSummary.setWorkForSummary(work.get()); //assigna summary till work
+                //work.get().setSummary(noteSummary);
                 return noteSummaryDao.save(noteSummary);
             }
 

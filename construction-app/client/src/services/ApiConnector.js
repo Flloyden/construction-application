@@ -58,10 +58,14 @@ class ApiConnector {
 
   //Gets ongoing work based on todays date.
   //Checks if any customer has work that has date = todays date
+  //Used for updating workStatus
   getOngoingWork(){
     return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
   }
 
+  updateWorkStatusToCompleted() {
+    return axios.post(CUSTOMER_API_BASE_URL + "/work/update_status")
+  }
 
   // ACCOUNTING / WARRANTY
   saveWarranty(warranty) {

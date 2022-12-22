@@ -38,7 +38,6 @@ public class WorkEntity {
     private CustomerEntity customer;
     @OneToMany(
             mappedBy = "work",
-            cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonManagedReference(value = "workToCalendar")
     private List<CalendarEntity> calendar = new ArrayList<>();
@@ -75,6 +74,10 @@ public class WorkEntity {
 
     public List<NoteSummaryEntity> getNoteSummaries() {
         return noteSummaries;
+    }
+
+    public void setSummary(NoteSummaryEntity noteSummary){
+        this.noteSummaries.add(noteSummary);
     }
 }
 

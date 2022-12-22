@@ -4,11 +4,10 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.*;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -27,6 +26,10 @@ public class WorkRepository {
     private CalendarDao calendarDao;
     @Autowired
     private CustomerNoteDao customerNoteDao;
+
+    @Autowired
+    private NoteSummaryDao noteSummaryDao;
+
     @Autowired
     private VacationCalendarDao vacationCalendarDao;
 
@@ -61,6 +64,10 @@ public class WorkRepository {
                 }
 
                 newWork.setStartDate(startDateOfNewWork);
+            }
+
+            if(newWork.getStartDate().equals(LocalDate.now())){
+                newWork.setWorkStatus(WorkStatus.STARTED);
             }
 
             newWork = workDao.save(newWork);
@@ -127,6 +134,16 @@ public class WorkRepository {
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
 
+            List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
+            if(!noteList.isEmpty()){
+                work.setCustomerNotes(noteList);
+            }
+
+            List<NoteSummaryEntity> sumList = noteSummaryDao.findAllByWorkNumber(work.getId());
+            if(!sumList.isEmpty()){
+                work.setNoteSummaries(sumList);
+            }
+
             Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
             if (preUpdateWork.isPresent()) {
                 if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
@@ -141,6 +158,29 @@ public class WorkRepository {
         }
 
         return null;
+    }
+
+    @Transactional
+    public boolean updateWorkStatus(){
+
+        List<WorkEntity> startedWork = workDao.findStartedWork();
+        List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
+
+        for (WorkEntity workEntity : startedWork) {
+            //TODO tänk igenom detta om d funkar för alla situationer
+            if(!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()){
+                workEntity.setWorkStatus(WorkStatus.COMPLETED);
+                return true;
+            }
+        }
+
+        for (WorkEntity workEntity: workNotStarted) {
+            if(workEntity.getStartDate().equals(LocalDate.now())){
+                workEntity.setWorkStatus(WorkStatus.STARTED);
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<WorkEntity> checkForUpcomingWork() {

@@ -16,6 +16,8 @@ public interface NoteSummaryDao extends JpaRepository<NoteSummaryEntity, Long> {
 
     Optional<NoteSummaryEntity> findByWorkNumber(Long workId);
 
+    List<NoteSummaryEntity> findAllByWorkNumber(Long workId);
+
     List<NoteSummaryEntity> findAllByCustomerId(Long customerId);
 
 }
