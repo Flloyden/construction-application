@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,19 @@ public class WorkEntity implements Comparable<WorkEntity> {
     @Override
     public int compareTo(WorkEntity o) {
         return id.compareTo(o.getId());
+    }
+
+    public void update(WorkEntity newWorkEntity) {
+        this.name = newWorkEntity.getName();
+        this.startDate = newWorkEntity.getStartDate();
+        this.numberOfDays = newWorkEntity.getNumberOfDays();
+        this.materialNote = newWorkEntity.getMaterialNote();
+        this.offer = newWorkEntity.offer;
+        this.workStatus = newWorkEntity.workStatus;
+        this.customer = newWorkEntity.getCustomer();
+        this.calendar = newWorkEntity.getCalendar();
+        this.customerNotes = newWorkEntity.getCustomerNotes();
+        this.noteSummaries = newWorkEntity.getNoteSummaries();
     }
 }
 
