@@ -22,6 +22,7 @@ public class AccountingEntity {
     private String name;
     private String registration_number;
     private LocalDate warranty_date;
+    private long status;
     @Lob
     private String receipt;
 }
