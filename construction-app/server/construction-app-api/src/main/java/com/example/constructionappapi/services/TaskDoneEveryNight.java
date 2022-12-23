@@ -32,6 +32,7 @@ public class TaskDoneEveryNight {
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
         workRepository.findWorkAndUpdateToStarted(); //update work that starts today
         LocalDate today = LocalDate.now();
+        //TODO detta ska ej radera gamla garantier, enbart ändra status t 1
         int amountOfAccountingsDeleted = accountingRepository.deleteOldAccountings(today); //delete guarantees with warranty date today or before today
         System.out.println("------ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ------");
         System.out.println("----------------------------- amount of accountings removed: " +amountOfAccountingsDeleted + " -----------------------------");
