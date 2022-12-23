@@ -30,6 +30,7 @@ export default function SettingsPassword() {
                   type="password"
                   name="name"
                   required
+                  minLength={8}
                 ></input>
               </div>
               <div className="mt-4">
@@ -41,6 +42,7 @@ export default function SettingsPassword() {
                   className="rounded block w-full p-1 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   type="password"
                   name="name"
+                  minLength={8}
                   required
                 ></input>
               </div>
