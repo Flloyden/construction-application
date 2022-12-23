@@ -74,6 +74,9 @@ public class NoteSummaryRepository {
                         //work.get().setSummary(noteSummary);
                     }
                 }
+                if(summedNotes.isEmpty()){
+                    return null;
+                }
                 return noteSummaryDao.save(noteSummary);
             }
 

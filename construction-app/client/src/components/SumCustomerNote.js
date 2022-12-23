@@ -88,7 +88,7 @@ export default function SumCustomerNote(
       .then((response) => {
         ApiConnector.findWorkAndUpdateToCompleted();
         console.log(response);
-        if(response.data.datePostedSum === null) {
+        if(response.data.length < 1) {
           setShowWrongInput((showWrongInput) => !showWrongInput);
         } else {
           window.location.reload(false);
