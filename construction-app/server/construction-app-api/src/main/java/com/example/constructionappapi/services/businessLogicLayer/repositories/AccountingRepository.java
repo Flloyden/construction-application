@@ -33,4 +33,10 @@ public class AccountingRepository{
     public void deleteAccounting(Long id) {
         accountingDao.deleteById(id);
     }
+
+
+    public int deleteOldAccountings(){
+        System.out.println("------ deleteOldAccountings() just ran... ------");
+        return accountingDao.deleteOldAccountings();
+    }
 }

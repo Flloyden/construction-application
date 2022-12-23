@@ -185,6 +185,7 @@ public class WorkRepository {
 
     @Transactional
     public boolean findWorkAndUpdateToCompleted() {
+        System.out.println("------ findWorkAndUpdateToCompleted() just ran... ------");
         List<WorkEntity> startedWork = workDao.findStartedWork();
 
         for (WorkEntity workEntity : startedWork) {
@@ -198,6 +199,7 @@ public class WorkRepository {
     }
 
     public boolean findWorkAndUpdateToStarted() {
+        System.out.println("------ findWorkAndUpdateToStarted() just ran... ------");
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : workNotStarted) {
