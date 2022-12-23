@@ -91,7 +91,7 @@ export default function SumCustomerNote(
       .then((response) => {
         ApiConnector.findWorkAndUpdateToCompleted();
         console.log(response);
-        if (response.data.length < 1) {
+        if (response.data.datePostedSum === null) {
           setShowWrongInput((showWrongInput) => !showWrongInput);
           setTimeout(() => {
             setShowWrongInput(false);
@@ -183,7 +183,7 @@ export default function SumCustomerNote(
         }
       >
         <p className={showWrongInput ? "visible" : "invisible"}>
-          Går ej att lägga till fler anteckningar än det finns jobbdagar!
+          Kolla så att rätt månad är angiven!
         </p>
       </div>
     </div>
