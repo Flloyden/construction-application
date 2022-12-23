@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,17 +23,18 @@ public class TaskDoneEveryNight {
 
     }
 
-    //second, minute, hour, day-of-month, month, day-of-week
-    //this method will run at 1 am every night
-    //@Scheduled(cron = "0 0 1 * * *")
-    @Scheduled(cron = "*/10 * * * * *") //every 10 seconds
+    //cron modification: second, minute, hour, day-of-month, month, day-of-week
+
+    //@Scheduled(cron = "*/40 * * * * *") //every 40 seconds
+    @Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
     public void execute() throws InterruptedException {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
-        workRepository.findWorkAndUpdateToCompleted();
-        workRepository.findWorkAndUpdateToStarted();
-        int amountOfAccountingsDeleted = accountingRepository.deleteOldAccountings();
+        workRepository.findWorkAndUpdateToStarted(); //update work that starts today
+        LocalDate today = LocalDate.now();
+        int amountOfAccountingsDeleted = accountingRepository.deleteOldAccountings(today); //delete guarantees with warranty date today or before today
         System.out.println("------ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ------");
+        System.out.println("----------------------------- amount of accountings removed: " +amountOfAccountingsDeleted + " -----------------------------");
 
     }
 }

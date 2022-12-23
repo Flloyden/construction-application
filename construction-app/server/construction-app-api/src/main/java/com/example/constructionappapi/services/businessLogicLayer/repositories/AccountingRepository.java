@@ -5,6 +5,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Accounti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +36,8 @@ public class AccountingRepository{
     }
 
 
-    public int deleteOldAccountings(){
+    public int deleteOldAccountings(LocalDate today){
         System.out.println("------ deleteOldAccountings() just ran... ------");
-        return accountingDao.deleteOldAccountings();
+        return accountingDao.deleteOldAccountings(today);
     }
 }

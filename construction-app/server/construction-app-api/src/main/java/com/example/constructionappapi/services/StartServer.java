@@ -35,18 +35,6 @@ public class StartServer {
 
             System.out.println("Server is running!");
 
-            TimerTask repeatedTask = new TimerTask() {
-                public void run() {
-                    System.out.println("Task performed on " + new Date());
-                    //workRepository.findWorkAndUpdateToStarted() skall köras i g/dagen, förmodligen smart köra task:en strax efter midnatt varje dag
-                }
-            };
-            Timer timer = new Timer("Timer");
-
-            long delay = 1000L;
-            long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
-            timer.scheduleAtFixedRate(repeatedTask, delay, period);
-
             Calendar calendar = CalendarSingleton.getCalendar();
             calendar.initializeCalendar();
 

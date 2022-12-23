@@ -203,7 +203,7 @@ public class WorkRepository {
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : workNotStarted) {
-            if (workEntity.getStartDate().equals(LocalDate.now())) {
+            if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() != WorkStatus.COMPLETED) {
                 workEntity.setWorkStatus(WorkStatus.STARTED);
                 return true;
             }
