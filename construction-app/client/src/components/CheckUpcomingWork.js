@@ -38,7 +38,7 @@ export default function CheckUpcomingWork() {
 
     for(let i = 0;i<sortedDates[0].workList.length;i++)
     {
-      if(sortedDates[0].workList[i].id !== activeId)
+      if(sortedDates[0].workList[i].id !== activeId && sortedDates[0].workList[i].workStatus != "COMPLETED")
       {
         activeWork = sortedDates[0].workList[i];
       }
