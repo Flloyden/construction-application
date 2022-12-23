@@ -17,6 +17,7 @@ export default function CheckOngoingWork() {
       try {
         const response = await ApiConnector.getOngoingWork();
         setOngoingWork(response.data);
+        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -113,7 +114,7 @@ export default function CheckOngoingWork() {
           ) : (
             <div className="border-2 rounded p-2 shadow">
               <div className="flex justify-between gap-52">
-                <h1 className="whitespace-nowrap">Pågånde jobb</h1>
+                <h1 className="whitespace-nowrap">Pågående jobb</h1>
                 <h1
                   className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap"
                   onClick={(e) => passId(getCustomerId())}

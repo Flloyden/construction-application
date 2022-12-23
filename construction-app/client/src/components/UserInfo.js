@@ -40,7 +40,7 @@ export default function UserInfo() {
               </h1>
             </div>
             <div className="mt-2">
-              <p className="font-normal">Utforksa dina aktiviteter en stund.</p>
+              <p className="font-normal">Utforska dina aktiviteter en stund.</p>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function About() {
             företag att hålla koll på sina kunder, garantier samt att se en
             kalender för olika händelser. Vårt mål med denna applikation är att
             ge företag ett verktyg för att förenkla och förbättra sin
-            verksamhet, samt att visa våra färdigheter inom React och IntelliJ.
+            verksamhet, samt att visa våra färdigheter inom React och Java.
             Vi hoppas att företaget blir nöjda med vårt arbete.
           </p>
           <p className="font-normal text-justify w-1/2 mt-4">

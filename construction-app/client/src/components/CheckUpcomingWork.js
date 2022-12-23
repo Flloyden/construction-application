@@ -86,7 +86,7 @@ export default function CheckUpcomingWork() {
           {upcomingWork.length < 1 ? (
             <div className="border-2 rounded p-2 shadow mt-6">
               <div className="flex justify-between gap-52">
-                <h1 className="whitespace-nowrap">Pågånde jobb</h1>
+                <h1 className="whitespace-nowrap">Kommande jobb</h1>
                 <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
                 </h1>
               </div>
