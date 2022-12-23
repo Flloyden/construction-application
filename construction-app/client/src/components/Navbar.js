@@ -61,7 +61,7 @@ export default function Navbar(props) {
   if (currentLocation.pathname.includes("/kunder/")) {
     localStorage.setItem("active", 1);
   } else if (currentLocation.pathname.includes("/garantier/")) {
-    localStorage.setItem("active", 2);
+    localStorage.setItem("active", 3);
   }
 
   const setLocal = (e) => {

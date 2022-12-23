@@ -162,8 +162,8 @@ const Accounting = () => {
                       </td>
                       <td className="px-6 w-full">
                         <div className="flex justify-end" onClick={() => {}}>
-                          <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer">
-                            Visa
+                          <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
+                            Visa kvitto
                           </p>
                         </div>
                       </td>
