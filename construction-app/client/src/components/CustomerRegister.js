@@ -110,22 +110,22 @@ const CustomerRegister = () => {
             </span>
           </button>
         </div>
-        <table className="w-full text-sm text-left bg-white text-gray-00 shadow-xl rounded dark:bg-gray-800 dark:text-white">
+        <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 dark:text-white shadow-xl rounded">
           <thead className="text-xs uppercase  text-gray-500 shadow-md rounded border-b-2 border-gray-300">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="py-3 px-6 w-fit">
                 Namn
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="py-3 px-6 w-fit">
                 Adress
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="py-3 px-6 w-fit">
                 Skapad
               </th>
-              <th scope="col" className="max-w-fit text-center">
+              <th scope="col" className="py-3 px-6 float-right">
                 Åtgärd
               </th>
             </tr>
@@ -146,19 +146,19 @@ const CustomerRegister = () => {
                         {user.id}
                       </th>
                       <td
-                        className="py-4 px-6"
+                        className="py-4 px-6 whitespace-nowrap"
                         onClick={(e) => passId(user.id)}
                       >
                         {user.name}
                       </td>
                       <td
-                        className="py-4 px-6"
+                        className="py-4 px-6 whitespace-nowrap"
                         onClick={(e) => passId(user.id)}
                       >
                         {user.address}, {user.zip}, {user.city}
                       </td>
                       <td
-                        className="py-4 px-6"
+                        className="px-6 w-full"
                         onClick={(e) => passId(user.id)}
                       >
                         {user.creationDate}
@@ -179,7 +179,7 @@ const CustomerRegister = () => {
                 : customers.map((customer) => (
                     <tr
                       key={customer.id}
-                      className="bg-white border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 text-black dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
@@ -189,19 +189,19 @@ const CustomerRegister = () => {
                         {customer.id}
                       </th>
                       <td
-                        className="py-4 px-6"
+                        className="py-4 px-6 whitespace-nowrap"
                         onClick={(e) => passId(customer.id)}
                       >
                         {customer.name}
                       </td>
                       <td
-                        className="py-4 px-6"
+                        className="py-4 px-6 whitespace-nowrap"
                         onClick={(e) => passId(customer.id)}
                       >
                         {customer.address}, {customer.zip}, {customer.city}
                       </td>
                       <td
-                        className="py-4 px-6"
+                        className="px-6 w-full"
                         onClick={(e) => passId(customer.id)}
                       >
                         {customer.creationDate}
