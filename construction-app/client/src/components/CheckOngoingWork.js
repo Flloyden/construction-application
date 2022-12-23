@@ -16,8 +16,9 @@ export default function CheckOngoingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getOngoingWork();
-        setOngoingWork(response.data);
-        console.log(response.data);
+        const response2 = await ApiConnector.getUpcomingWork();
+        setOngoingWork(response2.data);
+        console.log(response2.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -29,20 +30,7 @@ export default function CheckOngoingWork() {
 
   function getOngoingWork() {
     /*Gets upcoming ongoingWork within ten days of today's date*/
-    let sortedDates = ongoingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
- 
-    const date = new Date();
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    
-    // This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${year}-${month}-${day}`;
     let calendarLength = ongoingWork[0].workList[0].calendar.length;
     let workListLength = ongoingWork[0].workList.length;
     let activeWorkListIndex;
@@ -53,7 +41,7 @@ export default function CheckOngoingWork() {
     {
       for(let j = 0;j<ongoingWork[0].workList[i].calendar.length;j++)
       {
-        if(ongoingWork[0].workList[i].calendar[j].date == currentDateString && ongoingWork[0].workList[i].workStatus != "COMPLETED")
+        if(ongoingWork[0].workList[i].calendar[j].date === currentDateString && ongoingWork[0].workList[i].workStatus !== "COMPLETED")
         {
           activeId = ongoingWork[0].workList[i].id;
           activeWorkListIndex = i;
@@ -104,7 +92,7 @@ export default function CheckOngoingWork() {
           {ongoingWork.length < 1 ? (
             <div className="border-2 rounded p-2 shadow">
               <div className="flex justify-between gap-52">
-                <h1 className="whitespace-nowrap">Pågånde jobb</h1>
+                <h1 className="whitespace-nowrap">Pågående jobb</h1>
                 <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
                   
                 </h1>

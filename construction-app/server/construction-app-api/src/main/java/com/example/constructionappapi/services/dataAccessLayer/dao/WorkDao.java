@@ -52,4 +52,6 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
     List<WorkEntity> findWorkEntityForToday();
 
     List<WorkEntity> findAllByCustomerId(Long id);
+
+    List<WorkEntity> findFirstByStartDateBetween(LocalDate today, LocalDate tenDaysForward);
 }
