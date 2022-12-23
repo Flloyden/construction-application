@@ -68,6 +68,9 @@ export default function AddCustomerNote(
         console.log(response);
         if (response.data.length < 1) {
           setShowWrongInput((showWrongInput) => !showWrongInput);
+          setTimeout(() => {
+            setShowWrongInput(false);
+          }, 3000);
         } else {
           window.location.reload(false);
         }
@@ -175,11 +178,9 @@ export default function AddCustomerNote(
           </div>
         </form>
       </div>
-      {showWrongInput && (
-        <div className="bg-red-600 px-4 w-full rounded mt-1 flex items-center align-middle justify-center text-white py-2">
-          <p className="">Går ej att lägga till fler anteckningar än det finns jobbdagar.</p>
+      <div className={showWrongInput ? "bg-red-600 px-4 w-full rounded mt-1 flex items-center align-middle justify-center text-white py-2 duration-200 visible" : "invisible duration-200"}>
+          <p className={showWrongInput ? "visible" : "invisible"}>Går ej att lägga till fler anteckningar än det finns jobbdagar!</p>
         </div>
-      )}
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default function RegularNotes(props) {
     return <div></div>;
   } else {
     return (
-      <div className="mt-6">
+      <div className="mt-0">
         <h1>Anteckningar</h1>
         <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 shadow-md rounded mt-2">
           <thead className="text-xs uppercase  text-gray-500  rounded border-b-2 border-gray-300">
