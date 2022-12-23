@@ -20,7 +20,6 @@ const ChangeWorkInfo = (props) => {
     .format("YYYY-MM-DD");
   let [startDate, setStartDate] = useState(new Date(props.currentStartDate));
   let [endDate] = useState(new Date(currentEndDateMoment));
-  const [selected, setSelected] = useState(props.currentWorkStatus);
   const dayCountRef = useRef();
   const [newList, setNewList] = useState({
     id: work.id,
@@ -81,15 +80,6 @@ const ChangeWorkInfo = (props) => {
       });
   };
 
-  function changeWorkStatus(e) {
-    console.log(e.target.value);
-    setSelected(e.target.value);
-    setNewList({
-      ...newList,
-      workStatus: e.target.value,
-    });
-  }
-
   function disableDate() {
     if (props.currentWorkStatus === "STARTED") {
       return "hidden";
@@ -110,14 +100,6 @@ const ChangeWorkInfo = (props) => {
       );
     } else {
       return;
-    }
-  }
-
-  function checkWorkStatus() {
-    if (props.currentWorkStatus === "STARTED") {
-      return "hidden";
-    } else {
-      return "w-full";
     }
   }
 
@@ -209,64 +191,6 @@ const ChangeWorkInfo = (props) => {
                     onChange={handleChange}
                   ></input>
                 </div>
-              </div>
-            </div>
-            <p className="mt-4 block text-sm font-medium text-gray-700">
-              Jobbstatus:
-            </p>
-            <div className="flex gap-4">
-              <div className={checkWorkStatus()}>
-                <input
-                  type="radio"
-                  id="NOTSTARTED"
-                  name="choose"
-                  value="NOTSTARTED"
-                  checked={selected === "NOTSTARTED"}
-                  onChange={changeWorkStatus}
-                  className="peer hidden"
-                />
-                <label
-                  htmlFor="NOTSTARTED"
-                  className="block hover:bg-gray-500 bg-gray-400 cursor-pointer select-none rounded p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
-                >
-                  Ej påbörjat
-                </label>
-              </div>
-
-              <div className="w-full">
-                <input
-                  type="radio"
-                  id="STARTED"
-                  name="choose"
-                  value="STARTED"
-                  onChange={changeWorkStatus}
-                  checked={selected === "STARTED"}
-                  className="peer hidden"
-                />
-                <label
-                  htmlFor="STARTED"
-                  className="block hover:bg-gray-500 bg-gray-400 cursor-pointer select-none rounded p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
-                >
-                  Pågående
-                </label>
-              </div>
-
-              <div className="w-full">
-                <input
-                  type="radio"
-                  id="COMPLETED"
-                  name="choose"
-                  value="COMPLETED"
-                  onChange={changeWorkStatus}
-                  checked={selected === "COMPLETED"}
-                  className="peer hidden"
-                />
-                <label
-                  htmlFor="COMPLETED"
-                  className="block hover:bg-gray-500 bg-gray-400 cursor-pointer select-none rounded p-2 text-center peer-checked:bg-blue-500 peer-checked:font-bold text-white duration-200"
-                >
-                  Slutfört
-                </label>
               </div>
             </div>
 
