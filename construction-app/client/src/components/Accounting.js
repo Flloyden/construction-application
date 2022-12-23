@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import AddWaranty from "./AddWarranty";
 import WarrantyModal from "./WarrantyModal";
-import { FaTrash } from "react-icons/fa";
 
 const Accounting = () => {
   if (
@@ -83,7 +83,7 @@ const Accounting = () => {
   };
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white">
       <div className="overflow-x-auto relative">
         <div className="flex pb-4 justify-between gap-4 rounded">
           <input
