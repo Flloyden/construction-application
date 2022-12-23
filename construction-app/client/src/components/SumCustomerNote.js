@@ -114,7 +114,7 @@ export default function SumCustomerNote(
           </div>
           <div className="w-full flex gap-2">
             <div className="mt-4 w-6/12">
-              <label className="mb-2 text-sm font-medium text-white">
+              <label className="mb-2 text-sm font-medium dark:text-white">
                 Jobb:{" "}
               </label>
               <select
@@ -142,7 +142,7 @@ export default function SumCustomerNote(
               </select>
             </div>
             <div className="mt-4 w-6/12">
-              <label className="mb-2 text-sm font-medium text-white">
+              <label className="mb-2 text-sm font-medium dark:text-white">
                 Månad:{" "}
               </label>
               <select
