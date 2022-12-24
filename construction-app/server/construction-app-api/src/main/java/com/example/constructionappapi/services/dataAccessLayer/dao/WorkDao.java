@@ -53,5 +53,10 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
 
     List<WorkEntity> findAllByCustomerId(Long id);
 
-    List<WorkEntity> findFirstByStartDateBetween(LocalDate today, LocalDate tenDaysForward);
+    @Query(value = "SELECT w.* FROM construction_system.work w " +
+            "INNER JOIN customer c ON c.id = w.customer_id " +
+            "INNER JOIN calendar ca ON w.id = ca.work_id " +
+            "WHERE start_date BETWEEN ?1 AND ?2 AND work_status = ?3 ORDER BY start_date ASC LIMIT 1",
+            nativeQuery = true)
+    List<WorkEntity> findFirstByStartDateBetweenAndWorkStatus(LocalDate tomorrow, LocalDate tenDaysForward, int workStatus);
 }
