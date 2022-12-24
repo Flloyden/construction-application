@@ -214,7 +214,6 @@ public class Tests {
     }
 
     public void testAddWork() {
-        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
@@ -228,25 +227,24 @@ public class Tests {
         ResponseEntity<WorkEntity> door = workAPI
                 .saveWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Door", null, 3, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(0L, "Door", null, null, 3, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
                 );
 
         ResponseEntity<WorkEntity> fence = workAPI
                 .saveWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Fence", null, 6, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(0L, "Fence", null, null, 6, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
                 );
 
         ResponseEntity<WorkEntity> roof = workAPI
                 .saveWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Roof", LocalDate.now().plusDays(2), 4, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(0L, "Roof", LocalDate.now().plusDays(2), LocalDate.now().plusDays(2), 4, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
                 );
 
         CalendarSingleton.getCalendar().printCalendar();
         System.out.println();
         CalendarSingleton.getCalendar().printWorkMap();
-         */
     }
 
     public void testSetWorkStatusToCompleted() {

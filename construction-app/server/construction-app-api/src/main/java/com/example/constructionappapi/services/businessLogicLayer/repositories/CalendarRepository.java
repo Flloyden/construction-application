@@ -4,6 +4,8 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
+import com.example.constructionappapi.services.responseBodies.VacationCalendarInformation;
+import com.example.constructionappapi.services.responseBodies.WorkCalendarInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +35,12 @@ public class CalendarRepository {
         return calendarDao.save(calendar);
     }
 
-    public String getAllWorkDates() {
-        return calendar.workToString();
+    public List<WorkCalendarInformation> getAllWorkDates() {
+        return calendar.getWorkCalendarInformation();
     }
 
-    public String getAllVacationDates() {
-        return calendar.vacationToString();
+    public List<VacationCalendarInformation> getAllVacationDates() {
+        return calendar.getVacationCalendarInformation();
     }
 
     public String getAllCalendarEntites() {

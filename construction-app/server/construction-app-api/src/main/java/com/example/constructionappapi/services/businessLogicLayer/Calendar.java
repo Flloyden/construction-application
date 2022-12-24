@@ -7,10 +7,13 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Calendar
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.responseBodies.VacationCalendarInformation;
+import com.example.constructionappapi.services.responseBodies.WorkCalendarInformation;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Calendar {
     private CalendarRepository calendarRepository;
@@ -22,7 +25,6 @@ public class Calendar {
     public HashMap<CalendarEntity, Long> calendarDates = new HashMap<>();
     public HashMap<Long, WorkEntity> workMap = new HashMap<>();
     public HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
-
 
 
     /**
@@ -231,53 +233,23 @@ public class Calendar {
         System.out.println();
     }
 
-    public String workToString() {
-        StringBuilder s = new StringBuilder();
-        Iterator<Map.Entry<CalendarEntity, Long>> entrySetWork = calendarDates.entrySet().iterator();
-
-        s.append("[");
-
-        while (entrySetWork.hasNext()) {
-            Map.Entry<CalendarEntity, Long> entry = entrySetWork.next();
-            s.append("{");
-            if (workMap.get(entry.getValue()).getCustomer() != null) {
-                s.append("\"customerName\":").append("\"").append((workMap.get(entry.getValue()).getCustomer().getName())).append("\",");
-            }
-            s.append("\"workName\":\"").append((workMap.get(entry.getValue()).getName())).append("\",");
-            s.append("\"date\":\"").append(entry.getKey().getDate()).append("\",");
-            s.append("\"color\":\"").append("#FF0000").append("\",");
-            s.append("\"customerId\":\"").append(workMap.get(entry.getValue()).getCustomer().getId()).append("\"");
-            s.append("}");
-            if (entrySetWork.hasNext()) s.append(",");
-        }
-
-
-        s.append("]");
-
-        return s.toString();
+    public List<WorkCalendarInformation> getWorkCalendarInformation() {
+        return calendarDates.entrySet().stream().map(entry -> new WorkCalendarInformation(
+                workMap.get(entry.getValue()).getCustomer().getId(),
+                workMap.get(entry.getValue()).getCustomer().getName(),
+                workMap.get(entry.getValue()).getName(),
+                entry.getKey().getDate()
+        )).collect(Collectors.toList());
     }
 
-    public String vacationToString() {
-        StringBuilder s = new StringBuilder();
-        Iterator<Map.Entry<VacationCalendarEntity, VacationEntity>> entrySetVacation = vacationDates.entrySet().iterator();
-
-        s.append("[");
-
-        while (entrySetVacation.hasNext()) {
-            Map.Entry<VacationCalendarEntity, VacationEntity> entry = entrySetVacation.next();
-            s.append("{");
-            s.append("\"vacationId\":").append("\"").append(entry.getValue().getId()).append("\",");
-            s.append("\"vacationName\":").append("\"").append(entry.getValue().getName()).append("\",");
-            s.append("\"date\":").append("\"").append(entry.getKey().getDate()).append("\",");
-            s.append("\"startDate\":").append("\"").append(entry.getValue().getStartDate()).append("\",");
-            s.append("\"numberOfDays\":").append("\"").append(entry.getValue().getNumberOfDays()).append("\"");
-            s.append("}");
-            if (entrySetVacation.hasNext()) s.append(",");
-        }
-
-        s.append("]");
-
-        return s.toString();
+    public List<VacationCalendarInformation> getVacationCalendarInformation() {
+        return vacationDates.entrySet().stream().map(entry -> new VacationCalendarInformation(
+                entry.getValue().getId(),
+                entry.getValue().getName(),
+                entry.getKey().getDate(),
+                entry.getValue().getStartDate(),
+                entry.getValue().getNumberOfDays()
+        )).collect(Collectors.toList());
     }
 
     public void setCalendarRepository(CalendarRepository calendarRepository) {
