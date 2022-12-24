@@ -17,7 +17,6 @@ import java.util.Optional;
 @Repository
 public interface CustomerDao extends JpaRepository<CustomerEntity, Long> {
 
-
     @Query(value = "SELECT customer.*, work.*, calendar.* " +
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +
@@ -25,7 +24,6 @@ public interface CustomerDao extends JpaRepository<CustomerEntity, Long> {
             "WHERE DATE(calendar.date) = CURRENT_DATE",
             nativeQuery = true
     )
-
     List<CustomerEntity> findCustomersWithWorkAndCalendarForToday();
 
     @Query(value = "SELECT customer.*, work.*, calendar.* " +
@@ -35,7 +33,6 @@ public interface CustomerDao extends JpaRepository<CustomerEntity, Long> {
             "WHERE DATE(calendar.date) BETWEEN ?1 AND ?2",
             nativeQuery = true
     )
-
     List<CustomerEntity> findCustomersWithWorkAndCalendarBetweenStartDateAndEndDate(LocalDate startDate, LocalDate endDate);
 }//long bcs Costumer id (primary key) is datatype long
 

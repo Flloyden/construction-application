@@ -1,12 +1,15 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import com.example.constructionappapi.services.config.JwtUtils;
+import com.example.constructionappapi.services.security.AuthenticationRequest;
+import com.example.constructionappapi.services.security.AuthenticationResponse;
+import com.example.constructionappapi.services.security.JwtUtils;
+import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -19,14 +22,35 @@ public class AuthenticationAPI {
     private final AccountRepository accountRepository;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-        final UserDetails user = accountRepository.findUserByEmail(request.getEmail());
-        if (user != null) {
-            return ResponseEntity.ok(jwtUtils.generateToken(user));
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body(new AuthenticationResponse("error", "Authentication Failed", null));
         }
 
-        return ResponseEntity.status(400).body("Authentication Failed");
+        final AccountEntity accountInformation = accountRepository.findUserByEmail(request.getEmail());
+        if (accountInformation != null) {
+            final AuthenticationResponse.User userInformation =
+                    new AuthenticationResponse.User(
+                            accountInformation.getId(),
+                            accountInformation.getName(),
+                            accountInformation.getEmail(),
+                            accountInformation.getProfileImage(),
+                            accountInformation.getRole());
+            System.out.println(accountInformation.getUsername());
+
+            final AuthenticationResponse response = new AuthenticationResponse();
+            response.setStatus("ok");
+            response.setMessage("Logged in");
+            response.setUser(userInformation);
+
+            return ResponseEntity
+                    .ok()
+                    .header("Authorization", "Bearer " + jwtUtils.generateToken(accountInformation))
+                    .body(response);
+        }
+
+        return ResponseEntity.status(40).body(new AuthenticationResponse("error", "Email not found", null));
     }
 }

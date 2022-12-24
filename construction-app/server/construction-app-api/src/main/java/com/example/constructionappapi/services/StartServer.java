@@ -8,6 +8,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.AccountE
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
 import java.util.Optional;
@@ -42,9 +43,9 @@ public class StartServer {
 
             //TODO: Remove when done with project.
             //Adds an account to the database on server-start to make testing easier.
-            AccountEntity accountEntity = new AccountEntity(0, "admin", "admin@admin.com", "admin", "admin", true, true, true, true, UserRole.ADMIN);
+            AccountEntity accountEntity = new AccountEntity(0, "admin", "admin@admin.com", new BCryptPasswordEncoder().encode("admin"), "", true, true, true, true, UserRole.ADMIN);
             AccountRepository accountRepository = configurableApplicationContext.getBean(AccountRepository.class);
-            Optional<AccountEntity> accountEntityOptional = accountRepository.findFirstByUsernameAndPassword("admin", "admin");
+            Optional<AccountEntity> accountEntityOptional = accountRepository.findFirstByNameAndPassword("admin", new BCryptPasswordEncoder().encode("admin"));
 
             if (accountEntityOptional.isEmpty()) {
                 accountRepository.createAccount(accountEntity);

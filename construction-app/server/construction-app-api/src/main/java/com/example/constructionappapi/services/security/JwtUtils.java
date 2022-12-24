@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.config;
+package com.example.constructionappapi.services.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

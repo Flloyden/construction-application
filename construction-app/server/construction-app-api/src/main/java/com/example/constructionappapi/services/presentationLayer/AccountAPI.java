@@ -1,13 +1,10 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import com.example.constructionappapi.services.config.JwtUtils;
+import com.example.constructionappapi.services.security.JwtUtils;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class AccountAPI {
 
     @GetMapping("/user")
     public String getUserInfo(@RequestBody AccountEntity account) {
-        Optional<AccountEntity> accountEntity = accountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
+        Optional<AccountEntity> accountEntity = accountRepository.findFirstByNameAndPassword(account.getUsername(), account.getPassword());
         System.out.println(account);
         StringBuilder s = new StringBuilder();
 
