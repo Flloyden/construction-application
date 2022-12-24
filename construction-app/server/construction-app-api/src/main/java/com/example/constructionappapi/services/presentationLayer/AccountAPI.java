@@ -1,6 +1,7 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.responseBodies.UserInformation;
 import com.example.constructionappapi.services.security.JwtUtils;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.security.Response;
@@ -57,10 +58,10 @@ public class AccountAPI {
     }
 
     @GetMapping("/user/{accountId}")
-    public ResponseEntity<?> getUser(@PathVariable final long accountId) {
+    public ResponseEntity<UserInformation> getUser(@PathVariable final long accountId) {
         return accountRepository.findById(accountId).map(accountEntity -> ResponseEntity
                         .ok()
-                        .body(new Response.User(
+                        .body(new UserInformation(
                                 accountEntity.getId(),
                                 accountEntity.getName(),
                                 accountEntity.getEmail(),

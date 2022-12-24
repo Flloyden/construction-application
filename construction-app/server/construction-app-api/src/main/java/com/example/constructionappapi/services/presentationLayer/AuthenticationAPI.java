@@ -1,6 +1,7 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.responseBodies.UserInformation;
 import com.example.constructionappapi.services.security.AuthenticationRequest;
 import com.example.constructionappapi.services.security.JwtUtils;
 import com.example.constructionappapi.services.security.Response;
@@ -27,7 +28,7 @@ public class AuthenticationAPI {
     private final AccountRepository accountRepository;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<Response.User> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<UserInformation> authenticate(@RequestBody AuthenticationRequest request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         } catch (AuthenticationException e) {
@@ -38,7 +39,7 @@ public class AuthenticationAPI {
                 .map(accountEntity -> ResponseEntity
                         .status(HttpStatus.OK)
                         .header("Authorization", "Bearer " + jwtUtils.generateToken(accountEntity))
-                        .body(new Response.User(
+                        .body(new UserInformation(
                                 accountEntity.getId(),
                                 accountEntity.getName(),
                                 accountEntity.getEmail(),
