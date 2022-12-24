@@ -220,7 +220,7 @@ public class WorkRepository {
         //Lägger därför en dag framåt från dagens datum.
         LocalDate tenDaysForward = today.plusDays(10);
 
-        return workDao.findFirstByStartDateBetween(today, tenDaysForward);
+        return workDao.findFirstByStartDateBetweenAndWorkStatus(today, tenDaysForward, 0);
     }
 
     public List<WorkEntity> checkForOngoingWork() {
