@@ -1,39 +1,44 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 
-import com.example.constructionappapi.services.businessLogicLayer.Calendar;
-import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class WorkAPI {
-
-    @Autowired
-    private WorkRepository workRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    private final Calendar calendar = CalendarSingleton.getCalendar();
+    private final WorkRepository workRepository;
 
     @PostMapping("/kunder/{customerId}/work/save")
-    public WorkEntity saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
-        return workRepository.addNewWorkEntity(customerId, work);
+    public ResponseEntity<WorkEntity> saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
+        WorkEntity savedWork = workRepository.addNewWorkEntity(customerId, work);
+
+        if (savedWork == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(savedWork);
     }
 
-    @PostMapping("/kunder/{customerId}/work/update")
-    public WorkEntity updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
-        return workRepository.updateWork(customerId, work);
+    @PutMapping("/kunder/{customerId}/work/update")
+    public ResponseEntity<WorkEntity> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
+        WorkEntity updatedWork = workRepository.updateWork(customerId, work);
+
+        if (updatedWork == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedWork);
     }
 
     @PostMapping("/kunder/work/update_workstatus_completed")
@@ -65,14 +70,14 @@ public class WorkAPI {
     public List<CustomerEntity> getUpcomingWork() {
         if (workRepository.checkForUpcomingWork() != null) {
             List<WorkEntity> work = workRepository.checkForUpcomingWork();
-            List<CustomerEntity> customerEntities =  new ArrayList<>();
+            List<CustomerEntity> customerEntities = new ArrayList<>();
             if (work.size() != 0) {
                 customerEntities.add(work.get(0).getCustomer());
                 return customerEntities;
             }
         }
         return null;
-        }
+    }
 
     @GetMapping("/kunder/ongoing")
     public List<CustomerEntity> getOngoingWork() {
@@ -88,8 +93,12 @@ public class WorkAPI {
     }
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
-    public void deleteWorkEntity(@PathVariable final Long id) {
-        workRepository.deleteWorkEntity(id);
+    public ResponseEntity<String> deleteWorkEntity(@PathVariable final Long id) {
+        if (workRepository.deleteWorkEntity(id)) {
+            return ResponseEntity.ok().body("Deleted successfully");
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
 }

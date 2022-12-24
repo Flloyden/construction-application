@@ -11,5 +11,7 @@ import java.util.Optional;
  * etc, given by JpaRepository) through it's entity-class
  */
 public interface AccountDao extends JpaRepository<AccountEntity, Long> {
-    Optional<AccountEntity> findFirstByUsernameAndPassword(String username, String password);
+    Optional<AccountEntity> findFirstByNameAndPassword(String username, String password);
+
+    AccountEntity findFirstByEmail(String email);
 }

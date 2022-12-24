@@ -13,8 +13,8 @@ public class AccountRepository {
     @Autowired
     private AccountDao accountDao;
 
-    public Optional<AccountEntity> findFirstByUsernameAndPassword(String username, String password) {
-        return accountDao.findFirstByUsernameAndPassword(username, password);
+    public Optional<AccountEntity> findFirstByNameAndPassword(String username, String password) {
+        return accountDao.findFirstByNameAndPassword(username, password);
     }
 
     public AccountEntity createAccount(AccountEntity account) {
@@ -37,10 +37,14 @@ public class AccountRepository {
         Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
 
         accountEntity.ifPresent(entity -> {
-            entity.setUsername(account.getUsername());
+            entity.setName(account.getUsername());
             entity.setEmail(account.getEmail());
             entity.setProfileImage(account.getProfileImage());
             accountDao.save(entity);
         });
+    }
+
+    public AccountEntity findUserByEmail(String email) {
+        return accountDao.findFirstByEmail(email);
     }
 }

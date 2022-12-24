@@ -12,6 +12,7 @@ import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
 import com.example.constructionappapi.services.presentationLayer.VacationAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "test", "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
 
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
@@ -181,7 +182,7 @@ public class Tests {
         Calendar calendar = CalendarSingleton.getCalendar();
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "test", "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         customer = customerRepository.createCustomer(customer);
 
@@ -209,31 +210,42 @@ public class Tests {
     }
 
     public void testAddWork() {
+
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
-        CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
+        CustomerEntity customer = new CustomerEntity(0L, "test", "test", "test", "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerAPI customerAPI = configurableApplicationContext.getBean(CustomerAPI.class);
         customer = customerAPI.createCustomer(customer);
 
         System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
 
-        WorkEntity door = new WorkEntity(0L, "Door", null, 3, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
-        door = workAPI.saveWork(customer.getId(), door);
+        ResponseEntity<WorkEntity> door = workAPI
+                .saveWork(
+                        customer.getId(),
+                        new WorkEntity(0L, "Door", null, 3, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                );
 
-        WorkEntity fence = new WorkEntity(0L, "Fence", null, 6, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
-        fence = workAPI.saveWork(customer.getId(), fence);
+        ResponseEntity<WorkEntity> fence = workAPI
+                .saveWork(
+                        customer.getId(),
+                        new WorkEntity(0L, "Fence", null, 6, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                );
 
-        WorkEntity roof = new WorkEntity(0L, "Roof", LocalDate.now().plusDays(2), 4, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null);
-        roof = workAPI.saveWork(customer.getId(), roof);
+        ResponseEntity<WorkEntity> roof = workAPI
+                .saveWork(
+                        customer.getId(),
+                        new WorkEntity(0L, "Roof", LocalDate.now().plusDays(2), 4, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                );
 
         CalendarSingleton.getCalendar().printCalendar();
         System.out.println();
         CalendarSingleton.getCalendar().printWorkMap();
+
     }
 
-    public void testSetWorkStatusToCompleted(){
+    public void testSetWorkStatusToCompleted() {
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Changing workstatus to completed" + ANSI_RED);
@@ -242,6 +254,7 @@ public class Tests {
     }
 
     public void testRemoveCustomer() {
+        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
@@ -262,6 +275,7 @@ public class Tests {
         roof = workAPI.saveWork(customer.getId(), roof);
 
         customerAPI.deleteCustomer(customer.getId());
+         */
     }
 
     public void testRemoveWork() {

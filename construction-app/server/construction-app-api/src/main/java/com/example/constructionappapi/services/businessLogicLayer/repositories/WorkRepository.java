@@ -114,15 +114,18 @@ public class WorkRepository {
      *
      * @param id
      */
-    public void deleteWorkEntity(Long id) {
+    public boolean deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
         if (work.isPresent()) {
             if (customerNoteDao.findFirstByWork(work.get()).isEmpty()) {
                 workDao.delete(work.get());
                 calendar.removeWork(work.get());
                 updateStartingDates();
+                return true;
             }
         }
+
+        return false;
     }
 
     public Optional<WorkEntity> getLastInserted() {
