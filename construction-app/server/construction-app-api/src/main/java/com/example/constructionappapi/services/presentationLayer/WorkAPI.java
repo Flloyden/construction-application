@@ -1,13 +1,10 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 
-import com.example.constructionappapi.services.businessLogicLayer.Calendar;
-import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +15,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class WorkAPI {
-
-    @Autowired
-    private WorkRepository workRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    private final Calendar calendar = CalendarSingleton.getCalendar();
+    private final WorkRepository workRepository;
 
     @PostMapping("/kunder/{customerId}/work/save")
     public ResponseEntity<WorkEntity> saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
@@ -38,7 +30,7 @@ public class WorkAPI {
         return ResponseEntity.status(HttpStatus.OK).body(savedWork);
     }
 
-    @PostMapping("/kunder/{customerId}/work/update")
+    @PutMapping("/kunder/{customerId}/work/update")
     public ResponseEntity<WorkEntity> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         WorkEntity updatedWork = workRepository.updateWork(customerId, work);
 
@@ -97,7 +89,7 @@ public class WorkAPI {
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
     public ResponseEntity<String> deleteWorkEntity(@PathVariable final Long id) {
-        if(workRepository.deleteWorkEntity(id)){
+        if (workRepository.deleteWorkEntity(id)) {
             return ResponseEntity.ok().body("Deleted successfully");
         }
 

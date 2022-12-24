@@ -25,7 +25,6 @@ public class AuthenticationAPI {
     private final AccountRepository accountRepository;
 
     @PostMapping("/authenticate")
-    @CrossOrigin(exposedHeaders = "Authorization")
     public ResponseEntity<Response<Response.User>> authenticate(@RequestBody AuthenticationRequest request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
