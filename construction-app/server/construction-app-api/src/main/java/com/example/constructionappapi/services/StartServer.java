@@ -35,6 +35,7 @@ public class StartServer {
         try {
             configurableApplicationContext = SpringApplication.run(StartServer.class, args);
 
+
             System.out.println("Server is running!");
 
             TimerTask repeatedTask = new TimerTask() {
