@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,9 @@ public class WorkEntity implements Comparable<WorkEntity> {
     private Long id;
     private String name;
     private LocalDate startDate;
+    private LocalDate earliestStartDate;
     private int numberOfDays;
+    private boolean isLockedInCalendar;
     private String materialNote;
     @Lob
     private String offer;

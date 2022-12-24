@@ -3,7 +3,10 @@ package com.example.constructionappapi.services.presentationLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.security.JwtUtils;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.security.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +56,19 @@ public class AccountAPI {
         return s.toString();
     }
 
+    @GetMapping("/user/{accountId}")
+    public ResponseEntity<?> getUser(@PathVariable final long accountId) {
+        return accountRepository.findById(accountId).map(accountEntity -> ResponseEntity
+                        .ok()
+                        .body(new Response.User(
+                                accountEntity.getId(),
+                                accountEntity.getName(),
+                                accountEntity.getEmail(),
+                                accountEntity.getProfileImage(),
+                                accountEntity.getRole())))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     @PostMapping("/user/update")
     public void updateUserInfo(@RequestBody AccountEntity account) {
         accountRepository.updateUserInfo(account);
@@ -62,7 +78,7 @@ public class AccountAPI {
 
     @GetMapping("/account/{id}")
     public Optional<AccountEntity> getAccount(@PathVariable final Long id) {
-        return accountRepository.getAccount(id);
+        return accountRepository.findById(id);
     }
 
     @GetMapping("/account")

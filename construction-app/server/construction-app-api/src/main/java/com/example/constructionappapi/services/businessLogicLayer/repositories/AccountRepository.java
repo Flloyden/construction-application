@@ -25,7 +25,7 @@ public class AccountRepository {
         return accountDao.findAll();
     }
 
-    public Optional<AccountEntity> getAccount(Long id) {
+    public Optional<AccountEntity> findById(Long id) {
         return accountDao.findById(id);
     }
 

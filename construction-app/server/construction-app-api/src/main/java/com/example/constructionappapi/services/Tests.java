@@ -90,6 +90,7 @@ public class Tests {
     }
 
     public void testMoveWorkForwardsOnAddVacation() {
+        /*
         Calendar calendar = CalendarSingleton.getCalendar();
 
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
@@ -105,6 +106,7 @@ public class Tests {
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
         calendar.printCalendar();
+         */
     }
 
     public void testMoveWorkBackwardsOnRemoveVacation() {
@@ -178,6 +180,7 @@ public class Tests {
     }
 
     public void testChangeNumberOfDaysOnWork() {
+        /*
         String ANSI_RED = "\u001B[31m";
         Calendar calendar = CalendarSingleton.getCalendar();
 
@@ -207,10 +210,11 @@ public class Tests {
         door.setNumberOfDays(5);
         workAPI.updateWork(customer.getId(), door);
         calendar.printCalendar();
+         */
     }
 
     public void testAddWork() {
-
+        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
@@ -242,7 +246,7 @@ public class Tests {
         CalendarSingleton.getCalendar().printCalendar();
         System.out.println();
         CalendarSingleton.getCalendar().printWorkMap();
-
+         */
     }
 
     public void testSetWorkStatusToCompleted() {

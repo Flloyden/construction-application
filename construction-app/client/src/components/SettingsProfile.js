@@ -12,8 +12,10 @@ export default function SettingsProfile() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getUser(1);
+        console.log(response.data);
         setNewUserInfo(response.data);
-        console.log(response);
+        console.log(newUserInfo);
+
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);

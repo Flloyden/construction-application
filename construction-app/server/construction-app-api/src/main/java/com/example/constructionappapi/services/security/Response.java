@@ -16,7 +16,7 @@ public class Response<T> {
     @AllArgsConstructor
     public static class User {
         private long id;
-        private String name;
+        private String username;
         private String email;
         private String profileImage;
         private UserRole userRole;
