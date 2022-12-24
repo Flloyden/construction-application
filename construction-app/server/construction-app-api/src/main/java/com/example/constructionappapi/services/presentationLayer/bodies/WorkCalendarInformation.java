@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.responseBodies;
+package com.example.constructionappapi.services.presentationLayer.bodies;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

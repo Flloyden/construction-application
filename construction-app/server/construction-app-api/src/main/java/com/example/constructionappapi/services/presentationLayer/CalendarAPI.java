@@ -1,8 +1,8 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarRepository;
-import com.example.constructionappapi.services.responseBodies.VacationCalendarInformation;
-import com.example.constructionappapi.services.responseBodies.WorkCalendarInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.VacationCalendarInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.WorkCalendarInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

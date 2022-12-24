@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.security;
+package com.example.constructionappapi.services.presentationLayer.bodies;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

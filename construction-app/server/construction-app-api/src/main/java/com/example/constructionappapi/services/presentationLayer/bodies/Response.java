@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.security;
+package com.example.constructionappapi.services.presentationLayer.bodies;
 
 import com.example.constructionappapi.services.dataAccessLayer.UserRole;
 import lombok.AllArgsConstructor;
@@ -8,16 +8,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationResponse {
-    private String status;
+public class Response<T> {
     private String message;
-    private User user;
+    private T object;
 
     @Data
     @AllArgsConstructor
     public static class User {
         private long id;
-        private String name;
+        private String username;
         private String email;
         private String profileImage;
         private UserRole userRole;

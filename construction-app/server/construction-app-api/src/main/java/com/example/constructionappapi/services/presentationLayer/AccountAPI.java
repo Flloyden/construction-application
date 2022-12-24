@@ -1,10 +1,9 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import com.example.constructionappapi.services.responseBodies.UserInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
 import com.example.constructionappapi.services.security.JwtUtils;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import com.example.constructionappapi.services.security.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

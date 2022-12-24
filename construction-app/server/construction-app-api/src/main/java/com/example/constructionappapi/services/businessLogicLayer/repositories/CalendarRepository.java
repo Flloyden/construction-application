@@ -4,8 +4,8 @@ import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
-import com.example.constructionappapi.services.responseBodies.VacationCalendarInformation;
-import com.example.constructionappapi.services.responseBodies.WorkCalendarInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.VacationCalendarInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.WorkCalendarInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

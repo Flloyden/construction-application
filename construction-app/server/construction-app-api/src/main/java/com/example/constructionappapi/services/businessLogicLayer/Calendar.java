@@ -7,8 +7,8 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Calendar
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
-import com.example.constructionappapi.services.responseBodies.VacationCalendarInformation;
-import com.example.constructionappapi.services.responseBodies.WorkCalendarInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.VacationCalendarInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.WorkCalendarInformation;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
