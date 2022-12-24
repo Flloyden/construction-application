@@ -1,12 +1,9 @@
 package com.example.constructionappapi.services;
+
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountingRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
-import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
-import org.hibernate.resource.beans.container.spi.AbstractCdiBeanContainer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

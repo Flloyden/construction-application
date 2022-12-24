@@ -1,7 +1,6 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
-import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;

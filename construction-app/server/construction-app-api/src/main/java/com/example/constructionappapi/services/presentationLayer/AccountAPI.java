@@ -1,8 +1,10 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.security.JwtUtils;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,19 +14,20 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class AccountAPI {
-
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
+    private final AccountRepository accountRepository;
 
     @PostMapping("/account")
     public AccountEntity createAccount(@RequestBody AccountEntity account) {
         return accountRepository.createAccount(account);
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody AccountEntity account) {
-        Optional<AccountEntity> accountEntity = accountRepository.findFirstByUsernameAndPassword(account.getUsername(), account.getPassword());
+    @GetMapping("/user")
+    public String getUserInfo(@RequestBody AccountEntity account) {
+        Optional<AccountEntity> accountEntity = accountRepository.findFirstByNameAndPassword(account.getUsername(), account.getPassword());
         System.out.println(account);
         StringBuilder s = new StringBuilder();
 
@@ -46,24 +49,6 @@ public class AccountAPI {
             s.append("\"message\":").append("\"Felaktig inloggning\"");
             s.append("}");
         }
-
-        return s.toString();
-    }
-
-    @GetMapping("/user/{userId}")
-    public String getUserInfo(@PathVariable final Long userId) {
-        Optional<AccountEntity> accountEntity = accountRepository.getAccount(userId);
-        StringBuilder s = new StringBuilder();
-
-        accountEntity.ifPresent(account -> {
-            System.out.println(account);
-            s.append("{");
-            s.append("\"id\":").append(account.getId()).append(",");
-            s.append("\"username\":").append("\"").append(account.getUsername()).append("\",");
-            s.append("\"email\":").append("\"").append(account.getEmail()).append("\",");
-            s.append("\"profileImage\":").append("\"").append(account.getProfileImage()).append("\"");
-            s.append("}");
-        });
 
         return s.toString();
     }
