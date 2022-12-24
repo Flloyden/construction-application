@@ -45,7 +45,7 @@ public class StartServer {
             //Adds an account to the database on server-start to make testing easier.
             AccountEntity accountEntity = new AccountEntity(0, "admin", "admin@admin.com", new BCryptPasswordEncoder().encode("admin"), "", true, true, true, true, UserRole.ADMIN);
             AccountRepository accountRepository = configurableApplicationContext.getBean(AccountRepository.class);
-            Optional<AccountEntity> accountEntityOptional = accountRepository.findFirstByNameAndPassword("admin", new BCryptPasswordEncoder().encode("admin"));
+            Optional<AccountEntity> accountEntityOptional = Optional.ofNullable(accountRepository.findUserByEmail("admin@admin.com"));
 
             if (accountEntityOptional.isEmpty()) {
                 accountRepository.createAccount(accountEntity);
