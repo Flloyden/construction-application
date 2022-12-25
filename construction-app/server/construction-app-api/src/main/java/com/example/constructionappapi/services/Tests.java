@@ -243,7 +243,7 @@ public class Tests {
         ResponseEntity<WorkEntity> roof = workAPI
                 .saveWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Roof", LocalDate.now().plusDays(2), LocalDate.now().plusDays(2), 4, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(0L, "Roof", null, null, 4, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
                 );
 
         CalendarSingleton.getCalendar().printCalendar();

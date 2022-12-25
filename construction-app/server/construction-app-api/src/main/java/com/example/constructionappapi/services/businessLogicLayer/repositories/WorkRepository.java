@@ -13,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkRepository {
@@ -47,47 +48,31 @@ public class WorkRepository {
      * @return
      */
     public ResponseEntity<WorkEntity> addNewWorkEntity(long customerId, WorkEntity work) {
-        Optional<CustomerEntity> customer = customerDao.findById(customerId);
-        if (customer.isPresent()) {
-            work.setCustomer(customer.get());
+        return customerDao.findById(customerId).map(customer -> {
+            work.setCustomer(customer);
 
-            WorkEntity newWork = work;
-            if (newWork.getStartDate() == null) newWork.setStartDate(findNewStartDate());
-            if (newWork.getStartDate().equals(LocalDate.now())) newWork.setWorkStatus(WorkStatus.STARTED);
+            if (work.getStartDate() == null) work.setStartDate(findNewStartDate());
+            if (work.getStartDate().equals(LocalDate.now())) work.setWorkStatus(WorkStatus.STARTED);
 
-            newWork = workDao.save(newWork);
-            calendar.addWork(newWork);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newWork);
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    private boolean startDateTakenByLocked(WorkEntity work) {
-        if (work.getStartDate() == null) return false;
-
-        CalendarEntity calendarEntity = calendarDao.findFirstByDate(work.getStartDate());
-        if (calendarEntity == null) return false;
-
-        Optional<WorkEntity> workEntity = workDao.findById(calendar.calendarDates.get(calendarEntity));
-        return workEntity.map(WorkEntity::isLockedInCalendar).orElse(false);
+            calendar.addWork(workDao.save(work));
+            return ResponseEntity.status(HttpStatus.CREATED).body(work);
+        }).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     private LocalDate findNewStartDate() {
-        Optional<CalendarEntity> lastDateInCalendar = calendarDao.findFirstByOrderByDateDesc();
+        LocalDate startDateOfNewWork = calendarDao.findFirstByOrderByDateDesc()
+                .map(calendarEntity -> calendarEntity.getDate().plusDays(1))
+                .orElseGet(LocalDate::now);
 
-        LocalDate startDateOfNewWork;
-        startDateOfNewWork = lastDateInCalendar.map(calendarEntity -> calendarEntity.getDate().plusDays(1)).orElseGet(LocalDate::now);
+        Set<LocalDate> vacationDates = vacationCalendarDao.findAll().stream()
+                .map(VacationCalendarEntity::getDate)
+                .collect(Collectors.toSet());
 
-        HashSet<LocalDate> vacationDates = new HashSet<>();
-        vacationCalendarDao.findAll().forEach(vacationCalendarEntity -> vacationDates.add(vacationCalendarEntity.getDate()));
-
-        while (vacationDates.contains(startDateOfNewWork) || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SATURDAY || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            startDateOfNewWork = startDateOfNewWork.plusDays(1);
-        }
-
-        System.out.println(startDateOfNewWork);
-        return startDateOfNewWork;
+        return startDateOfNewWork
+                .datesUntil(LocalDate.MAX)
+                .filter(date -> !vacationDates.contains(date) && date.getDayOfWeek() != DayOfWeek.SATURDAY && date.getDayOfWeek() != DayOfWeek.SUNDAY)
+                .findFirst()
+                .orElse(startDateOfNewWork);
     }
 
     /**
@@ -146,49 +131,69 @@ public class WorkRepository {
 
     public ResponseEntity<WorkEntity> updateWork(long customerId, WorkEntity work) {
         if (startDateTakenByLocked(work)) {
-            return workDao.findById(calendar.calendarDates.get(new CalendarEntity(work.getStartDate()))).map(
+            return workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId()).map(
                     lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
             ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
         }
 
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
-        if (customer.isPresent()) {
-            work.setCustomer(customer.get());
-
-            List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
-            if (!noteList.isEmpty()) {
-                work.setCustomerNotes(noteList);
-            }
-
-            List<NoteSummaryEntity> sumList = noteSummaryDao.findAllByWorkNumber(work.getId());
-            if (!sumList.isEmpty()) {
-                work.setNoteSummaries(sumList);
-            }
-
-            Optional<WorkEntity> preUpdateWork = workDao.findById(work.getId());
-            if (preUpdateWork.isPresent()) {
-                if (preUpdateWork.get().getWorkStatus() != WorkStatus.COMPLETED) {
-                    //Checks if the date has been changed and updates the calendar if it has.
-                    if (!preUpdateWork.get().getStartDate().equals(work.getStartDate()) || preUpdateWork.get().getNumberOfDays() != work.getNumberOfDays()) {
-                        if (preUpdateWork.get().getStartDate().equals(work.getStartDate())) {
-                            if (work.getNumberOfDays() < preUpdateWork.get().getNumberOfDays()) {
-                                calendar.reduceNumberOfDays(work, preUpdateWork.get().getNumberOfDays() - work.getNumberOfDays());
-                            } else if (work.getNumberOfDays() > preUpdateWork.get().getNumberOfDays()) {
-                                calendar.increaseNumberOfDays(work, work.getNumberOfDays() - preUpdateWork.get().getNumberOfDays());
-                            }
-                        } else {
-                            calendar.changeStartingDate(work);
-                        }
-                    }
-
-                    updateStartingDates();
-                    calendar.getWorkMap().get(work.getId()).update(work);
-                    return addNewWorkEntity(customerId, work);
-                }
-            }
+        if (customer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Optional<WorkEntity> workBeforeUpdate = workDao.findById(work.getId());
+        if (workBeforeUpdate.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(workBeforeUpdate.get());
+        }
+
+        work.setCustomer(customer.get());
+        List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
+        if (!noteList.isEmpty()) {
+            work.setCustomerNotes(noteList);
+        }
+
+        List<NoteSummaryEntity> sumList = noteSummaryDao.findAllByWorkNumber(work.getId());
+        if (!sumList.isEmpty()) {
+            work.setNoteSummaries(sumList);
+        }
+
+        updateCalendar(workBeforeUpdate.get(), work);
+        updateStartingDates();
+        calendar.getWorkMap().get(work.getId()).update(work);
+        return addNewWorkEntity(customerId, work);
+    }
+
+    private boolean startDateTakenByLocked(WorkEntity work) {
+        if (work.getStartDate() == null) return false;
+
+        CalendarEntity calendarEntity = calendarDao.findFirstByDate(work.getStartDate());
+        if (calendarEntity == null) return false;
+
+        Optional<WorkEntity> workEntity = workDao.findById(calendar.calendarDates.get(calendarEntity));
+
+        return workEntity.map(WorkEntity::isLockedInCalendar).orElse(false);
+    }
+
+    private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {
+        if (!workBeforeUpdate.getStartDate().equals(workToUpdateWith.getStartDate())) {
+            calendar.updateStartDate(workToUpdateWith);
+        }
+
+        if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
+            updateNumberOfDays(workToUpdateWith, workToUpdateWith.getNumberOfDays());
+        }
+    }
+
+    private void updateNumberOfDays(WorkEntity work, int newNumberOfDays) {
+        if (newNumberOfDays < work.getNumberOfDays()) {
+            calendar.reduceNumberOfDays(work, work.getNumberOfDays() - newNumberOfDays);
+        } else if (newNumberOfDays > work.getNumberOfDays()) {
+            calendar.increaseNumberOfDays(work, newNumberOfDays - work.getNumberOfDays());
+        }
     }
 
     public void updateStartingDates() {

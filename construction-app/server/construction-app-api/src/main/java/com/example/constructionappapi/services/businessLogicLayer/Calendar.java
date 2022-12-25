@@ -19,12 +19,10 @@ public class Calendar {
     private CalendarRepository calendarRepository;
     private VacationRepository vacationRepository;
     private WorkRepository workRepository;
-    private ArrayList<VacationEntity> vacationDays = new ArrayList<>();
 
-    //public HashMap<CalendarEntity, WorkEntity> calendarDates = new HashMap<>();
-    public HashMap<CalendarEntity, Long> calendarDates = new HashMap<>();
-    public HashMap<Long, WorkEntity> workMap = new HashMap<>();
-    public HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
+    private HashMap<CalendarEntity, Long> calendarDates = new HashMap<>();
+    private HashMap<Long, WorkEntity> workMap = new HashMap<>();
+    private HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
 
 
     /**
@@ -41,7 +39,6 @@ public class Calendar {
     public void addWork(WorkEntity work) {
         //Check if the work item is already in the hashmap. TODO: Dunno if needed.
         if (workMap.containsKey(work.getId())) return;
-
         workMap.put(work.getId(), work);
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
         workRepository.updateStartingDates();
@@ -54,10 +51,15 @@ public class Calendar {
             LocalDate dateToAddTo = startDate.plusDays(i + n);
 
             while (true) {
-                if (!isWeekend(dateToAddTo)) break;
-                if (!vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) break;
-                if (calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar())
+                if (!isWeekend(dateToAddTo)) {
                     break;
+                }
+                if (!vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
+                    break;
+                }
+                if (calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar()) {
+                    break;
+                }
 
                 dateToAddTo = dateToAddTo.plusDays(1);
                 n++;
@@ -77,8 +79,10 @@ public class Calendar {
             //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
                 shuffleForward(dateToAddTo, daysToShuffleForward);
-            } else daysToShuffleForward--;/*If the spot where new work is being added is free all future work that needs to be
+            } else {/*If the spot where new work is being added is free all future work that needs to be
             shuffled forward should be shuffled forward one day less.*/
+                daysToShuffleForward--;
+            }
 
             //Add work to the specified date.
             calendarEntity = calendarRepository.save(calendarEntity);
@@ -92,7 +96,7 @@ public class Calendar {
      *
      * @param work The new work-entity.
      */
-    public void changeStartingDate(WorkEntity work) {
+    public void updateStartDate(WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().equals(work.getId()));
         workMap.remove(work.getId());
