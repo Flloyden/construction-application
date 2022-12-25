@@ -150,10 +150,20 @@ public class WorkRepository {
         //Lägger därför en dag framåt från dagens datum.
         LocalDate tenDaysForward = today.plusDays(10);
 
-        return workDao.findByStartDateBetween(today, tenDaysForward);
+        return workDao.findFirstByStartDateBetweenAndWorkStatus(today, tenDaysForward, 0);
     }
 
     public List<WorkEntity> checkForOngoingWork() {
-        return workDao.findWorkEntityForToday();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
+        if (dayOfWeek== java.util.Calendar.SATURDAY)
+        {
+            return workDao.findWorkEntityForTodayIfSaturday();
+        } else if(dayOfWeek==java.util.Calendar.SUNDAY)
+        {
+            return workDao.findWorkEntityForTodayIfSunday();
+        } else {
+            return workDao.findWorkEntityForToday();
+        }
     }
 }
