@@ -84,11 +84,7 @@ public class WorkAPI {
 
     @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
     public ResponseEntity<String> deleteWorkEntity(@PathVariable final Long id) {
-        if (workRepository.deleteWorkEntity(id)) {
-            return ResponseEntity.ok().body("Deleted successfully");
-        }
-
-        return ResponseEntity.notFound().build();
+        return workRepository.deleteWorkEntity(id);
     }
 
 }

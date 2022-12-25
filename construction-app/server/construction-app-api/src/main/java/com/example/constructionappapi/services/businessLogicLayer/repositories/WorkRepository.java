@@ -64,7 +64,6 @@ public class WorkRepository {
         }
 
         return calendar.addWork(workDao.save(work));
-
     }
 
     private LocalDate findNewStartDate() {
@@ -136,10 +135,6 @@ public class WorkRepository {
         return ResponseEntity.ok().body("Work deleted");
     }
 
-    public Optional<WorkEntity> getLastInserted() {
-        return workDao.findFirstByOrderByIdDesc();
-    }
-
     public ResponseEntity<WorkEntity> updateWork(long customerId, WorkEntity work) {
         if (startDateTakenByLocked(work)) {
             return workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId()).map(
@@ -161,7 +156,6 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(workBeforeUpdate.get());
         }
 
-        work.setCustomer(customer.get());
         List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
         if (!noteList.isEmpty()) {
             work.setCustomerNotes(noteList);
@@ -172,9 +166,11 @@ public class WorkRepository {
             work.setNoteSummaries(sumList);
         }
 
+        work.setCustomer(customer.get());
         updateCalendar(workBeforeUpdate.get(), work);
-        updateStartingDates();
         calendar.getWorkMap().get(work.getId()).update(work);
+        updateStartingDates();
+
         return addNewWorkEntity(customerId, work);
     }
 
@@ -188,7 +184,7 @@ public class WorkRepository {
             return false;
         }
 
-        return workDao.findById(calendar.getCalendar().get(calendarEntity)).map(WorkEntity::isLockedInCalendar).orElse(false);
+        return workDao.findById(calendar.getCalendarMap().get(calendarEntity)).map(WorkEntity::isLockedInCalendar).orElse(false);
     }
 
     private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {

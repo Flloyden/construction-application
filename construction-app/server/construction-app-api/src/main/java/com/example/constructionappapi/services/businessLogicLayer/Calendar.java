@@ -21,14 +21,36 @@ public class Calendar {
     private CalendarRepository calendarRepository;
     private VacationRepository vacationRepository;
     private WorkRepository workRepository;
+    private final HashMap<CalendarEntity, Long> calendarDates = new HashMap<>();
+    private final HashMap<Long, WorkEntity> workMap = new HashMap<>();
+    private final HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
 
-    private HashMap<CalendarEntity, Long> calendarDates = new HashMap<>();
-    private HashMap<Long, WorkEntity> workMap = new HashMap<>();
-    private HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
+    public void setCalendarRepository(CalendarRepository calendarRepository) {
+        this.calendarRepository = calendarRepository;
+    }
 
+    public void setWorkRepository(WorkRepository workRepository) {
+        this.workRepository = workRepository;
+    }
+
+    public void setVacationRepository(VacationRepository vacationRepository) {
+        this.vacationRepository = vacationRepository;
+    }
+
+    public HashMap<CalendarEntity, Long> getCalendarMap() {
+        return calendarDates;
+    }
+
+    public HashMap<Long, WorkEntity> getWorkMap() {
+        return workMap;
+    }
+
+    public HashMap<VacationCalendarEntity, VacationEntity> getVacationMap() {
+        return vacationDates;
+    }
 
     /**
-     * Retrieves calendar items from the database and populates the hash-map with them.
+     * Initializes the hash-maps used for the calendar with values from the database.
      */
     public void initializeCalendar() {
         calendarRepository.findAll().forEach(calendarEntity -> {
@@ -39,11 +61,12 @@ public class Calendar {
     }
 
     public ResponseEntity<WorkEntity> addWork(WorkEntity work) {
-        //Check if the work item is already in the hashmap. TODO: Dunno if needed.
-        if (workMap.containsKey(work.getId())) return null;
+        if (workMap.containsKey(work.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         workMap.put(work.getId(), work);
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
-        workRepository.updateStartingDates();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(work);
     }
@@ -61,7 +84,7 @@ public class Calendar {
                 if (!vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
                     break;
                 }
-                if (calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar()) {
+                if (!isDateTakeByLockedWork(dateToAddTo)) {
                     break;
                 }
 
@@ -80,15 +103,14 @@ public class Calendar {
 
             /*If the date where the new work is getting added already contains something the content that is already there needs
               to be shuffled forward x days decided by the daysToShuffleForward variable.*/
-            //if (calendarRepository.findFirstByDate(dateToAddTo) != null)
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
                 shuffleForward(dateToAddTo, daysToShuffleForward);
-            } else {/*If the spot where new work is being added is free all future work that needs to be
-            shuffled forward should be shuffled forward one day less.*/
+            } else {
+                /*If the spot where new work is being added is free all future work that needs to be
+                 shuffled forward should be shuffled forward one day less.*/
                 daysToShuffleForward--;
             }
 
-            //Add work to the specified date.
             calendarEntity = calendarRepository.save(calendarEntity);
             //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work.getId());
@@ -108,6 +130,7 @@ public class Calendar {
         moveCalendarItemBackwards(work.getStartDate());
 
         addWork(work);
+        workRepository.updateStartingDates();
     }
 
     public void increaseNumberOfDays(WorkEntity work, int numberOfDays) {
@@ -161,10 +184,15 @@ public class Calendar {
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
 
         while (true) {
-            if (!isWeekend(newDate)) break;
-            if (!vacationDates.containsKey(new VacationCalendarEntity(newDate))) break;
-            if (calendarDates.containsKey(new CalendarEntity(newDate)) && !workMap.get(calendarDates.get(new CalendarEntity(newDate))).isLockedInCalendar())
+            if (!isWeekend(newDate)) {
                 break;
+            }
+            if (!vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
+                break;
+            }
+            if (!isDateTakeByLockedWork(newDate)) {
+                break;
+            }
 
             newDate = newDate.plusDays(1);
         }
@@ -195,14 +223,18 @@ public class Calendar {
         LocalDate freeCalendarSpot = null;
 
         while (true) {
-            //Stop if we reached the last date that a work item was moved to.
-            if (!possibleDate.isAfter(lastDateMovedTo)) break;
-            //Stop if the start date of the work-item being moved is reached.
-            if (workToMove.getEarliestStartDate().isAfter(possibleDate)) break;
-            //Stop if the work-item being moved is the same as the one for which the date is being checked.
-            if (workToMove.getId().equals(calendarDates.get(new CalendarEntity(possibleDate)))) break;
-            //Stop if reached today's date.
-            if (LocalDate.now().isEqual(possibleDate)) break;
+            if (!possibleDate.isAfter(lastDateMovedTo)) {
+                break; //Stop if we reached the last date that a work item was moved to.
+            }
+            if (workToMove.getEarliestStartDate().isAfter(possibleDate)) {
+                break; //Stop if the start date of the work-item being moved is reached.
+            }
+            if (workToMove.getId().equals(calendarDates.get(new CalendarEntity(possibleDate)))) {
+                break; //Stop if the work-item being moved is the same as the one for which the date is being checked.
+            }
+            if (LocalDate.now().isEqual(possibleDate)) {
+                break; //Stop if reached today's date.
+            }
 
             //Set freeCalenderSpot to possibleDate if the spot in the calendar is free, and it's not on a weekend.
             if (!calendarDates.containsKey(new CalendarEntity(possibleDate))) {
@@ -229,6 +261,29 @@ public class Calendar {
 
     private boolean isWeekend(LocalDate date) {
         return date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
+    }
+
+    private boolean isDateTakeByLockedWork(LocalDate dateToAddTo) {
+        return calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar();
+    }
+
+    public List<WorkCalendarInformation> getWorkCalendarInformation() {
+        return calendarDates.entrySet().stream().map(entry -> new WorkCalendarInformation(
+                workMap.get(entry.getValue()).getCustomer().getId(),
+                workMap.get(entry.getValue()).getCustomer().getName(),
+                workMap.get(entry.getValue()).getName(),
+                entry.getKey().getDate()
+        )).collect(Collectors.toList());
+    }
+
+    public List<VacationCalendarInformation> getVacationCalendarInformation() {
+        return vacationDates.entrySet().stream().map(entry -> new VacationCalendarInformation(
+                entry.getValue().getId(),
+                entry.getValue().getName(),
+                entry.getKey().getDate(),
+                entry.getValue().getStartDate(),
+                entry.getValue().getNumberOfDays()
+        )).collect(Collectors.toList());
     }
 
     public void printCalendar() {
@@ -259,45 +314,6 @@ public class Calendar {
         });
 
         System.out.println();
-    }
-
-    public List<WorkCalendarInformation> getWorkCalendarInformation() {
-        return calendarDates.entrySet().stream().map(entry -> new WorkCalendarInformation(
-                workMap.get(entry.getValue()).getCustomer().getId(),
-                workMap.get(entry.getValue()).getCustomer().getName(),
-                workMap.get(entry.getValue()).getName(),
-                entry.getKey().getDate()
-        )).collect(Collectors.toList());
-    }
-
-    public List<VacationCalendarInformation> getVacationCalendarInformation() {
-        return vacationDates.entrySet().stream().map(entry -> new VacationCalendarInformation(
-                entry.getValue().getId(),
-                entry.getValue().getName(),
-                entry.getKey().getDate(),
-                entry.getValue().getStartDate(),
-                entry.getValue().getNumberOfDays()
-        )).collect(Collectors.toList());
-    }
-
-    public void setCalendarRepository(CalendarRepository calendarRepository) {
-        this.calendarRepository = calendarRepository;
-    }
-
-    public void setWorkRepository(WorkRepository workRepository) {
-        this.workRepository = workRepository;
-    }
-
-    public void setVacationRepository(VacationRepository vacationRepository) {
-        this.vacationRepository = vacationRepository;
-    }
-
-    public HashMap<CalendarEntity, Long> getCalendar() {
-        return calendarDates;
-    }
-
-    public HashMap<Long, WorkEntity> getWorkMap() {
-        return workMap;
     }
 }
 
