@@ -48,15 +48,23 @@ public class WorkRepository {
      * @return
      */
     public ResponseEntity<WorkEntity> addNewWorkEntity(long customerId, WorkEntity work) {
-        return customerDao.findById(customerId).map(customer -> {
-            work.setCustomer(customer);
+        Optional<CustomerEntity> customer = customerDao.findById(customerId);
+        if (customer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
-            if (work.getStartDate() == null) work.setStartDate(findNewStartDate());
-            if (work.getStartDate().equals(LocalDate.now())) work.setWorkStatus(WorkStatus.STARTED);
+        work.setCustomer(customer.get());
 
-            calendar.addWork(workDao.save(work));
-            return ResponseEntity.status(HttpStatus.CREATED).body(work);
-        }).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        if (work.getStartDate() == null) {
+            work.setStartDate(findNewStartDate());
+        }
+
+        if (work.getStartDate().equals(LocalDate.now())) {
+            work.setWorkStatus(WorkStatus.STARTED);
+        }
+
+        return calendar.addWork(workDao.save(work));
+
     }
 
     private LocalDate findNewStartDate() {
@@ -64,7 +72,8 @@ public class WorkRepository {
                 .map(calendarEntity -> calendarEntity.getDate().plusDays(1))
                 .orElseGet(LocalDate::now);
 
-        Set<LocalDate> vacationDates = vacationCalendarDao.findAll().stream()
+        Set<LocalDate> vacationDates = vacationCalendarDao.findAll()
+                .stream()
                 .map(VacationCalendarEntity::getDate)
                 .collect(Collectors.toSet());
 
@@ -111,18 +120,20 @@ public class WorkRepository {
      *
      * @param id
      */
-    public boolean deleteWorkEntity(Long id) {
+    public ResponseEntity<String> deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
-        if (work.isPresent()) {
-            if (customerNoteDao.findFirstByWork(work.get()).isEmpty()) {
-                workDao.delete(work.get());
-                calendar.removeWork(work.get());
-                updateStartingDates();
-                return true;
-            }
+        if (work.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("That work entity doesn't exist");
         }
 
-        return false;
+        if (customerNoteDao.findFirstByWork(work.get()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Can't delete a work-entity with notes");
+        }
+
+        workDao.delete(work.get());
+        calendar.removeWork(work.get());
+        updateStartingDates();
+        return ResponseEntity.ok().body("Work deleted");
     }
 
     public Optional<WorkEntity> getLastInserted() {
@@ -168,14 +179,16 @@ public class WorkRepository {
     }
 
     private boolean startDateTakenByLocked(WorkEntity work) {
-        if (work.getStartDate() == null) return false;
+        if (work.getStartDate() == null) {
+            return false;
+        }
 
         CalendarEntity calendarEntity = calendarDao.findFirstByDate(work.getStartDate());
-        if (calendarEntity == null) return false;
+        if (calendarEntity == null) {
+            return false;
+        }
 
-        Optional<WorkEntity> workEntity = workDao.findById(calendar.calendarDates.get(calendarEntity));
-
-        return workEntity.map(WorkEntity::isLockedInCalendar).orElse(false);
+        return workDao.findById(calendar.getCalendar().get(calendarEntity)).map(WorkEntity::isLockedInCalendar).orElse(false);
     }
 
     private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {

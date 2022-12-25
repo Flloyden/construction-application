@@ -9,6 +9,8 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Vacation
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import com.example.constructionappapi.services.presentationLayer.bodies.VacationCalendarInformation;
 import com.example.constructionappapi.services.presentationLayer.bodies.WorkCalendarInformation;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -36,12 +38,14 @@ public class Calendar {
         vacationRepository.findAllVacationCalendarEntities().forEach(vacationCalendarEntity -> vacationDates.put(vacationCalendarEntity, vacationCalendarEntity.getVacation()));
     }
 
-    public void addWork(WorkEntity work) {
+    public ResponseEntity<WorkEntity> addWork(WorkEntity work) {
         //Check if the work item is already in the hashmap. TODO: Dunno if needed.
-        if (workMap.containsKey(work.getId())) return;
+        if (workMap.containsKey(work.getId())) return null;
         workMap.put(work.getId(), work);
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
         workRepository.updateStartingDates();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(work);
     }
 
     private void addDaysToCalendar(int numberOfDaysToAdd, LocalDate startDate, WorkEntity work) {
@@ -288,7 +292,7 @@ public class Calendar {
         this.vacationRepository = vacationRepository;
     }
 
-    public HashMap<CalendarEntity, Long> getCalendarHashMap() {
+    public HashMap<CalendarEntity, Long> getCalendar() {
         return calendarDates;
     }
 
