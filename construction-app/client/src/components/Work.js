@@ -173,10 +173,12 @@ const Work = (props) => {
           setIsChangeOpen={setIsChangeOpen}
           currentWorkId={props.workName.id}
           currentWorkName={props.label}
-          currentOffer={props.workName.offer}
-          currentWorkDays={props.workName.numberOfDays}
           currentStartDate={props.workName.startDate}
+          currentEarliestStartDate={props.workName.earliestStartDate}
+          currentWorkDays={props.workName.numberOfDays}
+          currentLockedInCalendar={props.workName.lockedInCalendar}
           currentWorkMaterial={props.workName.materialNote}
+          currentOffer={props.workName.offer}
           currentWorkStatus={props.workName.workStatus}
         />
       )}

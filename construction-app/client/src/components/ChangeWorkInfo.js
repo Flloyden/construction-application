@@ -9,28 +9,34 @@ const ChangeWorkInfo = (props) => {
   const [work] = useState({
     id: props.currentWorkId,
     name: props.currentWorkName,
-    offer: props.currentOffer,
     startDate: props.currentStartDate,
-    workStatus: props.currentWorkStatus,
-    materialNote: props.currentWorkMaterial,
+    earliestStartDate: props.currentEarliestStartDate,
     numberOfDays: props.currentWorkDays,
+    lockedInCalendar: props.currentLockedInCalendar,
+    materialNote: props.currentWorkMaterial,
+    offer: props.currentOffer,
+    workStatus: props.currentWorkStatus,
   });
-  const currentEndDateMoment = moment(props.currentStartDate, "YYYY-MM-DD")
-    .add("days", props.currentWorkDays)
-    .format("YYYY-MM-DD");
-  let [startDate, setStartDate] = useState(new Date(props.currentStartDate));
-  let [endDate] = useState(new Date(currentEndDateMoment));
-  const dayCountRef = useRef();
   const [newList, setNewList] = useState({
     id: work.id,
     name: work.name,
+    startDate: work.startDate,
+    earliestStartDate: work.earliestStartDate,
     numberOfDays: work.numberOfDays,
+    lockedInCalendar: work.lockedInCalendar,
     materialNote: work.materialNote,
     offer: work.offer,
-    startDate: work.startDate,
     workStatus: work.workStatus,
-    calendar: [],
+    //calendar: [],
   });
+  const currentEndDateMoment = moment(props.currentStartDate, "YYYY-MM-DD")
+    .add(props.currentWorkDays, "days")
+    .format("YYYY-MM-DD");
+  let [startDate, setStartDate] = useState(new Date(props.currentStartDate));
+  let [earliestStartDate, setEarliestStartDate] = useState(new Date(props.currentEarliestStartDate));
+  const [enableEarliestStartDate, setEnableEarliestStartDate] = useState(props.currentEarliestStartDate != null);
+  let [endDate] = useState(new Date(currentEndDateMoment));
+  const dayCountRef = useRef();
 
   const handleChange = (e) => {
     let value = e.target.value;
@@ -88,8 +94,32 @@ const ChangeWorkInfo = (props) => {
     }
   }
 
+  function disableEarliestStartDate() {
+    console.log(enableEarliestStartDate)
+    if (props.currentWorkStatus === "STARTED" || !enableEarliestStartDate) {
+      return "hidden";
+    } else {
+      return;
+    }
+  }
+
   function getDate() {
     const thisDate = props.currentStartDate;
+    if (props.currentWorkStatus === "STARTED") {
+      return (
+        <input
+          className="rounded block w-full border border-white p-2.5 bg-white placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
+          disabled
+          placeholder={thisDate}
+        ></input>
+      );
+    } else {
+      return;
+    }
+  }
+
+  function getEarliestStartDateIfStarted() {
+    const thisDate = props.currentEarliestStartDate;
     if (props.currentWorkStatus === "STARTED") {
       return (
         <input
@@ -190,6 +220,80 @@ const ChangeWorkInfo = (props) => {
                     required
                     onChange={handleChange}
                   ></input>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="flex gap-2">
+                <div className="mt-0">
+                  <p className="block mb-2 text-sm font-medium text-gray-700">
+                    Tidigaste startdatum:{" "}
+                    <input
+                      type="checkbox"
+                      id="lockOnCalendar"
+                      name="lock"
+                      defaultChecked={enableEarliestStartDate}
+                      onChange={() => {
+                        if (enableEarliestStartDate) {
+                          setEnableEarliestStartDate(false)
+                          setEarliestStartDate("")
+                          setNewList({
+                            ...newList,
+                            earliestStartDate: "",
+                          });
+                        }
+                        else {
+                          setEnableEarliestStartDate(true)
+                          setEarliestStartDate(startDate)
+                          setNewList({
+                            ...newList,
+                            earliestStartDate: startDate,
+                          });
+                        }
+
+                        console.log(newList)
+                      }}
+                    />
+                  </p>
+                  {getEarliestStartDateIfStarted()}
+                  <div className={disableEarliestStartDate()}>
+                    <DatePicker
+                      className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                      selected={earliestStartDate}
+                      onChange={(date) => {
+                        setNewList({
+                          ...newList,
+                          earliestStartDate: new Date(date),
+                        });
+                        setEarliestStartDate(date);
+                      }}
+                      selectsStart
+                      startDate={earliestStartDate}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="flex gap-2">
+                <div className="mt-0">
+                  <p className="block mb-2 text-sm font-medium text-gray-700">
+                    Lås på kalendern:{" "}
+                    <input
+                      type="checkbox"
+                      id="lockOnCalendar"
+                      name="lock"
+                      defaultChecked={newList.lockedInCalendar}
+                      onChange={() => {
+                        setNewList({
+                          ...newList,
+                          lockedInCalendar: !newList.lockedInCalendar
+                        })
+                      }}
+                    />
+                  </p>
                 </div>
               </div>
             </div>

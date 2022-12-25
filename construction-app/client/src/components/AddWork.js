@@ -6,12 +6,13 @@ const AddWork = (props) => {
   const [work, setWork] = useState({
     id: "",
     name: "",
+    startDate: "",
+    earliestStartDate: "",
     numberOfDays: "",
+    isLockedInCalendar: false,
     materialNote: "",
     offer: "",
-    startDate: "",
-    workStatus: "NOTSTARTED",
-    calendar: [],
+    workStatus: "NOTSTARTED"
   });
   const dayCountRef = useRef();
 

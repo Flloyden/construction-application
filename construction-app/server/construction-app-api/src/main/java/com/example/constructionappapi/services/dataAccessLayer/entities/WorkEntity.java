@@ -58,11 +58,6 @@ public class WorkEntity implements Comparable<WorkEntity> {
     @JsonManagedReference(value = "workToSummary")
     private List<NoteSummaryEntity> noteSummaries = new ArrayList<>();
 
-
-    public List<CalendarEntity> getCalendarForWork() {
-        return calendar;
-    }
-
     public List<CustomerNoteEntity> getCustomerNotes() {
         return customerNotes;
     }

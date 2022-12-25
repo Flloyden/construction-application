@@ -6,6 +6,8 @@ import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.*;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,38 +46,48 @@ public class WorkRepository {
      *
      * @return
      */
-    public WorkEntity addNewWorkEntity(long customerId, WorkEntity work) {
+    public ResponseEntity<WorkEntity> addNewWorkEntity(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
 
             WorkEntity newWork = work;
-            if (newWork.getStartDate() == null) {
-                Optional<CalendarEntity> lastDateInCalendar = calendarDao.findFirstByOrderByDateDesc();
-
-                LocalDate startDateOfNewWork;
-                startDateOfNewWork = lastDateInCalendar.map(calendarEntity -> calendarEntity.getDate().plusDays(1)).orElseGet(LocalDate::now);
-
-                HashSet<LocalDate> vacationDates = new HashSet<>();
-                vacationCalendarDao.findAll().forEach(vacationCalendarEntity -> vacationDates.add(vacationCalendarEntity.getDate()));
-
-                while (vacationDates.contains(startDateOfNewWork) || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SATURDAY || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                    startDateOfNewWork = startDateOfNewWork.plusDays(1);
-                }
-
-                newWork.setStartDate(startDateOfNewWork);
-            }
-
-            if (newWork.getStartDate().equals(LocalDate.now())) {
-                newWork.setWorkStatus(WorkStatus.STARTED);
-            }
+            if (newWork.getStartDate() == null) newWork.setStartDate(findNewStartDate());
+            if (newWork.getStartDate().equals(LocalDate.now())) newWork.setWorkStatus(WorkStatus.STARTED);
 
             newWork = workDao.save(newWork);
             calendar.addWork(newWork);
-            return newWork;
+            return ResponseEntity.status(HttpStatus.CREATED).body(newWork);
         }
 
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    private boolean startDateTakenByLocked(WorkEntity work) {
+        if (work.getStartDate() == null) return false;
+
+        CalendarEntity calendarEntity = calendarDao.findFirstByDate(work.getStartDate());
+        if (calendarEntity == null) return false;
+
+        Optional<WorkEntity> workEntity = workDao.findById(calendar.calendarDates.get(calendarEntity));
+        return workEntity.map(WorkEntity::isLockedInCalendar).orElse(false);
+    }
+
+    private LocalDate findNewStartDate() {
+        Optional<CalendarEntity> lastDateInCalendar = calendarDao.findFirstByOrderByDateDesc();
+
+        LocalDate startDateOfNewWork;
+        startDateOfNewWork = lastDateInCalendar.map(calendarEntity -> calendarEntity.getDate().plusDays(1)).orElseGet(LocalDate::now);
+
+        HashSet<LocalDate> vacationDates = new HashSet<>();
+        vacationCalendarDao.findAll().forEach(vacationCalendarEntity -> vacationDates.add(vacationCalendarEntity.getDate()));
+
+        while (vacationDates.contains(startDateOfNewWork) || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SATURDAY || startDateOfNewWork.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            startDateOfNewWork = startDateOfNewWork.plusDays(1);
+        }
+
+        System.out.println(startDateOfNewWork);
+        return startDateOfNewWork;
     }
 
     /**
@@ -132,7 +144,13 @@ public class WorkRepository {
         return workDao.findFirstByOrderByIdDesc();
     }
 
-    public WorkEntity updateWork(long customerId, WorkEntity work) {
+    public ResponseEntity<WorkEntity> updateWork(long customerId, WorkEntity work) {
+        if (startDateTakenByLocked(work)) {
+            return workDao.findById(calendar.calendarDates.get(new CalendarEntity(work.getStartDate()))).map(
+                    lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
+            ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
+        }
+
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isPresent()) {
             work.setCustomer(customer.get());
@@ -170,7 +188,7 @@ public class WorkRepository {
             }
         }
 
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public void updateStartingDates() {

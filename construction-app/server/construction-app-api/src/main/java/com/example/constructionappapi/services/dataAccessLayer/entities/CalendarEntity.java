@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * A class creating and giving access to the table Calendar in DB
+ */
 @Entity
 @Table(name = "calendar")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- * A class creating and giving access to the table Calendar in DB
- */
 public class CalendarEntity implements Comparable<CalendarEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

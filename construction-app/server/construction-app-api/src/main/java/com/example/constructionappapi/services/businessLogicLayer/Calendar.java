@@ -38,15 +38,13 @@ public class Calendar {
         vacationRepository.findAllVacationCalendarEntities().forEach(vacationCalendarEntity -> vacationDates.put(vacationCalendarEntity, vacationCalendarEntity.getVacation()));
     }
 
-    public boolean addWork(WorkEntity work) {
+    public void addWork(WorkEntity work) {
         //Check if the work item is already in the hashmap. TODO: Dunno if needed.
-        if (workMap.containsKey(work.getId())) return false;
+        if (workMap.containsKey(work.getId())) return;
 
         workMap.put(work.getId(), work);
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
         workRepository.updateStartingDates();
-
-        return true;
     }
 
     private void addDaysToCalendar(int numberOfDaysToAdd, LocalDate startDate, WorkEntity work) {
@@ -55,10 +53,22 @@ public class Calendar {
         for (int i = 0; i < numberOfDaysToAdd; i++) {
             LocalDate dateToAddTo = startDate.plusDays(i + n);
 
+            while (true) {
+                if (!isWeekend(dateToAddTo)) break;
+                if (!vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) break;
+                if (calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar())
+                    break;
+
+                dateToAddTo = dateToAddTo.plusDays(1);
+                n++;
+            }
+
+            /*
             while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
                 dateToAddTo = dateToAddTo.plusDays(1);
                 n++;
             }
+             */
 
             CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
@@ -85,6 +95,7 @@ public class Calendar {
     public void changeStartingDate(WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().equals(work.getId()));
+        workMap.remove(work.getId());
 
         moveCalendarItemBackwards(work.getStartDate());
 
@@ -141,7 +152,12 @@ public class Calendar {
         LocalDate newDate = date.plusDays(daysToShuffle);
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
 
-        while (newDate.getDayOfWeek() == DayOfWeek.SATURDAY || newDate.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
+        while (true) {
+            if (!isWeekend(newDate)) break;
+            if (!vacationDates.containsKey(new VacationCalendarEntity(newDate))) break;
+            if (calendarDates.containsKey(new CalendarEntity(newDate)) && !workMap.get(calendarDates.get(new CalendarEntity(newDate))).isLockedInCalendar())
+                break;
+
             newDate = newDate.plusDays(1);
         }
 
@@ -174,9 +190,9 @@ public class Calendar {
             //Stop if we reached the last date that a work item was moved to.
             if (!possibleDate.isAfter(lastDateMovedTo)) break;
             //Stop if the start date of the work-item being moved is reached.
-            if (workToMove.getStartDate().isAfter(possibleDate)) break;
+            if (workToMove.getEarliestStartDate().isAfter(possibleDate)) break;
             //Stop if the work-item being moved is the same as the one for which the date is being checked.
-            if (calendarDates.get(new CalendarEntity(possibleDate)) == workToMove.getId()) break;
+            if (workToMove.getId().equals(calendarDates.get(new CalendarEntity(possibleDate)))) break;
             //Stop if reached today's date.
             if (LocalDate.now().isEqual(possibleDate)) break;
 
@@ -201,6 +217,10 @@ public class Calendar {
         }
 
         return lastDateMovedTo;
+    }
+
+    private boolean isWeekend(LocalDate date) {
+        return date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 
     public void printCalendar() {

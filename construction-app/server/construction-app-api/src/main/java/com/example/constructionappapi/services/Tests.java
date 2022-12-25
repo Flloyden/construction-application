@@ -227,14 +227,18 @@ public class Tests {
         ResponseEntity<WorkEntity> door = workAPI
                 .saveWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Door", null, null, 3, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(0L, "Door", null, null, 10, true, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
                 );
+
+        CalendarSingleton.getCalendar().printCalendar();
 
         ResponseEntity<WorkEntity> fence = workAPI
                 .saveWork(
                         customer.getId(),
                         new WorkEntity(0L, "Fence", null, null, 6, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
                 );
+
+        CalendarSingleton.getCalendar().printCalendar();
 
         ResponseEntity<WorkEntity> roof = workAPI
                 .saveWork(

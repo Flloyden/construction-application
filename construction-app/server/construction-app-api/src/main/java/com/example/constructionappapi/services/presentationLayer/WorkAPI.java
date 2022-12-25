@@ -21,24 +21,12 @@ public class WorkAPI {
 
     @PostMapping("/kunder/{customerId}/work/save")
     public ResponseEntity<WorkEntity> saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
-        WorkEntity savedWork = workRepository.addNewWorkEntity(customerId, work);
-
-        if (savedWork == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(savedWork);
+        return workRepository.addNewWorkEntity(customerId, work);
     }
 
     @PutMapping("/kunder/{customerId}/work/update")
     public ResponseEntity<WorkEntity> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
-        WorkEntity updatedWork = workRepository.updateWork(customerId, work);
-
-        if (updatedWork == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(updatedWork);
+        return workRepository.updateWork(customerId, work);
     }
 
     @PostMapping("/kunder/work/update_workstatus_completed")
