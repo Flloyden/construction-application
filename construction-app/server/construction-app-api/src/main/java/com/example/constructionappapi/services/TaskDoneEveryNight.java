@@ -10,7 +10,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
+/**
+ * Class for making a task that must execute every night.
+ * Updates work with start date today to Started and old accountings to status 1
+ */
 @Component
 public class TaskDoneEveryNight {
     private final ConfigurableApplicationContext configurableApplicationContext;
