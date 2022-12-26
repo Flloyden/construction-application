@@ -85,6 +85,19 @@ public class Tests {
  */
     }
 
+    /*
+    public void testGetAmountOfOldAccountings() {
+        String ANSI_RED = "\u001B[31m";
+
+        System.out.println(ANSI_RED + "Getting amount of old accountings." + ANSI_RED);
+        AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
+        int amount = accountingRepository.getOldAccountings();
+        System.out.println("antal gamla garantier: " + amount);
+
+    }
+
+     */
+
     public void testMoveWorkForwardsOnAddVacation() {
         /*
         Calendar calendar = CalendarSingleton.getCalendar();

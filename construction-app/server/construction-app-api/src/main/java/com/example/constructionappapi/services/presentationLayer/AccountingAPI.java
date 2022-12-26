@@ -24,6 +24,11 @@ public class AccountingAPI {
         return accountingRepository.getAccounting(id);
     }
 
+    @GetMapping("/bokföring/gamla_garantier")
+    public int getAmountOfOldAccounting(){
+        return accountingRepository.getOldAccountings();
+    }
+
     @GetMapping("/bokföring")
     public List<AccountingEntity> getAllCustomers() {
         return accountingRepository.getAllAccountingEntities();

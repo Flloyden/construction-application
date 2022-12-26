@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * A class that gives access to interaction with table Accounting in the DB (save, find, delete,
@@ -24,5 +25,21 @@ public interface AccountingDao extends JpaRepository<AccountingEntity, Long> {
             value = "DELETE FROM accounting a WHERE DATE(a.warranty_date) <= :today",
             nativeQuery = true)
     int deleteOldAccountings(@Param("today") LocalDate today);
+
+    @Query(
+            value = "SELECT * FROM accounting WHERE accounting.status = 1",
+            nativeQuery = true
+    )
+    List<AccountingEntity> getOldAccountings();
+
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE accounting a " +
+                    "SET a.status = 1 " +
+                    "WHERE DATE(a.warranty_date) <= :today",
+            nativeQuery = true)
+    int updateOldAccountingStatus(@Param("today") LocalDate today);
 
 }
