@@ -2,12 +2,14 @@ package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountingRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.presentationLayer.AccountingAPI;
 import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
 import com.example.constructionappapi.services.presentationLayer.VacationAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
@@ -88,6 +90,19 @@ public class Tests {
 
  */
     }
+
+    /*
+    public void testGetAmountOfOldAccountings() {
+        String ANSI_RED = "\u001B[31m";
+
+        System.out.println(ANSI_RED + "Getting amount of old accountings." + ANSI_RED);
+        AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
+        int amount = accountingRepository.getOldAccountings();
+        System.out.println("antal gamla garantier: " + amount);
+
+    }
+
+     */
 
     public void testMoveWorkForwardsOnAddVacation() {
         /*

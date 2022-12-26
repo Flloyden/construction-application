@@ -36,8 +36,12 @@ public class AccountingRepository{
     }
 
 
-    public int deleteOldAccountings(LocalDate today){
-        System.out.println("------ deleteOldAccountings() just ran... ------");
-        return accountingDao.deleteOldAccountings(today);
+    public int updateOldAccountingStatus(LocalDate today){
+        System.out.println("------ updateOldAccountingStatus() just ran... ------");
+        return accountingDao.updateOldAccountingStatus(today);
+    }
+
+    public int getOldAccountings() {
+        return accountingDao.getOldAccountings().size();
     }
 }
