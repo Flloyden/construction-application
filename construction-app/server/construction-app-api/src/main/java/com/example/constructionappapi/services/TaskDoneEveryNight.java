@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
 @Component
 public class TaskDoneEveryNight {
     private final ConfigurableApplicationContext configurableApplicationContext;
@@ -27,10 +28,9 @@ public class TaskDoneEveryNight {
     public void execute() throws InterruptedException {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
-        workRepository.findWorkAndUpdateToStarted(); //update work that starts today
+        workRepository.findWorkAndUpdateToStarted(); //update workStatus on work that starts today to Started
         LocalDate today = LocalDate.now();
-        //TODO detta ska ej radera gamla garantier, enbart ändra status t 1
-        int amountOfAccountingsAltered = accountingRepository.updateOldAccountingStatus(today); //delete guarantees with warranty date today or before today
+        int amountOfAccountingsAltered = accountingRepository.updateOldAccountingStatus(today); //change status on guarantees with warranty date today or before today to 1
         System.out.println("------ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ------");
         System.out.println("----------------------------- amount of old garantier found: " +amountOfAccountingsAltered + " -----------------------------");
 
