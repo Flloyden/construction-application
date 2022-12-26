@@ -2,14 +2,10 @@ package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.CustomerRepository;
-import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
-import com.example.constructionappapi.services.presentationLayer.VacationAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -219,31 +215,70 @@ public class Tests {
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test", "test", "test", "test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerAPI customerAPI = configurableApplicationContext.getBean(CustomerAPI.class);
-        customer = customerAPI.createCustomer(customer);
+        customer = customerAPI.createCustomer(customer).getBody();
 
         System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
 
         ResponseEntity<WorkEntity> door = workAPI
-                .saveWork(
+                .createWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Door", null, null, 10, true, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(
+                                0L,
+                                "Door",
+                                null,
+                                null,
+                                10,
+                                true,
+                                "testNote",
+                                "",
+                                WorkStatus.NOTSTARTED,
+                                customer,
+                                new ArrayList<>(),
+                                new ArrayList<>(),
+                                null)
                 );
 
         CalendarSingleton.getCalendar().printCalendar();
 
         ResponseEntity<WorkEntity> fence = workAPI
-                .saveWork(
+                .createWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Fence", null, null, 6, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(
+                                0L,
+                                "Fence",
+                                null,
+                                null,
+                                6,
+                                false,
+                                "testNote",
+                                "",
+                                WorkStatus.NOTSTARTED,
+                                customer,
+                                new ArrayList<>(),
+                                new ArrayList<>(),
+                                null)
                 );
 
         CalendarSingleton.getCalendar().printCalendar();
 
         ResponseEntity<WorkEntity> roof = workAPI
-                .saveWork(
+                .createWork(
                         customer.getId(),
-                        new WorkEntity(0L, "Roof", null, null, 4, false, "testNote", "", WorkStatus.NOTSTARTED, customer, new ArrayList<>(), new ArrayList<>(), null)
+                        new WorkEntity(
+                                0L,
+                                "Roof",
+                                null,
+                                null,
+                                4,
+                                false,
+                                "testNote",
+                                "",
+                                WorkStatus.NOTSTARTED,
+                                customer,
+                                new ArrayList<>(),
+                                new ArrayList<>(),
+                                null)
                 );
 
         CalendarSingleton.getCalendar().printCalendar();

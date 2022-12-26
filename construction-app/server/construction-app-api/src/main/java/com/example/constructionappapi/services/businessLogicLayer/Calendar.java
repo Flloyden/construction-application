@@ -66,6 +66,7 @@ public class Calendar {
         }
 
         workMap.put(work.getId(), work);
+        System.out.println(work.getNumberOfDays());
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(work);
@@ -226,7 +227,7 @@ public class Calendar {
             if (!possibleDate.isAfter(lastDateMovedTo)) {
                 break; //Stop if we reached the last date that a work item was moved to.
             }
-            if (workToMove.getEarliestStartDate().isAfter(possibleDate)) {
+            if (workToMove.getEarliestStartDate() != null && workToMove.getEarliestStartDate().isAfter(possibleDate)) {
                 break; //Stop if the start date of the work-item being moved is reached.
             }
             if (workToMove.getId().equals(calendarDates.get(new CalendarEntity(possibleDate)))) {

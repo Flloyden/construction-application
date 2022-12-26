@@ -47,7 +47,7 @@ public class WorkRepository {
      *
      * @return
      */
-    public ResponseEntity<WorkEntity> addNewWorkEntity(long customerId, WorkEntity work) {
+    public ResponseEntity<WorkEntity> createWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -84,21 +84,10 @@ public class WorkRepository {
     }
 
     /**
-     * Edits an existing Work "Instance" if the ID already exists in the DB, otherwise it will function as createWorkEntity()
-     *
-     * @param work
-     * @return
-     */
-    public WorkEntity editWorkEntity(WorkEntity work) {
-        return workDao.save(work);
-    }
-
-    /**
      * Returns all WorkEntities
      *
      * @return
      */
-
     public List<WorkEntity> getAllWorkEntities() {
         return workDao.findAll();
     }
@@ -109,7 +98,6 @@ public class WorkRepository {
      * @param id
      * @return
      */
-
     public Optional<WorkEntity> getWorkEntity(Long id) {
         return workDao.findById(id);
     }
@@ -136,12 +124,6 @@ public class WorkRepository {
     }
 
     public ResponseEntity<WorkEntity> updateWork(long customerId, WorkEntity work) {
-        if (startDateTakenByLocked(work)) {
-            return workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId()).map(
-                    lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
-            ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
-        }
-
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -150,6 +132,12 @@ public class WorkRepository {
         Optional<WorkEntity> workBeforeUpdate = workDao.findById(work.getId());
         if (workBeforeUpdate.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if (!workBeforeUpdate.get().getId().equals(work.getId()) && isStartDateTakenByLocked(work)) {
+            return workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId()).map(
+                    lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
+            ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
         }
 
         if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
@@ -166,15 +154,20 @@ public class WorkRepository {
             work.setNoteSummaries(sumList);
         }
 
+        if (work.getStartDate() == null) {
+            work.setStartDate(findNewStartDate());
+        }
+
         work.setCustomer(customer.get());
         updateCalendar(workBeforeUpdate.get(), work);
         calendar.getWorkMap().get(work.getId()).update(work);
         updateStartingDates();
 
-        return addNewWorkEntity(customerId, work);
+        WorkEntity updatedWork = workDao.save(work);
+        return ResponseEntity.ok().body(updatedWork);
     }
 
-    private boolean startDateTakenByLocked(WorkEntity work) {
+    private boolean isStartDateTakenByLocked(WorkEntity work) {
         if (work.getStartDate() == null) {
             return false;
         }
@@ -190,10 +183,8 @@ public class WorkRepository {
     private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {
         if (!workBeforeUpdate.getStartDate().equals(workToUpdateWith.getStartDate())) {
             calendar.updateStartDate(workToUpdateWith);
-        }
-
-        if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
-            updateNumberOfDays(workToUpdateWith, workToUpdateWith.getNumberOfDays());
+        } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
+            updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
         }
     }
 

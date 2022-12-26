@@ -6,13 +6,13 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Customer
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerNoteEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
  * Class accessing the customer table in DB
@@ -33,7 +33,7 @@ public class CustomerRepository {
      * @return
      */
 
-    public CustomerEntity createCustomer(CustomerEntity customer) {
+    public ResponseEntity<CustomerEntity> createCustomer(CustomerEntity customer) {
         List<WorkEntity> workList;
         if ((workList = customer.getWorkList()) != null) { //Kollar om listan är tom
             for (WorkEntity work : workList) {
@@ -55,29 +55,39 @@ public class CustomerRepository {
             }
         }
 
-        return customerDao.save(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerDao.save(customer));
     }
 
-    public List<CustomerEntity> getAllCustomers() {
-        return customerDao.findAll();
-    } //Returns all customers
-
-
-    public Optional<CustomerEntity> getCustomer(Long id) {
-        return customerDao.findById(id); //Returns customer by ID
+    public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
+        return ResponseEntity.ok().body(customerDao.findAll());
     }
 
-    public void deleteCustomer(Long id) {
-        if (customerDao.existsById(id)) {
-            List<WorkEntity> workEntities = workRepository.getAllWorkEntitiesByCustomerId(id);
-            if (workEntities != null && !workEntities.isEmpty()) {
-                for (WorkEntity workEntity : workEntities) {
-                    workRepository.deleteWorkEntity(workEntity.getId());
-                }
-            }
-
-            customerDao.deleteById(id); //Deletes customer by ID
+    public ResponseEntity<CustomerEntity> getCustomer(Long id) {
+        Optional<CustomerEntity> customer = customerDao.findById(id);
+        if (customer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        return ResponseEntity.ok().body(customer.get());
+    }
+
+    public ResponseEntity<String> deleteCustomer(Long id) {
+        if (!customerDao.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("That customer doesn't exist");
+        }
+
+        //Todo: Error check to prevent customer from being deleted if started/completed wok exist.
+
+        List<WorkEntity> workEntities = workRepository.getAllWorkEntitiesByCustomerId(id);
+        if (workEntities != null && !workEntities.isEmpty()) {
+            for (WorkEntity workEntity : workEntities) {
+                workRepository.deleteWorkEntity(workEntity.getId());
+            }
+        }
+
+        customerDao.deleteById(id); //Deletes customer by ID
+
+        return ResponseEntity.ok().body("Customer deleted");
     }
 
     public List<CustomerEntity> getOngoingWorkTest() {

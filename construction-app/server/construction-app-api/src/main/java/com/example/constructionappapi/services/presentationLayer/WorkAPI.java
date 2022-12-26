@@ -2,10 +2,8 @@ package com.example.constructionappapi.services.presentationLayer;
 
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +18,18 @@ public class WorkAPI {
     private final WorkRepository workRepository;
 
     @PostMapping("/kunder/{customerId}/work/save")
-    public ResponseEntity<WorkEntity> saveWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
-        return workRepository.addNewWorkEntity(customerId, work);
+    public ResponseEntity<WorkEntity> createWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
+        return workRepository.createWork(customerId, work);
     }
 
     @PutMapping("/kunder/{customerId}/work/update")
     public ResponseEntity<WorkEntity> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         return workRepository.updateWork(customerId, work);
+    }
+
+    @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
+    public ResponseEntity<String> deleteWorkEntity(@PathVariable final Long id) {
+        return workRepository.deleteWorkEntity(id);
     }
 
     @PostMapping("/kunder/work/update_workstatus_completed")
@@ -37,11 +40,6 @@ public class WorkAPI {
     @PostMapping("/kunder/work/update_workstatus_started")
     public boolean findWorkAndUpdateToStarted() {
         return workRepository.findWorkAndUpdateToStarted();
-    }
-
-    @PutMapping("/kunder/{customer_id}/work/edit/{id}")
-    public WorkEntity editWorkEntity(@RequestBody WorkEntity work) {
-        return workRepository.editWorkEntity(work);
     }
 
     @GetMapping("/kunder/{customer_id}/work/{id}")
@@ -81,10 +79,4 @@ public class WorkAPI {
         }
         return null;
     }
-
-    @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
-    public ResponseEntity<String> deleteWorkEntity(@PathVariable final Long id) {
-        return workRepository.deleteWorkEntity(id);
-    }
-
 }

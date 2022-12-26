@@ -4,6 +4,7 @@ import com.example.constructionappapi.services.businessLogicLayer.repositories.C
 import com.example.constructionappapi.services.presentationLayer.bodies.VacationCalendarInformation;
 import com.example.constructionappapi.services.presentationLayer.bodies.WorkCalendarInformation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +19,13 @@ public class CalendarAPI {
 
     @GetMapping(value = "/kalender/work",
             produces = "application/json")
-    public List<WorkCalendarInformation> getAllWorkDates() {
-        return calendarRepository.getAllWorkDates();
+    public ResponseEntity<List<WorkCalendarInformation>> getAllWorkDates() {
+        return ResponseEntity.ok().body(calendarRepository.getAllWorkDates());
     }
 
     @GetMapping(value = "/kalender/semester",
             produces = "application/json")
-    public List<VacationCalendarInformation> getAllvacationDates() {
-        return calendarRepository.getAllVacationDates();
+    public ResponseEntity<List<VacationCalendarInformation>> getAllvacationDates() {
+        return ResponseEntity.ok().body(calendarRepository.getAllVacationDates());
     }
 }

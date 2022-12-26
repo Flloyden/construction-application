@@ -54,8 +54,7 @@ public class StartServer {
 
             CalendarSingleton.getCalendar().initializeCalendar();
 
-            //TODO: Remove when done with project.
-            //Adds an account to the database on server-start to make testing easier.
+            //TODO: Remove when done with project? Could be useful.
             addDefaultUser();
 
             Tests tests = new Tests(configurableApplicationContext);
