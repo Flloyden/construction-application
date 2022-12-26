@@ -33,6 +33,13 @@ public interface AccountingDao extends JpaRepository<AccountingEntity, Long> {
     List<AccountingEntity> getOldAccountings();
 
 
+    @Query(
+            value = "SELECT * FROM accounting WHERE accounting.status = 0",
+            nativeQuery = true
+    )
+    List<AccountingEntity> getActiveAccountings();
+
+
     @Modifying
     @Transactional
     @Query(

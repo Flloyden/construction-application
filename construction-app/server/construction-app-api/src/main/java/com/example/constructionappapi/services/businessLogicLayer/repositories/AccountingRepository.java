@@ -44,4 +44,8 @@ public class AccountingRepository{
     public int getOldAccountings() {
         return accountingDao.getOldAccountings().size();
     }
+
+    public int getActiveAccountings() {
+        return accountingDao.getActiveAccountings().size();
+    }
 }
