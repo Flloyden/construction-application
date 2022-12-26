@@ -31,11 +31,14 @@ public class TaskDoneEveryNight {
     public void execute() throws InterruptedException {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
-        workRepository.findWorkAndUpdateToStarted(); //update workStatus on work that starts today to Started
-        LocalDate today = LocalDate.now();
-        int amountOfAccountingsAltered = accountingRepository.updateOldAccountingStatus(today); //change status on guarantees with warranty date today or before today to 1
+
+        //update workStatus on work that starts today to Started
+        workRepository.findWorkAndUpdateToStarted();
+
+        //change status on guarantees with warranty date today or before today to 1
+        accountingRepository.updateOldAccountingStatus(LocalDate.now());
+
         System.out.println("------ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ------");
-        System.out.println("----------------------------- amount of old garantier found: " +amountOfAccountingsAltered + " -----------------------------");
 
     }
 }
