@@ -37,21 +37,6 @@ public class StartServer {
 
             System.out.println("Server is running!");
 
-            TimerTask repeatedTask = new TimerTask() {
-                public void run() {
-                    System.out.println("Task performed on " + new Date());
-                    //workRepository.updateWorkStatus() skall köras i g/dagen, förmodligen smart köra task:en strax efter midnatt varje dag
-                }
-            };
-            Timer timer = new Timer("Timer");
-/*
-            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.scheduleAtFixedRate(repeatedTask, 8, 8, TimeUnit.HOURS);
- */
-            long delay = 1000L;
-            long period = 1000L * 60L * 60L * 24L; //Utför task varje 24h
-            timer.scheduleAtFixedRate(repeatedTask, delay, period);
-
             CalendarSingleton.getCalendar().initializeCalendar();
 
             //TODO: Remove when done with project? Could be useful.
