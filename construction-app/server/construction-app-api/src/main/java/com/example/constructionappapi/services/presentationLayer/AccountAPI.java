@@ -3,11 +3,9 @@ package com.example.constructionappapi.services.presentationLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
-import com.example.constructionappapi.services.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AccountAPI {
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtils;
     private final AccountRepository accountRepository;
 
     @PostMapping("/account")
@@ -43,7 +39,6 @@ public class AccountAPI {
     @PostMapping("/user/update")
     public void updateUserInfo(@RequestBody AccountEntity account) {
         accountRepository.updateUserInfo(account);
-
     }
 
     @GetMapping("/account/{id}")

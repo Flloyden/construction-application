@@ -105,6 +105,7 @@ public class AuthenticationAPI {
         SecureRandom random = new SecureRandom();
         byte[] passwordBytes = new byte[10];
         random.nextBytes(passwordBytes);
+        //TODO: Might not need to encrypt here since it gets encrypted below.
         String newPassword = new BCryptPasswordEncoder().encode(DatatypeConverter.printHexBinary(passwordBytes));
 
         // Set the user's password to the new password

@@ -8,24 +8,8 @@ import {
 
 export default function WarrantyHomePage() {
   const [loading, setLoading] = useState(true);
-  const [warrantyList, setWarrantyList] = useState([]);
-  var d1 = new Date();
-
-  function checkLength(e) {
-    if (warrantyList.length > 0) {
-      if (e === "active") {
-        const checkActive = warrantyList.filter((item) => new Date(item.warranty_date) > d1)
-        return checkActive.length
-      } else if (e === "expired") {
-        const checkOld = warrantyList.filter((item) => new Date(item.warranty_date) < d1)
-        return checkOld.length
-      } else {
-        return 0;
-      }
-    } else {
-      return 0;
-    }
-  }
+  const [oldWarranties, setOldWarranties] = useState([]);
+  const [activeWarranties, setActiveWarranties] = useState([]);
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -33,8 +17,10 @@ export default function WarrantyHomePage() {
       setLoading(true);
       // Tries to get data from api
       try {
-        const response = await ApiConnector.getWarranties();
-        setWarrantyList(response.data);
+        const respOld = await ApiConnector.getOldWarranty();
+        const respActive = await ApiConnector.getActiveWarranty();
+        setOldWarranties(respOld.data)
+        setActiveWarranties(respActive.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -52,7 +38,7 @@ export default function WarrantyHomePage() {
           <div className="">
             <h1 className="text-start pl-4 pt-4">Aktiva</h1>
             <div className="flex justify-between">
-              <p className="text-4xl pl-4 pt-4">{checkLength("active")}</p>
+              <p className="text-4xl pl-4 pt-4">{activeWarranties}</p>
               <div className="mt-4 w-10 h-10 rounded-full">
                 <BsFillCheckCircleFill className="ml-1 text-5xl opacity-70" />
               </div>
@@ -64,7 +50,7 @@ export default function WarrantyHomePage() {
           <div className="">
             <h1 className="text-start pl-4 pt-4">Utgånget</h1>
             <div className="flex justify-between">
-              <p className="text-4xl pl-4 pt-4">{checkLength("expired")}</p>
+              <p className="text-4xl pl-4 pt-4">{oldWarranties}</p>
               <div className="mt-4 w-10 h-10 rounded-full">
                 <BsFillArrowRightCircleFill className="ml-1 text-5xl opacity-70" />
               </div>
@@ -76,7 +62,7 @@ export default function WarrantyHomePage() {
           <div className="">
             <h1 className="text-start pl-4 pt-4">Totalt</h1>
             <div className="flex justify-between">
-              <p className="text-4xl pl-4 pt-4">{warrantyList.length}</p>
+              <p className="text-4xl pl-4 pt-4">{oldWarranties + activeWarranties}</p>
               <div className="mt-4 w-10 h-10 rounded-full">
                 <BsFillFlagFill className="ml-1 text-5xl opacity-70" />
               </div>
