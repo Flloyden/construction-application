@@ -25,9 +25,6 @@ const Accounting = () => {
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
   const [newWarrantyModalOpen, setNewWarrantyModalOpen] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
-  const toggleReceipt = () => {
-    setShowReceipt(!showReceipt);
-  };
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -87,7 +84,7 @@ const Accounting = () => {
   };
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white">
       <div className="overflow-x-auto relative">
         <div className="flex pb-4 justify-between gap-4 rounded">
           <input
