@@ -70,7 +70,6 @@ const Login = () => {
 
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('user', JSON.stringify(object));
-      alert(response)
       localStorage.setItem('active', 0);
 
       if (getTheme === null) {
