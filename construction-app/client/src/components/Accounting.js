@@ -31,7 +31,9 @@ const Accounting = () => {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getWarranties();
-        setWarranties(response.data.filter((item) => item.status === 0));
+        let test = response.data.filter((item) => item.status === 0)
+        let sorted = test.sort((a, b) => Date.parse(new Date(a.warranty_date.split("/").reverse().join("-"))) - Date.parse(new Date(b.warranty_date.split("/").reverse().join("-"))));
+        setWarranties(sorted)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -47,9 +49,7 @@ const Accounting = () => {
     // Tries to delete object with given id from database if exists
     try {
       await ApiConnector.deleteWarranty(currentWarrantyId);
-      const newList = await ApiConnector.getWarranties();
-      setWarranties(newList.data);
-      // Logs error of not successful
+      window.location.reload(false);
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +67,7 @@ const Accounting = () => {
         return warranty.name.toLowerCase().startsWith(keyword.toLowerCase());
       });
       // Sets found warrienties to result
+      console.log(results)
       setFoundWarrenties(results);
     } else {
       // If the text field is empty, show all users
@@ -74,17 +75,6 @@ const Accounting = () => {
     }
     setName(keyword);
   };
-
-  function check() {
-    if (warranties.length > 0) {
-      setWarranties(warranties)
-    } else {
-      const checkOngoing = warranties.filter((item) => item.status === 0)
-      setWarranties(checkOngoing)
-      console.log(checkOngoing)
-      console.log(warranties)
-    }
-  }
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white">
@@ -167,8 +157,8 @@ const Accounting = () => {
                           className="text-2xl hover:text-red-500 cursor-pointer"
                           onClick={() => {
                             setIsOpen(true);
-                            setCurrentWarrantyId(warranties.id);
-                            setCurrentWarrantyName(warranties.name);
+                            setCurrentWarrantyId(warranty.id);
+                            setCurrentWarrantyName(warranty.name);
                           }}
                         />
                       </td>
