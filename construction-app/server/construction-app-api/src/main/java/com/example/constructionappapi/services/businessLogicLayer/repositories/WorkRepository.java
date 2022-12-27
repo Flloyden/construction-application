@@ -252,12 +252,12 @@ public class WorkRepository {
         int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
         if (dayOfWeek== java.util.Calendar.SATURDAY)
         {
-            return workDao.findWorkEntityForTodayIfSaturday();
+            return workDao.findWorkEntityForTodayIfSaturday(1);
         } else if(dayOfWeek==java.util.Calendar.SUNDAY)
         {
-            return workDao.findWorkEntityForTodayIfSunday();
+            return workDao.findWorkEntityForTodayIfSunday(1);
         } else {
-            return workDao.findWorkEntityForToday();
+            return workDao.findWorkEntityForToday(1);
         }
     }
 
