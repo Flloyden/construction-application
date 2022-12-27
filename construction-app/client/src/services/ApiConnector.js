@@ -139,6 +139,24 @@ class ApiConnector {
     });
   }
 
+  getOldWarranty() {
+    //Gets specific warranty from the database
+    return axios.get(ACCOUNTING_API_BASE_URL + "/gamla_garantier", {
+      headers: {
+        Authorization: localStorage.getItem("accessToken")
+      }
+    });
+  }
+
+  getActiveWarranty() {
+    //Gets specific warranty from the database
+    return axios.get(ACCOUNTING_API_BASE_URL + "/aktiva_garantier", {
+      headers: {
+        Authorization: localStorage.getItem("accessToken")
+      }
+    });
+  }
+
   deleteWarranty(warranty) {
     //Deletes an existing warranty from the database
     return axios.delete(ACCOUNTING_API_BASE_URL + "/" + warranty + "/remove", {

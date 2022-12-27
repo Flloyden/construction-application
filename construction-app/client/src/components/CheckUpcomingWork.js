@@ -56,33 +56,6 @@ export default function CheckUpcomingWork() {
       return upcomingWork[1].id;
     }
 
-
-  /*
-  if(calendarLength !== 0)
-  {
-    return (
-      <div className="font-normal">
-          <p>{sortedDates[0].name + " - " + activeWork.name}</p>
-          <p>
-            {activeWork.calendar[0].date +
-              " - " +
-              activeWork.calendar[calendarLength - 1].date}
-          </p>
-        </div>
-    )
-  }
-  */
-
-  function getCustomerId() {
-    /*Gets the customer id with nearest expiring date by sorting the array*/
-    let sortedDates = upcomingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
-    return sortedDates[0].id;
-  }
-  
   const passId = (e) => {
     // Passes the right id to the customer url
     if (upcomingWork.length < 1) {

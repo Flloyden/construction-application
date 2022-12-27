@@ -49,28 +49,28 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +
             "INNER JOIN calendar ON work.id = calendar.work_id " +
-            "WHERE DATE(calendar.date) = CURRENT_DATE",
+            "WHERE DATE(calendar.date) = CURRENT_DATE AND work_status = ?1 ",
             nativeQuery = true
     )
-    List<WorkEntity> findWorkEntityForToday();
+    List<WorkEntity> findWorkEntityForToday(int workStatus);
 
     @Query(value = "SELECT work.*" +
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +
             "INNER JOIN calendar ON work.id = calendar.work_id " +
-            "WHERE DATE(calendar.date) = DATEADD(day, -1, CURRENT_DATE)",
+            "WHERE DATE(calendar.date) = DATEADD(day, -1, CURRENT_DATE) AND work_status = ?1",
             nativeQuery = true
     )
-    List<WorkEntity> findWorkEntityForTodayIfSaturday();
+    List<WorkEntity> findWorkEntityForTodayIfSaturday(int workStatus);
 
     @Query(value = "SELECT work.* " +
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +
             "INNER JOIN calendar ON work.id = calendar.work_id " +
-            "WHERE DATE(calendar.date) = DATEADD(day, -2, CURRENT_DATE)",
+            "WHERE DATE(calendar.date) = DATEADD(day, -2, CURRENT_DATE) AND work_status = ?1",
             nativeQuery = true
     )
-    List<WorkEntity> findWorkEntityForTodayIfSunday();
+    List<WorkEntity> findWorkEntityForTodayIfSunday(int workStatus);
 
     @Query(value = "SELECT w.* FROM construction_system.work w "+
             "INNER JOIN customer c ON c.id=w.customer_id " +
