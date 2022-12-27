@@ -243,13 +243,13 @@ public class Calendar {
             if (!possibleDate.isAfter(lastDateMovedTo)) {
                 break; //Stop if we reached the last date that a work item was moved to.
             }
-            if (workToMove.getEarliestStartDate() != null && workToMove.getEarliestStartDate().isAfter(possibleDate)) {
+            if (workToMove.getEarliestStartDate() != null && possibleDate.isBefore(workToMove.getEarliestStartDate())) {
                 break; //Stop if the start date of the work-item being moved is reached.
             }
             if (workToMove.getId().equals(calendarDates.get(new CalendarEntity(possibleDate)))) {
                 break; //Stop if the work-item being moved is the same as the one for which the date is being checked.
             }
-            if (LocalDate.now().isEqual(possibleDate)) {
+            if (possibleDate.isBefore(LocalDate.now())) {
                 break; //Stop if reached today's date.
             }
 

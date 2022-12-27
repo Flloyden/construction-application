@@ -61,7 +61,7 @@ public class WorkRepository {
 
         //TODO detta gör att nytt jobb i tom kalender som hamnar på dagens datum inte sätts till started
         //if (work.getStartDate().equals(LocalDate.now())) {
-            //work.setWorkStatus(WorkStatus.STARTED);
+        //work.setWorkStatus(WorkStatus.STARTED);
         //}
 
         return calendar.addWork(workDao.save(work));
@@ -135,10 +135,15 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        if (!workBeforeUpdate.get().getId().equals(work.getId()) && isStartDateTakenByLocked(work)) {
-            return workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId()).map(
-                    lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
-            ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
+
+        if (isStartDateTakenByLocked(work)) {
+            Optional<WorkEntity> workAtStartDate = workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId());
+
+            if (workAtStartDate.isPresent() && !workAtStartDate.get().getId().equals(work.getId())) {
+                return workAtStartDate.map(
+                        lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
+                ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
+            }
         }
 
         if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
@@ -169,14 +174,19 @@ public class WorkRepository {
     }
 
     private boolean isStartDateTakenByLocked(WorkEntity work) {
+        System.out.println("booooooooooooooop");
         if (work.getStartDate() == null) {
             return false;
         }
+
+        System.out.println("beeeeeeeeeeeeeep");
 
         CalendarEntity calendarEntity = calendarDao.findFirstByDate(work.getStartDate());
         if (calendarEntity == null) {
             return false;
         }
+
+        System.out.println("booooooooooooooop222222222222");
 
         return workDao.findById(calendar.getCalendarMap().get(calendarEntity)).map(WorkEntity::isLockedInCalendar).orElse(false);
     }
@@ -250,11 +260,9 @@ public class WorkRepository {
     public List<WorkEntity> checkForOngoingWork() {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
-        if (dayOfWeek== java.util.Calendar.SATURDAY)
-        {
+        if (dayOfWeek == java.util.Calendar.SATURDAY) {
             return workDao.findWorkEntityForTodayIfSaturday();
-        } else if(dayOfWeek==java.util.Calendar.SUNDAY)
-        {
+        } else if (dayOfWeek == java.util.Calendar.SUNDAY) {
             return workDao.findWorkEntityForTodayIfSunday();
         } else {
             return workDao.findWorkEntityForToday();
