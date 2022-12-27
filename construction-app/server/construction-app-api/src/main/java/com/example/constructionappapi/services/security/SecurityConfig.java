@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**/authenticate")
+                .antMatchers("/**/authenticate", "/**/initiate-email-recovery", "/**/recover")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -54,7 +54,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("Content-type","Authorization"));
+        configuration.setExposedHeaders(List.of("Content-type", "Authorization"));
         configuration.setAllowedMethods(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
