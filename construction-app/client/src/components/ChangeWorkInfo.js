@@ -97,9 +97,9 @@ const ChangeWorkInfo = (props) => {
   function disableEarliestStartDate() {
     console.log(enableEarliestStartDate)
     if (props.currentWorkStatus === "STARTED" || !enableEarliestStartDate) {
-      return "hidden";
+      return "opacity-50 text-white cursor-not-allowed";
     } else {
-      return;
+      return "opacity-100 text-black";
     }
   }
 
@@ -224,7 +224,8 @@ const ChangeWorkInfo = (props) => {
               </div>
             </div>
 
-            <div className="mt-4">
+                      <div className="flex gap-2">
+            <div className="mt-4 w-full">
               <div className="flex gap-2">
                 <div className="mt-0">
                   <p className="block mb-2 text-sm font-medium text-gray-700">
@@ -259,8 +260,9 @@ const ChangeWorkInfo = (props) => {
                   {getEarliestStartDateIfStarted()}
                   <div className={disableEarliestStartDate()}>
                     <DatePicker
-                      className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                      className="rounded block w-full p-2.5 border-gray-500 border focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                       selected={earliestStartDate}
+                      disabled = {!enableEarliestStartDate}
                       onChange={(date) => {
                         setNewList({
                           ...newList,
@@ -276,12 +278,15 @@ const ChangeWorkInfo = (props) => {
               </div>
             </div>
 
-            <div className="mt-4">
-              <div className="flex gap-2">
-                <div className="mt-0">
-                  <p className="block mb-2 text-sm font-medium text-gray-700">
+            <div className="mt-11 w-full">
+                <div className="mt-0 w-full">
+                  
+                  <div className="flex justify-end gap-8 items-center align-middle">
+                    <p className="text-sm font-medium text-gray-700">
                     Lås på kalendern:{" "}
-                    <input
+                  </p>
+                  <input
+                    className="right-0 w-11 h-11"
                       type="checkbox"
                       id="lockOnCalendar"
                       name="lock"
@@ -293,9 +298,9 @@ const ChangeWorkInfo = (props) => {
                         })
                       }}
                     />
-                  </p>
+                    </div>
                 </div>
-              </div>
+            </div>
             </div>
 
             <div className="mt-4">
