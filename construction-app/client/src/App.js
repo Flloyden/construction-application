@@ -11,7 +11,6 @@ import Error from './components/Error';
 import Customer from './components/Customer';
 import '../src/styles/index.css';
 import AddWarant from './components/AddWarranty';
-import Warranty from './components/Warranty';
 import Settings from './components/Settings';
 import About from './components/About';
 import Help from './components/Help';
@@ -32,7 +31,6 @@ function App() {
               <Route path='/skapagaranti' element={<AddWarant />} />
               <Route path='/kalender' element={<Calendar />} />
               <Route path='/kunder/:id' element={<Customer />} />
-              <Route path='/garantier/:id' element={<Warranty />} />
               <Route path='/om' element={<About />} />
               <Route path='/help' element={<Help />} />
               <Route path='/settings' element={<Settings />} />

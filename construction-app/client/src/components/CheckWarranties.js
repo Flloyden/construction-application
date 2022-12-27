@@ -54,7 +54,7 @@ export default function CheckWarranties() {
     if (warranties.length < 1) {
       alert("FINNS INGEN GARANTI");
     } else {
-      navigate(`/garantier/${e}`, { state: { accountingId: e } });
+      navigate(`/garantier`);
     }
   };
 
@@ -80,7 +80,7 @@ export default function CheckWarranties() {
                   className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap"
                   onClick={(e) => passId(getId())}
                 >
-                  Gå till garanti {">"}{" "}
+                  Gå till garantier {">"}{" "}
                 </h1>
               </div>
               {getWarranty()}

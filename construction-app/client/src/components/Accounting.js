@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import ApiConnector from "../services/ApiConnector";
 import AddWaranty from "./AddWarranty";
 import WarrantyModal from "./WarrantyModal";
@@ -16,7 +15,6 @@ const Accounting = () => {
     document.documentElement.classList.remove("dark");
   }
   // Declaring variables
-  const navigate = useNavigate();
   const [warranties, setWarranties] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +31,7 @@ const Accounting = () => {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getWarranties();
-        setWarranties(response.data);
+        setWarranties(response.data.filter((item) => item.status === 0));
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -42,11 +40,6 @@ const Accounting = () => {
     };
     fetchData();
   }, []);
-
-  const passId = (e) => {
-    // Passes the right id to the warranty url
-    navigate(`/garantier/${e}`, { state: { accountingId: e } });
-  };
 
   const deleteWarranty = async () => {
     // Deletes a warranty with given id and updates the id
@@ -81,6 +74,17 @@ const Accounting = () => {
     }
     setName(keyword);
   };
+
+  function check() {
+    if (warranties.length > 0) {
+      setWarranties(warranties)
+    } else {
+      const checkOngoing = warranties.filter((item) => item.status === 0)
+      setWarranties(checkOngoing)
+      console.log(checkOngoing)
+      console.log(warranties)
+    }
+  }
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white">
@@ -133,31 +137,21 @@ const Accounting = () => {
                 ? foundWarrenties.map((warranty) => (
                     <tr
                       key={warranty.id}
-                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
+                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
-                        onClick={(e) => passId(warranty.id)}
+                        className="py-4 px-6 font-medium whitespace-nowrap"
                       >
                         {warranty.id}
                       </th>
-                      <td
-                        className="py-4 px-6 whitespace-nowrap"
-                        onClick={(e) => passId(warranty.id)}
-                      >
+                      <td className="py-4 px-6 whitespace-nowrap">
                         {warranty.name}
                       </td>
-                      <td
-                        className="py-4 px-6 whitespace-nowrap"
-                        onClick={(e) => passId(warranty.id)}
-                      >
+                      <td className="py-4 px-6 whitespace-nowrap">
                         {warranty.registration_number}
                       </td>
-                      <td
-                        className="py-4 px-6 w-full"
-                        onClick={(e) => passId(warranty.id)}
-                      >
+                      <td className="py-4 px-6 w-full">
                         {warranty.warranty_date}
                       </td>
                       <td className="px-6 w-full">
@@ -170,7 +164,7 @@ const Accounting = () => {
                       <td className="flex justify-around items-stretch py-4">
                         <FaTrash
                           data-modal-toggle="defaultModal"
-                          className="text-2xl hover:text-red-500"
+                          className="text-2xl hover:text-red-500 cursor-pointer"
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentWarrantyId(warranties.id);
@@ -183,31 +177,21 @@ const Accounting = () => {
                 : warranties.map((warranties) => (
                     <tr
                       key={warranties.id}
-                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 cursor-pointer hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
+                      className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
                         scope="row"
-                        className="py-4 px-6 font-medium whitespace-nowrap cursor-pointer"
-                        onClick={(e) => passId(warranties.id)}
+                        className="py-4 px-6 font-medium whitespace-nowrap"
                       >
                         {warranties.id}
                       </th>
-                      <td
-                        className="py-4 px-6 whitespace-nowrap"
-                        onClick={(e) => passId(warranties.id)}
-                      >
+                      <td className="py-4 px-6 whitespace-nowrap">
                         {warranties.name}
                       </td>
-                      <td
-                        className="py-4 px-6 whitespace-nowrap"
-                        onClick={(e) => passId(warranties.id)}
-                      >
+                      <td className="py-4 px-6 whitespace-nowrap">
                         {warranties.registration_number}
                       </td>
-                      <td
-                        className="py-4 px-6 w-full"
-                        onClick={(e) => passId(warranties.id)}
-                      >
+                      <td className="py-4 px-6 w-full">
                         {warranties.warranty_date}
                       </td>
                       <td className="px-6 w-full">
@@ -220,7 +204,7 @@ const Accounting = () => {
                       <td className="flex justify-around items-stretch py-4">
                         <FaTrash
                           data-modal-toggle="defaultModal"
-                          className="text-2xl hover:text-red-500"
+                          className="text-2xl hover:text-red-500 cursor-pointer"
                           onClick={() => {
                             setIsOpen(true);
                             setCurrentWarrantyId(warranties.id);
