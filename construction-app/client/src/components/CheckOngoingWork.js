@@ -16,9 +16,8 @@ export default function CheckOngoingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getOngoingWork();
-        const response2 = await ApiConnector.getUpcomingWork();
-        setOngoingWork(response2.data);
-        console.log(response2.data);
+        setOngoingWork(response.data);
+        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -28,52 +27,30 @@ export default function CheckOngoingWork() {
     fetchData();
   }, []);
 
-  function getOngoingWork() {
-    /*Gets upcoming ongoingWork within ten days of today's date*/
-
-    let calendarLength = ongoingWork[0].workList[0].calendar.length;
-    let workListLength = ongoingWork[0].workList.length;
-    let activeWorkListIndex;
-    const currentDateString = new Date().toISOString().slice(0,10);
-     // Skapa en for loop som kollar igenom worklist och varje calendar array och kollar vilket work som innehåller dagens datum
-    // Gör sedan det aktiva jobbets id till activeId;
-    for(let i = 0;i<workListLength;i++)
+  function getOngoingWork() { 
+    if(ongoingWork == null)
     {
-      for(let j = 0;j<ongoingWork[0].workList[i].calendar.length;j++)
-      {
-        if(ongoingWork[0].workList[i].calendar[j].date === currentDateString && ongoingWork[0].workList[i].workStatus !== "COMPLETED")
-        {
-          activeId = ongoingWork[0].workList[i].id;
-          activeWorkListIndex = i;
-          break;
-        }
-      }
+      return "";
     }
-   
-    if (calendarLength !== 0) {
-      return (
-        <div className="font-normal">
-          <p>{ongoingWork[0].name + " - " + ongoingWork[0].workList[activeWorkListIndex].name}</p>
-          <p>
-            {ongoingWork[0].workList[activeWorkListIndex].calendar[0].date +
+  
+    if(ongoingWork[0].calendar.length !== 0)
+    {
+      return <div className="font-normal">
+          <p>{ongoingWork[1].name + " - " + ongoingWork[0].name}</p>
+          <p>{ongoingWork[0].calendar[0].date +
               " - " +
-              ongoingWork[0].workList[activeWorkListIndex].calendar[calendarLength - 1].date}
+              ongoingWork[0].calendar[ongoingWork[0].calendar.length - 1].date}
           </p>
         </div>
-      );
-    } else {
-      return "Finns inget pågående jobb";
+
+    } else{
+      return "Finns inget jobb inom 10 dagar";
     }
-  }
+    }
 
   function getCustomerId() {
     /**Gets the customer id with nearest expiring date by sorting the array */
-    let sortedDates = ongoingWork.sort(
-      (a, b) =>
-        new Date(...a.startDate.split("/").reverse()) -
-        new Date(...b.startDate.split("/").reverse())
-    );
-    return sortedDates[0].id;
+    return ongoingWork[1].id;
   }
 
   const passId = (e) => {

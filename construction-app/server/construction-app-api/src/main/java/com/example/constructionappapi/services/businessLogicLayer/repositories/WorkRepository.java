@@ -248,8 +248,19 @@ public class WorkRepository {
     }
 
     public List<WorkEntity> checkForOngoingWork() {
-        return workDao.findWorkEntityForToday();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
+        if (dayOfWeek== java.util.Calendar.SATURDAY)
+        {
+            return workDao.findWorkEntityForTodayIfSaturday();
+        } else if(dayOfWeek==java.util.Calendar.SUNDAY)
+        {
+            return workDao.findWorkEntityForTodayIfSunday();
+        } else {
+            return workDao.findWorkEntityForToday();
+        }
     }
+
 
     public List<WorkEntity> getAllWorkEntitiesByCustomerId(Long id) {
         return workDao.findAllByCustomerId(id);

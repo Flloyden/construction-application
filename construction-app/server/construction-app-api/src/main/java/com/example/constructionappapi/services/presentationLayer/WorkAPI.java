@@ -54,29 +54,29 @@ public class WorkAPI {
 
     @GetMapping("/kunder/upcoming")
     public List<Object> getUpcomingWork() {
-        if (workRepository.checkForUpcomingWork() != null) {
-            List<WorkEntity> work = workRepository.checkForUpcomingWork();
-            List<Object> objectList = new ArrayList<>();
-            if (work.size() != 0) {
-                objectList.add(work.get(0));
-                objectList.add(work.get(0).getCustomer());
-                return objectList;
-            }
+
+        List<Object> objectList = new ArrayList<>();
+        List<WorkEntity> workEntities = workRepository.checkForUpcomingWork();
+        if (workEntities.size() != 0) {
+            objectList.add(workEntities.get(0));
+            objectList.add(workEntities.get(0).getCustomer());
+            return objectList;
+        } else {
+            return null;
         }
-        return null;
     }
 
     @GetMapping("/kunder/ongoing")
     public List<Object> getOngoingWork() {
-        if (workRepository.checkForOngoingWork() != null) {
-            List<WorkEntity> work = workRepository.checkForOngoingWork();
-            List<Object> objectList = new ArrayList<>();
-            if (work.size() != 0) {
-                objectList.add(work.get(0));
-                objectList.add(work.get(0).getCustomer());
-                return objectList;
-            }
+        List<Object> objectList = new ArrayList<>();
+        List<WorkEntity> work = workRepository.checkForOngoingWork();
+        if (work.size() != 0)
+        {
+          objectList.add(work.get(0));
+          objectList.add(work.get(0).getCustomer());
+          return objectList;
+        } else {
+            return null;
         }
-        return null;
     }
 }

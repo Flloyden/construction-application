@@ -27,25 +27,37 @@ export default function CheckUpcomingWork() {
   }, []);
   console.log(upcomingWork)
 
+
   function getUpcomingWork() { 
-
-  let sortedDates = upcomingWork.sort(
-    (a, b) =>
-      new Date(...a.startDate.split("/").reverse()) -
-      new Date(...b.startDate.split("/").reverse())
-  );
- 
-  let calendarLength = sortedDates[0].workList[0].calendar.length;
-  let activeWork;
-
-    for(let i = 0;i<sortedDates[0].workList.length;i++)
+    if(upcomingWork == null)
     {
-      if(sortedDates[0].workList[i].id !== activeId && sortedDates[0].workList[i].workStatus !== "COMPLETED")
-      {
-        activeWork = sortedDates[0].workList[i];
-      }
+      return "";
+    }
+  
+    if(upcomingWork[0].calendar.length !== 0)
+    {
+      return <div className="font-normal">
+          <p>{upcomingWork[1].name + " - " + upcomingWork[0].name}</p>
+          <p>
+            {upcomingWork[0].calendar[0].date +
+              " - " +
+              upcomingWork[0].calendar[upcomingWork[0].calendar.length - 1].date}
+          </p>
+        </div>
+
+    } else{
+      return "Finns inget jobb inom 10 dagar";
+    }
+    }
+  
+    function getCustomerId() {
+      /*Gets the customer id with nearest expiring date by sorting the array*/
+  
+      return upcomingWork[1].id;
     }
 
+
+  /*
   if(calendarLength !== 0)
   {
     return (
@@ -58,10 +70,8 @@ export default function CheckUpcomingWork() {
           </p>
         </div>
     )
-  } else{
-    return "Finns inget jobb inom 10 dagar";
   }
-  }
+  */
 
   function getCustomerId() {
     /*Gets the customer id with nearest expiring date by sorting the array*/
@@ -72,6 +82,7 @@ export default function CheckUpcomingWork() {
     );
     return sortedDates[0].id;
   }
+  
   const passId = (e) => {
     // Passes the right id to the customer url
     if (upcomingWork.length < 1) {
