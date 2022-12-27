@@ -29,10 +29,8 @@ const Login = () => {
   const getValue = localStorage.getItem('accessToken');
   const getTheme = localStorage.getItem("theme");
   const auth = { token: getValue };
-  const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
-  const profilePic = "";
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const [showWrongLogin, setShowWrongLogin] = useState(false);
 
@@ -58,18 +56,11 @@ const Login = () => {
     });
 
     if (response.ok) {
-      const data = await response.json()
-      console.log(response)
-      console.log(data)
-
-      const { message, object } = data;
-    
       const accessToken = response.headers.get("Authorization")
       console.log(response.headers.get("Authorization"))
       console.log(accessToken)
 
       localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('user', JSON.stringify(object));
       localStorage.setItem('active', 0);
 
       if (getTheme === null) {
