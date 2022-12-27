@@ -37,9 +37,12 @@ public class AccountRepository {
         Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
 
         accountEntity.ifPresent(entity -> {
-            entity.setName(account.getUsername());
+            entity.setName(account.getName());
             entity.setEmail(account.getEmail());
             entity.setProfileImage(account.getProfileImage());
+
+            System.out.println("updateUserInfo username: " + account.getName());
+            System.out.println("updateUserInfo email: " + account.getEmail());
             accountDao.save(entity);
         });
     }

@@ -36,7 +36,7 @@ export default function UserInfo() {
           <div className="ml-4">
             <div className="text-2xl">
               <h1>
-                Hej, <span className="font-bold">{userInfo.username}</span>
+                Hej, <span className="font-bold">{userInfo.name}</span>
               </h1>
             </div>
             <div className="mt-2">
