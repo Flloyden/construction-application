@@ -23,6 +23,10 @@ const Accounting = () => {
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
   const [newWarrantyModalOpen, setNewWarrantyModalOpen] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
+  const toggleReceipt = () => {
+    setShowReceipt(!showReceipt);
+  };
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -31,9 +35,15 @@ const Accounting = () => {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getWarranties();
-        let test = response.data.filter((item) => item.status === 0)
-        let sorted = test.sort((a, b) => Date.parse(new Date(a.warranty_date.split("/").reverse().join("-"))) - Date.parse(new Date(b.warranty_date.split("/").reverse().join("-"))));
-        setWarranties(sorted)
+        let test = response.data.filter((item) => item.status === 0);
+        let sorted = test.sort(
+          (a, b) =>
+            Date.parse(
+              new Date(a.warranty_date.split("/").reverse().join("-"))
+            ) -
+            Date.parse(new Date(b.warranty_date.split("/").reverse().join("-")))
+        );
+        setWarranties(sorted);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -67,7 +77,6 @@ const Accounting = () => {
         return warranty.name.toLowerCase().startsWith(keyword.toLowerCase());
       });
       // Sets found warrienties to result
-      console.log(results)
       setFoundWarrenties(results);
     } else {
       // If the text field is empty, show all users
@@ -145,10 +154,30 @@ const Accounting = () => {
                         {warranty.warranty_date}
                       </td>
                       <td className="px-6 w-full">
-                        <div className="flex justify-end" onClick={() => {}}>
+                      <div
+                          className="flex justify-end"
+                          onClick={toggleReceipt}
+                        >
                           <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
                             Visa kvitto
                           </p>
+                          <div
+                            className={
+                              showReceipt
+                                ? "bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20"
+                                : "content-parent"
+                            }
+                            onClick={() => setShowReceipt(false)}
+                          >
+                            {showReceipt && (
+                              <img
+                                className="w-full mx-auto"
+                                src={warranty.receipt}
+                                alt="receipt"
+                                style={{ width: "50%" }}
+                              />
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="flex justify-around items-stretch py-4">
@@ -185,10 +214,30 @@ const Accounting = () => {
                         {warranties.warranty_date}
                       </td>
                       <td className="px-6 w-full">
-                        <div className="flex justify-end" onClick={() => {}}>
+                        <div
+                          className="flex justify-end"
+                          onClick={toggleReceipt}
+                        >
                           <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
                             Visa kvitto
                           </p>
+                          <div
+                            className={
+                              showReceipt
+                                ? "bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20"
+                                : "content-parent"
+                            }
+                            onClick={() => setShowReceipt(false)}
+                          >
+                            {showReceipt && (
+                              <img
+                                className="w-full mx-auto"
+                                src={warranties.receipt}
+                                alt="receipt"
+                                style={{ width: "50%" }}
+                              />
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="flex justify-around items-stretch py-4">
