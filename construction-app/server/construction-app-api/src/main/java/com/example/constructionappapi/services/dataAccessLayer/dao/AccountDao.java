@@ -14,4 +14,6 @@ public interface AccountDao extends JpaRepository<AccountEntity, Long> {
     Optional<AccountEntity> findFirstByNameAndPassword(String username, String password);
 
     AccountEntity findFirstByEmail(String email);
+
+    Optional<AccountEntity> findFirstByRecoveryToken(String token);
 }
