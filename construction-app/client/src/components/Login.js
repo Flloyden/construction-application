@@ -8,7 +8,7 @@ import ForgotPassword from "./ForgotPassword";
 import image from "../BiTs-logo.png";
 
 const Login = () => {
-  document.title = "BiTs | Thomas Erikssons byggnadsserice"
+  document.title = "BiTs | Thomas Erikssons byggnadsserice";
   if (
     localStorage.theme === "true" ||
     (!("theme" in localStorage) &&
@@ -26,7 +26,7 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const getValue = localStorage.getItem('accessToken');
+  const getValue = localStorage.getItem("accessToken");
   const getTheme = localStorage.getItem("theme");
   const auth = { token: getValue };
   const [password, setPassword] = useState();
@@ -36,48 +36,49 @@ const Login = () => {
 
   async function loginUser(credentials) {
     try {
-      return await fetch('http://localhost:8080/api/v1/authenticate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
+      return await fetch("http://localhost:8080/api/v1/authenticate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
       });
     } catch (error) {
-      console.error("An error occured", error)
+      console.error("An error occured", error);
     }
   }
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     /**Handles the login function when the login button is pressed */
     e.preventDefault();
     setLoading(true);
     const response = await loginUser({
       email,
-      password
+      password,
     });
 
     if (response.ok) {
-      const accessToken = response.headers.get("Authorization")
-      console.log(response.headers.get("Authorization"))
-      console.log(accessToken)
+      const accessToken = response.headers.get("Authorization");
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('active', 0);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("active", 0);
 
       if (getTheme === null) {
         localStorage.setItem("theme", false);
       } else {
-
       }
       if (isMobile) {
         navigate("/kalender");
       } else {
-        window.location.href = "/"
+        window.location.href = "/";
       }
 
       setLoading(false);
     } else {
-      console.error("Authentication failed")
-      setShowWrongLogin((showWrongLogin) => !showWrongLogin)
+      console.error("Authentication failed");
+      setShowWrongLogin((showWrongInput) => !showWrongInput);
+          setTimeout(() => {
+            setShowWrongLogin(false);
+            setLoading(false);
+          }, 3000);
     }
   };
 
@@ -108,16 +109,30 @@ const Login = () => {
       ) : (
         <>
           <div className="absolute w-screen h-full bg-gray-500 bg-opacity-70 top-0 left-0">
-            <div className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4" : "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"}>
-              <form onSubmit={handleSubmit} className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6">
-                <img src={image} alt="logo" width={"30%"} className="mx-auto pb-2" />
+            <div
+              className={
+                isMobile
+                  ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"
+                  : "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"
+              }
+            >
+              <form
+                onSubmit={handleSubmit}
+                className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6"
+              >
+                <img
+                  src={image}
+                  alt="logo"
+                  width={"30%"}
+                  className="mx-auto pb-2"
+                />
                 <h1 className="text-2xl">Thomas Erikssons byggnadsservice</h1>
                 <div className="mt-2">
                   <label className="block mb-2 text-sm font-medium text-gray-700">
                     Användarnamn:
                   </label>
                   <input
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     type="text"
                     placeholder="Användarnamn"
                     className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -128,21 +143,32 @@ const Login = () => {
                     Lösenord:
                   </label>
                   <input
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     placeholder="Lösenord"
                     className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   />
                 </div>
                 <div className="flex justify-between w-full mt-2">
-                  <div>
-                    {showWrongLogin && (
-                      <div className="bg-red-500 px-4 rounded text-white py-1">Felaktig inloggning</div>
-                    )}
+                  <div
+                    className={
+                      showWrongLogin
+                        ? "bg-red-500 px-4 rounded text-white py-1 duration-200 visible"
+                        : "invisible duration-200"
+                    }
+                  >
+                    <p className={showWrongLogin ? "visible" : "invisible"}>
+                      Felaktig inloggning
+                    </p>
                   </div>
-                  <h1 className="w-max py-1 text-blue-600 hover:cursor-pointer hover:text-blue-400" onClick={() => {
-                    setIsChangePasswordOpen(true);
-                  }}>Glömt lösenord?</h1>
+                  <h1
+                    className="w-max py-1 text-blue-600 hover:cursor-pointer hover:text-blue-400"
+                    onClick={() => {
+                      setIsChangePasswordOpen(true);
+                    }}
+                  >
+                    Glömt lösenord?
+                  </h1>
                 </div>
                 <div className="mt-2 w-full">
                   <button
@@ -159,13 +185,10 @@ const Login = () => {
         </>
       )}
       {isChangePasswordOpen && (
-        <ForgotPassword
-          setIsChangePasswordOpen={setIsChangePasswordOpen}
-        />
+        <ForgotPassword setIsChangePasswordOpen={setIsChangePasswordOpen} />
       )}
     </div>
   );
-}
+};
 
 export default Login;
-
