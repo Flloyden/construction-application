@@ -34,6 +34,7 @@ public class AccountEntity implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean accountNonLocked = true;
     private UserRole role;
+    private String refreshToken;
     private String recoveryToken;
 
     @Override

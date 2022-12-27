@@ -4,6 +4,7 @@ import com.example.constructionappapi.services.businessLogicLayer.repositories.A
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.emailRecovery.EmailService;
 import com.example.constructionappapi.services.presentationLayer.bodies.AuthenticationRequest;
+import com.example.constructionappapi.services.presentationLayer.bodies.RefreshTokenRequest;
 import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
 import com.example.constructionappapi.services.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -35,24 +36,62 @@ public class AuthenticationAPI {
     @PostMapping("/authenticate")
     public ResponseEntity<UserInformation> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            Optional<AccountEntity> accountEntity = Optional.ofNullable(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())).getPrincipal()).map(AccountEntity.class::cast);
+            final Optional<AccountEntity> accountEntity = Optional.ofNullable(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())).getPrincipal()).map(AccountEntity.class::cast);
             if (accountEntity.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
-            return accountEntity.map(account -> ResponseEntity
-                    .status(HttpStatus.OK)
-                    .header("Authorization", "Bearer " + jwtUtils.generateToken(account))
-                    .body(new UserInformation(
-                            account.getId(),
-                            account.getName(),
-                            account.getEmail(),
-                            account.getProfileImage(),
-                            account.getRole())
-                    )).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+            return accountEntity.map(user -> {
+                user.setRefreshToken(jwtUtils.generateRefreshToken(user));
+                accountRepository.save(user);
+
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Authorization", "Bearer " + jwtUtils.generateToken(user))
+                        .header("RefreshToken", user.getRefreshToken())
+                        .body(new UserInformation(
+                                user.getId(),
+                                user.getName(),
+                                user.getEmail(),
+                                user.getProfileImage(),
+                                user.getRole())
+                        );
+            }).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refreshToken(@RequestBody RefreshTokenRequest request) {
+        // Get the refresh token from the request body
+        String refreshToken = request.getRefreshToken();
+
+        // Retrieve the user associated with the refresh token
+        Optional<AccountEntity> user = accountRepository.findByEmailAndRefreshToken(request.getEmail(), refreshToken);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(401).body("Invalid email or refresh token");
+        }
+
+        // Check that the refresh token has not expired and is still valid
+        if (jwtUtils.isTokenExpired(refreshToken)) {
+            return ResponseEntity.status(401).body("Refresh token has expired");
+        }
+
+        // Generate a new access token and refresh token
+        String newAccessToken = jwtUtils.generateToken(user.get());
+        String newRefreshToken = jwtUtils.generateRefreshToken(user.get());
+
+        // Update the user's refresh token
+        user.get().setRefreshToken(newRefreshToken);
+        accountRepository.save(user.get());
+
+        // Return the new access token to the client
+        return ResponseEntity
+                .ok()
+                .header("Authorization", "Bearer " + newAccessToken)
+                .header("RefreshToken", newRefreshToken)
+                .build();
     }
 
     @PostMapping("/logout")

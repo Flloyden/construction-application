@@ -14,7 +14,9 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtils {
-    private String jwtSigningKey = "secret"; //TODO: Should be more complex.
+    private final String jwtSigningKey = "secret"; //TODO: Should be more complex.
+    private final long JWT_ACCESS_TOKEN_DURATION =  TimeUnit.HOURS.toMillis(2);
+    private final long JWT_REFRESH_TOKEN_DURATION =  TimeUnit.DAYS.toMillis(7);
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -45,21 +47,31 @@ public class JwtUtils {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(userDetails, claims);
+        return createToken(userDetails, claims, JWT_ACCESS_TOKEN_DURATION);
     }
 
     public String generateToken(UserDetails userDetails, Map<String, Object> claims) {
-        return createToken(userDetails, claims);
+        return createToken(userDetails, claims, JWT_ACCESS_TOKEN_DURATION);
     }
 
-    public String createToken(UserDetails userDetails, Map<String, Object> claims) {
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(userDetails, claims, JWT_REFRESH_TOKEN_DURATION);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails, Map<String, Object> claims) {
+        return createToken(userDetails, claims, JWT_REFRESH_TOKEN_DURATION);
+    }
+
+    public String createToken(UserDetails userDetails, Map<String, Object> claims, long duration) {
         return Jwts.builder().setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .claim("authorities", userDetails.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
+                .setExpiration(new Date(System.currentTimeMillis() + duration))
                 .signWith(SignatureAlgorithm.HS256, jwtSigningKey).compact();
     }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUserName(token);

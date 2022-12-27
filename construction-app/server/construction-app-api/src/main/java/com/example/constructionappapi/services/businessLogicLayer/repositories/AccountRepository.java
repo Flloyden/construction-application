@@ -58,4 +58,8 @@ public class AccountRepository {
     public Optional<AccountEntity> findByRecoveryToken(String token) {
         return accountDao.findFirstByRecoveryToken(token);
     }
+
+    public Optional<AccountEntity> findByEmailAndRefreshToken(String email, String refreshToken) {
+        return accountDao.findFirstByEmailAndRefreshToken(email, refreshToken);
+    }
 }
