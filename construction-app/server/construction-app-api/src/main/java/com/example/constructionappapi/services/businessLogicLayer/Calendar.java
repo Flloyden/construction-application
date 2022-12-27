@@ -66,7 +66,6 @@ public class Calendar {
         }
 
         workMap.put(work.getId(), work);
-        System.out.println(work.getNumberOfDays());
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(work);
@@ -79,6 +78,16 @@ public class Calendar {
             LocalDate dateToAddTo = startDate.plusDays(i + n);
 
             while (true) {
+                if (isWeekend(dateToAddTo) || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo)) || isDateTakenByLockedWork(dateToAddTo)) {
+                    dateToAddTo = dateToAddTo.plusDays(1);
+                    n++;
+                } else {
+                    break;
+                }
+            }
+            /*
+            while (true) {
+
                 if (!isWeekend(dateToAddTo)) {
                     break;
                 }
@@ -93,12 +102,8 @@ public class Calendar {
                 n++;
             }
 
-            /*
-            while (dateToAddTo.getDayOfWeek() == DayOfWeek.SATURDAY || dateToAddTo.getDayOfWeek() == DayOfWeek.SUNDAY || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
-                dateToAddTo = dateToAddTo.plusDays(1);
-                n++;
-            }
              */
+
 
             CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
@@ -184,17 +189,11 @@ public class Calendar {
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
 
         while (true) {
-            if (!isWeekend(newDate)) {
+            if (isWeekend(newDate) || vacationDates.containsKey(new VacationCalendarEntity(newDate)) || isDateTakenByLockedWork(newDate)) {
+                newDate = newDate.plusDays(1);
+            } else {
                 break;
             }
-            if (!vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
-                break;
-            }
-            if (!isDateTakenByLockedWork(newDate)) {
-                break;
-            }
-
-            newDate = newDate.plusDays(1);
         }
 
         /*If the date where the work-object is trying to get shuffled to is already taken, the work-object
@@ -274,7 +273,7 @@ public class Calendar {
     }
 
     private boolean isDateTakenByLockedWork(LocalDate dateToAddTo) {
-        return calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar();
+        return calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar();
     }
 
     public List<WorkCalendarInformation> getWorkCalendarInformation() {

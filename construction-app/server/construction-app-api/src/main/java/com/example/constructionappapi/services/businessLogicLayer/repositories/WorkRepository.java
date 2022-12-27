@@ -135,8 +135,15 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
+        if (work.getStartDate() == null) {
+            work.setStartDate(findNewStartDate());
+        }
 
-        if (isStartDateTakenByLocked(work)) {
+        if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (isDateTakenByLocked(work.getStartDate())) {
             Optional<WorkEntity> workAtStartDate = workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId());
 
             if (workAtStartDate.isPresent() && !workAtStartDate.get().getId().equals(work.getId())) {
@@ -160,25 +167,17 @@ public class WorkRepository {
             work.setNoteSummaries(sumList);
         }
 
-        if (work.getStartDate() == null) {
-            work.setStartDate(findNewStartDate());
-        }
-
         work.setCustomer(customer.get());
-        updateCalendar(workBeforeUpdate.get(), work);
         calendar.getWorkMap().get(work.getId()).update(work);
+        updateCalendar(workBeforeUpdate.get(), work);
+        WorkEntity updatedWork = workDao.save(work);
         updateStartingDates();
 
-        WorkEntity updatedWork = workDao.save(work);
         return ResponseEntity.ok().body(updatedWork);
     }
 
-    private boolean isStartDateTakenByLocked(WorkEntity work) {
-        if (work.getStartDate() == null) {
-            return false;
-        }
-
-        CalendarEntity calendarEntity = calendarDao.findFirstByDate(work.getStartDate());
+    private boolean isDateTakenByLocked(LocalDate date) {
+        CalendarEntity calendarEntity = calendarDao.findFirstByDate(date);
         if (calendarEntity == null) {
             return false;
         }
@@ -208,7 +207,7 @@ public class WorkRepository {
             calendarEntity.ifPresent(entity -> {
                 if (!work.getStartDate().equals(entity.getDate())) {
                     work.setStartDate(entity.getDate());
-                    calendar.getWorkMap().get(work.getId()).setStartDate(work.getStartDate());
+                    calendar.getWorkMap().get(work.getId()).update(work);
                     workDao.save(work);
                 }
             });

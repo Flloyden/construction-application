@@ -2,11 +2,16 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationCalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationDao;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +25,9 @@ public class VacationRepository {
     @Autowired
     private VacationCalendarDao vacationCalendarDao;
 
+    @Autowired
+    WorkRepository workRepository;
+
     private Calendar calendar = CalendarSingleton.getCalendar();
 
     public VacationRepository() {
@@ -32,23 +40,41 @@ public class VacationRepository {
      * @param vacationEntity
      * @return
      */
-    public VacationEntity saveVacation(VacationEntity vacationEntity) {
-        if (vacationCalendarDao.findFirstByDateLessThanEqualAndDateGreaterThanEqual(vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()), vacationEntity.getStartDate()).isEmpty()) {
-            VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
+    public ResponseEntity<VacationEntity> saveVacation(VacationEntity vacationEntity) {
+        Optional<VacationCalendarEntity> vacation = vacationCalendarDao
+                .findFirstByDateLessThanEqualAndDateGreaterThanEqual(
+                        vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
+                        vacationEntity.getStartDate()
+                );
 
-            ArrayList<VacationCalendarEntity> vacationDates = new ArrayList<>();
-            for (int i = 0; i < savedVacationEntity.getNumberOfDays(); i++) {
-                vacationDates.add(new VacationCalendarEntity(0L, savedVacationEntity.getStartDate().plusDays(i), savedVacationEntity));
-            }
-
-            calendar.addVacation(savedVacationEntity, vacationCalendarDao.saveAll(vacationDates));
-
-            return savedVacationEntity;
-        } else {
-            System.out.println("!!!!!!!!!!!!!!!!Date taken!!!!!!!!!!!!!!!!!");
+        if (vacation.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        return null;
+        for (int i = 0; i < vacationEntity.getNumberOfDays(); i++) {
+            if (calendar.getCalendarMap().containsKey(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)))) {
+                Long workKey = calendar.getCalendarMap().get(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)));
+
+                if (calendar.getWorkMap().containsKey(workKey)) {
+                    WorkEntity work = calendar.getWorkMap().get(workKey);
+
+                    if (work.isLockedInCalendar()) {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                    }
+                }
+            }
+        }
+
+        VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
+
+        ArrayList<VacationCalendarEntity> vacationDates = new ArrayList<>();
+        for (int i = 0; i < savedVacationEntity.getNumberOfDays(); i++) {
+            vacationDates.add(new VacationCalendarEntity(0L, savedVacationEntity.getStartDate().plusDays(i), savedVacationEntity));
+        }
+
+        calendar.addVacation(savedVacationEntity, vacationCalendarDao.saveAll(vacationDates));
+
+        return ResponseEntity.ok().body(savedVacationEntity);
     }
 
     /**
@@ -81,7 +107,7 @@ public class VacationRepository {
         if (vacationEntity.isPresent()) {
             vacationDao.deleteById(id);
             calendar.removeVacation(vacationEntity.get());
-        }else {
+        } else {
             return false;
         }
 

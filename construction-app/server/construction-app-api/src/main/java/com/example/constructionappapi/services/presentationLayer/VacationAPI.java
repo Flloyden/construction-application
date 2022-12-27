@@ -3,6 +3,7 @@ package com.example.constructionappapi.services.presentationLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +17,12 @@ public class VacationAPI {
     private VacationRepository vacationRepository;
 
     @PostMapping("/semester")
-    public VacationEntity saveVacation(@RequestBody VacationEntity vacationEntity) {
+    public ResponseEntity<VacationEntity> saveVacation(@RequestBody VacationEntity vacationEntity) {
         return vacationRepository.saveVacation(vacationEntity);
     }
 
     @PostMapping("/semester/{vacationId}/edit")
-    public VacationEntity updateVacation(@PathVariable final Long vacationId, @RequestBody VacationEntity vacationEntity) {
+    public ResponseEntity<VacationEntity> updateVacation(@PathVariable final Long vacationId, @RequestBody VacationEntity vacationEntity) {
         vacationRepository.deleteVacation(vacationId);
         return vacationRepository.saveVacation(vacationEntity);
     }
