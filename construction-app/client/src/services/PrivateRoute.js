@@ -1,14 +1,15 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const PrivateRoutes = () => {
   // Gets the key in localstorage
+  const navigate = useNavigate();
   const getValue = localStorage.getItem('accessToken');
   let auth = { token: getValue };
   console.log(auth)
 
   function checkToken() {
     if (!auth.token) {
-      return <Navigate to={"/login"} replace />
+      navigate("/login")
     } else {
       return <Outlet />
     }
