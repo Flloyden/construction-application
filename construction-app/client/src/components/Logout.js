@@ -52,7 +52,7 @@ export default function Logout(props) {
     {!loading && (
     <div className={isMobile ? "fixed inset-x-0 bottom-0 w-full z-50" : "absolute inset-x-0 bottom-0 w-full"}>
       <p className={isMobile ? "hidden" : "font-normal text-black dark:text-white py-2 text-base text-center"}>
-        Inloggad som: {userInfo.username}
+        Inloggad som: {userInfo.name}
       </p>
       <button
         className={isMobile ? "bg-blue-600 text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300" : "bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 w-full duration-300"}
