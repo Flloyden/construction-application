@@ -5,7 +5,6 @@ const PrivateRoutes = () => {
   const navigate = useNavigate();
   const getValue = localStorage.getItem('accessToken');
   let auth = { token: getValue };
-  console.log(auth)
 
   function checkToken() {
     if (!auth.token) {

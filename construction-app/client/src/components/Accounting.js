@@ -19,6 +19,7 @@ const Accounting = () => {
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [currentWarrantyId, setCurrentWarrantyId] = useState("");
+  const [currentWarrantyImage, setCurrentWarrantyImage] = useState("");
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
@@ -154,9 +155,12 @@ const Accounting = () => {
                         {warranty.warranty_date}
                       </td>
                       <td className="px-6 w-full">
-                      <div
-                          className="flex justify-end"
-                          onClick={toggleReceipt}
+                        <div
+                          className={warranty.receipt.length > 1 ? "flex justify-end" : "hidden"}
+                          onClick={() => {
+                            setCurrentWarrantyImage(warranty.receipt);
+                            setShowReceipt(!showReceipt)
+                          }}
                         >
                           <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
                             Visa kvitto
@@ -167,12 +171,14 @@ const Accounting = () => {
                                 ? "bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20"
                                 : "content-parent"
                             }
-                            onClick={() => setShowReceipt(false)}
+                            onClick={() => {
+                              setShowReceipt(!showReceipt)
+                            }}
                           >
                             {showReceipt && (
                               <img
                                 className="w-full mx-auto"
-                                src={warranty.receipt}
+                                src={currentWarrantyImage}
                                 alt="receipt"
                                 style={{ width: "50%" }}
                               />
@@ -215,8 +221,11 @@ const Accounting = () => {
                       </td>
                       <td className="px-6 w-full">
                         <div
-                          className="flex justify-end"
-                          onClick={toggleReceipt}
+                          className={warranties.receipt.length > 1 ? "flex justify-end" : "hidden"}
+                          onClick={() => {
+                            setCurrentWarrantyImage(warranties.receipt);
+                            setShowReceipt(!showReceipt)
+                          }}
                         >
                           <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
                             Visa kvitto
@@ -227,12 +236,14 @@ const Accounting = () => {
                                 ? "bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20"
                                 : "content-parent"
                             }
-                            onClick={() => setShowReceipt(false)}
+                            onClick={() => {
+                              setShowReceipt(!showReceipt)
+                            }}
                           >
                             {showReceipt && (
                               <img
                                 className="w-full mx-auto"
-                                src={warranties.receipt}
+                                src={currentWarrantyImage}
                                 alt="receipt"
                                 style={{ width: "50%" }}
                               />
