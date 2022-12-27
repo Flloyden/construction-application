@@ -17,7 +17,6 @@ export default function CheckOngoingWork() {
       try {
         const response = await ApiConnector.getOngoingWork();
         setOngoingWork(response.data);
-        console.log(response.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
