@@ -22,8 +22,6 @@ export default function CheckUpcomingWork() {
     };
     fetchData();
   }, []);
-  console.log(upcomingWork)
-
 
   function getUpcomingWork() { 
     if(upcomingWork == null)
