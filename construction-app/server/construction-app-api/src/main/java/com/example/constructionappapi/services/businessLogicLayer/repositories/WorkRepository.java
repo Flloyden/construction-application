@@ -59,9 +59,10 @@ public class WorkRepository {
             work.setStartDate(findNewStartDate());
         }
 
-        if (work.getStartDate().equals(LocalDate.now())) {
-            work.setWorkStatus(WorkStatus.STARTED);
-        }
+        //TODO detta gör att nytt jobb i tom kalender som hamnar på dagens datum inte sätts till started
+        //if (work.getStartDate().equals(LocalDate.now())) {
+            //work.setWorkStatus(WorkStatus.STARTED);
+        //}
 
         return calendar.addWork(workDao.save(work));
     }

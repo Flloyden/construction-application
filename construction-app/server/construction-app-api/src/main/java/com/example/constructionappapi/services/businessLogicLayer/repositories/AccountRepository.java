@@ -52,7 +52,4 @@ public class AccountRepository {
         accountDao.save(user);
     }
 
-    public Optional<AccountEntity> findByRecoveryToken(String token) {
-        return accountDao.findFirstByRecoveryToken(token);
-    }
 }
