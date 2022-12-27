@@ -312,7 +312,6 @@ const ChangeWorkInfo = (props) => {
                 type="textarea"
                 name="materialNote"
                 value={newList.materialNote}
-                required
                 onChange={handleChange}
               ></textarea>
             </div>

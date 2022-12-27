@@ -135,7 +135,6 @@ const AddWork = (props) => {
                 type="textarea"
                 name="materialNote"
                 value={work.materialNote}
-                required
                 onChange={handleChange}
               ></textarea>
             </div>
