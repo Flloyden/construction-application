@@ -14,9 +14,7 @@ export default function CheckUpcomingWork() {
       // Tries to get data from api
       try {
         const response = await ApiConnector.getUpcomingWork();
-        const response2 = await ApiConnector.getUpcomingWork();
         setUpcomingWork(response.data);
-        console.log(response2.data);
       } catch (error) {
         console.log(error);
       }
@@ -75,12 +73,12 @@ export default function CheckUpcomingWork() {
                 <h1 className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap">
                 </h1>
               </div>
-              <p className="font-normal pb-6">Finns inga kommande jobb</p>
+              <p className="font-normal pb-6">Finns inga kommande jobb inom 30 dagar</p>
             </div>
           ) : (
             <div className="border-2 rounded p-2 shadow">
               <div className="flex justify-between gap-52">
-                <h1 className="whitespace-nowrap">Kommande jobb</h1>
+                <h1 className="whitespace-nowrap">Kommande jobb inom 30 dagar</h1>
                 <h1
                   className="text-emerald-500 font-medium hover:cursor-pointer whitespace-nowrap"
                   onClick={(e) => passId(getCustomerId())}

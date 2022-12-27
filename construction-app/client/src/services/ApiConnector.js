@@ -84,7 +84,7 @@ class ApiConnector {
 
   getUpcomingWork(){
     //Gets upcoming work based on tomorrows date and ten days forward. 
-     //Checks if any customer has work with startdate within 10 days.
+     //Checks if any customer has work with startdate within 30 days.
      return axios.get(CUSTOMER_API_BASE_URL + "/upcoming", {
       headers: {
         Authorization: localStorage.getItem("accessToken")

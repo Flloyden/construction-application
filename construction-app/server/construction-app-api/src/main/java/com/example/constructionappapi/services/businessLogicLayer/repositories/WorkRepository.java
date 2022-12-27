@@ -245,10 +245,10 @@ public class WorkRepository {
     public List<WorkEntity> checkForUpcomingWork() {
         LocalDate today = LocalDate.now();
         today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
-        //Lägger därför en dag framåt från dagens datum.
-        LocalDate tenDaysForward = today.plusDays(10);
+                                            //Lägger därför en dag framåt från dagens datum.
+        LocalDate thirtyDaysForward = today.plusDays(30);
 
-        return workDao.findFirstByStartDateBetweenAndWorkStatus(today, tenDaysForward, 0);
+        return workDao.findFirstByStartDateBetweenAndWorkStatus(today, thirtyDaysForward, 0);
     }
 
     public List<WorkEntity> checkForOngoingWork() {
