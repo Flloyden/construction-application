@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,22 +26,30 @@ import java.util.Optional;
 public class AuthenticationAPI {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @PostMapping("/authenticate")
     public ResponseEntity<UserInformation> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            return Optional.ofNullable(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())).getPrincipal())
-                    .map(AccountEntity.class::cast)
-                    .map(accountEntity -> ResponseEntity
-                            .status(HttpStatus.OK)
-                            .header("Authorization", "Bearer " + jwtUtils.generateToken(accountEntity))
-                            .body(new UserInformation(
-                                    accountEntity.getId(),
-                                    accountEntity.getName(),
-                                    accountEntity.getEmail(),
-                                    accountEntity.getProfileImage(),
-                                    accountEntity.getRole())
-                            )).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+            Optional<AccountEntity> accountEntity = Optional.ofNullable(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())).getPrincipal()).map(AccountEntity.class::cast);
+            if (accountEntity.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            return accountEntity.map(account -> ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Authorization", "Bearer " + jwtUtils.generateToken(account))
+                    .body(new UserInformation(
+                            account.getId(),
+                            account.getName(),
+                            account.getEmail(),
+                            account.getProfileImage(),
+                            account.getRole())
+                    )).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -58,23 +67,17 @@ public class AuthenticationAPI {
         return ResponseEntity.ok("Successfully logged out");
     }
 
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private AccountRepository userRepository;
-
     @PostMapping("/initiate-email-recovery")
     public ResponseEntity initiateEmailRecovery(@RequestParam("email") String email) {
-        AccountEntity user = userRepository.findByEmail(email);
+        AccountEntity user = accountRepository.findByEmail(email);
 
         if (user != null) {
             String recoveryToken = generateRecoveryToken();
             user.setRecoveryToken(recoveryToken);
-            userRepository.save(user);
+            accountRepository.save(user);
 
             String emailSubject = "Account Recovery";
-            String emailText = "Click this link to recover your account: http://your-site.com/recover?token=" + recoveryToken;
+            String emailText = "Click this link to recover your account: http://localhost:8080/api/v1/recover?token=" + recoveryToken;
             emailService.sendEmail(email, emailSubject, emailText);
             return ResponseEntity.ok().build();
         }
@@ -91,22 +94,22 @@ public class AuthenticationAPI {
 
     @GetMapping("/recover")
     public ResponseEntity<UserInformation> recoverAccount(@RequestParam("token") String token) {
-        return userRepository.findByRecoveryToken(token).map(accountEntity -> {
-            String newPassword = resetPassword(accountEntity);
-            userRepository.save(accountEntity);
-            return authenticate(new AuthenticationRequest(accountEntity.getEmail(), newPassword));
-        }).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return accountRepository
+                .findByRecoveryToken(token)
+                .map(accountEntity -> authenticate(new AuthenticationRequest(accountEntity.getEmail(), resetPassword(accountEntity))))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    private String resetPassword(AccountEntity user) {
+    private String resetPassword(AccountEntity accountEntity) {
         // Generate a new random password for the user
         SecureRandom random = new SecureRandom();
         byte[] passwordBytes = new byte[10];
         random.nextBytes(passwordBytes);
-        String newPassword = DatatypeConverter.printHexBinary(passwordBytes);
+        String newPassword = new BCryptPasswordEncoder().encode(DatatypeConverter.printHexBinary(passwordBytes));
 
         // Set the user's password to the new password
-        user.setPassword(newPassword);
+        accountEntity.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        accountRepository.save(accountEntity);
         return newPassword;
     }
 }

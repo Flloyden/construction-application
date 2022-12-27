@@ -1,3 +1,4 @@
+/*
 package com.example.constructionappapi.services.emailRecovery;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
@@ -31,7 +32,7 @@ public class EmailRecoveryController {
             userRepository.save(user);
 
             String emailSubject = "Account Recovery";
-            String emailText = "Click this link to recover your account: http://your-site.com/recover?token=" + recoveryToken;
+            String emailText = "Click this link to recover your account: http://localhost:8080/recover?token=" + recoveryToken;
             emailService.sendEmail(email, emailSubject, emailText);
         }
     }
@@ -44,4 +45,5 @@ public class EmailRecoveryController {
     }
 
 }
+ */
 
