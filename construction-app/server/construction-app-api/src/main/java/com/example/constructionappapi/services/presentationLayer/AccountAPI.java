@@ -1,19 +1,17 @@
 package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
 import com.example.constructionappapi.services.security.JwtUtils;
-import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController

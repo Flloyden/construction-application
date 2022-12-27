@@ -44,7 +44,15 @@ public class AccountRepository {
         });
     }
 
-    public AccountEntity findUserByEmail(String email) {
+    public AccountEntity findByEmail(String email) {
         return accountDao.findFirstByEmail(email);
+    }
+
+    public void save(AccountEntity user) {
+        accountDao.save(user);
+    }
+
+    public Optional<AccountEntity> findByRecoveryToken(String token) {
+        return accountDao.findFirstByRecoveryToken(token);
     }
 }

@@ -85,7 +85,7 @@ public class Calendar {
                 if (!vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
                     break;
                 }
-                if (!isDateTakeByLockedWork(dateToAddTo)) {
+                if (!isDateTakenByLockedWork(dateToAddTo)) {
                     break;
                 }
 
@@ -134,15 +134,15 @@ public class Calendar {
         workRepository.updateStartingDates();
     }
 
-    public void increaseNumberOfDays(WorkEntity work, int numberOfDays) {
-        Optional<CalendarEntity> calendarEntity = calendarRepository.findFirstByWorkIdByOrderByDateDesc(work.getId());
-        calendarEntity.ifPresent(entity -> addDaysToCalendar(numberOfDays, calendarEntity.get().getDate().plusDays(1), work));
+    public void increaseNumberOfDays(WorkEntity work, int numberOfDaysToAdd) {
+        calendarRepository
+                .findFirstByWorkIdByOrderByDateDesc(work.getId())
+                .ifPresent(calendarEntity -> addDaysToCalendar(numberOfDaysToAdd, calendarEntity.getDate().plusDays(1), work));
     }
 
-    public void reduceNumberOfDays(WorkEntity work, int numberOfDays) {
-        for (int i = 0; i < numberOfDays; i++) {
-            Optional<CalendarEntity> calendarEntityToRemove = calendarRepository.deleteLastByWorkId(work.getId());
-            calendarEntityToRemove.ifPresent(entity -> calendarDates.remove(calendarEntityToRemove.get()));
+    public void reduceNumberOfDays(WorkEntity work, int numberOfDaysToRemove) {
+        for (int i = 0; i < numberOfDaysToRemove; i++) {
+            calendarRepository.deleteLastByWorkId(work.getId()).ifPresent(calendarDates::remove);
         }
 
         moveCalendarItemBackwards(work.getStartDate());
@@ -158,7 +158,6 @@ public class Calendar {
         int daysToAdd = vacation.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
 
-        long n = 0L;
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = vacation.getStartDate().plusDays(i);
 
@@ -191,7 +190,7 @@ public class Calendar {
             if (!vacationDates.containsKey(new VacationCalendarEntity(newDate))) {
                 break;
             }
-            if (!isDateTakeByLockedWork(newDate)) {
+            if (!isDateTakenByLockedWork(newDate)) {
                 break;
             }
 
@@ -200,7 +199,9 @@ public class Calendar {
 
         /*If the date where the work-object is trying to get shuffled to is already taken, the work-object
         that is already there should be shuffled forward one day.*/
-        if (calendarDates.containsKey(new CalendarEntity(newDate))) shuffleForward(newDate, 1);
+        if (calendarDates.containsKey(new CalendarEntity(newDate))) {
+            shuffleForward(newDate, 1);
+        }
 
         /*If the date is free the work-object that is getting shuffled forward can be added. */
         calendarDates.remove(calendarEntity);
@@ -214,13 +215,28 @@ public class Calendar {
         LocalDate[] lastDateMovedTo = {LocalDate.MIN};
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
             if (calendarEntity.getDate().isAfter(startDate)) {
-                lastDateMovedTo[0] = moveCalendarItemBackwards(workMap.get(calendarDates.get(calendarEntity)), calendarEntity, lastDateMovedTo[0]);
+                WorkEntity workToMove = workMap.get(calendarDates.get(calendarEntity));
+                lastDateMovedTo[0] = moveCalendarItemBackwards(workToMove, calendarEntity, lastDateMovedTo[0]);
             }
         });
     }
 
     public LocalDate moveCalendarItemBackwards(WorkEntity workToMove, CalendarEntity calendarEntity, LocalDate lastDateMovedTo) {
         LocalDate possibleDate = calendarEntity.getDate().minusDays(1L);
+        LocalDate freeCalendarSpot = findFreeCalendarSpot(possibleDate, lastDateMovedTo, workToMove);
+
+        if (freeCalendarSpot != null && !calendarDates.containsKey(new CalendarEntity(freeCalendarSpot))) {
+            calendarDates.remove(calendarEntity);
+            calendarEntity.setDate(freeCalendarSpot);
+            calendarDates.put(calendarEntity, calendarEntity.getWork().getId());
+            calendarRepository.save(calendarEntity);
+            return freeCalendarSpot;
+        }
+
+        return lastDateMovedTo;
+    }
+
+    private LocalDate findFreeCalendarSpot(LocalDate possibleDate, LocalDate lastDateMovedTo, WorkEntity workToMove) {
         LocalDate freeCalendarSpot = null;
 
         while (true) {
@@ -249,22 +265,15 @@ public class Calendar {
             possibleDate = possibleDate.minusDays(1L);
         }
 
-        if (freeCalendarSpot != null && !calendarDates.containsKey(new CalendarEntity(freeCalendarSpot))) {
-            calendarDates.remove(calendarEntity);
-            calendarEntity.setDate(freeCalendarSpot);
-            calendarDates.put(calendarEntity, calendarEntity.getWork().getId());
-            calendarRepository.save(calendarEntity);
-            return freeCalendarSpot;
-        }
-
-        return lastDateMovedTo;
+        return freeCalendarSpot;
     }
+
 
     private boolean isWeekend(LocalDate date) {
         return date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 
-    private boolean isDateTakeByLockedWork(LocalDate dateToAddTo) {
+    private boolean isDateTakenByLockedWork(LocalDate dateToAddTo) {
         return calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && !workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar();
     }
 
