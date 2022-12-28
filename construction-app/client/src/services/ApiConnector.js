@@ -9,13 +9,14 @@ const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 const NOTES_API = "http://localhost:8080/api/v1/kunder/anteckningar";
 const SEMESTER_API = "http://localhost:8080/api/v1/semester"
 let refreshPromise = null;
-const refreshInstance = axios.create();
 
 axios.interceptors.request.use(
   config => {
     const excludedEndpoints = [
       'http://localhost:8080/api/v1/authentication',
-      'http://localhost:8080/api/v1/refresh'];
+      'http://localhost:8080/api/v1/refresh',
+      'http://localhost:8080/api/v1/initiate-email-recovery',
+      'http://localhost:8080/api/v1/recover'];
 
     if (!excludedEndpoints.includes(config.url)) {
 
@@ -69,9 +70,6 @@ async function refreshAccessToken(refreshToken) {
       return newAccessToken;
     } catch (error) {
       // If the refresh token is invalid or has expired, log out the user
-      console.log("*********************************")
-      console.log(error)
-      console.log("*********************************")
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
       //logout();
