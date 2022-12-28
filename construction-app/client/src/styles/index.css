@@ -35,3 +35,69 @@
 .darkMode > .fc .fc-list-event {
     cursor: pointer;
 }
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* :::::::::::::: Required CSS */
+  /* Locked */
+  .lock {
+    border: 2px solid red;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+  .lock:after {
+    content: "";
+    display: block;
+    background: red;
+    width: 2px;
+    border-radius: 20%;
+    height: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -3.5px 0 0 -2px;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+  .lock:before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    bottom: 100%;
+    position: absolute;
+    left: 43%;
+    margin-left: -8px;
+    border: 2px solid red;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom: 0;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+  /* Locked Hover */
+  .lock:hover:before {
+    height: 16px;
+  }
+  .unlocked:before {
+    bottom: 110%;
+    left: 35%;
+    margin-left: -11.5px;
+    transform: rotate(-20deg);
+  }
+  .unlocked,
+  .unlocked:before {
+    border-color: black;
+  }
+  .unlocked:after {
+    background: black;
+  }
+  .unlocked:hover:before {
+    height: 20px;
+  }
