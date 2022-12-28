@@ -64,7 +64,7 @@ export default function CheckOngoingWork() {
   return (
     <>
       {!loading && (
-        <div>
+        <div className="w-full">
           {ongoingWork.length < 1 ? (
             <div className="border-2 rounded p-2 shadow">
               <div className="flex justify-between gap-52">

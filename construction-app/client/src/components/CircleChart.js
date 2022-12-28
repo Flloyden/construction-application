@@ -92,7 +92,7 @@ export default function CircleChart() {
     <>
       {!loading && (
         <div className="flex mt-2">
-          <div className="w-1/3">
+          <div className="w-full">
             <div className="flex gap-4">
               <div className="w-5 h-5 bg-gradient-to-r from-amber-400 to-orange-400 rounded mt-2" />
               <div className="">

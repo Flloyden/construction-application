@@ -25,15 +25,19 @@ export default function UserInfo() {
   return (
     <>
       {!loading && (
-        <div className="flex items-center">
-          <div className="rounded-full p-1 bg-blue-600 flex align-middle justify-center items-center">
-            <img
-              src={userInfo.profileImage}
-              alt="profile pic"
-              className="w-24 h-24 object-cover rounded-full border-1 border-blue-600 bg-blue-600"
-            />
+        <div className="flex items-center w-1/2">
+          <div className="w-fit h-full">
+            <div className="w-24">
+              <div className="rounded-full p-1 bg-blue-600 flex align-middle justify-center items-center">
+                <img
+                  src={userInfo.profileImage}
+                  alt="profile pic"
+                  className="object-cover rounded-full border-1 border-blue-600 bg-blue-600"
+                />
+              </div>
+            </div>
           </div>
-          <div className="ml-4">
+          <div className="ml-4 w-full">
             <div className="text-2xl">
               <h1>
                 Hej, <span className="font-bold">{userInfo.name}</span>

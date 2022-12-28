@@ -135,22 +135,22 @@ export default function Home() {
   function checkDarkMode() {
     const getValue = localStorage.getItem("theme");
     if (getValue === "true") {
-      return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 darkMode";
+      return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 darkMode laptop:hidden tablet:hidden";
     } else {
-      return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 newHome";
+      return "bg-white dark:bg-gray-800 w-1/4 rounded shadow border-l-2 pt-4 newHome laptop:hidden tablet:hidden";
     }
   }
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white dark:text-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white dark:text-white">
       <div className="flex gap-4 rounded">
-        <div className="w-3/4 rounded">
+        <div className="w-3/4 rounded laptop:w-full tablet:w-full laptop:pb-6">
           <div className="bg-white dark:bg-gray-800 shadow rounded border-2 p-4">
             <div className="mt-0 flex items-center justify-between">
               <UserInfo />
-              <div className="mt-4 justify-end flex gap-4 text-white h-1/4">
+              <div className="mt-4 justify-end flex gap-4 text-white laptop:text-sm tablet:flex-col tablet:mt-0 tablet:gap-2">
                 <button
-                  className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
+                  className="bg-blue-600 rounded w-full p-3 tablet:p-2 hover:opacity-80 duration-200 whitespace-nowrap"
                   onClick={() => {
                     setIsSemesterOpen(true);
                   }}
@@ -158,13 +158,13 @@ export default function Home() {
                   Lägg in semester
                 </button>
                 <button
-                  className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
+                  className="bg-blue-600 rounded w-full p-3 tablet:p-2 hover:opacity-80 duration-200 whitespace-nowrap"
                   onClick={() => setNewCustomerModalOpen(true)}
                 >
                   Skapa ny kund
                 </button>
                 <button
-                  className="bg-blue-600 rounded-md w-max p-4 hover:opacity-80 duration-200 whitespace-nowrap"
+                  className="bg-blue-600 rounded w-full p-3 tablet:p-2 hover:opacity-80 duration-200 whitespace-nowrap"
                   onClick={() => setNewWarrantyModalOpen(true)}
                 >
                   Skapa ny garanti
@@ -175,23 +175,25 @@ export default function Home() {
 
           <div className="bg-white dark:bg-gray-800 shadow border-2 mt-4 rounded">
             <div className="p-6">
-              <div className="flex gap-10 justify-between">
-                <div className="w-1/2 pr-4">
+              <div className="flex gap-10 justify-between laptop:flex-col tablet:flex-col">
+                <div className="w-full">
                   <div className="pb-4">
                     <h1 className="text-xl font-bold">Jobböversikt</h1>
                   </div>
-                  <CheckOngoingWork />
-                  <CheckUpcomingWork />
+                  <div className="laptop:w-full laptop:flex laptop:gap-4 tablet:flex tablet:gap-4 tablet:w-full">
+                    <CheckOngoingWork />
+                    <CheckUpcomingWork />
+                  </div>
                 </div>
-                <div className="w-1/2">
+                <div className="w-full">
                   <BarChart />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex gap-4 mt-4">
-            <div className="bg-white dark:bg-gray-800 w-1/2 p-6 rounded border-2 shadow">
+          <div className="flex gap-4 mt-4 tablet:flex-col">
+            <div className="bg-white dark:bg-gray-800 w-1/2 p-6 rounded border-2 shadow tablet:w-full">
               <div className="">
                 <h1 className="text-xl font-bold">Garantier</h1>
               </div>
@@ -199,7 +201,7 @@ export default function Home() {
               <CheckWarranties />
             </div>
 
-            <div className="bg-white dark:bg-gray-800 w-1/2 rounded border-2 shadow">
+            <div className="bg-white dark:bg-gray-800 w-1/2 rounded border-2 shadow tablet:w-full">
               <div className="p-6">
                 <h1 className="text-xl font-bold">Jobb & Semester</h1>
                 <CircleChart />
