@@ -8,7 +8,7 @@ const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 const NOTES_API = "http://localhost:8080/api/v1/kunder/anteckningar";
 const SEMESTER_API = "http://localhost:8080/api/v1/semester"
-
+let refreshPromise = null;
 
 axios.interceptors.request.use(
   config => {
@@ -54,8 +54,6 @@ axios.interceptors.response.use(
 );
 
 async function refreshAccessToken(refreshToken) {
-  let refreshPromise = null;
-
   const refresh = async () => {
     try {
       const response = await axios.post(BASE_URL + '/refresh', {
