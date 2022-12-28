@@ -57,8 +57,10 @@ const Login = () => {
 
     if (response.ok) {
       const accessToken = response.headers.get("Authorization");
+      const refreshToken = response.headers.get("RefreshToken");
 
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("active", 0);
 
       if (getTheme === null) {

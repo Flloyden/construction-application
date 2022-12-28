@@ -62,4 +62,8 @@ public class AccountRepository {
     public Optional<AccountEntity> findByEmailAndRefreshToken(String email, String refreshToken) {
         return accountDao.findFirstByEmailAndRefreshToken(email, refreshToken);
     }
+
+    public Optional<AccountEntity> findByRefreshToken(String refreshToken) {
+        return accountDao.findFirstByRefreshToken(refreshToken);
+    }
 }

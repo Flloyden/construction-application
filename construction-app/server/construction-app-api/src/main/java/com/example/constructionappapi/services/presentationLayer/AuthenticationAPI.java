@@ -68,7 +68,7 @@ public class AuthenticationAPI {
         String refreshToken = request.getRefreshToken();
 
         // Retrieve the user associated with the refresh token
-        Optional<AccountEntity> user = accountRepository.findByEmailAndRefreshToken(request.getEmail(), refreshToken);
+        Optional<AccountEntity> user = accountRepository.findByRefreshToken(refreshToken);
         if (user.isEmpty()) {
             return ResponseEntity.status(401).body("Invalid email or refresh token");
         }
