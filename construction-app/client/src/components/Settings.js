@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import SettingsCalendar from "./SettingsCalendar";
-import SettingsExtra from "./SettingsExtra";
-import SettingsGeneral from "./SettingsGeneral";
 import SettingsPassword from "./SettingsPassword";
 import SettingsProfile from "./SettingsProfile";
 import SettingsVisual from "./SettingsVisual";
@@ -17,40 +15,31 @@ export default function Settings() {
     document.documentElement.classList.remove("dark");
   }
   const [active, setActive] = useState(0);
-  const [showGeneral, setShowGeneral] = useState(true)
   const [showVisual, setShowVisual] = useState(false)
   const [showCalendar, setShowCalendar] = useState(false)
-  const [showProfile, setShowProfile] = useState(false)
+  const [showProfile, setShowProfile] = useState(true)
   const [showPassword, setShowPassword,] = useState(false)
-  const [showExtra, setShowExtra] = useState(false)
   const list = [
-    { test: "Generellt" },
-    { test: "Utseende" },
-    { test: "Kalender" },
-    { test: "Profil" },
-    { test: "Lösenord" },
-    { test: "Annat" },
+    { option: "Profil" },
+    { option: "Lösenord" },
+    { option: "Utseende" },
+    { option: "Kalender" },
+    
   ];
 
-  function test(e) {
-    setShowGeneral(false)
+  function changeOption(e) {
     setShowVisual(false)
     setShowCalendar(false)
     setShowProfile(false)
     setShowPassword(false)
-    setShowExtra(false)
     if(e === 0) {
-      setShowGeneral(true)
-    } if(e === 1) {
-      setShowVisual(true)
-    } if(e === 2) {
-      setShowCalendar(true)
-    } if(e === 3) {
       setShowProfile(true)
-    } if(e === 4) {
+    } if(e === 1) {
       setShowPassword(true)
-    } if(e === 5) {
-      setShowExtra(true)
+    } if(e === 2) {
+      setShowVisual(true)
+    } if(e === 3) {
+      setShowCalendar(true)
     }
   }
 
@@ -65,7 +54,7 @@ export default function Settings() {
                   key={index}
                   onClick={() => {
                     setActive(index);
-                    test(index)
+                    changeOption(index)
                   }}
                   className={
                     active === index
@@ -73,14 +62,11 @@ export default function Settings() {
                       : "hover:cursor-pointer bg-gray-200 hover:border-b-4 w-full py-2 rounded border-blue-600 dark:bg-gray-700"
                   }
                 >
-                  {item.test}
+                  {item.option}
                 </li>
               );
             })}
           </ul>
-          {showGeneral && (
-            <SettingsGeneral />
-          )}
           {showVisual && (
             <SettingsVisual />
           )}
@@ -92,9 +78,6 @@ export default function Settings() {
           )}
           {showPassword && (
             <SettingsPassword />
-          )}
-          {showExtra && (
-            <SettingsExtra />
           )}
         </div>
       </div>
