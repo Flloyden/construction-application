@@ -8,6 +8,8 @@ const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 const NOTES_API = "http://localhost:8080/api/v1/kunder/anteckningar";
 const SEMESTER_API = "http://localhost:8080/api/v1/semester"
+let refreshPromise = null;
+const refreshInstance = axios.create();
 
 axios.interceptors.request.use(
   config => {
@@ -51,25 +53,38 @@ axios.interceptors.response.use(
 );
 
 async function refreshAccessToken(refreshToken) {
-  try {
-    const response = await axios.post(BASE_URL + '/refresh', {
-      refreshToken
-    });
-    const newAccessToken = response.headers.authorization
-    const newRefreshToken = response.headers.refreshtoken
+  const refresh = async () => {
+    try {
+      const response = await axios.post(BASE_URL + '/refresh', {
+        refreshToken
+      });
+      const newAccessToken = response.headers.authorization
+      const newRefreshToken = response.headers.refreshtoken
 
-    // Store the new access and refresh tokens in local storage or a cookie
-    localStorage.setItem('accessToken', newAccessToken);
-    localStorage.setItem('refreshToken', newRefreshToken);
+      // Store the new access and refresh tokens in local storage or a cookie
+      localStorage.setItem('accessToken', newAccessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
 
-    // Return the new access token
-    return newAccessToken;
-  } catch (error) {
-    // If the refresh token is invalid or has expired, log out the user
-    console.log(error)
-    localStorage.removeItem('accessToken')
-    //logout();
+      // Return the new access token
+      return newAccessToken;
+    } catch (error) {
+      // If the refresh token is invalid or has expired, log out the user
+      console.log("*********************************")
+      console.log(error)
+      console.log("*********************************")
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
+      //logout();
+    }
   }
+
+  if (!refreshPromise) {
+    refreshPromise = refresh().then(accessToken => {
+      refreshPromise = null
+      return accessToken
+    })
+  }
+  await refreshPromise
 }
 
 class ApiConnector {

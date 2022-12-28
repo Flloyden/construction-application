@@ -15,7 +15,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
     private final String jwtSigningKey = "secret"; //TODO: Should be more complex.
-    private final long JWT_ACCESS_TOKEN_DURATION =  TimeUnit.HOURS.toMillis(2);
+    private final long JWT_ACCESS_TOKEN_DURATION =  TimeUnit.HOURS.toMillis(1);
     private final long JWT_REFRESH_TOKEN_DURATION =  TimeUnit.DAYS.toMillis(7);
 
     public String extractUserName(String token) {
