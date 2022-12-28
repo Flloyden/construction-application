@@ -235,11 +235,7 @@ class ApiConnector {
   }
 
   updateUser(user) {
-    return axios.post("http://localhost:8080/api/v1/user/update", user, {
-      headers: {
-        Authorization: localStorage.getItem("accessToken")
-      }
-    });
+    return axios.post("http://localhost:8080/api/v1/user/update");
   }
 }
 
