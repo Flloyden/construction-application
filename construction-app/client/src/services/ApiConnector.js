@@ -11,9 +11,16 @@ const SEMESTER_API = "http://localhost:8080/api/v1/semester"
 
 axios.interceptors.request.use(
   config => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      config.headers['Authorization'] = `${accessToken}`;
+    const excludedEndpoints = [
+      'http://localhost:8080/api/v1/authentication',
+      'http://localhost:8080/api/v1/refresh'];
+
+    if (!excludedEndpoints.includes(config.url)) {
+
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        config.headers['Authorization'] = `${accessToken}`;
+      }
     }
     return config;
   },
@@ -28,7 +35,6 @@ axios.interceptors.response.use(
       // If the access token has expired, try to refresh it using the refresh token
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
-        localStorage.removeItem('accessToken');
         return refreshAccessToken(refreshToken).then(accessToken => {
           // If the refresh token request was successful, retry the original request
           error.config.headers['Authorization'] = `${accessToken}`;
@@ -46,7 +52,7 @@ axios.interceptors.response.use(
 
 async function refreshAccessToken(refreshToken) {
   try {
-    const response = await axios.post(BASE_URL +'/refresh', {
+    const response = await axios.post(BASE_URL + '/refresh', {
       refreshToken
     });
     const newAccessToken = response.headers.authorization
@@ -55,7 +61,7 @@ async function refreshAccessToken(refreshToken) {
     // Store the new access and refresh tokens in local storage or a cookie
     localStorage.setItem('accessToken', newAccessToken);
     localStorage.setItem('refreshToken', newRefreshToken);
-    
+
     // Return the new access token
     return newAccessToken;
   } catch (error) {
@@ -71,7 +77,7 @@ class ApiConnector {
     return axios.post(AUTHENTICATION_API)
   }
 
-  
+
 
   //Saves the customer to the database
   saveCustomer(customer) {
