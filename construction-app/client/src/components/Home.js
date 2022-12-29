@@ -1,24 +1,23 @@
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import listPlugin from "@fullcalendar/list";
-import moment from "moment";
-import { useState } from "react";
-import NavigateModal from "./NavigateModal";
-import SemesterModal from "./SemesterModal";
-import CalendarModal from "./CalendarModal";
-import ApiConnector from "../services/ApiConnector";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import Holidays from "date-holidays";
-import BarChart from "./BarChart";
-import CircleChart from "./CircleChart";
-import Semester from "./Semester";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import ApiConnector from "../services/ApiConnector";
 import AddCustomer from "./AddCustomer";
 import AddWaranty from "./AddWarranty";
-import WarrantyHomePage from "./WarrantyHomePage";
+import BarChart from "./BarChart";
+import CalendarModal from "./CalendarModal";
 import CheckOngoingWork from "./CheckOngoingWork";
 import CheckUpcomingWork from "./CheckUpcomingWork";
 import CheckWarranties from "./CheckWarranties";
+import CircleChart from "./CircleChart";
+import NavigateModal from "./NavigateModal";
+import Semester from "./Semester";
+import SemesterModal from "./SemesterModal";
 import UserInfo from "./UserInfo";
+import WarrantyHomePage from "./WarrantyHomePage";
 
 export default function Home() {
   if (
@@ -143,7 +142,7 @@ export default function Home() {
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white dark:text-white">
-      <div className="flex gap-4 rounded">
+      <div className="flex gap-4 rounded homePage">
         <div className="w-3/4 rounded laptop:w-full tablet:w-full laptop:pb-6">
           <div className="bg-white dark:bg-gray-800 shadow rounded border-2 p-4">
             <div className="mt-0 flex items-center justify-between">
