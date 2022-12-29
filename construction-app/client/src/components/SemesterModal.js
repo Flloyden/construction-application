@@ -38,6 +38,7 @@ const SemesterModal = (props) => {
       await ApiConnector.deleteSemester(props.currentId);
       window.location.reload(false);
     } catch (error) {
+      console.log("sfdglkjhgfdslkjgfdh")
       console.log(error);
     }
     props.setIsModalOpen(false);
@@ -63,7 +64,7 @@ const SemesterModal = (props) => {
           </div>
           <div className="w-fit shadow-lg rounded-md p-6">
             <div className="w-full mb-2">
-            <label className="block mb-2 text-sm font-medium text-gray-700">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
                 Namn:{" "}<span className="text-red-700 font-black">*</span>
               </label>
               <input
@@ -76,9 +77,9 @@ const SemesterModal = (props) => {
             </div>
             <div className="flex mb-4 gap-2">
               <div className="w-1/2">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Startdatum:{" "}<span className="text-red-700 font-black">*</span>
-              </label>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Startdatum:{" "}<span className="text-red-700 font-black">*</span>
+                </label>
                 <DatePicker
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                   name="startDate"
@@ -95,9 +96,9 @@ const SemesterModal = (props) => {
                 />
               </div>
               <div className="w-1/2">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
-                Antal dagar:{" "}<span className="text-red-700 font-black">*</span>
-              </label>
+                <label className="block mb-2 text-sm font-medium text-gray-700">
+                  Antal dagar:{" "}<span className="text-red-700 font-black">*</span>
+                </label>
                 <input
                   name="numberOfDays"
                   value={semester.numberOfDays}
@@ -115,6 +116,7 @@ const SemesterModal = (props) => {
                 Ändra
               </button>
               <button
+                type="button"
                 className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-2/4 duration-300"
                 onClick={() => deleteSemester(props.currentId)}
               >
