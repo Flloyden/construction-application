@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import ApiConnector from "../services/ApiConnector";
 import AddWaranty from "./AddWarranty";
+import ChangeWarrantyInfo from "./ChangeWarrantyInfo";
 import WarrantyModal from "./WarrantyModal";
 
 const Accounting = () => {
@@ -21,10 +22,16 @@ const Accounting = () => {
   const [currentWarrantyId, setCurrentWarrantyId] = useState("");
   const [currentWarrantyImage, setCurrentWarrantyImage] = useState("");
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
+  const [currentWarrantyReg, setCurrentWarrantyReg] = useState("");
+  const [currentWarrantyDate, setCurrentWarrantyDate] = useState("");
+  const [currentWarrantyReceipt, setCurrentWarrantyReceipt] = useState("");
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
   const [newWarrantyModalOpen, setNewWarrantyModalOpen] = useState(false);
+  const [isChangeWarrantyOpen, setIsChangeWarrantyOpen] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState();
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -85,7 +92,7 @@ const Accounting = () => {
 
   return (
     <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white">
-      <div className="overflow-x-auto relative">
+      <div className="overflow-visible relative">
         <div className="flex pb-4 justify-between gap-4 rounded">
           <input
             className="rounded block w-full p-2.5 bg-white dark:bg-gray-800 dark:text-white placeholder-gray-500 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -131,9 +138,9 @@ const Accounting = () => {
           {!loading && (
             <tbody className="shadow-xl rounded hover:bg-gray-900 text-black dark:text-white">
               {foundWarrenties && foundWarrenties.length > 0
-                ? foundWarrenties.map((warranty) => (
+                ? foundWarrenties.map((warranty, index) => (
                     <tr
-                      key={warranty.id}
+                      key={index}
                       className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
@@ -153,10 +160,14 @@ const Accounting = () => {
                       </td>
                       <td className="px-6 w-full">
                         <div
-                          className={warranty.receipt.length > 1 ? "flex justify-end" : "hidden"}
+                          className={
+                            warranty.receipt.length > 1
+                              ? "flex justify-end"
+                              : "hidden"
+                          }
                           onClick={() => {
                             setCurrentWarrantyImage(warranty.receipt);
-                            setShowReceipt(!showReceipt)
+                            setShowReceipt(!showReceipt);
                           }}
                         >
                           <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
@@ -169,7 +180,7 @@ const Accounting = () => {
                                 : "content-parent"
                             }
                             onClick={() => {
-                              setShowReceipt(!showReceipt)
+                              setShowReceipt(!showReceipt);
                             }}
                           >
                             {showReceipt && (
@@ -184,21 +195,70 @@ const Accounting = () => {
                         </div>
                       </td>
                       <td className="flex justify-around items-stretch py-4">
-                        <FaTrash
-                          data-modal-toggle="defaultModal"
-                          className="text-2xl hover:text-red-500 cursor-pointer"
+                        <button
                           onClick={() => {
-                            setIsOpen(true);
-                            setCurrentWarrantyId(warranty.id);
-                            setCurrentWarrantyName(warranty.name);
+                            setCurrentIndex(index);
+                            setShowOptions(!showOptions);
                           }}
-                        />
+                          className="items-center text-sm font-medium text-center text-gray-900 rounded-lg duration-200 dark:hover:bg-gray-700 dark:text-white dark:bg-gray-800"
+                          type="button"
+                        >
+                          <svg
+                            className="w-6 h-6"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                          </svg>
+                        </button>
+                        <div
+                          className={
+                            currentIndex === index && showOptions
+                              ? "absolute z-10 w-min whitespace-nowrap mt-6 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                              : "hidden"
+                          }
+                        >
+                          <ul
+                            className="border rounded text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownMenuIconButton"
+                          >
+                            <li className="hover:cursor-pointer">
+                              <p
+                                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => {
+                                  setCurrentWarrantyId(warranty.id);
+                                  setCurrentWarrantyName(warranty.name);
+                                  setCurrentWarrantyReg(warranty.registration_number)
+                                  setCurrentWarrantyDate(warranty.warranty_date)
+                                  setCurrentWarrantyReceipt(warranty.receipt)
+                                  setIsChangeWarrantyOpen(true);
+                                }}
+                              >
+                                Ändra
+                              </p>
+                            </li>
+                            <li className="hover:cursor-pointer border-t">
+                              <p
+                                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => {
+                                  setIsOpen(true);
+                                  setCurrentWarrantyId(warranty.id);
+                                  setCurrentWarrantyName(warranty.name);
+                                  setCurrentIndex(index);
+                                  setShowOptions(!showOptions);
+                                }}
+                              >
+                                Ta bort
+                              </p>
+                            </li>
+                          </ul>
+                        </div>
                       </td>
                     </tr>
                   ))
-                : warranties.map((warranties) => (
+                : warranties.map((warranties, index) => (
                     <tr
-                      key={warranties.id}
+                      key={index}
                       className="bg-white dark:bg-gray-800 border-b-2 border-gray-300 hover:bg-opacity-90 duration-200 dark:hover:bg-gray-700"
                     >
                       <th
@@ -218,10 +278,14 @@ const Accounting = () => {
                       </td>
                       <td className="px-6 w-full">
                         <div
-                          className={warranties.receipt.length > 1 ? "flex justify-end" : "hidden"}
+                          className={
+                            warranties.receipt.length > 1
+                              ? "flex justify-end"
+                              : "hidden"
+                          }
                           onClick={() => {
                             setCurrentWarrantyImage(warranties.receipt);
-                            setShowReceipt(!showReceipt)
+                            setShowReceipt(!showReceipt);
                           }}
                         >
                           <p className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer whitespace-nowrap">
@@ -234,7 +298,7 @@ const Accounting = () => {
                                 : "content-parent"
                             }
                             onClick={() => {
-                              setShowReceipt(!showReceipt)
+                              setShowReceipt(!showReceipt);
                             }}
                           >
                             {showReceipt && (
@@ -249,15 +313,64 @@ const Accounting = () => {
                         </div>
                       </td>
                       <td className="flex justify-around items-stretch py-4">
-                        <FaTrash
-                          data-modal-toggle="defaultModal"
-                          className="text-2xl hover:text-red-500 cursor-pointer"
+                        <button
                           onClick={() => {
-                            setIsOpen(true);
-                            setCurrentWarrantyId(warranties.id);
-                            setCurrentWarrantyName(warranties.name);
+                            setCurrentIndex(index);
+                            setShowOptions(!showOptions);
                           }}
-                        />
+                          className="items-center text-sm font-medium text-center text-gray-900 rounded-lg duration-200 dark:hover:bg-gray-700 dark:text-white dark:bg-gray-800"
+                          type="button"
+                        >
+                          <svg
+                            className="w-6 h-6"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                          </svg>
+                        </button>
+                        <div
+                          className={
+                            currentIndex === index && showOptions
+                              ? "absolute z-10 w-min whitespace-nowrap mt-6 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                              : "hidden"
+                          }
+                        >
+                          <ul
+                            className="border rounded text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownMenuIconButton"
+                          >
+                            <li className="hover:cursor-pointer">
+                              <p
+                                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => {
+                                  setCurrentWarrantyId(warranties.id);
+                                  setCurrentWarrantyName(warranties.name);
+                                  setCurrentWarrantyReg(warranties.registration_number)
+                                  setCurrentWarrantyDate(warranties.warranty_date)
+                                  setCurrentWarrantyReceipt(warranties.receipt)
+                                  setIsChangeWarrantyOpen(true);
+                                }}
+                              >
+                                Ändra
+                              </p>
+                            </li>
+                            <li className="hover:cursor-pointer border-t">
+                              <p
+                                className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                onClick={() => {
+                                  setIsOpen(true);
+                                  setCurrentWarrantyId(warranties.id);
+                                  setCurrentWarrantyName(warranties.name);
+                                  setCurrentIndex(index);
+                                  setShowOptions(!showOptions);
+                                }}
+                              >
+                                Ta bort
+                              </p>
+                            </li>
+                          </ul>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -275,6 +388,16 @@ const Accounting = () => {
       )}
       {newWarrantyModalOpen && (
         <AddWaranty setIsModalOpen={setNewWarrantyModalOpen} />
+      )}
+      {isChangeWarrantyOpen && (
+        <ChangeWarrantyInfo
+          setIsChangeWarrantyOpen={setIsChangeWarrantyOpen}
+          currentWarrantyId={currentWarrantyId}
+          currentWarrantyName={currentWarrantyName}
+          currentWarrantyReg={currentWarrantyReg}
+          currentWarrantyDate={currentWarrantyDate}
+          currentWarrantyReceipt={currentWarrantyReceipt}
+        />
       )}
     </div>
   );
