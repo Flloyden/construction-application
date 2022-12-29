@@ -154,7 +154,7 @@ public class AuthenticationAPI {
         return newPassword;
     }
 
-    @PostMapping("/user/change-password")
+    @PostMapping("/change-password")
     public ResponseEntity changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest) {
         return accountRepository.changePassword(
                 passwordChangeRequest.getEmail(),

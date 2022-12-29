@@ -71,12 +71,18 @@ public class AccountRepository {
     }
 
     public ResponseEntity changePassword(String email, String oldPassword, String newPassword, String newPasswordConfirmation) {
-        final Optional<AccountEntity> accountEntity = accountDao.findFirstByEmailAndPassword(email, new BCryptPasswordEncoder().encode(oldPassword));
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        final Optional<AccountEntity> accountEntity = Optional.ofNullable(findByEmail(email));
         if (accountEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not found.");
         }
 
-        if (newPassword.equals(newPasswordConfirmation)) {
+        if (!bCryptPasswordEncoder.matches(oldPassword, accountEntity.get().getPassword())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not found.");
+        }
+
+        if (!newPassword.equals(newPasswordConfirmation)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("New passwords doesn't match.");
         }
 
