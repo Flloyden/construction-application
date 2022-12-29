@@ -1,6 +1,5 @@
 package com.example.constructionappapi.services;
 
-import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.UserRole;
@@ -14,10 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Date;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Configuration
 @EnableScheduling
