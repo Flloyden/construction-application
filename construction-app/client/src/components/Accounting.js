@@ -111,8 +111,8 @@ const Accounting = () => {
             </span>
           </button>
         </div>
-        <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 dark:text-white shadow-xl rounded">
-          <thead className="text-xs uppercase  text-gray-500 shadow-md rounded border-b-2 border-gray-300">
+        <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 dark:text-white shadow rounded">
+          <thead className="text-xs uppercase  text-gray-500 shadow rounded border-b-2 border-gray-300">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Id
@@ -136,7 +136,7 @@ const Accounting = () => {
             <tr></tr>
           </thead>
           {!loading && (
-            <tbody className="shadow-xl rounded hover:bg-gray-900 text-black dark:text-white">
+            <tbody className="shadow rounded hover:bg-gray-900 text-black dark:text-white">
               {foundWarrenties && foundWarrenties.length > 0
                 ? foundWarrenties.map((warranty, index) => (
                     <tr
