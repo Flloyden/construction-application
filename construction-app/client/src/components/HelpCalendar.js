@@ -34,8 +34,10 @@ export default function HelpCalendar() {
         </div>
         <div className="">
           <img src="kalender.png" alt="Översikt bild" className="border-black border rounded" />
+          <div className="flex">
           <img src="redigera_semester.png" alt="Översikt bild" className="border-black border rounded mt-2" />
-          <img src="hoppatillkund.png" alt="Översikt bild" className="border-black border rounded mt-2" />
+          <img src="hoppatillkund.png" alt="Översikt bild" className="border-black border rounded mt-2 ml-5" />
+          </div>
         </div>
       </div>
     </div>
