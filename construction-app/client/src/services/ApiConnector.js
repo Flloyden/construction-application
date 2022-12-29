@@ -121,7 +121,9 @@ class ApiConnector {
     return axios.post(AUTHENTICATION_API)
   }
 
-
+  recover(token) {
+    return axios.post(BASE_URL + "/recover", token)
+  }
 
   //Saves the customer to the database
   saveCustomer(customer) {

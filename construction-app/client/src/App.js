@@ -12,6 +12,7 @@ import '../src/styles/index.css';
 import Settings from './components/Settings';
 import About from './components/About';
 import Help from './components/Help';
+import Recover from './components/Recover';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             </Route>
             <Route element={<Error />} path="*"/>
             <Route element={<Login />} path="/login"/>
+            <Route element={<Recover />} path="/recover"/>
           </Routes>
         </div>
       </BrowserRouter>

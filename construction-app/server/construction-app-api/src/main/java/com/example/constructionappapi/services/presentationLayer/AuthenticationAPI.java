@@ -114,7 +114,7 @@ public class AuthenticationAPI {
             accountRepository.save(user);
 
             String emailSubject = "Account Recovery";
-            String emailText = "Click this link to recover your account: http://localhost:8080/api/v1/recover?token=" + recoveryToken;
+            String emailText = "Click this link to recover your account: http://localhost:3000/recover?token=" + recoveryToken;
             emailService.sendEmail(emailRecoveryRequest.getEmail(), emailSubject, emailText);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
@@ -129,10 +129,10 @@ public class AuthenticationAPI {
         return DatatypeConverter.printHexBinary(tokenBytes);
     }
 
-    @GetMapping("/recover")
-    public ResponseEntity<UserInformation> recoverAccount(@RequestParam("token") String token) {
+    @PostMapping("/recover")
+    public ResponseEntity<UserInformation> recoverAccount(@RequestBody RecoveryTokenRequest recoveryTokenRequest) {
         return accountRepository
-                .findByRecoveryToken(token)
+                .findByRecoveryToken(recoveryTokenRequest.getToken())
                 .map(accountEntity -> authenticate(new AuthenticationRequest(accountEntity.getEmail(), resetPassword(accountEntity))))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
