@@ -4,6 +4,7 @@ import com.example.constructionappapi.services.businessLogicLayer.repositories.A
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.emailRecovery.EmailService;
 import com.example.constructionappapi.services.presentationLayer.bodies.AuthenticationRequest;
+import com.example.constructionappapi.services.presentationLayer.bodies.PasswordChangeRequest;
 import com.example.constructionappapi.services.presentationLayer.bodies.RefreshTokenRequest;
 import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
 import com.example.constructionappapi.services.security.JwtUtils;
@@ -118,7 +119,7 @@ public class AuthenticationAPI {
             String emailSubject = "Account Recovery";
             String emailText = "Click this link to recover your account: http://localhost:8080/api/v1/recover?token=" + recoveryToken;
             emailService.sendEmail(email, emailSubject, emailText);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -152,4 +153,14 @@ public class AuthenticationAPI {
         accountRepository.save(accountEntity);
         return newPassword;
     }
+
+    @PostMapping("/user/change-password")
+    public ResponseEntity changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest) {
+        return accountRepository.changePassword(
+                passwordChangeRequest.getEmail(),
+                passwordChangeRequest.getOldPassword(),
+                passwordChangeRequest.getNewPassword(),
+                passwordChangeRequest.getNewPasswordConfirmation());
+    }
+
 }

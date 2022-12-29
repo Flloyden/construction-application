@@ -3,6 +3,9 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 import com.example.constructionappapi.services.dataAccessLayer.dao.AccountDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,5 +68,21 @@ public class AccountRepository {
 
     public Optional<AccountEntity> findByRefreshToken(String refreshToken) {
         return accountDao.findFirstByRefreshToken(refreshToken);
+    }
+
+    public ResponseEntity changePassword(String email, String oldPassword, String newPassword, String newPasswordConfirmation) {
+        final Optional<AccountEntity> accountEntity = accountDao.findFirstByEmailAndPassword(email, new BCryptPasswordEncoder().encode(oldPassword));
+        if (accountEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No ");
+        }
+
+        if (newPassword.equals(newPasswordConfirmation)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("New passwords doesn't match.");
+        }
+
+        accountEntity.get().setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        accountDao.save(accountEntity.get());
+
+        return ResponseEntity.ok().body("Password successfully changed.");
     }
 }
