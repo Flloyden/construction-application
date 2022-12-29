@@ -187,7 +187,7 @@ public class WorkRepository {
 
     private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {
         if (!workBeforeUpdate.getStartDate().equals(workToUpdateWith.getStartDate())) {
-            calendar.updateStartDate(workToUpdateWith);
+            calendar.updateStartDate(workBeforeUpdate.getStartDate(), workToUpdateWith);
         } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
             updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
         }

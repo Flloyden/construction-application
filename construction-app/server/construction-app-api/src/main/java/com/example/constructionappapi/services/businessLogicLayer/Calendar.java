@@ -128,14 +128,15 @@ public class Calendar {
      *
      * @param work The new work-entity.
      */
-    public void updateStartDate(WorkEntity work) {
+    public void updateStartDate(LocalDate oldStartDate, WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().equals(work.getId()));
         workMap.remove(work.getId());
 
-        moveCalendarItemBackwards(work.getStartDate());
+        moveCalendarItemBackwards(oldStartDate);
 
         addWork(work);
+
         workRepository.updateStartingDates();
     }
 
@@ -266,7 +267,6 @@ public class Calendar {
 
         return freeCalendarSpot;
     }
-
 
     private boolean isWeekend(LocalDate date) {
         return date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
