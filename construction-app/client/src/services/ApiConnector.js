@@ -39,7 +39,7 @@ const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 const NOTES_API = "http://localhost:8080/api/v1/kunder/anteckningar";
 const SEMESTER_API = "http://localhost:8080/api/v1/semester"
-let refreshPromise = null;
+
 
 axios.interceptors.request.use(
   config => {
@@ -84,6 +84,7 @@ axios.interceptors.response.use(
   }
 );
 
+let refreshPromise = null;
 async function refreshAccessToken(refreshToken) {
   const refresh = async () => {
     try {
@@ -103,7 +104,6 @@ async function refreshAccessToken(refreshToken) {
       // If the refresh token is invalid or has expired, log out the user
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
-      //logout();
     }
   }
 
@@ -228,7 +228,7 @@ class ApiConnector {
   }
 
   deleteSemester(semesterId) {
-    //Gets all existing info about calendar from the database
+    console.log(semesterId)
     return axios.delete(SEMESTER_API + "/" + semesterId + "/remove");
   }
 

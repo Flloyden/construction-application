@@ -108,7 +108,7 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("/initiate-email-recovery")
-    public ResponseEntity initiateEmailRecovery(@RequestParam("email") String email) {
+    public ResponseEntity initiateEmailRecovery(@RequestBody String email) {
         AccountEntity user = accountRepository.findByEmail(email);
 
         if (user != null) {
