@@ -130,11 +130,17 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("/recover")
-    public ResponseEntity<UserInformation> recoverAccount(@RequestBody RecoveryTokenRequest recoveryTokenRequest) {
-        return accountRepository
-                .findByRecoveryToken(recoveryTokenRequest.getToken())
-                .map(accountEntity -> authenticate(new AuthenticationRequest(accountEntity.getEmail(), resetPassword(accountEntity))))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity recoverAccount(@RequestBody RecoveryTokenRequest recoveryTokenRequest) {
+        Optional<AccountEntity> accountEntity = accountRepository.findByRecoveryToken(recoveryTokenRequest.getToken());
+        if (accountEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token not found");
+        }
+
+        String emailSubject = "New password";
+        String emailText = resetPassword(accountEntity.get());
+        emailService.sendEmail(accountEntity.get().getEmail(), emailSubject, emailText);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("New password sent");
     }
 
     private String resetPassword(AccountEntity accountEntity) {
@@ -143,7 +149,8 @@ public class AuthenticationAPI {
         byte[] passwordBytes = new byte[10];
         random.nextBytes(passwordBytes);
         //TODO: Might not need to encrypt here since it gets encrypted below.
-        String newPassword = new BCryptPasswordEncoder().encode(DatatypeConverter.printHexBinary(passwordBytes));
+        String newPassword = DatatypeConverter.printHexBinary(passwordBytes);
+        System.out.println(newPassword);
 
         // Set the user's password to the new password
         accountEntity.setPassword(new BCryptPasswordEncoder().encode(newPassword));
