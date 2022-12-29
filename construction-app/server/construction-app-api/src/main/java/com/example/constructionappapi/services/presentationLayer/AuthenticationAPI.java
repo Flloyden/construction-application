@@ -3,10 +3,7 @@ package com.example.constructionappapi.services.presentationLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.emailRecovery.EmailService;
-import com.example.constructionappapi.services.presentationLayer.bodies.AuthenticationRequest;
-import com.example.constructionappapi.services.presentationLayer.bodies.PasswordChangeRequest;
-import com.example.constructionappapi.services.presentationLayer.bodies.RefreshTokenRequest;
-import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
+import com.example.constructionappapi.services.presentationLayer.bodies.*;
 import com.example.constructionappapi.services.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,8 +105,8 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("/initiate-email-recovery")
-    public ResponseEntity initiateEmailRecovery(@RequestBody String email) {
-        AccountEntity user = accountRepository.findByEmail(email);
+    public ResponseEntity initiateEmailRecovery(@RequestBody EmailRecoveryRequest emailRecoveryRequest) {
+        AccountEntity user = accountRepository.findByEmail(emailRecoveryRequest.getEmail());
 
         if (user != null) {
             String recoveryToken = generateRecoveryToken();
@@ -118,7 +115,7 @@ public class AuthenticationAPI {
 
             String emailSubject = "Account Recovery";
             String emailText = "Click this link to recover your account: http://localhost:8080/api/v1/recover?token=" + recoveryToken;
-            emailService.sendEmail(email, emailSubject, emailText);
+            emailService.sendEmail(emailRecoveryRequest.getEmail(), emailSubject, emailText);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
 
