@@ -1,6 +1,37 @@
 import axios from "axios";
 
-// Base url to get api
+/**
+ * 
+//Account base url
+const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account/"
+const ACCOUNT_BASE_API_SECOND = "http://localhost:8080/api/v1/user/"
+
+//Accounting base url
+const ACCOUNTING_BASE_API = "http://localhost:8080/api/v1/accounting/"
+
+//Authentication base url
+const AUTHENTICATION_BASE_API = "http://localhost:8080/api/v1/authenticate/"
+
+//Calendar base url
+const CALENDAR_BASE_API = "http://localhost:8080/api/v1/calendar/"
+
+//Customer base url
+const CUSTOMER_BASE_API = "http://localhost:8080/api/v1/customers/"
+
+//CustomerNote base url
+const CUSTOMERNOTE_BASE_API = "http://localhost:8080/api/v1/notes/"
+
+//NoteSummary base url
+const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary/"
+
+//Vacation base url
+const VACATION_BASE_API = "http://localhost:8080/api/v1/vacation/"
+
+//Work base url
+const WORK_BASE_API = "http://localhost:8080/api/v1/work/"
+ */
+
+
 const BASE_URL = "http://localhost:8080/api/v1";
 const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
 const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
@@ -235,7 +266,12 @@ class ApiConnector {
   }
 
   updateUser(user) {
-    return axios.post("http://localhost:8080/api/v1/user/update");
+    return axios.post("http://localhost:8080/api/v1/user/update", user);
+  }
+
+  changePassword(password) {
+    console.log(password)
+    return axios.post("http://localhost:8080/api/v1/change-password", password)
   }
 }
 
