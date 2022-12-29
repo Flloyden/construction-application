@@ -61,7 +61,7 @@ public class StartServer {
             AccountEntity accountEntity = new AccountEntity();
             accountEntity.setId(0);
             accountEntity.setName("admin");
-            accountEntity.setEmail("admin@admin.com");
+            accountEntity.setEmail("bitsapp.noreply@gmail.com");
             accountEntity.setPassword(new BCryptPasswordEncoder().encode("admin"));
             accountEntity.setRole(UserRole.ADMIN);
 
