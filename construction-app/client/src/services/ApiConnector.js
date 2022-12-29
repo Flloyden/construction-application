@@ -273,6 +273,10 @@ class ApiConnector {
     console.log(password)
     return axios.post("http://localhost:8080/api/v1/change-password", password)
   }
+
+  recoverPassword(email) {
+    return axios.post("http://localhost:8080/api/v1/initiate-email-recovery", email)
+  }
 }
 
 export default new ApiConnector();

@@ -1,17 +1,26 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import ApiConnector from "../services/ApiConnector";
 
 export default function ForgotPassword(props) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState({
+    email: ""
+  });
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
+    /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
-    axios
-      .post("vårat api här", { email })
-      .then((res) => setMessage(res.data.message))
-      .catch((err) => setMessage(err.response.data.message));
+    // Makes the change with the help of api call
+    ApiConnector.recoverPassword(email)
+      .then((response) => {
+        console.log(response);
+        alert("OK")
+        //window.location.reload(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -38,10 +47,16 @@ export default function ForgotPassword(props) {
                 Email:
                 <input
                   type={email}
-                  value={email}
+                  value={email.email}
                   required
                   className="rounded block w-full mt-2 p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail({
+                      ...email,
+                      email: e.target.value,
+                    });
+                    console.log(email)
+                  }}
                 />
               </label>
             </div>
