@@ -4,9 +4,9 @@ import ApiConnector from "../services/ApiConnector";
 
 export default function ForgotPassword(props) {
   const [email, setEmail] = useState({
-    email: ""
+    email: "",
   });
-  const [message, setMessage] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleSubmit = (e) => {
     /**Saves the "kund" and navigates back to the register */
@@ -15,7 +15,10 @@ export default function ForgotPassword(props) {
     ApiConnector.recoverPassword(email)
       .then((response) => {
         console.log(response);
-        alert("OK")
+        setShowSuccess((showSuccess) => !showSuccess);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 5000);
         //window.location.reload(false);
       })
       .catch((error) => {
@@ -27,10 +30,13 @@ export default function ForgotPassword(props) {
     <>
       <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
       <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
-        <form onSubmit={handleSubmit} className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded"
+        >
           <div className="flex border-b-2 px-6 py-4 items-center justify-between align-middle">
             <div className="w-min whitespace-nowrap">
-                <h1 className="text-2xl">Glömt lösenord</h1>
+              <h1 className="text-2xl">Glömt lösenord</h1>
             </div>
             <div className="w-min text-right flex justify-end">
               <button
@@ -55,14 +61,28 @@ export default function ForgotPassword(props) {
                       ...email,
                       email: e.target.value,
                     });
-                    console.log(email)
+                    console.log(email);
                   }}
                 />
               </label>
             </div>
-            <div className="my-14 mx-4 text-center">
+            <div
+              className={
+                showSuccess
+                  ? "bg-green-500 px-4 rounded text-white py-1 duration-200 visible mb-0 text-center mt-2"
+                  : "invisible duration-200 px-4 mb-0 text-center mt-2 py-1"
+              }
+            >
+              <div className={showSuccess ? "visible h-12" : "h-12 invisible"}>
+                <p>Ett nytt lösenord har skickats till:</p>
+                <p>{email.email}</p>
+              </div>
+            </div>
+            <div className="mx-4 text-center">
+              <div className="pb-2">
                 <p>Genom att återställa lösenordet skickas ett nytt</p>
                 <p>lösenord till den angivna mailadressen.</p>
+              </div>
             </div>
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
@@ -71,7 +91,6 @@ export default function ForgotPassword(props) {
               >
                 Återställ lösenord
               </button>
-              {message && <p>{message}</p>}
             </div>
           </div>
         </form>
