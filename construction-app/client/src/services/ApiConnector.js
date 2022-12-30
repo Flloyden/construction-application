@@ -38,8 +38,11 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => response,
   error => {
+    const excludedEndpoints = [
+      'http://localhost:8080/api/v1/recover'];
+
     const status = error.response ? error.response.status : null;
-    if (status === 401) {
+    if (status === 401 && !excludedEndpoints.includes(error.config.url)) {
       // If the access token has expired, try to refresh it using the refresh token
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
@@ -211,7 +214,7 @@ class ApiConnector {
     return axios.post(CUSTOMERNOTE_BASE_API + "/save/" + workId, noteList);
   }
 
-  deleteNote(noteId) { 
+  deleteNote(noteId) {
     console.log(noteId)
     return axios.delete(CUSTOMERNOTE_BASE_API + "/" + noteId + "/remove");
   }
