@@ -66,7 +66,6 @@ export default function ForgotPassword(props) {
                       ...email,
                       email: e.target.value,
                     });
-                    console.log(email);
                   }}
                 />
               </label>
