@@ -1,36 +1,5 @@
 import axios from "axios";
 
-/**
- * 
-//Account base url
-const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account/"
-const ACCOUNT_BASE_API_SECOND = "http://localhost:8080/api/v1/user/"
-
-//Guarentees base url
-const GUARENTEES_BASE_API = "http://localhost:8080/api/v1/guarantees/"
-
-//Authentication base url
-const AUTHENTICATION_BASE_API = "http://localhost:8080/api/v1/authenticate/"
-
-//Calendar base url
-const CALENDAR_BASE_API = "http://localhost:8080/api/v1/calendar/"
-
-//Customer base url
-const CUSTOMER_BASE_API = "http://localhost:8080/api/v1/customers/"
-
-//CustomerNote base url
-const CUSTOMERNOTE_BASE_API = "http://localhost:8080/api/v1/notes/"
-
-//NoteSummary base url
-const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary/"
-
-//Vacation base url
-const VACATION_BASE_API = "http://localhost:8080/api/v1/vacation/"
-
-//Work base url
-const WORK_BASE_API = "http://localhost:8080/api/v1/work/"
- */
-
 
 const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary";
 const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account";
@@ -226,7 +195,7 @@ class ApiConnector {
 
   getSemester() {
     //Gets all existing info about calendar from the database
-    return axios.get(VACATION_BASE_API);
+    return axios.get(CALENDAR_BASE_API + "/vacation");
   }
 
   deleteSemester(semesterId) {

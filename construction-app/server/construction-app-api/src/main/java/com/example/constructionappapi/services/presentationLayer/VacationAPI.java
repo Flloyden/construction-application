@@ -28,8 +28,8 @@ public class VacationAPI {
     }
 
     @GetMapping("/vacation/{id}")
-    public Optional<VacationEntity> getVacation(@PathVariable final Long vacationId) {
-        return vacationRepository.getVacation(vacationId);
+    public Optional<VacationEntity> getVacation(@PathVariable final Long id) {
+        return vacationRepository.getVacation(id);
     }
 
     @GetMapping("/vacation")
