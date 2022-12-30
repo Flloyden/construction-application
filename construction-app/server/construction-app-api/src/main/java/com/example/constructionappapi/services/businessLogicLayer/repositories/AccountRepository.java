@@ -1,5 +1,6 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
+import com.example.constructionappapi.services.dataAccessLayer.UserRole;
 import com.example.constructionappapi.services.dataAccessLayer.dao.AccountDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,10 +93,11 @@ public class AccountRepository {
         return ResponseEntity.ok().body("Password successfully changed.");
     }
 
-    public ResponseEntity checkPasswordForAccountChange(String email, String password, AccountEntity account) {
+    public ResponseEntity changeAccount(String password, String newEmail, long userId, String userName,
+                                        String profileImage, UserRole userRole) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        final Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
+        final Optional<AccountEntity> accountEntity = accountDao.findById(userId);
         if (accountEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not found.");
         }
@@ -103,8 +105,8 @@ public class AccountRepository {
         if (!bCryptPasswordEncoder.matches(password, accountEntity.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password does not match.");
         }
-        if(!account.getEmail().matches(email)){
-            accountEntity.get().setEmail(email);
+        if(!accountEntity.get().getEmail().matches(newEmail)){
+            accountEntity.get().setEmail(newEmail);
         }
 
         accountDao.save(accountEntity.get());

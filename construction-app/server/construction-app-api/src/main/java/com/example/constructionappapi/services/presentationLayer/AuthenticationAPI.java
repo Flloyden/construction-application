@@ -167,12 +167,16 @@ public class AuthenticationAPI {
                 passwordChangeRequest.getNewPasswordConfirmation());
     }
 
-    @PostMapping("/check-password")
-    public ResponseEntity checkPasswordForAccountChange(@RequestBody CheckPasswordRequest checkPasswordRequest, @RequestBody AccountEntity account) {
-        return accountRepository.checkPasswordForAccountChange(
-                checkPasswordRequest.getNewEmail(),
+    @PostMapping("/change-account")
+    public ResponseEntity changeAccount(@RequestBody CheckPasswordRequest checkPasswordRequest) {
+        return accountRepository.changeAccount(
                 checkPasswordRequest.getPassword(),
-                account);
+                checkPasswordRequest.getNewEmail(),
+                checkPasswordRequest.getUserId(),
+                checkPasswordRequest.getUserName(),
+                checkPasswordRequest.getProfileImage(),
+                checkPasswordRequest.getUserRole()
+        );
     }
 
 }

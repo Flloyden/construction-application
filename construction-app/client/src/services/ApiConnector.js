@@ -237,7 +237,7 @@ class ApiConnector {
   }
 
   updateUser(user) {
-    return axios.post(ACCOUNT_BASE_API + "/update", user);
+    return axios.post("http://localhost:8080/api/v1/change-account", user);
   }
 
   changePassword(password) {
