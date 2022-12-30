@@ -15,52 +15,53 @@ public class CustomerNoteAPI {
     @Autowired
     private CustomerNoteRepository customerNoteRepository;
 
-    @PostMapping("/kunder/anteckningar/save/{workId}")
+    @PostMapping("/notes/save/{workId}") //TODO alla ska vara såhär
     public CustomerNoteEntity createCostumerNote(@RequestBody CustomerNoteEntity customerNote, @PathVariable final long workId) {
         return customerNoteRepository.createCustomerNote(customerNote, workId);
     }
 
-    @PostMapping("/kunder/anteckningar/edit/{workId}")
+    @PostMapping("/notes/edit/{workId}")
     public CustomerNoteEntity editCostumerNote(@RequestBody CustomerNoteEntity customerNote) {
         return customerNoteRepository.editCustomerNote(customerNote);
     }
 
-    @GetMapping("/kunder/anteckningar/summarized/{sumNoteId}")
+    @GetMapping("/notes/summarized/{sumNoteId}")
     public List<CustomerNoteEntity> getAllNotesForOneSum(@PathVariable final long sumNoteId) {
         return customerNoteRepository.getAllNotesForOneSum(sumNoteId);
     }
 
-    @GetMapping("/kunder/anteckningar/notesForWork/{workId}")
+    @GetMapping("/notes/notesForWork/{workId}")
     public List<CustomerNoteEntity> getAllNotesForWork(@PathVariable final long workId) {
         return customerNoteRepository.getAllNotesByWorkId(workId);
     }
 
-    @GetMapping("/kunder/anteckningar/notesForWork/summarized/{workId}")
+    @GetMapping("/notes/notesForWork/summarized/{workId}")
     public List<CustomerNoteEntity> getAllSummarizedNotesForWork(@PathVariable final long workId) {
         return customerNoteRepository.getAllSummarizedNotesForWork(workId);
     }
 
-    @GetMapping("/kunder/anteckningar/notesForWork/notsummarized/{workId}")
+    @GetMapping("/notes/notesForWork/notsummarized/{workId}")
     public List<CustomerNoteEntity> getAllNotSummarizedNotesForWork(@PathVariable final long workId) {
         return customerNoteRepository.getAllNotSummarizedNotesForWork(workId);
     }
 
-    @GetMapping("/kunder/anteckningar/notesForCustomer/{customerId}")
+    @GetMapping("/notes/notesForCustomer/{customerId}")
     public List<CustomerNoteEntity> getAllNotesForCustomer(@PathVariable final long customerId) {
         return customerNoteRepository.getAllNotesByCustomerId(customerId);
     }
 
-    @GetMapping("/kunder/anteckningar/notesForCustomer/summarized/{customerId}")
+    //TODO bindestreck
+    @GetMapping("/notes/notes-for-customer/summarized/{customerId}")
     public List<CustomerNoteEntity> getAllSummarizedNotesForCustomer(@PathVariable final long customerId) {
         return customerNoteRepository.getAllSummarizedNotesForCustomer(customerId);
     }
 
-    @GetMapping("/kunder/anteckningar/notesForCustomer/notsummarized/{customerId}")
+    @GetMapping("/notes/notesForCustomer/notsummarized/{customerId}")
     public List<CustomerNoteEntity> getAllNotSummarizedNotesForCustomer(@PathVariable final long customerId) {
         return customerNoteRepository.getAllNotSummarizedNotesForCustomer(customerId);
     }
 
-    @DeleteMapping("/kunder/anteckningar/remove/{noteId}")
+    @DeleteMapping("/notes/remove/{noteId}")
     public void deleteNote(@PathVariable final Long noteId) { //TODO ska ej kunna göras?
         customerNoteRepository.deleteNote(noteId);
     }
