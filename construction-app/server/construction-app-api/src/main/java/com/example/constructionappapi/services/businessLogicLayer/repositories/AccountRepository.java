@@ -91,4 +91,24 @@ public class AccountRepository {
 
         return ResponseEntity.ok().body("Password successfully changed.");
     }
+
+    public ResponseEntity checkPasswordForAccountChange(String email, String password, AccountEntity account) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        final Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
+        if (accountEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not found.");
+        }
+
+        if (!bCryptPasswordEncoder.matches(password, accountEntity.get().getPassword())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password does not match.");
+        }
+        if(!account.getEmail().matches(email)){
+            accountEntity.get().setEmail(email);
+        }
+
+        accountDao.save(accountEntity.get());
+
+        return ResponseEntity.ok().body("Password matched.");
+    }
 }

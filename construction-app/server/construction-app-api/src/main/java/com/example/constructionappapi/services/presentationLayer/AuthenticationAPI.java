@@ -167,4 +167,12 @@ public class AuthenticationAPI {
                 passwordChangeRequest.getNewPasswordConfirmation());
     }
 
+    @PostMapping("/check-password")
+    public ResponseEntity checkPasswordForAccountChange(@RequestBody CheckPasswordRequest checkPasswordRequest, @RequestBody AccountEntity account) {
+        return accountRepository.checkPasswordForAccountChange(
+                checkPasswordRequest.getNewEmail(),
+                checkPasswordRequest.getPassword(),
+                account);
+    }
+
 }
