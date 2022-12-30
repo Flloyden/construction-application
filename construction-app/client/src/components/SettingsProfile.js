@@ -136,6 +136,20 @@ export default function SettingsProfile() {
                       required
                     ></input>
                   </div>
+                  <div className="mt-4">
+                    <label className="text-xs block font-medium text-gray-700 dark:text-white placeholder-black">
+                      (Bekräfta ändringar med lösenord): <span className="text-red-700 font-black">*</span>{" "}
+                    </label>
+                    <input
+                      className="rounded block w-full p-1 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                      type="confirmPassword"
+                      name="confirmPassword"
+                      minLength={8}
+                      required
+                      value={newUserInfo.password}
+                      onChange={handleChange}
+                    ></input>
+                  </div>
                   <button
                     type="submit"
                     className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full mt-4 duration-300"
