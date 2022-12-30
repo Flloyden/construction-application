@@ -17,42 +17,41 @@ import java.util.Optional;
 public class WorkAPI {
     private final WorkRepository workRepository;
 
-    @PostMapping("/kunder/{customerId}/work/save")
+    @GetMapping("/work")
+    public List<WorkEntity> getAllWorkEntities() {
+        return workRepository.getAllWorkEntities();
+    }
+    @PostMapping("/work/{customerId}/save")
     public ResponseEntity<WorkEntity> createWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
         return workRepository.createWork(customerId, work);
     }
 
-    @PutMapping("/kunder/{customerId}/work/update")
+    @PutMapping("/work/{customerId}/update")
     public ResponseEntity<WorkEntity> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         return workRepository.updateWork(customerId, work);
     }
 
-    @DeleteMapping("/kunder/{customer_id}/work/delete/{id}")
+    @DeleteMapping("/work/{customer_id}/delete/{id}")
     public ResponseEntity<String> deleteWorkEntity(@PathVariable final Long id) {
         return workRepository.deleteWorkEntity(id);
     }
 
-    @PostMapping("/kunder/work/update_workstatus_completed")
+    @PostMapping("/work/update-workstatus-completed")
     public boolean findWorkAndUpdateToCompleted() {
         return workRepository.findWorkAndUpdateToCompleted();
     }
 
-    @PostMapping("/kunder/work/update_workstatus_started")
+    @PostMapping("/work/update-workstatus-started")
     public boolean findWorkAndUpdateToStarted() {
         return workRepository.findWorkAndUpdateToStarted();
     }
 
-    @GetMapping("/kunder/{customer_id}/work/{id}")
-    public Optional<WorkEntity> getWorkEntity(@PathVariable final Long id) {
-        return workRepository.getWorkEntity(id);
+    @GetMapping("/work/{customer_id}/{workId}")
+    public Optional<WorkEntity> getWorkEntity(@PathVariable final Long workId) {
+        return workRepository.getWorkEntity(workId);
     }
 
-    @GetMapping("/kunder/work")
-    public List<WorkEntity> getAllWorkEntities() {
-        return workRepository.getAllWorkEntities();
-    }
-
-    @GetMapping("/kunder/upcoming")
+    @GetMapping("/work/upcoming")
     public List<Object> getUpcomingWork() {
 
         List<Object> objectList = new ArrayList<>();
@@ -66,7 +65,7 @@ public class WorkAPI {
         }
     }
 
-    @GetMapping("/kunder/ongoing")
+    @GetMapping("/work/ongoing")
     public List<Object> getOngoingWork() {
         List<Object> objectList = new ArrayList<>();
         List<WorkEntity> work = workRepository.checkForOngoingWork();

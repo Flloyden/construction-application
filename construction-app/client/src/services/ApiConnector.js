@@ -1,44 +1,18 @@
 import axios from "axios";
 
-/**
- * 
-//Account base url
-const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account/"
-const ACCOUNT_BASE_API_SECOND = "http://localhost:8080/api/v1/user/"
 
-//Accounting base url
-const ACCOUNTING_BASE_API = "http://localhost:8080/api/v1/accounting/"
-
-//Authentication base url
-const AUTHENTICATION_BASE_API = "http://localhost:8080/api/v1/authenticate/"
-
-//Calendar base url
-const CALENDAR_BASE_API = "http://localhost:8080/api/v1/calendar/"
-
-//Customer base url
-const CUSTOMER_BASE_API = "http://localhost:8080/api/v1/customers/"
-
-//CustomerNote base url
-const CUSTOMERNOTE_BASE_API = "http://localhost:8080/api/v1/notes/"
-
-//NoteSummary base url
-const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary/"
-
-//Vacation base url
-const VACATION_BASE_API = "http://localhost:8080/api/v1/vacation/"
-
-//Work base url
-const WORK_BASE_API = "http://localhost:8080/api/v1/work/"
- */
+const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary";
+const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account";
+const WORK_BASE_API = "http://localhost:8080/api/v1/work";
+const VACATION_BASE_API = "http://localhost:8080/api/v1/vacation";
+const CUSTOMER_BASE_API = "http://localhost:8080/api/v1/customers";
+const CALENDAR_BASE_API = "http://localhost:8080/api/v1/calendar";
+const GUARENTEES_BASE_API = "http://localhost:8080/api/v1/guarantees";
+const CUSTOMERNOTE_BASE_API = "http://localhost:8080/api/v1/notes";
 
 
 const BASE_URL = "http://localhost:8080/api/v1";
-const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/kunder";
-const ACCOUNTING_API_BASE_URL = "http://localhost:8080/api/v1/bokföring";
-const CALENDAR_API_BASE_URL = "http://localhost:8080/api/v1/kalender";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
-const NOTES_API = "http://localhost:8080/api/v1/kunder/anteckningar";
-const SEMESTER_API = "http://localhost:8080/api/v1/semester"
 
 
 axios.interceptors.request.use(
@@ -127,148 +101,143 @@ class ApiConnector {
 
   //Saves the customer to the database
   saveCustomer(customer) {
-    return axios.post(CUSTOMER_API_BASE_URL, customer);
+    return axios.post(CUSTOMER_BASE_API, customer);
   }
 
   getCustomers() {
     //Gets all customers from the database
-    return axios.get(CUSTOMER_API_BASE_URL);
+    return axios.get(CUSTOMER_BASE_API);
   }
 
   getCustomer(customer) {
     //Gets a single customer from the database
-    return axios.get(CUSTOMER_API_BASE_URL + "/" + customer);
+    return axios.get(CUSTOMER_BASE_API + "/" + customer);
   }
 
   deleteCustomer(customer) {
     //Deletes a customer from the database with a specific id
-    return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/remove");
+    return axios.delete(CUSTOMER_BASE_API + "/" + customer + "/remove");
   }
 
   saveWork(customer, work) {
-    return axios.post(CUSTOMER_API_BASE_URL + "/" + customer + "/work/save", work);
+    return axios.post(WORK_BASE_API + "/" + customer + "/save", work);
   }
 
   getWork() {
-    return axios.get(CUSTOMER_API_BASE_URL + "/work");
+    return axios.get(WORK_BASE_API);
   }
 
   changeWork(customer, work) {
-    return axios.put(CUSTOMER_API_BASE_URL + "/" + customer + "/work/update/", work);
+    return axios.put(WORK_BASE_API + "/" + customer + "/update/", work);
   }
 
   deleteWork(customer, work) {
     //Deletes a work from the database with a specific id
-    return axios.delete(CUSTOMER_API_BASE_URL + "/" + customer + "/work/delete/" + work);
+    return axios.delete(WORK_BASE_API + "/" + customer + "/delete/" + work);
   }
 
   getUpcomingWork() {
     //Gets upcoming work based on tomorrows date and ten days forward. 
     //Checks if any customer has work with startdate within 10 days.
-    return axios.get(CUSTOMER_API_BASE_URL + "/upcoming");
+    return axios.get(WORK_BASE_API + "/upcoming");
   }
 
   //Gets ongoing work based on todays date.
   //Checks if any customer has work that has date = todays date
   //Used for updating workStatus
   getOngoingWork() {
-    return axios.get(CUSTOMER_API_BASE_URL + "/ongoing");
+    return axios.get(WORK_BASE_API + "/ongoing");
   }
 
   findWorkAndUpdateToCompleted() {
-    return axios.post(CUSTOMER_API_BASE_URL + "/work/update_workstatus_completed");
+    return axios.post(WORK_BASE_API + "/update_workstatus_completed");
   }
 
   // ACCOUNTING / WARRANTY
   saveWarranty(warranty) {
     //Saves the warranty to the database (Can also update existing warranty if ID already exists)
-    return axios.post(ACCOUNTING_API_BASE_URL, warranty);
+    return axios.post(GUARENTEES_BASE_API, warranty);
   }
 
   getWarranties() {
     //Gets existing warranties from the database
-    return axios.get(ACCOUNTING_API_BASE_URL);
+    return axios.get(GUARENTEES_BASE_API);
   }
 
   getWarranty(warranty) {
     //Gets specific warranty from the database
-    return axios.get(ACCOUNTING_API_BASE_URL + "/" + warranty);
+    return axios.get(GUARENTEES_BASE_API + "/" + warranty);
   }
 
   getOldWarranty() {
     //Gets specific warranty from the database
-    return axios.get(ACCOUNTING_API_BASE_URL + "/gamla_garantier");
+    return axios.get(GUARENTEES_BASE_API + "/old-guarantees");
   }
 
   getActiveWarranty() {
     //Gets specific warranty from the database
-    return axios.get(ACCOUNTING_API_BASE_URL + "/aktiva_garantier");
+    return axios.get(GUARENTEES_BASE_API + "/active-guarantees");
   }
 
   deleteWarranty(warranty) {
     //Deletes an existing warranty from the database
-    return axios.delete(ACCOUNTING_API_BASE_URL + "/" + warranty + "/remove");
+    return axios.delete(GUARENTEES_BASE_API + "/" + warranty + "/remove");
   }
 
   getCalendar() {
     //Gets all existing info about calendar from the database
-    return axios.get(CALENDAR_API_BASE_URL + "/work");
-  }
-
-  getNotes() {
-    //Gets all existing info about calendar from the database
-    return axios.get(NOTES_API);
+    return axios.get(CALENDAR_BASE_API + "/work");
   }
 
   saveSemester(date) {
-    return axios.post(SEMESTER_API, date);
+    return axios.post(VACATION_BASE_API, date);
   }
 
   getSemester() {
     //Gets all existing info about calendar from the database
-    return axios.get(CALENDAR_API_BASE_URL + "/semester");
+    return axios.get(CALENDAR_BASE_API + "/vacation");
   }
 
   deleteSemester(semesterId) {
     console.log(semesterId)
-    return axios.delete(SEMESTER_API + "/" + semesterId + "/remove");
+    return axios.delete(VACATION_BASE_API + "/" + semesterId + "/remove");
   }
 
   editSemester(semesterId, semester) {
-    return axios.post(SEMESTER_API + "/" + semesterId + "/edit", semester);
+    return axios.post(VACATION_BASE_API + "/" + semesterId + "/update", semester);
   }
 
   saveNote(workId, noteList) {
-    return axios.post(CUSTOMER_API_BASE_URL + "/anteckningar/save/" + workId, noteList);
+    return axios.post(CUSTOMERNOTE_BASE_API + "/save/" + workId, noteList);
   }
 
-  deleteNote(noteId) { //Skall ej kunna göras?
+  deleteNote(noteId) { 
     console.log(noteId)
-    return axios.delete(CUSTOMER_API_BASE_URL + "/anteckningar/remove/" + noteId);
+    return axios.delete(CUSTOMERNOTE_BASE_API + "/" + noteId + "/remove");
   }
 
   sumNote(workId, noteSum) {
-    return axios.post(NOTES_API + "/summary/save/" + workId, noteSum);
+    return axios.post(NOTESUMMARY_BASE_API + "/save/" + workId, noteSum);
   }
 
   getSummedNotes(customerId) {
-    return axios.get(NOTES_API + "/summary/customer/" + customerId);
+    return axios.get(NOTESUMMARY_BASE_API + "/" + customerId);
   }
 
   getOldNotes(workId) {
-    return axios.get(NOTES_API + "/notesForWork/summarized/" + workId);
+    return axios.get(CUSTOMERNOTE_BASE_API + "/sum-notes/" + workId);
   }
 
-  editNote(noteId, note) {
-    return axios.post(NOTES_API + "/edit/" + noteId, note);
+  editNote(workId, noteList) {
+    return axios.post(CUSTOMERNOTE_BASE_API + "/" + workId + "/edit", noteList);
   }
 
   getUser(user) {
-    return axios.get("http://localhost:8080/api/v1/user/" + user);
+    return axios.get(ACCOUNT_BASE_API + "/" + user);
   }
 
   updateUser(user) {
-    return axios.post("http://localhost:8080/api/v1/user/update", user);
+    return axios.post(ACCOUNT_BASE_API + "/update", user);
   }
 
   changePassword(password) {

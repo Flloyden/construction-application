@@ -15,22 +15,22 @@ public class CustomerAPI {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @PostMapping("/kunder")
+    @PostMapping("/customers")
     public ResponseEntity<CustomerEntity> createCustomer(@RequestBody CustomerEntity customer) {
         return customerRepository.createCustomer(customer);
     }
 
-    @GetMapping("/kunder/{id}")
+    @GetMapping("/customers/{id}")
     public ResponseEntity<CustomerEntity> getCustomer(@PathVariable final Long id) {
         return customerRepository.getCustomer(id);
     }
 
-    @GetMapping("/kunder")
+    @GetMapping("/customers")
     public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
         return customerRepository.getAllCustomers();
     }
 
-    @DeleteMapping("/kunder/{id}/remove")
+    @DeleteMapping("/customers/{id}/remove")
     public ResponseEntity<String> deleteCustomer(@PathVariable final Long id) {
         return customerRepository.deleteCustomer(id); // Ska det vara return här?
     }

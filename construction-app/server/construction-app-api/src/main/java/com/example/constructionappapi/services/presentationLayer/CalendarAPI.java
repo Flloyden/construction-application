@@ -17,13 +17,13 @@ public class CalendarAPI {
     @Autowired
     private CalendarRepository calendarRepository;
 
-    @GetMapping(value = "/kalender/work",
+    @GetMapping(value = "/calendar/work",
             produces = "application/json")
     public ResponseEntity<List<WorkCalendarInformation>> getAllWorkDates() {
         return ResponseEntity.ok().body(calendarRepository.getAllWorkDates());
     }
 
-    @GetMapping(value = "/kalender/semester",
+    @GetMapping(value = "/calendar/vacation",
             produces = "application/json")
     public ResponseEntity<List<VacationCalendarInformation>> getAllvacationDates() {
         return ResponseEntity.ok().body(calendarRepository.getAllVacationDates());

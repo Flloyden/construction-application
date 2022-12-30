@@ -23,7 +23,12 @@ public class AccountAPI {
         return accountRepository.createAccount(account);
     }
 
-    @GetMapping("/user/{accountId}")
+    @PostMapping("/account/update")
+    public void updateUserInfo(@RequestBody AccountEntity account) {
+        accountRepository.updateUserInfo(account);
+    }
+
+    @GetMapping("/account/{accountId}")
     public ResponseEntity<UserInformation> getUser(@PathVariable final long accountId) {
         return accountRepository.findById(accountId)
                 .map(accountEntity -> ResponseEntity
@@ -36,17 +41,7 @@ public class AccountAPI {
                                 accountEntity.getRole()))).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PostMapping("/user/update")
-    public void updateUserInfo(@RequestBody AccountEntity account) {
-        accountRepository.updateUserInfo(account);
-    }
-
-    @GetMapping("/account/{id}")
-    public Optional<AccountEntity> getAccount(@PathVariable final Long id) {
-        return accountRepository.findById(id);
-    }
-
-    @GetMapping("/account")
+    @GetMapping("/accounts")
     public List<AccountEntity> getAllAccounts() {
         return accountRepository.getAllAccountEntities();
     }

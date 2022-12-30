@@ -16,28 +16,28 @@ public class VacationAPI {
     @Autowired
     private VacationRepository vacationRepository;
 
-    @PostMapping("/semester")
+    @PostMapping("/vacation")
     public ResponseEntity<VacationEntity> saveVacation(@RequestBody VacationEntity vacationEntity) {
         return vacationRepository.saveVacation(vacationEntity);
     }
 
-    @PostMapping("/semester/{vacationId}/edit")
+    @PostMapping("/vacation/{vacationId}/update")
     public ResponseEntity<VacationEntity> updateVacation(@PathVariable final Long vacationId, @RequestBody VacationEntity vacationEntity) {
         vacationRepository.deleteVacation(vacationId);
         return vacationRepository.saveVacation(vacationEntity);
     }
 
-    @GetMapping("/semester/{id}")
-    public Optional<VacationEntity> getVacation(@PathVariable final Long vacationId) {
-        return vacationRepository.getVacation(vacationId);
+    @GetMapping("/vacation/{id}")
+    public Optional<VacationEntity> getVacation(@PathVariable final Long id) {
+        return vacationRepository.getVacation(id);
     }
 
-    @GetMapping("/semester")
+    @GetMapping("/vacation")
     public List<VacationEntity> getAllVacations() {
         return vacationRepository.getAllVacationEntities();
     }
 
-    @DeleteMapping("/semester/{vacationId}/remove")
+    @DeleteMapping("/vacation/{vacationId}/remove")
     public void deleteVacation(@PathVariable final Long vacationId) {
         vacationRepository.deleteVacation(vacationId);
     }

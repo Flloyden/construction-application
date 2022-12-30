@@ -14,37 +14,37 @@ public class AccountingAPI {
     @Autowired
     private AccountingRepository accountingRepository;
 
-    @PostMapping("/bokföring")
+    @PostMapping("/guarantees")
     public AccountingEntity createAccounting(@RequestBody AccountingEntity accountingEntity) {
         return accountingRepository.createAccounting(accountingEntity);
     }
 
-    @GetMapping("/bokföring/{id}")
+    @GetMapping("/guarantees/{id}")
     public Optional<AccountingEntity> getAccounting(@PathVariable final Long id) {
         return accountingRepository.getAccounting(id);
     }
 
-    @GetMapping("/bokföring/gamla_garantier")
+    @GetMapping("/guarantees/old-guarantees")
     public int getAmountOfOldAccounting(){
         return accountingRepository.getOldAccountings();
     }
 
-    @GetMapping("bokföring/alla_garantier")
+    @GetMapping("guarantees/all-guarantees")
     public int getAmountOfAccounting(){
         return accountingRepository.getAllAccountingEntities().size();
     }
 
-    @GetMapping("bokföring/aktiva_garantier")
+    @GetMapping("guarantees/active-guarantees")
     public int getAmountOfActiveAccounting(){
         return accountingRepository.getActiveAccountings();
     }
 
-    @GetMapping("/bokföring")
-    public List<AccountingEntity> getAllCustomers() {
+    @GetMapping("/guarantees")
+    public List<AccountingEntity> getAllGuarentees() {
         return accountingRepository.getAllAccountingEntities();
     }
 
-    @DeleteMapping("/bokföring/{id}/remove")
+    @DeleteMapping("/guarantees/{id}/remove")
     public void deleteCustomer(@PathVariable final Long id) {
         accountingRepository.deleteAccounting(id);
     }
