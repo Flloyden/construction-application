@@ -131,16 +131,23 @@ public class AuthenticationAPI {
 
     @PostMapping("/recover")
     public ResponseEntity recoverAccount(@RequestBody RecoveryTokenRequest recoveryTokenRequest) {
-        Optional<AccountEntity> accountEntity = accountRepository.findByRecoveryToken(recoveryTokenRequest.getToken());
-        if (accountEntity.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token not found");
+        try {
+            Optional<AccountEntity> accountEntity = accountRepository.findByRecoveryToken(recoveryTokenRequest.getToken());
+            if (accountEntity.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token not found");
+            }
+
+            String emailSubject = "New password";
+            String emailText = resetPassword(accountEntity.get());
+            emailService.sendEmail(accountEntity.get().getEmail(), emailSubject, emailText);
+
+            accountEntity.get().setRecoveryToken(null);
+            accountRepository.save(accountEntity.get());
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("New password sent");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        String emailSubject = "New password";
-        String emailText = resetPassword(accountEntity.get());
-        emailService.sendEmail(accountEntity.get().getEmail(), emailSubject, emailText);
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("New password sent");
     }
 
     private String resetPassword(AccountEntity accountEntity) {
@@ -148,9 +155,7 @@ public class AuthenticationAPI {
         SecureRandom random = new SecureRandom();
         byte[] passwordBytes = new byte[10];
         random.nextBytes(passwordBytes);
-        //TODO: Might not need to encrypt here since it gets encrypted below.
         String newPassword = DatatypeConverter.printHexBinary(passwordBytes);
-        System.out.println(newPassword);
 
         // Set the user's password to the new password
         accountEntity.setPassword(new BCryptPasswordEncoder().encode(newPassword));
