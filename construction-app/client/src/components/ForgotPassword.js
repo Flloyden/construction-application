@@ -7,6 +7,7 @@ export default function ForgotPassword(props) {
     email: "",
   });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const handleSubmit = (e) => {
     /**Saves the "kund" and navigates back to the register */
@@ -23,6 +24,10 @@ export default function ForgotPassword(props) {
       })
       .catch((error) => {
         console.log(error);
+        setShowError((showError) => !showError);
+        setTimeout(() => {
+          setShowError(false);
+        }, 5000);
       });
   };
 
@@ -66,20 +71,34 @@ export default function ForgotPassword(props) {
                 />
               </label>
             </div>
-            <div
+            
+            <div className="relative mt-2">
+              <div
               className={
                 showSuccess
-                  ? "bg-green-500 px-4 rounded text-white py-1 duration-200 visible mb-0 text-center mt-2"
-                  : "invisible duration-200 px-4 mb-0 text-center mt-2 py-1"
+                  ? "bg-green-500 px-4 rounded text-white py-1 duration-200 visible mb-0 text-center mt-0 absolute top-0 w-full"
+                  : "hidden duration-200 px-4 mb-0 text-center mt-2 py-1 absolute"
               }
             >
-              <div className={showSuccess ? "visible h-12" : "h-12 invisible"}>
+              <div className={showSuccess ? "visible h-12" : "h-12 hidden"}>
                 <p>Ett nytt lösenord har skickats till:</p>
                 <p>{email.email}</p>
               </div>
             </div>
+            <div
+              className={
+                showError
+                  ? "bg-red-500 px-4 rounded text-white py-1 duration-200 visible mb-0 text-center mt-0 absolute top-0 w-full"
+                  : "hidden duration-200 px-4 mb-0 text-center mt-2 py-1 absolute"
+              }
+            >
+              <div className={showError ? "visible h-12 flex items-center justify-center align-middle" : "h-12 hidden"}>
+                <p>Ange en korrekt email.</p>
+              </div>
+            </div>
+            </div>
             <div className="mx-4 text-center">
-              <div className="pb-2">
+              <div className="pb-2 mt-16">
                 <p>Genom att återställa lösenordet skickas ett nytt</p>
                 <p>lösenord till den angivna mailadressen.</p>
               </div>
