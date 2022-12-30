@@ -82,12 +82,14 @@ export default function SettingsProfile() {
                   className="bg-white rounded dark:bg-gray-800"
                 >
                   <div className="mt-5 flex align-middle items-center justify-between max-w-fit max-h-fit">
-                    <div className="rounded-full p-1 bg-blue-600 flex align-middle justify-center items-center">
-                      <img
-                        src={newUserInfo.profileImage}
-                        alt="profile pic"
-                        className="w-24 h-24 object-cover rounded-full border-1 border-blue-600 bg-gray-300"
-                      />
+                    <div className="w-24 h-24">
+                      <div className="rounded-full h-full flex align-middle justify-center items-center">
+                        <img
+                          src={newUserInfo.profileImage}
+                          alt="profile pic"
+                          className="object-cover h-full rounded-full border-4 border-blue-600 bg-white"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="flex mt-2">

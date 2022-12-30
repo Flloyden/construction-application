@@ -27,12 +27,12 @@ export default function UserInfo() {
       {!loading && (
         <div className="flex items-center w-1/2">
           <div className="w-fit h-full">
-            <div className="w-24">
-              <div className="rounded-full p-1 bg-blue-600 flex align-middle justify-center items-center">
+            <div className="w-24 h-24">
+              <div className="rounded-full h-full flex align-middle justify-center items-center">
                 <img
                   src={userInfo.profileImage}
                   alt="profile pic"
-                  className="object-cover rounded-full border-1 border-blue-600 bg-blue-600"
+                  className="object-cover h-full rounded-full border-4 border-blue-600 bg-white"
                 />
               </div>
             </div>
