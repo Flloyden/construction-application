@@ -48,14 +48,6 @@ const ChangeCustomerInfo = ({
   const handleSubmit = (e) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
-    // Check if all input fields are ok
-    if (
-      customer.name.length > 1 &&
-      customer.address.length > 1 &&
-      customer.phoneNumber.length > 1 &&
-      customer.propertyDesignation.length > 0 &&
-      customer.socialSecurityNumber.length > 1
-    ) {
       // Makes the change with the help of api call
       ApiConnector.saveCustomer(customer)
         .then((response) => {
@@ -65,9 +57,6 @@ const ChangeCustomerInfo = ({
         .catch((error) => {
           console.log(error);
         });
-    } else {
-      alert("Fyll i alla fält");
-    }
   };
 
   return (
