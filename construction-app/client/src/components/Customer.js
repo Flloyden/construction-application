@@ -204,7 +204,6 @@ export default function Customer() {
             </div>
             <div className={customer.workList.length > 0 ? "flex-1 h-max" : "hidden"}>
               <div className="flex flex-wrap">
-                {console.log(customer)}
                 <div className="w-8/12">
                   <AddCustomerNote
                     currentCustomerId={customer.id}
