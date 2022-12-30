@@ -12,12 +12,18 @@ const ChangeCustomerInfo = ({
   currentCustomerSSN,
   currentCustomerWorkList,
   currentCustomerNotes,
+  currentCustomerMail,
+  currentCustomerCity,
+  currentCustomerZip,
 }) => {
   const [customer, setCustomer] = useState({
     id: currentCustomerId,
     name: currentCustomerName,
     address: currentCustomerAddress,
     phoneNumber: currentCustomerPhone,
+    mail: currentCustomerMail,
+    city: currentCustomerCity,
+    zip: currentCustomerZip,
     propertyDesignation: currentCustomerProperty,
     socialSecurityNumber: currentCustomerSSN,
     workList: currentCustomerWorkList,
@@ -108,6 +114,8 @@ const ChangeCustomerInfo = ({
                   type="text"
                   name="socialSecurityNumber"
                   required
+                  maxLength={13}
+                  minLength={13}
                   value={customer.socialSecurityNumber}
                   onChange={(e) => handleChange(e)}
                 ></input>
@@ -134,6 +142,7 @@ const ChangeCustomerInfo = ({
                 type="text"
                 name="mail"
                 value={customer.mail}
+                onChange={(e) => handleChange(e)}
               ></input>
             </div>
 
@@ -161,6 +170,7 @@ const ChangeCustomerInfo = ({
                   required
                   name="city"
                   value={customer.city}
+                  onChange={(e) => handleChange(e)}
                 ></input>
               </div>
               <div className="mt-4 w-1/2">
@@ -173,6 +183,7 @@ const ChangeCustomerInfo = ({
                   required
                   name="zip"
                   value={customer.zip}
+                  onChange={(e) => handleChange(e)}
                 ></input>
               </div>
             </div>

@@ -204,11 +204,11 @@ export default function Customer() {
             </div>
             <div className={customer.workList.length > 0 ? "flex-1 h-max" : "hidden"}>
               <div className="flex flex-wrap">
+                {console.log(customer)}
                 <div className="w-8/12">
                   <AddCustomerNote
                     currentCustomerId={customer.id}
                     currentCustomerName={customer.name}
-                    currentCustomerAddress={customer.address}
                     currentCustomerPhone={customer.phoneNumber}
                     currentCustomerProperty={customer.propertyDesignation}
                     currentCustomerSSN={customer.socialSecurityNumber}
@@ -245,7 +245,10 @@ export default function Customer() {
           setIsChangeOpen={setIsChangeOpen}
           currentCustomerId={customer.id}
           currentCustomerName={customer.name}
+          currentCustomerMail={customer.mail}
           currentCustomerAddress={customer.address}
+          currentCustomerCity={customer.city}
+          currentCustomerZip={customer.zip}
           currentCustomerPhone={customer.phoneNumber}
           currentCustomerProperty={customer.propertyDesignation}
           currentCustomerSSN={customer.socialSecurityNumber}
