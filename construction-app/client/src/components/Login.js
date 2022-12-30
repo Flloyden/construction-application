@@ -89,6 +89,7 @@ const Login = () => {
     e.preventDefault();
     // Removes the key from localstorage
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
     localStorage.removeItem("active");
     // Navigates back to login
