@@ -10,6 +10,7 @@ const AddWaranty = (props) => {
   let [endDate, setEndDate] = useState(new Date());
   const nameRef = useRef();
   const regRef = useRef();
+  const dNumberRef = useRef();
   const [warranty, setWarranty] = useState({
     id: "",
     name: "",
@@ -141,11 +142,11 @@ const AddWaranty = (props) => {
               <span className="text-red-700 font-black">*</span>{" "}
               </label>
               <input
-                ref={regRef}
+                ref={dNumberRef}
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 type="text"
                 required
-                name="registration_number"
+                name="d_number"
                 onChange={(e) => handleChange(e)}
               ></input>
             </div>

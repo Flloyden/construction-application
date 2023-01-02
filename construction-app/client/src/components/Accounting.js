@@ -123,6 +123,9 @@ const Accounting = () => {
               <th scope="col" className="py-3 px-6 w-fit">
                 Registreringsnummer
               </th>
+              <th scope="col" className="py-3 px-6 w-fit">
+                Diarienummer
+              </th>
               <th scope="col" className="py-3 px-6">
                 Utgångsdatum
               </th>
@@ -151,6 +154,9 @@ const Accounting = () => {
                       </th>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {warranty.name}
+                      </td>
+                      <td className="py-4 px-6 whitespace-nowrap">
+                        {warranty.registration_number}
                       </td>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {warranty.registration_number}
@@ -269,6 +275,9 @@ const Accounting = () => {
                       </th>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {warranties.name}
+                      </td>
+                      <td className="py-4 px-6 whitespace-nowrap">
+                        {warranties.registration_number}
                       </td>
                       <td className="py-4 px-6 whitespace-nowrap">
                         {warranties.registration_number}
