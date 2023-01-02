@@ -15,6 +15,7 @@ const AddWaranty = (props) => {
     name: "",
     receipt: "",
     registration_number: "",
+    d_number: "",
     warranty_date: "",
   });
 
@@ -122,6 +123,21 @@ const AddWaranty = (props) => {
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">
                 Registreringsnummer:{" "}
+                <span className="text-red-700 font-black">*</span>{" "}
+              </label>
+              <input
+                ref={regRef}
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                type="text"
+                name="registration_number"
+                onChange={(e) => handleChange(e)}
+              ></input>
+            </div>
+
+            <div className="mt-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+              Diarienummer:{" "}
+              <span className="text-red-700 font-black">*</span>{" "}
               </label>
               <input
                 ref={regRef}
@@ -136,6 +152,7 @@ const AddWaranty = (props) => {
               <label onClick={handleChange}>
                 <label className="block mb-2 text-sm font-medium text-gray-700">
                   Utgångsdatum:{" "}
+                  <span className="text-red-700 font-black">*</span>{" "}
                 </label>
                 <DatePicker
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
