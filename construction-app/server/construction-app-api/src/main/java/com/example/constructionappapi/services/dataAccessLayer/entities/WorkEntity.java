@@ -99,7 +99,9 @@ public class WorkEntity implements Comparable<WorkEntity> {
     public void update(WorkEntity newWorkEntity) {
         this.name = newWorkEntity.getName();
         this.startDate = newWorkEntity.getStartDate();
+        this.earliestStartDate = newWorkEntity.earliestStartDate;
         this.numberOfDays = newWorkEntity.getNumberOfDays();
+        this.isLockedInCalendar = newWorkEntity.isLockedInCalendar();
         this.materialNote = newWorkEntity.getMaterialNote();
         this.offer = newWorkEntity.offer;
         this.workStatus = newWorkEntity.workStatus;

@@ -190,6 +190,8 @@ public class WorkRepository {
             calendar.updateStartDate(workBeforeUpdate.getStartDate(), workToUpdateWith);
         } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
             updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
+        } else if (workBeforeUpdate.isLockedInCalendar() != workToUpdateWith.isLockedInCalendar()){
+            calendar.moveCalendarItemBackwards(workToUpdateWith.getStartDate());
         }
     }
 

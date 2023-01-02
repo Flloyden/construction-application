@@ -72,22 +72,18 @@ public class Calendar {
     }
 
     private void addDaysToCalendar(int numberOfDaysToAdd, LocalDate startDate, WorkEntity work) {
-        int daysToShuffleForward = numberOfDaysToAdd;
-        long n = 0L;
+        int daysToShuffleForward = calcDaysToShuffleForward(work);
+        long daysSkipped = 0L;
         for (int i = 0; i < numberOfDaysToAdd; i++) {
-            LocalDate dateToAddTo = startDate.plusDays(i + n);
+            LocalDate dateToAddTo = startDate.plusDays(i + daysSkipped);
 
-            while (true) {
-                if (isWeekend(dateToAddTo) || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo)) || isDateTakenByLockedWork(dateToAddTo)) {
-                    dateToAddTo = dateToAddTo.plusDays(1);
-                    n++;
-                } else {
-                    break;
-                }
+            while (isWeekend(dateToAddTo) || vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo)) || isDateTakenByLockedWork(dateToAddTo)) {
+                dateToAddTo = dateToAddTo.plusDays(1);
+                daysSkipped++;
             }
+
             /*
             while (true) {
-
                 if (!isWeekend(dateToAddTo)) {
                     break;
                 }
@@ -103,7 +99,6 @@ public class Calendar {
             }
 
              */
-
 
             CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
@@ -121,6 +116,23 @@ public class Calendar {
             //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work.getId());
         }
+    }
+
+    private int calcDaysToShuffleForward(WorkEntity work) {
+        int numberOfDaysAdd = work.getNumberOfDays();
+        int numberOfDaysToSkip = 0;
+        LocalDate startDate = work.getStartDate();
+
+        for (int i = 0; i < numberOfDaysAdd; i++) {
+            LocalDate date = startDate.plusDays(i + numberOfDaysToSkip);
+
+            while (isWeekend(date) || vacationDates.containsKey(new VacationCalendarEntity(date)) || isDateTakenByLockedWork(date)) {
+                date = date.plusDays(1);
+                numberOfDaysToSkip++;
+            }
+        }
+
+        return numberOfDaysAdd + numberOfDaysToSkip;
     }
 
     /**
@@ -189,12 +201,8 @@ public class Calendar {
         LocalDate newDate = date.plusDays(daysToShuffle);
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
 
-        while (true) {
-            if (isWeekend(newDate) || vacationDates.containsKey(new VacationCalendarEntity(newDate)) || isDateTakenByLockedWork(newDate)) {
-                newDate = newDate.plusDays(1);
-            } else {
-                break;
-            }
+        while (isWeekend(newDate) || vacationDates.containsKey(new VacationCalendarEntity(newDate)) || isDateTakenByLockedWork(newDate)) {
+            newDate = newDate.plusDays(1);
         }
 
         /*If the date where the work-object is trying to get shuffled to is already taken, the work-object
@@ -216,7 +224,10 @@ public class Calendar {
         calendarDates.keySet().stream().sorted().forEach(calendarEntity -> {
             if (calendarEntity.getDate().isAfter(startDate)) {
                 WorkEntity workToMove = workMap.get(calendarDates.get(calendarEntity));
-                lastDateMovedTo[0] = moveCalendarItemBackwards(workToMove, calendarEntity, lastDateMovedTo[0]);
+
+                if (!workToMove.isLockedInCalendar()) {
+                    lastDateMovedTo[0] = moveCalendarItemBackwards(workToMove, calendarEntity, lastDateMovedTo[0]);
+                }
             }
         });
     }
