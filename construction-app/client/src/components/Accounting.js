@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
 import ApiConnector from "../services/ApiConnector";
 import AddWaranty from "./AddWarranty";
 import ChangeWarrantyInfo from "./ChangeWarrantyInfo";
