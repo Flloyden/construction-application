@@ -135,6 +135,20 @@ const ChangeWarrantyInfo = ({
 
             <div className="mt-4">
             <label className="block mb-2 text-sm font-medium text-gray-700">
+              Diarienummer: <span className="text-red-700 font-black">*</span>
+              </label>
+              <input
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                type="text"
+                name="d_number"
+                value={warranty.registration_number}
+                placeholder={currentWarrantyReg}
+                onChange={(e) => handleChange(e)}
+              ></input>
+            </div>
+
+            <div className="mt-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
                 Utgångsdatum för garanti: <span className="text-red-700 font-black">*</span>
               </label>
               <input
