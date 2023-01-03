@@ -77,9 +77,9 @@ public class StartServer {
         {
             CalendarColorEntity colorEntity1 = new CalendarColorEntity();
             colorEntity1.setId(0);
-            colorEntity1.setWorkColor("#1d4ed8");
-            colorEntity1.setVacationColor("#15803d");
-            colorEntity1.setWeekendsColor("#b91c1c");
+            colorEntity1.setWorkColor("#0284C7");
+            colorEntity1.setVacationColor("#10B981");
+            colorEntity1.setWeekendsColor("#DC2626");
 
             calendarColorRepository.createCalendarcolor(colorEntity1);
         }
