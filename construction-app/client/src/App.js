@@ -1,18 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Accounting from './components/Accounting';
-import Calendar from './components/Calendar';
-import CustomerRegister from './components/CustomerRegister';
-import Home from './components/Home';
-import Login from './components/Login';
+import Accounting from './components/accounting/Accounting';
+import Calendar from './components/calendar/Calendar';
+import Home from './components/home/Home';
+import Login from './components/authentication/Login';
 import './styles/App.css';
 import PrivateRoutes from './services/PrivateRoute';
 import Error from './components/Error';
-import Customer from './components/Customer';
+import Customer from './components/customers/Customer';
 import '../src/styles/index.css';
-import Settings from './components/Settings';
-import About from './components/About';
-import Help from './components/Help';
-import Recover from './components/Recover';
+import Settings from './components/settings/Settings';
+import About from './components/info/About';
+import Help from './components/info/Help';
+import Recover from './components/authentication/Recover';
+import CustomerRegister from './components/customers/CustomerRegister';
 
 function App() {
   return (
