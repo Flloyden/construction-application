@@ -21,6 +21,7 @@ public class AccountingEntity {
     private long id;
     private String name;
     private String registration_number;
+    private int d_number;
     private LocalDate warranty_date;
     private long status;
     @Lob
