@@ -79,7 +79,7 @@ export default function ForgotPassword(props) {
                 }
               >
                 <div className={showSuccess ? "visible h-12" : "h-12 hidden"}>
-                  <p>Ett nytt lösenord har skickats till:</p>
+                  <p>Ett meddelande har skickats till:</p>
                   <p>{email.email}</p>
                 </div>
               </div>
@@ -103,8 +103,8 @@ export default function ForgotPassword(props) {
             </div>
             <div className="mx-4 text-center">
               <div className="pb-2 mt-16">
-                <p>Genom att återställa lösenordet skickas ett nytt</p>
-                <p>lösenord till den angivna mailadressen.</p>
+                <p>Genom att återställa lösenordet skickas ett</p>
+                <p>meddelande till den angivna mailadressen.</p>
               </div>
             </div>
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">

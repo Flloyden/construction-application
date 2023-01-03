@@ -1,28 +1,41 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ApiConnector from "../../services/ApiConnector";
 
 export default function Recover() {
-  const searchParams = useSearchParams();
-  console.log(searchParams.get("token"));
-
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  console.log(searchParams);
+  
   useEffect(() => {
-    // Gets all the warrenties on page load and runs only once
+    const token = searchParams.get("token");
+    // Check if the token is present and valid
+    if (!token) {
+      console.log("Recover: No token provided in search params.");
+      navigate("/login");
+      return;
+    }
+
+    // Tries to get data from api
     const recover = async () => {
-      // Tries to get data from api
       try {
         const request = {
-          token: searchParams.get("token"),
+          token,
         };
 
         const response = await ApiConnector.recover(request);
 
-        console.log(response);
-        // Logs error if api cal not successful
+        // Navigate to login page if recovery was successful
+        if (response.status == 202) {
+          navigate("/login");
+        } else {
+          console.log("Recover: Recovery failed.");
+        }
       } catch (error) {
-        console.log(error);
+        console.log("Recover:", error);
       }
     };
+
     recover();
   }, [searchParams]);
 }
