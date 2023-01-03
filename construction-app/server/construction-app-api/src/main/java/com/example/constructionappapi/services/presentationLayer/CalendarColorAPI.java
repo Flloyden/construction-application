@@ -22,7 +22,7 @@ public class CalendarColorAPI {
     }
 
     @GetMapping("/calendarcolor")
-    public ResponseEntity<CalendarColorEntity> getCalendarColor(@PathVariable final Long id)
+    public ResponseEntity<CalendarColorEntity> getCalendarColor()
     {
         return calendarColorRepository.getColorEntity();
     }
