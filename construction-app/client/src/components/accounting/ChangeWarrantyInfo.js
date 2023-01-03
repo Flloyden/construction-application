@@ -9,11 +9,13 @@ const ChangeWarrantyInfo = ({
   currentWarrantyReg,
   currentWarrantyDate,
   currentWarrantyReceipt,
+  currentDnumber,
 }) => {
   const [warranty, setWarranty] = useState({
     id: currentWarrantyId,
     name: currentWarrantyName,
     registration_number: currentWarrantyReg,
+    d_number: currentDnumber,
     warranty_date: currentWarrantyDate,
     receipt: currentWarrantyReceipt,
   });
@@ -31,6 +33,7 @@ const ChangeWarrantyInfo = ({
       [e.target.receipt]: image,
       [e.target.registration_number]: value,
       [e.target.warranty_date]: value,
+      [e.target.d_number]: value,
     });
   };
 
@@ -143,8 +146,8 @@ const ChangeWarrantyInfo = ({
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 type="text"
                 name="d_number"
-                value={warranty.registration_number}
-                placeholder={currentWarrantyReg}
+                value={warranty.d_number}
+                placeholder={currentDnumber}
                 onChange={(e) => handleChange(e)}
               ></input>
             </div>

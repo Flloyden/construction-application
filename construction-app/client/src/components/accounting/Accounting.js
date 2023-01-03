@@ -23,6 +23,7 @@ const Accounting = () => {
   const [currentWarrantyName, setCurrentWarrantyName] = useState("");
   const [currentWarrantyReg, setCurrentWarrantyReg] = useState("");
   const [currentWarrantyDate, setCurrentWarrantyDate] = useState("");
+  const [currentDnumber, setCurrentDnumber] = useState("");
   const [currentWarrantyReceipt, setCurrentWarrantyReceipt] = useState("");
   const [name, setName] = useState("");
   const [foundWarrenties, setFoundWarrenties] = useState(warranties);
@@ -158,7 +159,7 @@ const Accounting = () => {
                         {warranty.registration_number}
                       </td>
                       <td className="py-4 px-6 whitespace-nowrap">
-                        {warranty.registration_number}
+                        {warranty.d_number}
                       </td>
                       <td className="py-4 px-6 w-full">
                         {warranty.warranty_date}
@@ -239,6 +240,9 @@ const Accounting = () => {
                                   setCurrentWarrantyDate(
                                     warranty.warranty_date
                                   );
+                                  setCurrentDnumber(
+                                    warranty.d_number
+                                  );
                                   setCurrentWarrantyReceipt(warranty.receipt);
                                   setIsChangeWarrantyOpen(true);
                                 }}
@@ -283,7 +287,7 @@ const Accounting = () => {
                         {warranties.registration_number}
                       </td>
                       <td className="py-4 px-6 whitespace-nowrap">
-                        {warranties.registration_number}
+                        {warranties.d_number}
                       </td>
                       <td className="py-4 px-6 w-full">
                         {warranties.warranty_date}
@@ -361,6 +365,9 @@ const Accounting = () => {
                                   setCurrentWarrantyReg(
                                     warranties.registration_number
                                   );
+                                  setCurrentDnumber(
+                                    warranties.d_number
+                                  );
                                   setCurrentWarrantyDate(
                                     warranties.warranty_date
                                   );
@@ -411,6 +418,7 @@ const Accounting = () => {
           currentWarrantyId={currentWarrantyId}
           currentWarrantyName={currentWarrantyName}
           currentWarrantyReg={currentWarrantyReg}
+          currentDnumber={currentDnumber}
           currentWarrantyDate={currentWarrantyDate}
           currentWarrantyReceipt={currentWarrantyReceipt}
         />
