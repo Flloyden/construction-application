@@ -33,12 +33,11 @@ const SemesterModal = (props) => {
   };
 
   const deleteSemester = async () => {
-    // Deletes a client with given id and updates the id
+    // Deletes a semester with given id and updates the id
     try {
       await ApiConnector.deleteSemester(props.currentId);
       window.location.reload(false);
     } catch (error) {
-      console.log("sfdglkjhgfdslkjgfdh")
       console.log(error);
     }
     props.setIsModalOpen(false);
@@ -103,6 +102,7 @@ const SemesterModal = (props) => {
                   name="numberOfDays"
                   value={semester.numberOfDays}
                   required
+                  type="number"
                   onChange={handleChange}
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
@@ -110,14 +110,14 @@ const SemesterModal = (props) => {
             </div>
             <div className="flex gap-2   mx-auto text-white">
               <button
-                className="bg-gray-600 hover:bg-gray-500 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                className="bg-blue-600 hover:bg-blue-500 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
                 onClick={() => handleSubmit(props.currentId)}
               >
                 Ändra
               </button>
               <button
                 type="button"
-                className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-2/4 duration-300"
+                className="rounded text-white bg-red-600 hover:bg-red-500 font-bold py-2 px-4 w-2/4 duration-300"
                 onClick={() => deleteSemester(props.currentId)}
               >
                 Ta bort
@@ -125,7 +125,7 @@ const SemesterModal = (props) => {
             </div>
             <div className=" mx-auto">
               <button
-                className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 rounded duration-300 text-center w-full my-2"
+                className="bg-gray-600 hover:bg-gray-500  text-white font-bold py-2 rounded duration-300 text-center w-full my-2"
                 onClick={() => props.setIsModalOpen(false)}
               >
                 Avbryt
