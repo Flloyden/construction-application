@@ -1,6 +1,4 @@
 import axios from "axios";
-
-
 const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary";
 const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account";
 const WORK_BASE_API = "http://localhost:8080/api/v1/work";
@@ -9,52 +7,50 @@ const CUSTOMER_BASE_API = "http://localhost:8080/api/v1/customers";
 const CALENDAR_BASE_API = "http://localhost:8080/api/v1/calendar";
 const GUARENTEES_BASE_API = "http://localhost:8080/api/v1/guarantees";
 const CUSTOMERNOTE_BASE_API = "http://localhost:8080/api/v1/notes";
-
-
 const BASE_URL = "http://localhost:8080/api/v1";
 const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
 
-
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     const excludedEndpoints = [
-      'http://localhost:8080/api/v1/authentication',
-      'http://localhost:8080/api/v1/refresh',
-      'http://localhost:8080/api/v1/initiate-email-recovery',
-      'http://localhost:8080/api/v1/recover'];
+      "http://localhost:8080/api/v1/authentication",
+      "http://localhost:8080/api/v1/refresh",
+      "http://localhost:8080/api/v1/initiate-email-recovery",
+      "http://localhost:8080/api/v1/recover",
+    ];
 
     if (!excludedEndpoints.includes(config.url)) {
-
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = localStorage.getItem("accessToken");
       if (accessToken) {
-        config.headers['Authorization'] = `${accessToken}`;
+        config.headers["Authorization"] = `${accessToken}`;
       }
     }
     return config;
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error)
 );
 
 axios.interceptors.response.use(
-  response => response,
-  error => {
-    const excludedEndpoints = [
-      'http://localhost:8080/api/v1/recover'];
+  (response) => response,
+  (error) => {
+    const excludedEndpoints = ["http://localhost:8080/api/v1/recover"];
 
     const status = error.response ? error.response.status : null;
     if (status === 401 && !excludedEndpoints.includes(error.config.url)) {
       // If the access token has expired, try to refresh it using the refresh token
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
-        return refreshAccessToken(refreshToken).then(accessToken => {
-          // If the refresh token request was successful, retry the original request
-          error.config.headers['Authorization'] = `${accessToken}`;
-          return axios.request(error.config);
-        }).catch(err => {
-          // If the refresh token request fails, clear the refresh token and return the error
-          localStorage.removeItem('refreshToken');
-          return Promise.reject(err);
-        });
+        return refreshAccessToken(refreshToken)
+          .then((accessToken) => {
+            // If the refresh token request was successful, retry the original request
+            error.config.headers["Authorization"] = `${accessToken}`;
+            return axios.request(error.config);
+          })
+          .catch((err) => {
+            // If the refresh token request fails, clear the refresh token and return the error
+            localStorage.removeItem("refreshToken");
+            return Promise.reject(err);
+          });
       }
     }
     return Promise.reject(error);
@@ -65,41 +61,41 @@ let refreshPromise = null;
 async function refreshAccessToken(refreshToken) {
   const refresh = async () => {
     try {
-      const response = await axios.post(BASE_URL + '/refresh', {
-        refreshToken
+      const response = await axios.post(BASE_URL + "/refresh", {
+        refreshToken,
       });
-      const newAccessToken = response.headers.authorization
-      const newRefreshToken = response.headers.refreshtoken
+      const newAccessToken = response.headers.authorization;
+      const newRefreshToken = response.headers.refreshtoken;
 
       // Store the new access and refresh tokens in local storage or a cookie
-      localStorage.setItem('accessToken', newAccessToken);
-      localStorage.setItem('refreshToken', newRefreshToken);
+      localStorage.setItem("accessToken", newAccessToken);
+      localStorage.setItem("refreshToken", newRefreshToken);
 
       // Return the new access token
       return newAccessToken;
     } catch (error) {
       // If the refresh token is invalid or has expired, log out the user
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('refreshToken')
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
     }
-  }
+  };
 
   if (!refreshPromise) {
-    refreshPromise = refresh().then(accessToken => {
-      refreshPromise = null
-      return accessToken
-    })
+    refreshPromise = refresh().then((accessToken) => {
+      refreshPromise = null;
+      return accessToken;
+    });
   }
-  await refreshPromise
+  await refreshPromise;
 }
 
 class ApiConnector {
   authenicate() {
-    return axios.post(AUTHENTICATION_API)
+    return axios.post(AUTHENTICATION_API);
   }
 
   recover(token) {
-    return axios.post(BASE_URL + "/recover", token)
+    return axios.post(BASE_URL + "/recover", token);
   }
 
   //Saves the customer to the database
@@ -140,7 +136,7 @@ class ApiConnector {
   }
 
   getUpcomingWork() {
-    //Gets upcoming work based on tomorrows date and ten days forward. 
+    //Gets upcoming work based on tomorrows date and ten days forward.
     //Checks if any customer has work with startdate within 10 days.
     return axios.get(WORK_BASE_API + "/upcoming");
   }
@@ -202,12 +198,15 @@ class ApiConnector {
   }
 
   deleteSemester(semesterId) {
-    console.log(semesterId)
+    console.log(semesterId);
     return axios.delete(VACATION_BASE_API + "/" + semesterId + "/remove");
   }
 
   editSemester(semesterId, semester) {
-    return axios.post(VACATION_BASE_API + "/" + semesterId + "/update", semester);
+    return axios.post(
+      VACATION_BASE_API + "/" + semesterId + "/update",
+      semester
+    );
   }
 
   saveNote(workId, noteList) {
@@ -215,7 +214,7 @@ class ApiConnector {
   }
 
   deleteNote(noteId) {
-    console.log(noteId)
+    console.log(noteId);
     return axios.delete(CUSTOMERNOTE_BASE_API + "/" + noteId + "/remove");
   }
 
@@ -244,12 +243,15 @@ class ApiConnector {
   }
 
   changePassword(password) {
-    console.log(password)
-    return axios.post("http://localhost:8080/api/v1/change-password", password)
+    console.log(password);
+    return axios.post("http://localhost:8080/api/v1/change-password", password);
   }
 
   recoverPassword(email) {
-    return axios.post("http://localhost:8080/api/v1/initiate-email-recovery", email)
+    return axios.post(
+      "http://localhost:8080/api/v1/initiate-email-recovery",
+      email
+    );
   }
 }
 
