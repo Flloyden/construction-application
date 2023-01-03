@@ -8,7 +8,7 @@ import PrivateRoutes from './services/PrivateRoute';
 import Error from './components/Error';
 import Customer from './components/customers/Customer';
 import '../src/styles/index.css';
-import Settings from './components/settings/Settings';
+import Settings from './components/settingsPages/Settings';
 import About from './components/info/About';
 import Help from './components/info/Help';
 import Recover from './components/authentication/Recover';
