@@ -54,6 +54,12 @@ export default function Calendar() {
   const dateMove = new Date(startDate);
   let strDate = startDate;
 
+  const [colors, setColors] = useState({
+    workColor: "",
+    vacationColor: "",
+    weekendsColor: "",
+  });
+
   while (strDate < endDate) {
     strDate = dateMove.toISOString().slice(0, 10);
     listDate.push({date: strDate});
@@ -68,8 +74,10 @@ export default function Calendar() {
       try {
         const response = await ApiConnector.getCalendar();
         const res = await ApiConnector.getSemester();
+        const col = await ApiConnector.getColors();
         setCalendarInfo(response.data);
         setSemesterInfo(res.data)
+        setColors(col.data)
         // Logs error if api call not successful
       } catch (error) {
         console.log(error);
@@ -94,7 +102,7 @@ export default function Calendar() {
     //Checks what day it is and gives the right color
     var givenDate = new Date(e);
     var day = givenDate.getDay();
-    var isWeekend = (day === 6) || (day === 0) ? '#dc2626': '#fff';
+    var isWeekend = (day === 6) || (day === 0) ? colors.weekendsColor : '#fff';
     return isWeekend
   }
 
@@ -159,19 +167,19 @@ export default function Calendar() {
                 }
                 eventSources={[
                   calendarInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
                   }),
                   semesterInfo.map((item) => {
-                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: '#10b981', id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
                   }),
                   holiday.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
                   }),
                   nextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
                   }),
                   nextNextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
                   }),
                   listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.date}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
                     return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
@@ -219,18 +227,21 @@ export default function Calendar() {
                 duration={{ days: 1 }}
                 eventSources={[
                   calendarInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: '#3b82f6', id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                  }),
+                  semesterInfo.map((item) => {
+                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
                   }),
                   holiday.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
                   }),
                   nextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
                   }),
                   nextNextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: '#dc2626', borderColor: '#000', allDay: false}
+                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
                   }),
-                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
+                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.date}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
                     return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
                   }),
                 ]}

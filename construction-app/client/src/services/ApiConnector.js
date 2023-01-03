@@ -253,6 +253,14 @@ class ApiConnector {
       email
     );
   }
+
+  getColors() {
+    return axios.get(BASE_URL + "/calendarcolor")
+  }
+
+  updateColors(colors) {
+    return axios.post(BASE_URL + "/calendarcolor", colors)
+  }
 }
 
 export default new ApiConnector();
