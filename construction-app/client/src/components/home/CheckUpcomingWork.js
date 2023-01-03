@@ -28,16 +28,28 @@ export default function CheckUpcomingWork() {
     {
       return "";
     }
+
+    let maxDate = upcomingWork[0].calendar[0].date;
+    let minDate = upcomingWork[0].calendar[0].date;
+
+    for(let i = 0;i<upcomingWork[0].calendar.length;i++)
+    {
+        if(upcomingWork[0].calendar[i].date>maxDate)
+        {
+          maxDate = upcomingWork[0].calendar[i].date
+        } 
+
+        if(upcomingWork[0].calendar[i].date<minDate)
+        {
+          minDate = upcomingWork[0].calendar[i].date;
+        }
+    }  
   
     if(upcomingWork[0].calendar.length !== 0)
     {
       return <div className="font-normal">
           <p>{upcomingWork[1].name + " - " + upcomingWork[0].name}</p>
-          <p>
-            {upcomingWork[0].calendar[0].date +
-              " - " +
-              upcomingWork[0].calendar[upcomingWork[0].calendar.length - 1].date}
-          </p>
+          <p>{minDate + " - " + maxDate}</p>
         </div>
 
     } else{
