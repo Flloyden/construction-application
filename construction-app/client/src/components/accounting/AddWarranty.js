@@ -29,9 +29,9 @@ const AddWaranty = (props) => {
       name: nameRef.current.value,
       receipt: image,
       registration_number: regRef.current.value,
+      d_number: dNumberRef.current.value,
       warranty_date: endDate,
     });
-    console.log(warranty);
   };
 
   const handleSubmit = (e) => {
