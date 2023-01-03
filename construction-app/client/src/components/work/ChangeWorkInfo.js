@@ -17,6 +17,7 @@ const ChangeWorkInfo = (props) => {
     offer: props.currentOffer,
     workStatus: props.currentWorkStatus,
   });
+
   const [newList, setNewList] = useState({
     id: work.id,
     name: work.name,
@@ -29,16 +30,14 @@ const ChangeWorkInfo = (props) => {
     workStatus: work.workStatus,
     //calendar: [],
   });
+
   const currentEndDateMoment = moment(props.currentStartDate, "YYYY-MM-DD")
     .add(props.currentWorkDays, "days")
     .format("YYYY-MM-DD");
+
   let [startDate, setStartDate] = useState(new Date(props.currentStartDate));
-  let [earliestStartDate, setEarliestStartDate] = useState(
-    new Date(props.currentEarliestStartDate)
-  );
-  const [enableEarliestStartDate, setEnableEarliestStartDate] = useState(
-    props.currentEarliestStartDate != null
-  );
+  let [earliestStartDate, setEarliestStartDate] = useState(new Date(props.currentEarliestStartDate));
+  const [enableEarliestStartDate, setEnableEarliestStartDate] = useState(props.currentEarliestStartDate != null);
   let [endDate] = useState(new Date(currentEndDateMoment));
   const dayCountRef = useRef();
   const [toggleLock, setToggleLock] = useState(newList.lockedInCalendar);
@@ -206,11 +205,21 @@ const ChangeWorkInfo = (props) => {
                       selected={startDate}
                       calendarStartDay={1}
                       onChange={(date) => {
+                        setStartDate(date);
                         setNewList({
                           ...newList,
                           startDate: new Date(date),
                         });
-                        setStartDate(date);
+
+                        if (date.getTime() < earliestStartDate.getTime()) {
+                          setNewList({
+                            ...newList,
+                            startDate: new Date(date),
+                            earliestStartDate: new Date(date),
+                          });
+
+                          setEarliestStartDate(date);
+                        }
                       }}
                       selectsStart
                       startDate={startDate}
@@ -277,11 +286,21 @@ const ChangeWorkInfo = (props) => {
                         calendarStartDay={1}
                         disabled={!enableEarliestStartDate}
                         onChange={(date) => {
+                          setEarliestStartDate(date);
                           setNewList({
                             ...newList,
                             earliestStartDate: new Date(date),
                           });
-                          setEarliestStartDate(date);
+
+                          if (date.getTime() > startDate.getTime()) {
+                            setNewList({
+                              ...newList,
+                              startDate: new Date(date),
+                              earliestStartDate: new Date(date),
+                            });
+
+                            setStartDate(date);
+                          }
                         }}
                         selectsStart
                         startDate={earliestStartDate}

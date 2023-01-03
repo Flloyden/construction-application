@@ -5,7 +5,6 @@ import ApiConnector from "../../services/ApiConnector";
 export default function Recover() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  console.log(searchParams);
   
   useEffect(() => {
     const token = searchParams.get("token");

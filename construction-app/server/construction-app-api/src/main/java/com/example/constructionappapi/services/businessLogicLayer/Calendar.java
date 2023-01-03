@@ -82,24 +82,6 @@ public class Calendar {
                 daysSkipped++;
             }
 
-            /*
-            while (true) {
-                if (!isWeekend(dateToAddTo)) {
-                    break;
-                }
-                if (!vacationDates.containsKey(new VacationCalendarEntity(dateToAddTo))) {
-                    break;
-                }
-                if (!isDateTakenByLockedWork(dateToAddTo)) {
-                    break;
-                }
-
-                dateToAddTo = dateToAddTo.plusDays(1);
-                n++;
-            }
-
-             */
-
             CalendarEntity calendarEntity = new CalendarEntity(dateToAddTo, work);
 
             /*If the date where the new work is getting added already contains something the content that is already there needs
@@ -119,11 +101,11 @@ public class Calendar {
     }
 
     private int calcDaysToShuffleForward(WorkEntity work) {
-        int numberOfDaysAdd = work.getNumberOfDays();
+        int numberOfDaysToAdd = work.getNumberOfDays();
         int numberOfDaysToSkip = 0;
         LocalDate startDate = work.getStartDate();
 
-        for (int i = 0; i < numberOfDaysAdd; i++) {
+        for (int i = 0; i < numberOfDaysToAdd; i++) {
             LocalDate date = startDate.plusDays(i + numberOfDaysToSkip);
 
             while (isWeekend(date) || vacationDates.containsKey(new VacationCalendarEntity(date)) || isDateTakenByLockedWork(date)) {
@@ -132,7 +114,7 @@ public class Calendar {
             }
         }
 
-        return numberOfDaysAdd + numberOfDaysToSkip;
+        return numberOfDaysToAdd + numberOfDaysToSkip;
     }
 
     /**
@@ -148,6 +130,8 @@ public class Calendar {
         moveCalendarItemBackwards(oldStartDate);
 
         addWork(work);
+
+        moveCalendarItemBackwards(LocalDate.now());
 
         workRepository.updateStartingDates();
     }
