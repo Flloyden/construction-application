@@ -46,7 +46,7 @@ export default function Help() {
   }
 
   return (
-    <div className="p-7 text 2x1 font-semibold flex-1 h-full bg-blue-50 dark:bg-white dark:text-white">
+    <div className="p-7 text 2x1 font-semibold flex-1 h-fit bg-blue-50 dark:bg-white dark:text-white">
       <div className="rounded-lg w-full h-full">
         <div className="w-full h-fit bg-white dark:bg-gray-800 p-6 rounded shadow border">
           <ul className="flex justify-between gap-6 text-center">
