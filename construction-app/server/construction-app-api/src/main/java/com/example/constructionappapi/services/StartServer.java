@@ -2,8 +2,10 @@ package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.CalendarColorRepository;
 import com.example.constructionappapi.services.dataAccessLayer.UserRole;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarColorEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -37,6 +39,7 @@ public class StartServer {
 
             //TODO: Remove when done with project? Could be useful.
             addDefaultUser();
+            addDefaultColor();
 
             Tests tests = new Tests(configurableApplicationContext);
             //tests.testAddWork();
@@ -65,6 +68,22 @@ public class StartServer {
         }
     }
 
+    private static void addDefaultColor()
+    {
+        CalendarColorRepository calendarColorRepository = configurableApplicationContext.getBean(CalendarColorRepository.class);
+        Optional<CalendarColorEntity> colorEntity = calendarColorRepository.findById(1L);
+
+        if (colorEntity.isEmpty())
+        {
+            CalendarColorEntity colorEntity1 = new CalendarColorEntity();
+            colorEntity1.setId(0);
+            colorEntity1.setWorkColor("#1d4ed8");
+            colorEntity1.setVacationColor("#15803d");
+            colorEntity1.setWeekendsColor("#b91c1c");
+
+            calendarColorRepository.createCalendarcolor(colorEntity1);
+        }
+    }
     @Bean
     public TaskDoneEveryNight task() {
         return new TaskDoneEveryNight(configurableApplicationContext);

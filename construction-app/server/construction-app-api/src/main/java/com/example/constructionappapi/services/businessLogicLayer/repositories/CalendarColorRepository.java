@@ -26,4 +26,8 @@ public class CalendarColorRepository {
         }
         return ResponseEntity.ok().body(calendarColor.get());
     }
+
+    public Optional<CalendarColorEntity> findById(long l) {
+        return calendarColorDao.findById(1L);
+    }
 }
