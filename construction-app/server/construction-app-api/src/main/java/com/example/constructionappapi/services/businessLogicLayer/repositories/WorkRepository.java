@@ -47,10 +47,10 @@ public class WorkRepository {
      *
      * @return
      */
-    public ResponseEntity<WorkEntity> createWork(long customerId, WorkEntity work) {
+    public ResponseEntity createWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
 
         work.setCustomer(customer.get());

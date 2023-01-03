@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.dataAccessLayer.dao.AccountDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.presentationLayer.bodies.UserInfoUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,18 +37,28 @@ public class AccountRepository {
         accountDao.deleteById(id);
     }
 
-    public void updateUserInfo(AccountEntity account) {
-        Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
+    public ResponseEntity<String> updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        final Optional<AccountEntity> accountEntity = Optional.ofNullable(findByEmail(userInfoUpdateRequest.getEmail()));
+        if (accountEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not found.");
+        }
+
+        if (!bCryptPasswordEncoder.matches(userInfoUpdateRequest.getPassword(), accountEntity.get().getPassword())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not found.");
+        }
 
         accountEntity.ifPresent(entity -> {
-            entity.setName(account.getName());
-            entity.setEmail(account.getEmail());
-            entity.setProfileImage(account.getProfileImage());
+            entity.setName(userInfoUpdateRequest.getName());
+            entity.setEmail(userInfoUpdateRequest.getEmail());
+            entity.setProfileImage(userInfoUpdateRequest.getProfileImage());
+            entity.setRole(userInfoUpdateRequest.getUserRole());
 
-            System.out.println("updateUserInfo username: " + account.getName());
-            System.out.println("updateUserInfo email: " + account.getEmail());
             accountDao.save(entity);
         });
+
+        return ResponseEntity.ok().body("User information successfully changed.");
     }
 
     public AccountEntity findByEmail(String email) {
@@ -103,7 +114,7 @@ public class AccountRepository {
         if (!bCryptPasswordEncoder.matches(password, accountEntity.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password does not match.");
         }
-        if(!account.getEmail().matches(email)){
+        if (!account.getEmail().matches(email)) {
             accountEntity.get().setEmail(email);
         }
 

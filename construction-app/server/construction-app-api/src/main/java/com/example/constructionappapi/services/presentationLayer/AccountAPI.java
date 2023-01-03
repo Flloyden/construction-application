@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
+import com.example.constructionappapi.services.presentationLayer.bodies.UserInfoUpdateRequest;
 import com.example.constructionappapi.services.presentationLayer.bodies.UserInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class AccountAPI {
     }
 
     @PostMapping("/account/update")
-    public void updateUserInfo(@RequestBody AccountEntity account) {
-        accountRepository.updateUserInfo(account);
+    public ResponseEntity<String> updateUserInfo(@RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
+        return accountRepository.updateUserInfo(userInfoUpdateRequest);
     }
 
     @GetMapping("/account/{accountId}")

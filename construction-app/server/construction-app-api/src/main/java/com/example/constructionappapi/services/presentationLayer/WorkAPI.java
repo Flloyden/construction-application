@@ -21,8 +21,9 @@ public class WorkAPI {
     public List<WorkEntity> getAllWorkEntities() {
         return workRepository.getAllWorkEntities();
     }
+
     @PostMapping("/work/{customerId}/save")
-    public ResponseEntity<WorkEntity> createWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
+    public ResponseEntity createWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
         return workRepository.createWork(customerId, work);
     }
 
