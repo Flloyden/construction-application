@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="construction-app-api:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/construction_app_api_jar</output-path>
+    <root id="archive" name="construction-app-api.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/construction-app/server/construction-app-api/src/main/java/com/example/constructionappapi/services/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
