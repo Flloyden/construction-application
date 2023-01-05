@@ -2,7 +2,7 @@ package com.example.constructionappapi.services.presentationLayer;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
-import com.example.constructionappapi.services.emailRecovery.EmailService;
+import com.example.constructionappapi.services.businessLogicLayer.email.EmailService;
 import com.example.constructionappapi.services.presentationLayer.bodies.*;
 import com.example.constructionappapi.services.security.JwtUtils;
 import lombok.RequiredArgsConstructor;

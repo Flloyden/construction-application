@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.emailRecovery;
+package com.example.constructionappapi.services.businessLogicLayer.email;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
