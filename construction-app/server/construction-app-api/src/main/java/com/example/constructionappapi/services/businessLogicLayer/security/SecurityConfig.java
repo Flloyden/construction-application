@@ -1,4 +1,4 @@
-package com.example.constructionappapi.services.security;
+package com.example.constructionappapi.services.businessLogicLayer.security;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.List;
 
 @EnableWebSecurity

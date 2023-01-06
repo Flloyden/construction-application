@@ -1,9 +1,7 @@
-package com.example.constructionappapi.services.security;
+package com.example.constructionappapi.services.businessLogicLayer.security;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
