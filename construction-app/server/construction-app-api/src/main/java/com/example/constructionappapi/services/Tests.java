@@ -312,6 +312,7 @@ public class Tests {
         System.out.println();
         CalendarSingleton.getCalendar().printWorkMap();
     }
+    /*
 
     public void testSetWorkStatusToCompleted() {
         String ANSI_RED = "\u001B[31m";
@@ -329,6 +330,8 @@ public class Tests {
         CustomerNoteAPI customerNoteAPI = configurableApplicationContext.getBean(CustomerNoteAPI.class);
         customerNoteAPI.getAllNotesForSum(1);
     }
+
+     */
 
     public void testRemoveCustomer() {
         /*

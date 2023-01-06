@@ -15,6 +15,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -221,13 +222,26 @@ public class WorkRepository {
     public ResponseEntity findStartedWorkAndUpdateToCompleted() {
         System.out.println("------ findWorkAndUpdateToCompleted() just ran... ------");
         List<WorkEntity> startedWork = workDao.findStartedWork();
+        boolean success = false;
 
+        //------------------
+        //TODO detta är problematiskt om han råkar göra en summering sista månaden på ett jobb, innan jobbet faktiskt är klart. Bättre han gör d manuellt?
         for (WorkEntity workEntity : startedWork) {
-            //TODO tänk igenom detta om d funkar för alla situationer
-            if (!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()) {
+            Optional<CalendarEntity> lastDateOfWork = calendarDao.findFirstByWorkIdOrderByDateDesc(workEntity.getId()); //last date in calendar for the work
+            Optional<NoteSummaryEntity> lastSumForWork = noteSummaryDao.findLatestSumForWork(workEntity.getId());       //last sum made for the work
+
+            if (!(workEntity.getNoteSummaries().isEmpty()) &&
+                    workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size() &&                             //same amount of workDays as notes for the work
+                    lastDateOfWork.get().getDate().getMonthValue() == lastSumForWork.get().getMonth())                  //lastest sum was made for the last month of the job
+            {
                 workEntity.setWorkStatus(WorkStatus.COMPLETED);
-                return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                success = true;
             }
+        }
+
+        //---------------------
+        if(success){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

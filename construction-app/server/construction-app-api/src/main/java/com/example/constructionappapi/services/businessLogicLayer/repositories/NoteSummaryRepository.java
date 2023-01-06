@@ -45,10 +45,27 @@ public class NoteSummaryRepository {
         if(work.isPresent()){
             List<CustomerNoteEntity> allNotesForWork = customerNoteDao.findAllByWorkId(workId);
             if(!allNotesForWork.isEmpty()){
-                if(noteSummaryDao.existsById(noteSummary.getId())){
-                    NoteSummaryEntity noteSummaryEntity = noteSummaryDao.findById(noteSummary.getId()).get();
-                    NoteSummaryEntity oldSum = noteSummary;
+
+                //-----------------
+
+                List<NoteSummaryEntity> allSumsForWork = noteSummaryDao.findAllByWorkNumber(workId);
+
+                for (NoteSummaryEntity sum: allSumsForWork) {
+
                 }
+
+                Optional<NoteSummaryEntity> lastSumForWork = noteSummaryDao.findLatestSumForWork(workId);
+                if(lastSumForWork.isPresent()){
+                    System.out.println("-----------lastSumForWork date: " + lastSumForWork.get().getMonth());
+
+                    if(lastSumForWork.get().getMonth() == noteSummary.getMonth()){
+                        noteSummary = noteSummaryDao.findLatestSumForWork(workId).get();
+                    }
+                }
+
+                //----------------
+
+
                 for (CustomerNoteEntity customerNoteEntity : allNotesForWork) {
                     if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED){ //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
