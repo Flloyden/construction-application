@@ -17,12 +17,12 @@ import CustomerRegister from './components/customers/CustomerRegister';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename={'/bits'}>
         <div className='flex bg-blue-50 h-screen'>
           <Login />
           <Routes>
             <Route element={<PrivateRoutes />}>
-              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
               <Route index element={<Home />} />
               <Route path='/kunder' element={<CustomerRegister />} />
               <Route path='/garantier' element={<Accounting />} />

@@ -26,7 +26,7 @@ export default function Navbar(props) {
   const [navToggle, setNavToggle] = useState(true);
   // Menus
   const Menus = [
-    { title: "Översikt", src: <AiOutlineHome />, link: "/" },
+    { title: "Översikt", src: <AiOutlineHome />, link: "/home" },
     { title: "Kunder", src: <FiUsers />, link: "/kunder" },
     { title: "Kalender", src: <BiCalendar />, link: "/kalender" },
     { title: "Garantier", src: <HiOutlineDocumentText />, link: "/garantier" },
@@ -37,7 +37,7 @@ export default function Navbar(props) {
 
   useEffect(() => {
     const titleMap = [
-      { path: "/", title: "BiTs | Översikt" },
+      { path: "/home", title: "BiTs | Översikt" },
       { path: "/kunder", title: "BiTs | Kundregister" },
       { path: "/kalender", title: "BiTs | Kalender" },
       { path: "/garantier", title: "BiTs | Garantier" },

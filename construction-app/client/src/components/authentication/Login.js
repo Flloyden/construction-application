@@ -70,7 +70,7 @@ const Login = () => {
       if (isMobile) {
         navigate("/kalender");
       } else {
-        window.location.href = "/";
+        navigate("/home");
       }
 
       setLoading(false);

@@ -1,6 +1,7 @@
 {
   "name": "construction-app",
   "version": "0.1.0",
+  "homepage":"https://norrto.se/bits",
   "private": true,
   "dependencies": {
     "@fullcalendar/core": "^5.11.3",
