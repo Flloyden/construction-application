@@ -98,10 +98,6 @@ public class NoteSummaryRepository {
 
     public List<NoteSummaryEntity> getSumsForCustomer(long customerId) {
         List<NoteSummaryEntity> sum = noteSummaryDao.findAllByCustomerId(customerId);
-        System.out.println("------------------------------HOW MANY SUMS: " + sum.size());
-        for (NoteSummaryEntity sumEntity : sum) {
-            System.out.println("how many notes for sum: " + sumEntity.getCustomerNotes().size());
-        }
         return sum;
     }
 }
