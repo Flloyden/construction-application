@@ -31,6 +31,8 @@ public class NoteSummaryRepository {
     @Autowired
     private CustomerNoteDao customerNoteDao;
 
+    private WorkRepository workRepository;
+
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
         Optional<WorkEntity> work = workDao.findById(workId);
@@ -42,8 +44,11 @@ public class NoteSummaryRepository {
 
         if(work.isPresent()){
             List<CustomerNoteEntity> allNotesForWork = customerNoteDao.findAllByWorkId(workId);
-                    //work.get().getCustomerNotes();
             if(!allNotesForWork.isEmpty()){
+                if(noteSummaryDao.existsById(noteSummary.getId())){
+                    NoteSummaryEntity noteSummaryEntity = noteSummaryDao.findById(noteSummary.getId()).get();
+                    NoteSummaryEntity oldSum = noteSummary;
+                }
                 for (CustomerNoteEntity customerNoteEntity : allNotesForWork) {
                     if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED){ //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
@@ -70,12 +75,14 @@ public class NoteSummaryRepository {
                         noteSummary.setWorkName(workName);
                         noteSummary.setCustomerNotes(summedNotes); //lägg till anteckningar till NoteSummary
                         noteSummary.setWorkForSummary(work.get()); //assigna summary till work
-                        //work.get().setSummary(noteSummary);
+                        //workRepository.findWorkAndUpdateToCompleted();
+                        work.get().setSummary(noteSummary);
                     }
                 }
                 if(summedNotes.isEmpty()){
                     return null;
                 }
+                noteSummary.setCustomerNotes(summedNotes);
                 return noteSummaryDao.save(noteSummary);
             }
 
@@ -91,6 +98,10 @@ public class NoteSummaryRepository {
 
     public List<NoteSummaryEntity> getSumsForCustomer(long customerId) {
         List<NoteSummaryEntity> sum = noteSummaryDao.findAllByCustomerId(customerId);
+        System.out.println("------------------------------HOW MANY SUMS: " + sum.size());
+        for (NoteSummaryEntity sumEntity : sum) {
+            System.out.println("how many notes for sum: " + sumEntity.getCustomerNotes().size());
+        }
         return sum;
     }
 }

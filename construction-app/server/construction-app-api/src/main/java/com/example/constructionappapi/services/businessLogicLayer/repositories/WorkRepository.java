@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -217,7 +218,7 @@ public class WorkRepository {
     }
 
     @Transactional
-    public boolean findWorkAndUpdateToCompleted() {
+    public ResponseEntity findStartedWorkAndUpdateToCompleted() {
         System.out.println("------ findWorkAndUpdateToCompleted() just ran... ------");
         List<WorkEntity> startedWork = workDao.findStartedWork();
 
@@ -225,23 +226,23 @@ public class WorkRepository {
             //TODO tänk igenom detta om d funkar för alla situationer
             if (!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()) {
                 workEntity.setWorkStatus(WorkStatus.COMPLETED);
-                return true;
+                return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public boolean findWorkAndUpdateToStarted() {
+    public ResponseEntity findWorkAndUpdateToStarted() {
         System.out.println("------ findWorkAndUpdateToStarted() just ran... ------");
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : workNotStarted) {
             if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() != WorkStatus.COMPLETED) {
                 workEntity.setWorkStatus(WorkStatus.STARTED);
-                return true;
+                return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public List<WorkEntity> checkForUpcomingWork() {

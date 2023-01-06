@@ -8,6 +8,7 @@ import com.example.constructionappapi.services.dataAccessLayer.entities.Customer
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import com.example.constructionappapi.services.presentationLayer.AuthenticationAPI;
 import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
+import com.example.constructionappapi.services.presentationLayer.CustomerNoteAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import com.example.constructionappapi.services.presentationLayer.bodies.PasswordChangeRequest;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -317,7 +318,16 @@ public class Tests {
 
         System.out.println(ANSI_RED + "Changing workstatus to completed" + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
-        workAPI.findWorkAndUpdateToCompleted();
+        workAPI.findStartedWorkAndUpdateToCompleted();
+    }
+
+
+    public void testGetAllNotesForSum() {
+        String ANSI_RED = "\u001B[31m";
+
+        System.out.println(ANSI_RED + "Get all notes for sum" + ANSI_RED);
+        CustomerNoteAPI customerNoteAPI = configurableApplicationContext.getBean(CustomerNoteAPI.class);
+        customerNoteAPI.getAllNotesForSum(1);
     }
 
     public void testRemoveCustomer() {

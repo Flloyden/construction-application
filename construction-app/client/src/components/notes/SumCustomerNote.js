@@ -89,7 +89,6 @@ export default function SumCustomerNote(
     // Adds work to user with api call
     ApiConnector.sumNote(Id, sumNoteInfo)
       .then((response) => {
-        ApiConnector.findWorkAndUpdateToCompleted();
         console.log(response);
         if (response.data.datePostedSum === null) {
           setShowWrongInput((showWrongInput) => !showWrongInput);
@@ -97,6 +96,7 @@ export default function SumCustomerNote(
             setShowWrongInput(false);
           }, 3000);
         } else {
+          ApiConnector.findWorkAndUpdateToCompleted();
           window.location.reload(false);
         }
       })

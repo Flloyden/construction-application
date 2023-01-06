@@ -25,6 +25,8 @@ public class CustomerNoteRepository {
     @Autowired
     private CustomerNoteDao customerNoteDao;
     @Autowired
+    private NoteSummaryDao noteSummaryDao;
+    @Autowired
     private WorkDao workDao;
     @Autowired
     private WorkRepository workRepository;
@@ -178,7 +180,15 @@ public class CustomerNoteRepository {
 
 
     public void deleteNote(Long noteId) {
-        customerNoteDao.deleteById(noteId);
+        if(customerNoteDao.existsById(noteId)){
+           customerNoteDao.deleteById(noteId);
+        }
     }
 
+    public List<CustomerNoteEntity> getAllNotesForSum(long sumId) {
+        if(noteSummaryDao.existsById(sumId)){
+            return customerNoteDao.findAllBySummaryId(sumId);
+        }
+        return null;
+    }
 }
