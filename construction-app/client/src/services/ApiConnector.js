@@ -149,7 +149,7 @@ class ApiConnector {
   }
 
   findWorkAndUpdateToCompleted() {
-    return axios.post(WORK_BASE_API + "/update_workstatus_completed");
+    return axios.get(WORK_BASE_API + "/update-workstatus-completed");
   }
 
   // ACCOUNTING / WARRANTY
@@ -226,8 +226,8 @@ class ApiConnector {
     return axios.get(NOTESUMMARY_BASE_API + "/" + customerId);
   }
 
-  getOldNotes(workId) {
-    return axios.get(CUSTOMERNOTE_BASE_API + "/sum-notes/" + workId);
+  getNotesForSum(sumId) {
+    return axios.get(CUSTOMERNOTE_BASE_API + "/notes-for-sum/" + sumId);
   }
 
   editNote(workId, noteList) {

@@ -11,7 +11,8 @@ export default function OldNotes(props) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await ApiConnector.getOldNotes(props.currentWorkId);
+        const response = await ApiConnector.getNotesForSum(props.currentSumId);
+        console.log(response.data)
         setNotes(response.data);
       } catch (error) {
         console.log(error);
@@ -19,7 +20,7 @@ export default function OldNotes(props) {
       setLoading(false);
     };
     fetchData();
-  }, [props.currentWorkId]);
+  }, [props.currentSumId]);
 
   if (notes.length < 1) {
     return <div></div>;

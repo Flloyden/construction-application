@@ -42,6 +42,8 @@ public class StartServer {
             addDefaultColor();
 
             Tests tests = new Tests(configurableApplicationContext);
+            //tests.testGetAllNotesForSum();
+            //tests.testSetWorkStatusToCompleted();
             //tests.testAddWork();
             //tests.testChangeNumberOfDaysOnWork();
         } catch (Exception e) {

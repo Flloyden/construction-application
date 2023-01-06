@@ -25,13 +25,13 @@ public class CustomerNoteAPI {
         return customerNoteRepository.editCustomerNote(customerNote);
     }
 
-    @GetMapping("/notes/sum-notes/{workId}")
-    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(@PathVariable final long workId) {
-        return customerNoteRepository.getAllSummarizedNotesForWork(workId);
+    @GetMapping("/notes/notes-for-sum/{sumId}")
+    public List<CustomerNoteEntity> getAllNotesForSum(@PathVariable final long sumId) {
+        return customerNoteRepository.getAllNotesForSum(sumId);
     }
 
     @DeleteMapping("/notes/{noteId}/remove")
-    public void deleteNote(@PathVariable final Long noteId) { //TODO ska ej kunna göras?
+    public void deleteNote(@PathVariable final Long noteId) {
         customerNoteRepository.deleteNote(noteId);
     }
 }

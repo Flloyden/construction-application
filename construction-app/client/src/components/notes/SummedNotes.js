@@ -6,7 +6,21 @@ export default function SummedNotes(props) {
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState("");
   const [oldNotesToggle, setOldNotesToggle] = useState(false);
-  const [currentWorkId, setCurrentWorkId] = useState("");
+  const [currentSumId, setCurrentSumId] = useState("");
+  const months = [
+    { id: 1, name: "Januari" },
+    { id: 2, name: "Februari" },
+    { id: 3, name: "Mars" },
+    { id: 4, name: "April" },
+    { id: 5, name: "Maj" },
+    { id: 6, name: "Juni" },
+    { id: 7, name: "Juli" },
+    { id: 8, name: "Augusti" },
+    { id: 9, name: "September" },
+    { id: 10, name: "Oktober" },
+    { id: 11, name: "November" },
+    { id: 12, name: "December" },
+  ];
 
   useEffect(() => {
     // Gets all the clients on page load once per load
@@ -36,7 +50,7 @@ export default function SummedNotes(props) {
             <thead className="text-xs uppercase  text-gray-500  rounded border-b-2 border-gray-300">
               <tr>
                 <th scope="col" className="py-3 px-6">
-                  Datum
+                  Månad
                 </th>
                 <th scope="col" className="py-3 px-6">
                   Jobb
@@ -66,7 +80,7 @@ export default function SummedNotes(props) {
                       scope="row"
                       className="py-4 px-6 font-medium whitespace-nowrap"
                     >
-                      {item.datePostedSum}
+                      {item.month}
                     </th>
                     <td className="py-4 px-6">{item.workName}</td>
                     <td className="py-4 px-6">{item.timeSpendSum}</td>
@@ -77,7 +91,7 @@ export default function SummedNotes(props) {
                         className="flex justify-end"
                         onClick={() => {
                           setOldNotesToggle(true);
-                          setCurrentWorkId(item.workNumber);
+                          setCurrentSumId(item.id);
                         }}
                       >
                         <p className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded h-fit font-normal cursor-pointer">Öppna</p>
@@ -89,7 +103,7 @@ export default function SummedNotes(props) {
             </tbody>
           </table>
         )}
-        {oldNotesToggle && <OldNotes currentWorkId={currentWorkId} setOldNotesToggle={setOldNotesToggle} />}
+        {oldNotesToggle && <OldNotes currentSumId={currentSumId} setOldNotesToggle={setOldNotesToggle} />}
       </div>
     );
   }
