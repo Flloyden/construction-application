@@ -19,10 +19,10 @@ public class EmailConfiguration {
             Properties properties = new Properties();
             properties.load(inputStream);
 
-            mailSender.setHost("smtp.gmail.com");
-            mailSender.setPort(587);
-            mailSender.setUsername(properties.getProperty("app-email")); //TODO: Need to create/get an gmail(?) account for the application.
-            mailSender.setPassword(properties.getProperty("app-email-password")); //TODO: Need to get app password from google.
+            mailSender.setHost(properties.getProperty("email-host"));
+            mailSender.setPort(Integer.parseInt(properties.getProperty("email-port")));
+            mailSender.setUsername(properties.getProperty("app-email"));
+            mailSender.setPassword(properties.getProperty("app-email-password"));
 
             Properties props = mailSender.getJavaMailProperties();
             props.put("mail.transport.protocol", "smtp");

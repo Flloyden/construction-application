@@ -187,7 +187,7 @@ public class WorkRepository {
 
     private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {
         if (!workBeforeUpdate.getStartDate().equals(workToUpdateWith.getStartDate())) {
-            calendar.updateStartDate(workBeforeUpdate.getStartDate(), workToUpdateWith);
+            calendar.changeStartDateOfWorkOnCalendar(workBeforeUpdate.getStartDate(), workToUpdateWith);
         } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
             updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
         } else if (workBeforeUpdate.isLockedInCalendar() != workToUpdateWith.isLockedInCalendar()){
@@ -197,9 +197,9 @@ public class WorkRepository {
 
     private void updateNumberOfDays(WorkEntity work, int newNumberOfDays) {
         if (newNumberOfDays < work.getNumberOfDays()) {
-            calendar.reduceNumberOfDays(work, work.getNumberOfDays() - newNumberOfDays);
+            calendar.reduceNumberOfDaysOfWork(work, work.getNumberOfDays() - newNumberOfDays);
         } else if (newNumberOfDays > work.getNumberOfDays()) {
-            calendar.increaseNumberOfDays(work, newNumberOfDays - work.getNumberOfDays());
+            calendar.increaseNumberOfDaysOfWork(work, newNumberOfDays - work.getNumberOfDays());
         }
     }
 

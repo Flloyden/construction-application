@@ -60,6 +60,12 @@ public class Calendar {
         vacationRepository.findAllVacationCalendarEntities().forEach(vacationCalendarEntity -> vacationDates.put(vacationCalendarEntity, vacationCalendarEntity.getVacation()));
     }
 
+    /**
+     * Add days of the new work to the calendar.
+     *
+     * @param work Work being added to the calendar.
+     * @return
+     */
     public ResponseEntity<WorkEntity> addWork(WorkEntity work) {
         if (workMap.containsKey(work.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -67,10 +73,18 @@ public class Calendar {
 
         workMap.put(work.getId(), work);
         addDaysToCalendar(work.getNumberOfDays(), work.getStartDate(), work);
+        moveCalendarItemBackwards(LocalDate.now());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(work);
     }
 
+    /**
+     * Adds work days to the calendar.
+     *
+     * @param numberOfDaysToAdd Hom many days to add.
+     * @param startDate         Date to start adding days from.
+     * @param work              Work being added to the calendar.
+     */
     private void addDaysToCalendar(int numberOfDaysToAdd, LocalDate startDate, WorkEntity work) {
         int daysToShuffleForward = calcDaysToShuffleForward(work);
         long daysSkipped = 0L;
@@ -100,6 +114,13 @@ public class Calendar {
         }
     }
 
+    /**
+     * Calculates how far an existing calendar-item needs to be shuffled forward to make place for
+     * the new work.
+     *
+     * @param work The new work.
+     * @return Number of days to shuffle forward.
+     */
     private int calcDaysToShuffleForward(WorkEntity work) {
         int numberOfDaysToAdd = work.getNumberOfDays();
         int numberOfDaysToSkip = 0;
@@ -118,11 +139,11 @@ public class Calendar {
     }
 
     /**
-     * Updates the dates for a work in the calendar by removing the old dates and then adding the new ones.
+     * Changes the start date for a work in the calendar by removing the old dates and then adding the new ones.
      *
-     * @param work The new work-entity.
+     * @param work The new work.
      */
-    public void updateStartDate(LocalDate oldStartDate, WorkEntity work) {
+    public void changeStartDateOfWorkOnCalendar(LocalDate oldStartDate, WorkEntity work) {
         calendarRepository.deleteAllByWorkId(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().equals(work.getId()));
         workMap.remove(work.getId());
@@ -131,18 +152,28 @@ public class Calendar {
 
         addWork(work);
 
-        moveCalendarItemBackwards(LocalDate.now());
-
         workRepository.updateStartingDates();
     }
 
-    public void increaseNumberOfDays(WorkEntity work, int numberOfDaysToAdd) {
+    /**
+     * Increase the number of days of the work on the calendar.
+     *
+     * @param work              Work to increase the number of days of.
+     * @param numberOfDaysToAdd Number of days to increase the work by.
+     */
+    public void increaseNumberOfDaysOfWork(WorkEntity work, int numberOfDaysToAdd) {
         calendarRepository
                 .findFirstByWorkIdByOrderByDateDesc(work.getId())
                 .ifPresent(calendarEntity -> addDaysToCalendar(numberOfDaysToAdd, calendarEntity.getDate().plusDays(1), work));
     }
 
-    public void reduceNumberOfDays(WorkEntity work, int numberOfDaysToRemove) {
+    /**
+     * Reduce the number of days of the work on the calendar.
+     *
+     * @param work                 Work to reduce the number of days of.
+     * @param numberOfDaysToRemove Number of days to reduce the work by.
+     */
+    public void reduceNumberOfDaysOfWork(WorkEntity work, int numberOfDaysToRemove) {
         for (int i = 0; i < numberOfDaysToRemove; i++) {
             calendarRepository.deleteLastByWorkId(work.getId()).ifPresent(calendarDates::remove);
         }
@@ -150,12 +181,23 @@ public class Calendar {
         moveCalendarItemBackwards(work.getStartDate());
     }
 
+    /**
+     * Remove work from the calendar.
+     *
+     * @param work Work to remove.
+     */
     public void removeWork(WorkEntity work) {
         workMap.remove(work.getId());
         calendarDates.entrySet().removeIf(item -> item.getValue().equals(work.getId()));
         moveCalendarItemBackwards(work.getStartDate());
     }
 
+    /**
+     * Add the vacation to the calendar.
+     *
+     * @param vacation           Vacation to add.
+     * @param vacationDatesToAdd Vacation-dates to add.
+     */
     public void addVacation(VacationEntity vacation, List<VacationCalendarEntity> vacationDatesToAdd) {
         int daysToAdd = vacation.getNumberOfDays();
         int daysToShuffleForward = daysToAdd;
@@ -175,12 +217,23 @@ public class Calendar {
         workRepository.updateStartingDates();
     }
 
+    /**
+     * Remove the vacation from the calendar.
+     *
+     * @param vacation Vacation to remove.
+     */
     public void removeVacation(VacationEntity vacation) {
         vacationDates.entrySet().removeIf(item -> item.getValue().getId() == vacation.getId());
         moveCalendarItemBackwards(vacation.getStartDate());
         workRepository.updateStartingDates();
     }
 
+    /**
+     * Shuffle existing calendar-item forwards on the calendar.
+     *
+     * @param date          Date of calendar-item to shuffle forward.
+     * @param daysToShuffle Number of days to shuffle the calendar-item forwards.
+     */
     public void shuffleForward(LocalDate date, int daysToShuffle) {
         LocalDate newDate = date.plusDays(daysToShuffle);
         CalendarEntity calendarEntity = calendarRepository.findFirstByDate(date);
@@ -231,6 +284,15 @@ public class Calendar {
         return lastDateMovedTo;
     }
 
+    /**
+     * Finds the earliest free calendar spot that the work can be added to.
+     *
+     * @param possibleDate    Date to start from.
+     * @param lastDateMovedTo The last date that something was added to.
+     * @param workToMove      The work being moved.
+     * @return The date that the work was moved to, or null if no free calendar spot was found for the work
+     * being moved
+     */
     private LocalDate findFreeCalendarSpot(LocalDate possibleDate, LocalDate lastDateMovedTo, WorkEntity workToMove) {
         LocalDate freeCalendarSpot = null;
 
@@ -263,14 +325,31 @@ public class Calendar {
         return freeCalendarSpot;
     }
 
+    /**
+     * Checks if a date is a weekend.
+     *
+     * @param date The date.
+     * @return true if weekend, otherwise false.
+     */
     private boolean isWeekend(LocalDate date) {
         return date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 
+    /**
+     * Checks if a date is taken by a locked work.
+     *
+     * @param dateToAddTo The date.
+     * @return true if taken by locked work, false otherwise.
+     */
     private boolean isDateTakenByLockedWork(LocalDate dateToAddTo) {
         return calendarDates.containsKey(new CalendarEntity(dateToAddTo)) && workMap.get(calendarDates.get(new CalendarEntity(dateToAddTo))).isLockedInCalendar();
     }
 
+    /**
+     * Gets calendar related information about vacations for the front-end.
+     *
+     * @return Information about vacations.
+     */
     public List<WorkCalendarInformation> getWorkCalendarInformation() {
         return calendarDates.entrySet().stream().map(entry -> new WorkCalendarInformation(
                 workMap.get(entry.getValue()).getCustomer().getId(),
@@ -280,6 +359,11 @@ public class Calendar {
         )).collect(Collectors.toList());
     }
 
+    /**
+     * Gets calendar related information about work for the front-end.
+     *
+     * @return Information about work.
+     */
     public List<VacationCalendarInformation> getVacationCalendarInformation() {
         return vacationDates.entrySet().stream().map(entry -> new VacationCalendarInformation(
                 entry.getValue().getId(),
