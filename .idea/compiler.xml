@@ -11,5 +11,11 @@
         <module name="construction-app-api.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bits" target="11" />
+      <module name="bits.main" target="11" />
+      <module name="bits.test" target="11" />
+      <module name="constructionappapi" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
