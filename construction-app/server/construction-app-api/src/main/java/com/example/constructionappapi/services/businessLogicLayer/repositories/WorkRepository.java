@@ -125,15 +125,15 @@ public class WorkRepository {
         return ResponseEntity.ok().body("Work deleted");
     }
 
-    public ResponseEntity<WorkEntity> updateWork(long customerId, WorkEntity work) {
+    public ResponseEntity<?> updateWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden som är kopplad till detta jobbet kan inte hittas.");
         }
 
         Optional<WorkEntity> workBeforeUpdate = workDao.findById(work.getId());
         if (workBeforeUpdate.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet som du försöker ändra kan inte hittas.");
         }
 
         if (work.getStartDate() == null) {
@@ -141,21 +141,19 @@ public class WorkRepository {
         }
 
         if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
         }
 
         if (isDateTakenByLocked(work.getStartDate())) {
             Optional<WorkEntity> workAtStartDate = workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId());
 
             if (workAtStartDate.isPresent() && !workAtStartDate.get().getId().equals(work.getId())) {
-                return workAtStartDate.map(
-                        lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
-                ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb på det valda startdatumet.");
             }
         }
 
         if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(workBeforeUpdate.get());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Det är inte tillåtet att ändra ett avklarat jobb.");
         }
 
         List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
