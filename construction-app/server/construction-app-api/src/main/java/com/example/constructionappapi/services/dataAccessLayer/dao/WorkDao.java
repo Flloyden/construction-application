@@ -58,7 +58,7 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +
             "INNER JOIN calendar ON work.id = calendar.work_id " +
-            "WHERE DATE(calendar.date) = DATEADD(day, -1, CURRENT_DATE) AND work_status = ?1",
+            "WHERE DATE(calendar.date) = CURRENT_DATE + INTERVAL '-1 day' AND work_status = ?1",
             nativeQuery = true
     )
     List<WorkEntity> findWorkEntityForTodayIfSaturday(int workStatus);
@@ -67,19 +67,19 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
             "FROM customer " +
             "INNER JOIN work ON customer.id = work.customer_id " +
             "INNER JOIN calendar ON work.id = calendar.work_id " +
-            "WHERE DATE(calendar.date) = DATEADD(day, -2, CURRENT_DATE) AND work_status = ?1",
+            "WHERE DATE(calendar.date) = CURRENT_DATE + INTERVAL '-2 day' AND work_status = ?1",
             nativeQuery = true
     )
     List<WorkEntity> findWorkEntityForTodayIfSunday(int workStatus);
 
-    @Query(value = "SELECT w.* FROM construction_system.work w "+
+    @Query(value = "SELECT w.* FROM work w "+
             "INNER JOIN customer c ON c.id=w.customer_id " +
             "INNER JOIN calendar ca ON w.id = ca.work_id " +
             "WHERE start_date BETWEEN ?1 AND ?2 AND work_status = ?3 ORDER BY start_date ASC LIMIT 1",
             nativeQuery = true)
     List<WorkEntity> findFirstByStartDateBetweenAndWorkStatus(LocalDate tomorrow, LocalDate tenDaysForward, int workStatus);
 
-    @Query(value = "SELECT w.* FROM construction_system.work w "+
+    @Query(value = "SELECT w.* FROM work w "+
             "INNER JOIN customer c ON c.id=w.customer_id " +
             "INNER JOIN calendar ca ON w.id = ca.work_id " +
             "WHERE start_date BETWEEN ?1 AND ?2 ORDER BY start_date ASC LIMIT 1",

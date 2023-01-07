@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.email;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class EmailConfiguration {
 
     @Bean

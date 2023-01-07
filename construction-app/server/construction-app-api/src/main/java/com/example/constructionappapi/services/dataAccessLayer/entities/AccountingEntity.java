@@ -24,6 +24,7 @@ public class AccountingEntity {
     private String d_number;
     private LocalDate warranty_date;
     private long status;
-    @Lob
+    //@Lob
+    @Column(columnDefinition = "text")
     private String receipt;
 }

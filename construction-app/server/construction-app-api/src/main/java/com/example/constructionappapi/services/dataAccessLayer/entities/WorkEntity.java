@@ -31,7 +31,8 @@ public class WorkEntity implements Comparable<WorkEntity> {
     private int numberOfDays;
     private boolean isLockedInCalendar;
     private String materialNote;
-    @Lob
+    //@Lob
+    @Column(columnDefinition = "text")
     private String offer;
     private WorkStatus workStatus;
     @ManyToOne
