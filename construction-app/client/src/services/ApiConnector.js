@@ -61,9 +61,9 @@ let refreshPromise = null;
 async function refreshAccessToken(refreshToken) {
   const refresh = async () => {
     try {
-      const response = await axios.post(BASE_URL + "/refresh", {
-        refreshToken,
-      });
+      const response = await axios.post(BASE_URL + "/refresh", 
+        {refreshToken}
+      );
       const newAccessToken = response.headers.authorization;
       const newRefreshToken = response.headers.refreshtoken;
 

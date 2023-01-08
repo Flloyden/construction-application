@@ -89,14 +89,8 @@ const ChangeWorkInfo = (props) => {
         window.location.reload(false);
       })
       .catch((error) => {
-
-        setErrorMessage(error.response.data)
-        setShowErrorMessage(true)
-        setTimeout(() => {
-          setShowErrorMessage(false)
-        }, 3000)
-
         console.log(error);
+        errorMsg(error.response.data)
       });
 
   };
@@ -153,6 +147,14 @@ const ChangeWorkInfo = (props) => {
     } else {
       return <span className="lock unlocked w-full h-full"></span>;
     }
+  }
+
+  function errorMsg(message) {
+    setErrorMessage(message)
+        setShowErrorMessage(true)
+        setTimeout(() => {
+          setShowErrorMessage(false)
+        }, 3000)
   }
 
   return (

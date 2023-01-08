@@ -112,17 +112,17 @@ public class WorkRepository {
     public ResponseEntity<String> deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
         if (work.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("That work entity doesn't exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet du försöker ta bort kan inte hittas.");
         }
 
         if (customerNoteDao.findFirstByWork(work.get()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Can't delete a work-entity with notes");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Det går inte att ta bort ett jobb med anteckningar.");
         }
 
         workDao.delete(work.get());
         calendar.removeWork(work.get());
         updateStartingDates();
-        return ResponseEntity.ok().body("Work deleted");
+        return ResponseEntity.ok().body(work.get().getName() + " har tagits bort.");
     }
 
     public ResponseEntity<?> updateWork(long customerId, WorkEntity work) {
@@ -148,8 +148,12 @@ public class WorkRepository {
             Optional<WorkEntity> workAtStartDate = workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId());
 
             if (workAtStartDate.isPresent() && !workAtStartDate.get().getId().equals(work.getId())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb på det valda startdatumet.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger ett låst jobb på det valda startdatumet.");
             }
+        }
+
+        if(vacationCalendarDao.findFirstByDate(work.getStartDate()).isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger en semester på det valda startdatumet.");
         }
 
         if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
