@@ -92,7 +92,6 @@ const ChangeWorkInfo = (props) => {
         console.log(error);
         errorMsg(error.response.data)
       });
-
   };
 
   function disableDate() {
@@ -151,10 +150,10 @@ const ChangeWorkInfo = (props) => {
 
   function errorMsg(message) {
     setErrorMessage(message)
-        setShowErrorMessage(true)
-        setTimeout(() => {
-          setShowErrorMessage(false)
-        }, 3000)
+    setShowErrorMessage(true)
+    setTimeout(() => {
+      setShowErrorMessage(false)
+    }, 3000)
   }
 
   return (

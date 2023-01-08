@@ -1,22 +1,22 @@
 import axios from "axios";
-const NOTESUMMARY_BASE_API = "http://localhost:8080/api/v1/summary";
-const ACCOUNT_BASE_API = "http://localhost:8080/api/v1/account";
-const WORK_BASE_API = "http://localhost:8080/api/v1/work";
-const VACATION_BASE_API = "http://localhost:8080/api/v1/vacation";
-const CUSTOMER_BASE_API = "http://localhost:8080/api/v1/customers";
-const CALENDAR_BASE_API = "http://localhost:8080/api/v1/calendar";
-const GUARENTEES_BASE_API = "http://localhost:8080/api/v1/guarantees";
-const CUSTOMERNOTE_BASE_API = "http://localhost:8080/api/v1/notes";
 const BASE_URL = "http://localhost:8080/api/v1";
-const AUTHENTICATION_API = "http://localhost:8080/api/v1/login";
+const NOTESUMMARY_BASE_API = BASE_URL + "/summary";
+const ACCOUNT_BASE_API = BASE_URL + "/account";
+const WORK_BASE_API = BASE_URL + "/work";
+const VACATION_BASE_API = BASE_URL + "/vacation";
+const CUSTOMER_BASE_API = BASE_URL + "/customers";
+const CALENDAR_BASE_API = BASE_URL + "/calendar";
+const GUARENTEES_BASE_API = BASE_URL + "/guarantees";
+const CUSTOMERNOTE_BASE_API = BASE_URL + "/notes";
+const AUTHENTICATION_API = BASE_URL + "/authenticate";
 
 axios.interceptors.request.use(
   (config) => {
     const excludedEndpoints = [
-      "http://localhost:8080/api/v1/authentication",
-      "http://localhost:8080/api/v1/refresh",
-      "http://localhost:8080/api/v1/initiate-email-recovery",
-      "http://localhost:8080/api/v1/recover",
+      BASE_URL + "/authentication",
+      BASE_URL + "/refresh",
+      BASE_URL + "/initiate-email-recovery",
+      BASE_URL + "/api/v1/recover",
     ];
 
     if (!excludedEndpoints.includes(config.url)) {
@@ -33,7 +33,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    const excludedEndpoints = ["http://localhost:8080/api/v1/recover"];
+    const excludedEndpoints = [BASE_URL + "/recover"];
 
     const status = error.response ? error.response.status : null;
     if (status === 401 && !excludedEndpoints.includes(error.config.url)) {
@@ -61,8 +61,8 @@ let refreshPromise = null;
 async function refreshAccessToken(refreshToken) {
   const refresh = async () => {
     try {
-      const response = await axios.post(BASE_URL + "/refresh", 
-        {refreshToken}
+      const response = await axios.post(BASE_URL + "/refresh",
+        { refreshToken }
       );
       const newAccessToken = response.headers.authorization;
       const newRefreshToken = response.headers.refreshtoken;

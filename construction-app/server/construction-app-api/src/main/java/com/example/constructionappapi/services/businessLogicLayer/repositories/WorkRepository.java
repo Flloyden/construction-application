@@ -51,7 +51,7 @@ public class WorkRepository {
     public ResponseEntity createWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kan inte hittas.");
         }
 
         work.setCustomer(customer.get());
@@ -128,7 +128,7 @@ public class WorkRepository {
     public ResponseEntity<?> updateWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden som är kopplad till detta jobbet kan inte hittas.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kan inte hittas.");
         }
 
         Optional<WorkEntity> workBeforeUpdate = workDao.findById(work.getId());
@@ -136,12 +136,20 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet som du försöker ändra kan inte hittas.");
         }
 
+        if (work.getName() == null || work.getName().equals("")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ett jobb måste ha ett namn.");
+        }
+
         if (work.getStartDate() == null) {
             work.setStartDate(findNewStartDate());
         }
 
+        if (work.getStartDate().isBefore(LocalDate.now())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
+        }
+
         if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
         }
 
         if (isDateTakenByLocked(work.getStartDate())) {
