@@ -116,6 +116,7 @@ public class AuthenticationAPI {
             accountRepository.save(user);
 
             String emailSubject = "Account Recovery";
+            //TODO: Change to correct URL
             String emailText = "Click this link to recover your account: http://localhost:3000/recover?token=" + recoveryToken;
             emailService.sendEmail(emailRecoveryRequest.getEmail(), emailSubject, emailText);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
