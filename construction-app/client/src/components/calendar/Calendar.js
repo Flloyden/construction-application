@@ -168,16 +168,16 @@ export default function Calendar() {
                 eventSources={[
                   calendarInfo.map((item) => {
                     var locked
+                  
                     if (item.lockedInCalendar) {
-                      locked = "(låst)"
+                      locked = " (låst)"
                     } else {
                       locked = ""
                     }
 
                     return {
-                      title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName + " " + locked, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false
+                      title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName + locked, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false
                     }
-
                   }),
                   semesterInfo.map((item) => {
                     return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: { name: item.vacationName, start: item.startDate, length: item.numberOfDays }, borderColor: '#000', allDay: false }
