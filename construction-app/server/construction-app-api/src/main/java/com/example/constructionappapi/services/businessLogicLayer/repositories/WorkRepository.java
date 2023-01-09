@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.*;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -230,14 +230,12 @@ public class WorkRepository {
     }
 
     @Transactional
-    public ResponseEntity findStartedWorkAndUpdateToCompleted() {
-        System.out.println("------ findWorkAndUpdateToCompleted() just ran... ------");
-        List<WorkEntity> startedWork = workDao.findStartedWork();
-
-        for (WorkEntity workEntity : startedWork) {
-            //TODO tänk igenom detta om d funkar för alla situationer
-            if (!(workEntity.getNoteSummaries().isEmpty()) && workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size()) {
-                workEntity.setWorkStatus(WorkStatus.COMPLETED);
+    public ResponseEntity findStartedWorkAndUpdateToCompleted(Long workId) {
+        Optional<WorkEntity> thisWork = workDao.findById(workId);
+        if(!thisWork.isEmpty() && thisWork.get().getWorkStatus() == WorkStatus.STARTED){
+            List<CustomerNoteEntity> summarizedNotes = customerNoteDao.findAllByWorkIdAndNoteStatus(1, workId);
+            if(summarizedNotes.size() == thisWork.get().getNumberOfDays()){
+                thisWork.get().setWorkStatus(WorkStatus.COMPLETED);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }
         }
@@ -249,7 +247,7 @@ public class WorkRepository {
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : workNotStarted) {
-            if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() != WorkStatus.COMPLETED) {
+            if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() == WorkStatus.NOTSTARTED) {
                 workEntity.setWorkStatus(WorkStatus.STARTED);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }

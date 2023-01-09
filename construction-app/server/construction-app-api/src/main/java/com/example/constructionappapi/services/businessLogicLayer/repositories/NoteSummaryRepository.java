@@ -36,6 +36,7 @@ public class NoteSummaryRepository {
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
         Optional<WorkEntity> work = workDao.findById(workId);
+        boolean success = false;
 
         List<CustomerNoteEntity> summedNotes = new ArrayList<>();
         long kmDrivenSum = 0;
@@ -45,10 +46,6 @@ public class NoteSummaryRepository {
         if(work.isPresent()){
             List<CustomerNoteEntity> allNotesForWork = customerNoteDao.findAllByWorkId(workId);
             if(!allNotesForWork.isEmpty()){
-                if(noteSummaryDao.existsById(noteSummary.getId())){
-                    NoteSummaryEntity noteSummaryEntity = noteSummaryDao.findById(noteSummary.getId()).get();
-                    NoteSummaryEntity oldSum = noteSummary;
-                }
                 for (CustomerNoteEntity customerNoteEntity : allNotesForWork) {
                     if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED){ //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
@@ -77,9 +74,10 @@ public class NoteSummaryRepository {
                         noteSummary.setWorkForSummary(work.get()); //assigna summary till work
                         //workRepository.findWorkAndUpdateToCompleted();
                         work.get().setSummary(noteSummary);
+                        success = true;
                     }
                 }
-                if(summedNotes.isEmpty()){
+                if(!success){
                     return null;
                 }
                 noteSummary.setCustomerNotes(summedNotes);
@@ -98,10 +96,6 @@ public class NoteSummaryRepository {
 
     public List<NoteSummaryEntity> getSumsForCustomer(long customerId) {
         List<NoteSummaryEntity> sum = noteSummaryDao.findAllByCustomerId(customerId);
-        System.out.println("------------------------------HOW MANY SUMS: " + sum.size());
-        for (NoteSummaryEntity sumEntity : sum) {
-            System.out.println("how many notes for sum: " + sumEntity.getCustomerNotes().size());
-        }
         return sum;
     }
 }

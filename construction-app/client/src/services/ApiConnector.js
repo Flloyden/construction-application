@@ -148,8 +148,8 @@ class ApiConnector {
     return axios.get(WORK_BASE_API + "/ongoing");
   }
 
-  findWorkAndUpdateToCompleted() {
-    return axios.get(WORK_BASE_API + "/update-workstatus-completed");
+  findWorkAndUpdateToCompleted(workId) {
+    return axios.get(WORK_BASE_API + "/update-workstatus-completed/ " + workId);
   }
 
   // ACCOUNTING / WARRANTY

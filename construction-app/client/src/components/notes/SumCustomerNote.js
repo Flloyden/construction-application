@@ -96,7 +96,7 @@ export default function SumCustomerNote(
             setShowWrongInput(false);
           }, 3000);
         } else {
-          ApiConnector.findWorkAndUpdateToCompleted();
+          ApiConnector.findWorkAndUpdateToCompleted(Id);
           window.location.reload(false);
         }
       })

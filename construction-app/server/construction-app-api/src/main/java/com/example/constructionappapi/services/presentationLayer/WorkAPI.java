@@ -37,9 +37,9 @@ public class WorkAPI {
         return workRepository.deleteWorkEntity(id);
     }
 
-    @GetMapping("/work/update-workstatus-completed")
-    public ResponseEntity findStartedWorkAndUpdateToCompleted() {
-        return workRepository.findStartedWorkAndUpdateToCompleted();
+    @GetMapping("/work/update-workstatus-completed/{workId}")
+    public ResponseEntity findStartedWorkAndUpdateToCompleted(@PathVariable final Long workId) {
+        return workRepository.findStartedWorkAndUpdateToCompleted(workId);
     }
 
     @GetMapping("/work/{customer_id}/{workId}")
