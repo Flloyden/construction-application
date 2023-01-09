@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class JwtUtils {
     private final String JWT_ACCESS_KEY = "q3r6s5v9w1x2y7z8m4n0o1p5k6l2j3h7g8d0e5f9b2c1t4u6i8";
     private final String JWT_REFRESH_KEY = "GpfYFwA7ZDtT3xRJEuKX9vzOyqUiM2sVQW0L8jk1ANmh6rcdCbP5IeHSB4wgTlE";
-    private final long JWT_ACCESS_TOKEN_DURATION = TimeUnit.SECONDS.toMillis(10);
+    private final long JWT_ACCESS_TOKEN_DURATION = TimeUnit.HOURS.toMillis(1);
     private final long JWT_REFRESH_TOKEN_DURATION = TimeUnit.DAYS.toMillis(7);
 
     public String generateToken(UserDetails userDetails) {
