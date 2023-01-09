@@ -36,7 +36,7 @@ export default function ForgotPassword(props) {
       <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
         <form
           onSubmit={handleSubmit}
-          className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded"
+          className={"bg-white fixed inset-0 items-center justify-center w-fit max-w-sm h-max my-auto rounded mx-auto"}
         >
           <div className="flex border-b-2 px-6 py-4 items-center justify-between align-middle">
             <div className="w-min whitespace-nowrap">
@@ -103,8 +103,7 @@ export default function ForgotPassword(props) {
             </div>
             <div className="mx-4 text-center">
               <div className="pb-2 mt-16">
-                <p>Genom att återställa lösenordet skickas ett</p>
-                <p>meddelande till den angivna mailadressen.</p>
+                <p>Genom att återställa lösenordet skickas ett meddelande till den angivna mailadressen.</p>
               </div>
             </div>
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
