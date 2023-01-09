@@ -27,12 +27,12 @@ export default function CheckOngoingWork() {
   }, []);
 
   function getOngoingWork() { 
-    if(ongoingWork == null)
+    if(ongoingWork === null)
     {
       return "";
     }
   
-    if(ongoingWork[0].calendar.length !== 0)
+    if(ongoingWork[0].calendar !== null && ongoingWork[0].calendar.length !== 0)
     {
       return <div className="font-normal">
           <p>{ongoingWork[1].name + " - " + ongoingWork[0].name}</p>

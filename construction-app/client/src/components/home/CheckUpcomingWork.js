@@ -24,11 +24,13 @@ export default function CheckUpcomingWork() {
   }, []);
 
   function getUpcomingWork() { 
-    if(upcomingWork == null)
+    if(upcomingWork === null)
     {
       return "";
     }
 
+    if(upcomingWork[0].calendar !== null && upcomingWork[0].calendar.length !== 0)
+    {
     let maxDate = upcomingWork[0].calendar[0].date;
     let minDate = upcomingWork[0].calendar[0].date;
 
@@ -45,8 +47,6 @@ export default function CheckUpcomingWork() {
         }
     }  
   
-    if(upcomingWork[0].calendar.length !== 0)
-    {
       return <div className="font-normal">
           <p>{upcomingWork[1].name + " - " + upcomingWork[0].name}</p>
           <p>{minDate + " - " + maxDate}</p>
