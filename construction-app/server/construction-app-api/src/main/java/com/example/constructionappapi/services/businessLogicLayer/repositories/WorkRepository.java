@@ -202,7 +202,9 @@ public class WorkRepository {
         } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
             updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
         } else if (workBeforeUpdate.isLockedInCalendar() != workToUpdateWith.isLockedInCalendar()){
-            calendar.moveCalendarItemBackwards(workToUpdateWith.getStartDate());
+            calendar.moveCalendarItemBackwards(LocalDate.now());
+        } else if(workBeforeUpdate.getEarliestStartDate() != null && workToUpdateWith.getEarliestStartDate() == null){
+            calendar.moveCalendarItemBackwards(LocalDate.now());
         }
     }
 
