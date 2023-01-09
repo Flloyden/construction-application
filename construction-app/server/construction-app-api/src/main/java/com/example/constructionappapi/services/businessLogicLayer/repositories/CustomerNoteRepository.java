@@ -64,6 +64,7 @@ public class CustomerNoteRepository {
         CustomerEntity customerEntity = work.get().getCustomer(); //hämta customer till det jobbet
         customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
         customerNoteEntity.setWorkForNote(work.get()); //assigna note till work
+        customerNoteEntity.setNoteStatus(NoteStatus.NOTSUMMARIZED);
 
         return customerNoteDao.save(customerNoteEntity);
 

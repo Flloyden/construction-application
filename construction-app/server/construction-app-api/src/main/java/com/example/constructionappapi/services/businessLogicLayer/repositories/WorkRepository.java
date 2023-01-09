@@ -2,6 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
+import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.*;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
@@ -13,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -219,31 +218,15 @@ public class WorkRepository {
     }
 
     @Transactional
-    public ResponseEntity findStartedWorkAndUpdateToCompleted() {
-        System.out.println("------ findWorkAndUpdateToCompleted() just ran... ------");
-        List<WorkEntity> startedWork = workDao.findStartedWork();
-        boolean success = false;
-
-        //------------------Funkar om senaste summeringen är gjord tidigare än idag
-        for (WorkEntity workEntity : startedWork) {
-            Optional<CalendarEntity> lastDateOfWork = calendarDao.findFirstByWorkIdOrderByDateDesc(workEntity.getId()); //last date in calendar for the work
-            List<NoteSummaryEntity> lastSumsForWorkList = noteSummaryDao.findLatestSumForWork(workEntity.getId());       //last sum made for the work
-
-            if(!lastSumsForWorkList.isEmpty()){
-                Optional<NoteSummaryEntity> lastSumForWork = Optional.ofNullable(lastSumsForWorkList.get(0));
-                System.out.println("-----------last month of work " + lastDateOfWork.get().getDate().getMonthValue());
-                System.out.println("------------last month of last sum " + lastSumForWork.get().getMonth());
-
-                if (!(workEntity.getNoteSummaries().isEmpty()) &&
-                        workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size() &&                             //same amount of workDays as notes for the work
-                        lastDateOfWork.get().getDate().getMonthValue() == lastSumForWork.get().getMonth())                  //lastest sum was made for the last month of the job
-                {
-                    workEntity.setWorkStatus(WorkStatus.COMPLETED);
-                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-                }
+    public ResponseEntity findStartedWorkAndUpdateToCompleted(Long workId) {
+        Optional<WorkEntity> thisWork = workDao.findById(workId);
+        if(!thisWork.isEmpty() && thisWork.get().getWorkStatus() == WorkStatus.STARTED){
+            List<CustomerNoteEntity> summarizedNotes = customerNoteDao.findAllByWorkIdAndNoteStatus(1, workId);
+            if(summarizedNotes.size() == thisWork.get().getNumberOfDays()){
+                thisWork.get().setWorkStatus(WorkStatus.COMPLETED);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }
         }
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
@@ -252,7 +235,7 @@ public class WorkRepository {
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
         for (WorkEntity workEntity : workNotStarted) {
-            if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() != WorkStatus.COMPLETED) {
+            if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() == WorkStatus.NOTSTARTED) {
                 workEntity.setWorkStatus(WorkStatus.STARTED);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }
