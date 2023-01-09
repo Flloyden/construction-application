@@ -151,8 +151,6 @@ public class Calendar {
         moveCalendarItemBackwards(oldStartDate);
 
         addWork(work);
-
-        workRepository.updateStartingDates();
     }
 
     /**
