@@ -50,7 +50,7 @@ export default function SummedNotes(props) {
             <thead className="text-xs uppercase  text-gray-500  rounded border-b-2 border-gray-300">
               <tr>
                 <th scope="col" className="py-3 px-6">
-                  Månad
+                  Datum skapad
                 </th>
                 <th scope="col" className="py-3 px-6">
                   Jobb
@@ -80,7 +80,7 @@ export default function SummedNotes(props) {
                       scope="row"
                       className="py-4 px-6 font-medium whitespace-nowrap"
                     >
-                      {item.month}
+                      {item.datePostedSum}
                     </th>
                     <td className="py-4 px-6">{item.workName}</td>
                     <td className="py-4 px-6">{item.timeSpendSum}</td>
