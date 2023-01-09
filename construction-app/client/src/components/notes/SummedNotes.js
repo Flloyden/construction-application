@@ -7,20 +7,12 @@ export default function SummedNotes(props) {
   const [notes, setNotes] = useState("");
   const [oldNotesToggle, setOldNotesToggle] = useState(false);
   const [currentSumId, setCurrentSumId] = useState("");
-  const months = [
-    { id: 1, name: "Januari" },
-    { id: 2, name: "Februari" },
-    { id: 3, name: "Mars" },
-    { id: 4, name: "April" },
-    { id: 5, name: "Maj" },
-    { id: 6, name: "Juni" },
-    { id: 7, name: "Juli" },
-    { id: 8, name: "Augusti" },
-    { id: 9, name: "September" },
-    { id: 10, name: "Oktober" },
-    { id: 11, name: "November" },
-    { id: 12, name: "December" },
-  ];
+
+  function checkMonth(e) {
+    var monthIn = new Date(e);
+    var monthOut = monthIn.toLocaleString('default', {month: 'long'});
+    return monthOut
+  }
 
   useEffect(() => {
     // Gets all the clients on page load once per load
@@ -49,8 +41,11 @@ export default function SummedNotes(props) {
           <table className="w-full text-sm text-left bg-white dark:bg-gray-800 text-gray-00 shadow-md rounded mt-2">
             <thead className="text-xs uppercase  text-gray-500  rounded border-b-2 border-gray-300">
               <tr>
-                <th scope="col" className="py-3 px-6">
+                <th scope="col" className="py-3 pl-6">
                   Datum skapad
+                </th>
+                <th scope="col" className="py-3 px-6">
+                  Månad
                 </th>
                 <th scope="col" className="py-3 px-6">
                   Jobb
@@ -76,12 +71,8 @@ export default function SummedNotes(props) {
                     className="bg-white dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 border-b-2 border-gray-300"
                     key={i}
                   >
-                    <th
-                      scope="row"
-                      className="py-4 px-6 font-medium whitespace-nowrap"
-                    >
-                      {item.datePostedSum}
-                    </th>
+                    <td className="py-4 px-6">{item.datePostedSum}</td>
+                    <td className="py-4 px-6">{checkMonth(item.datePostedSum).charAt(0).toUpperCase() + checkMonth(item.datePostedSum).slice(1)}</td>
                     <td className="py-4 px-6">{item.workName}</td>
                     <td className="py-4 px-6">{item.timeSpendSum}</td>
                     <td className="py-4 px-6">{item.kmDrivenSum}</td>
