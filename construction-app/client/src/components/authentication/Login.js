@@ -112,16 +112,9 @@ const Login = () => {
       ) : (
         <>
           <div className="absolute w-screen h-full bg-gray-500 bg-opacity-70 top-0 left-0">
-            <div
-              className={
-                isMobile
-                  ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"
-                  : "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-4"
-              }
-            >
               <form
                 onSubmit={handleSubmit}
-                className="bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6"
+                className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6" : "bg-white fixed inset-0 items-center justify-center w-fit h-max my-auto rounded p-4 mx-auto"}
               >
                 <img
                   src={image}
@@ -129,7 +122,7 @@ const Login = () => {
                   width={"30%"}
                   className="mx-auto pb-2"
                 />
-                <h1 className="text-2xl">Thomas Erikssons byggnadsservice</h1>
+                <h1 className={isMobile ? "text-2xl" : " text-xl"}>Thomas Erikssons byggnadsservice</h1>
                 <div className="mt-2">
                   <label className="block mb-2 text-sm font-medium text-gray-700">
                     Email:
@@ -183,7 +176,6 @@ const Login = () => {
                   </button>
                 </div>
               </form>
-            </div>
           </div>
         </>
       )}
