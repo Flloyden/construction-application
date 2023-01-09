@@ -33,6 +33,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
+    window.location.reload(false);
     const excludedEndpoints = [BASE_URL + "/recover"];
 
     const status = error.response ? error.response.status : null;
@@ -52,8 +53,9 @@ axios.interceptors.response.use(
             localStorage.removeItem("refreshToken");
             return Promise.reject(err);
           });
-      } else{
+      } else {
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
       }
     }
     return Promise.reject(error);
@@ -63,10 +65,10 @@ axios.interceptors.response.use(
 let refreshPromise = null;
 async function refreshAccessToken(refreshToken) {
   const refresh = async () => {
-    try {
-      const response = await axios.post(BASE_URL + "/refresh",
-        { refreshToken }
-      );
+
+    await axios.post(BASE_URL + "/refresh",
+      { refreshToken }
+    ).then((response) => {
       const newAccessToken = response.headers.authorization;
       const newRefreshToken = response.headers.refreshtoken;
 
@@ -76,11 +78,11 @@ async function refreshAccessToken(refreshToken) {
 
       // Return the new access token
       return newAccessToken;
-    } catch (error) {
+    }).catch((error) => {
       // If the refresh token is invalid or has expired, log out the user
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-    }
+    });
   };
 
   if (!refreshPromise) {
@@ -89,6 +91,7 @@ async function refreshAccessToken(refreshToken) {
       return accessToken;
     });
   }
+
   await refreshPromise;
 }
 
