@@ -28,7 +28,7 @@ public class WorkAPI {
     }
 
     @PutMapping("/work/{customerId}/update")
-    public ResponseEntity<WorkEntity> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
+    public ResponseEntity<?> updateWork(@PathVariable final Long customerId, @RequestBody WorkEntity work) {
         return workRepository.updateWork(customerId, work);
     }
 

@@ -4,6 +4,9 @@ import DatePicker from "react-datepicker";
 import { RiCloseLine } from "react-icons/ri";
 
 export default function Semester({ setIsSemesterOpen }) {
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   let [startDate, setStartDate] = useState(new Date());
   const [semester, setSemester] = useState({
     id: "",
@@ -32,8 +35,17 @@ export default function Semester({ setIsSemesterOpen }) {
       })
       .catch((error) => {
         console.log(error);
+        errorMsg(error.response.data)
       });
   };
+
+  function errorMsg(message) {
+    setErrorMessage(message)
+    setShowErrorMessage(true)
+    setTimeout(() => {
+      setShowErrorMessage(false)
+    }, 3000)
+  }
 
   return (
     <>
@@ -113,6 +125,18 @@ export default function Semester({ setIsSemesterOpen }) {
               >
                 Spara
               </button>
+            </div>
+
+            <div
+              className={
+                showErrorMessage
+                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
+                  : "invisible duration-200"
+              }
+            >
+              <p className={showErrorMessage ? "visible" : "invisible"}>
+                {errorMessage}
+              </p>
             </div>
           </div>
         </form>

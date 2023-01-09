@@ -51,7 +51,7 @@ public class WorkRepository {
     public ResponseEntity createWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kan inte hittas.");
         }
 
         work.setCustomer(customer.get());
@@ -112,50 +112,60 @@ public class WorkRepository {
     public ResponseEntity<String> deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
         if (work.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("That work entity doesn't exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet du försöker ta bort kan inte hittas.");
         }
 
         if (customerNoteDao.findFirstByWork(work.get()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Can't delete a work-entity with notes");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Det går inte att ta bort ett jobb med anteckningar.");
         }
 
         workDao.delete(work.get());
         calendar.removeWork(work.get());
         updateStartingDates();
-        return ResponseEntity.ok().body("Work deleted");
+        return ResponseEntity.ok().body(work.get().getName() + " har tagits bort.");
     }
 
-    public ResponseEntity<WorkEntity> updateWork(long customerId, WorkEntity work) {
+    public ResponseEntity<?> updateWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kan inte hittas.");
         }
 
         Optional<WorkEntity> workBeforeUpdate = workDao.findById(work.getId());
         if (workBeforeUpdate.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet som du försöker ändra kan inte hittas.");
+        }
+
+        if (work.getName() == null || work.getName().equals("")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ett jobb måste ha ett namn.");
         }
 
         if (work.getStartDate() == null) {
             work.setStartDate(findNewStartDate());
         }
 
+        if (work.getStartDate().isBefore(LocalDate.now())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
+        }
+
         if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
         }
 
         if (isDateTakenByLocked(work.getStartDate())) {
             Optional<WorkEntity> workAtStartDate = workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId());
 
             if (workAtStartDate.isPresent() && !workAtStartDate.get().getId().equals(work.getId())) {
-                return workAtStartDate.map(
-                        lockedWork -> ResponseEntity.status(HttpStatus.CONFLICT).body(lockedWork)
-                ).orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger ett låst jobb på det valda startdatumet.");
             }
         }
 
+        if(vacationCalendarDao.findFirstByDate(work.getStartDate()).isPresent()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger en semester på det valda startdatumet.");
+        }
+
         if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(workBeforeUpdate.get());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Det är inte tillåtet att ändra ett avklarat jobb.");
         }
 
         List<CustomerNoteEntity> noteList = customerNoteDao.findAllByWorkId(work.getId());
@@ -192,7 +202,9 @@ public class WorkRepository {
         } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
             updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
         } else if (workBeforeUpdate.isLockedInCalendar() != workToUpdateWith.isLockedInCalendar()){
-            calendar.moveCalendarItemBackwards(workToUpdateWith.getStartDate());
+            calendar.moveCalendarItemBackwards(LocalDate.now());
+        } else if(workBeforeUpdate.getEarliestStartDate() != null && workToUpdateWith.getEarliestStartDate() == null){
+            calendar.moveCalendarItemBackwards(LocalDate.now());
         }
     }
 

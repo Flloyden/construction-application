@@ -26,7 +26,7 @@ public class VacationRepository {
     private VacationCalendarDao vacationCalendarDao;
 
     @Autowired
-    WorkRepository workRepository;
+    private WorkRepository workRepository;
 
     private Calendar calendar = CalendarSingleton.getCalendar();
 
@@ -40,29 +40,13 @@ public class VacationRepository {
      * @param vacationEntity
      * @return
      */
-    public ResponseEntity<VacationEntity> saveVacation(VacationEntity vacationEntity) {
-        Optional<VacationCalendarEntity> vacation = vacationCalendarDao
-                .findFirstByDateLessThanEqualAndDateGreaterThanEqual(
-                        vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
-                        vacationEntity.getStartDate()
-                );
-
-        if (vacation.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    public ResponseEntity<?> saveVacation(VacationEntity vacationEntity) {
+        if (isDateIntervalTakenByVacation(vacationEntity)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
         }
 
-        for (int i = 0; i < vacationEntity.getNumberOfDays(); i++) {
-            if (calendar.getCalendarMap().containsKey(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)))) {
-                Long workKey = calendar.getCalendarMap().get(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)));
-
-                if (calendar.getWorkMap().containsKey(workKey)) {
-                    WorkEntity work = calendar.getWorkMap().get(workKey);
-
-                    if (work.isLockedInCalendar()) {
-                        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-                    }
-                }
-            }
+        if (isDateIntervalTakenByWork(vacationEntity)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb här.");
         }
 
         VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
@@ -75,6 +59,45 @@ public class VacationRepository {
         calendar.addVacation(savedVacationEntity, vacationCalendarDao.saveAll(vacationDates));
 
         return ResponseEntity.ok().body(savedVacationEntity);
+    }
+
+    public ResponseEntity<?> updateVacation(VacationEntity vacationEntity) {
+        if (isDateIntervalTakenByVacation(vacationEntity)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
+        }
+
+        if (isDateIntervalTakenByWork(vacationEntity)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb här.");
+        }
+
+        deleteVacation(vacationEntity.getId());
+        return saveVacation(vacationEntity);
+    }
+
+    private boolean isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
+        return vacationCalendarDao
+                .findFirstByDateLessThanEqualAndDateGreaterThanEqual(
+                        vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
+                        vacationEntity.getStartDate()
+                ).isPresent();
+    }
+
+    private boolean isDateIntervalTakenByWork(VacationEntity vacationEntity) {
+        for (int i = 0; i < vacationEntity.getNumberOfDays(); i++) {
+            if (calendar.getCalendarMap().containsKey(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)))) {
+                Long workKey = calendar.getCalendarMap().get(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)));
+
+                if (calendar.getWorkMap().containsKey(workKey)) {
+                    WorkEntity work = calendar.getWorkMap().get(workKey);
+
+                    if (work.isLockedInCalendar()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

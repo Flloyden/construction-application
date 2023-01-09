@@ -1,18 +1,20 @@
 package com.example.constructionappapi.services.presentationLayer;
 
-import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.businessLogicLayer.email.EmailService;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
+import com.example.constructionappapi.services.businessLogicLayer.security.JwtUtils;
+import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.presentationLayer.bodies.*;
-import com.example.constructionappapi.services.security.JwtUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
@@ -21,13 +23,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class AuthenticationAPI {
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtils;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtils jwtUtils;
     @Autowired
     private EmailService emailService;
-
     @Autowired
     private AccountRepository accountRepository;
 
@@ -72,7 +74,7 @@ public class AuthenticationAPI {
         }
 
         // Check that the refresh token has not expired and is still valid
-        if (jwtUtils.isTokenExpired(refreshToken)) {
+        if (jwtUtils.isTokenExpired(refreshToken, jwtUtils.getJwtRefreshKey())) {
             return ResponseEntity.status(401).body("Refresh token has expired");
         }
 
@@ -145,7 +147,7 @@ public class AuthenticationAPI {
             accountRepository.save(accountEntity.get());
 
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("New password sent");
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

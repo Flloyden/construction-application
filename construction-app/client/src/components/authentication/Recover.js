@@ -25,7 +25,7 @@ export default function Recover() {
         const response = await ApiConnector.recover(request);
 
         // Navigate to login page if recovery was successful
-        if (response.status == 202) {
+        if (response.status === 202) {
           navigate("/login");
         } else {
           console.log("Recover: Recovery failed.");

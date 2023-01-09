@@ -42,6 +42,9 @@ const ChangeWorkInfo = (props) => {
   const dayCountRef = useRef();
   const [toggleLock, setToggleLock] = useState(newList.lockedInCalendar);
 
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleChange = (e) => {
     let value = e.target.value;
     setNewList({
@@ -76,17 +79,18 @@ const ChangeWorkInfo = (props) => {
     return base64;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
     // Makes the change with the help of api call
-    ApiConnector.changeWork(props.currentCustomerId, newList)
+    const response = await ApiConnector.changeWork(props.currentCustomerId, newList)
       .then((response) => {
         console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
+        errorMsg(error.response.data)
       });
   };
 
@@ -142,6 +146,14 @@ const ChangeWorkInfo = (props) => {
     } else {
       return <span className="lock unlocked w-full h-full"></span>;
     }
+  }
+
+  function errorMsg(message) {
+    setErrorMessage(message)
+    setShowErrorMessage(true)
+    setTimeout(() => {
+      setShowErrorMessage(false)
+    }, 3000)
   }
 
   return (
@@ -349,6 +361,7 @@ const ChangeWorkInfo = (props) => {
                 onChange={handleChange}
               ></textarea>
             </div>
+
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
                 className="bg-gray-500 hover:bg-gray-600 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
@@ -362,6 +375,18 @@ const ChangeWorkInfo = (props) => {
               >
                 Spara
               </button>
+            </div>
+
+            <div
+              className={
+                showErrorMessage
+                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
+                  : "invisible duration-200"
+              }
+            >
+              <p className={showErrorMessage ? "visible" : "invisible"}>
+                {errorMessage}
+              </p>
             </div>
           </div>
         </form>

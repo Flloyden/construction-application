@@ -1,9 +1,7 @@
-package com.example.constructionappapi.services.security;
+package com.example.constructionappapi.services.businessLogicLayer.security;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountRepository;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         jwtToken = authHeader.substring(7);
-        userEmail = jwtUtils.extractUserName(jwtToken);
+        userEmail = jwtUtils.extractUserName(jwtToken, jwtUtils.getJwtAccessKey());
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = accountRepository.findByEmail(userEmail);
