@@ -74,7 +74,7 @@ public class AuthenticationAPI {
         }
 
         // Check that the refresh token has not expired and is still valid
-        if (jwtUtils.isTokenExpired(refreshToken)) {
+        if (jwtUtils.isTokenExpired(refreshToken, jwtUtils.getJwtRefreshKey())) {
             return ResponseEntity.status(401).body("Refresh token has expired");
         }
 
