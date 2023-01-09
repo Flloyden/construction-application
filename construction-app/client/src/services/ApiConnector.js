@@ -33,7 +33,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    window.location.reload(false);
     const excludedEndpoints = [BASE_URL + "/recover"];
 
     const status = error.response ? error.response.status : null;
@@ -54,6 +53,7 @@ axios.interceptors.response.use(
             return Promise.reject(err);
           });
       } else {
+        window.location.reload(false);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
       }
