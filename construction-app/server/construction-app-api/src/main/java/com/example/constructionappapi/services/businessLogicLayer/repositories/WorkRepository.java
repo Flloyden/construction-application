@@ -224,8 +224,7 @@ public class WorkRepository {
         List<WorkEntity> startedWork = workDao.findStartedWork();
         boolean success = false;
 
-        //------------------
-        //TODO detta är problematiskt om han råkar göra en summering sista månaden på ett jobb, innan jobbet faktiskt är klart. Bättre han gör d manuellt?
+        //------------------Funkar om senaste summeringen är gjord tidigare än idag
         for (WorkEntity workEntity : startedWork) {
             Optional<CalendarEntity> lastDateOfWork = calendarDao.findFirstByWorkIdOrderByDateDesc(workEntity.getId()); //last date in calendar for the work
             List<NoteSummaryEntity> lastSumsForWorkList = noteSummaryDao.findLatestSumForWork(workEntity.getId());       //last sum made for the work
