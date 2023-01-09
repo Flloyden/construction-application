@@ -171,7 +171,7 @@ const AddCustomer = (props) => {
 
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">
-                fastighetsbeteckning:{" "}
+                Fastighetsbeteckning:{" "}
                 <span className="text-red-700 font-black">*</span>{" "}
               </label>
               <input
