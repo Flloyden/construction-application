@@ -25,8 +25,8 @@ export default function HelpWarranty() {
 
             <p className="mt-4">Redigera och radera en garanti</p>
             <p className="font-normal">
-                Du har möjligheten att redigera en existerande garanti genom att klicka in på den. 
-                Du har också möjlighet att ta bort garantin manuellt genom att klicka på soptunnan längst till höger.
+                Du har möjligheten att båda ändra och ta bort existerande garantier genom att klicka på de tre prickarna ute till höger, vid åtgärd kolumnen. 
+                När du klickar på dessa tre prickarna möts du med två alternativ, ändra eller ta bort.
               </p>
               <p className="font-bold">
               (OBS. Lägg märke till att en raderad garanti inte ligger kvar och måste återskaps med "Ny garanti" knappen)
@@ -35,6 +35,7 @@ export default function HelpWarranty() {
             <p className="mt-4">Visa kvitto</p>
             <p className="font-normal">
                Genom att klicka på knappen "Visa kvitto" så visas det kvittot som sparades när du skapade garantin.
+               De garantier som inte har en "Visa kvitto" knapp så har det inte lagts till en bild av garantin när du skapade den.
               </p> 
           </div>
         </div>
