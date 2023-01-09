@@ -38,9 +38,6 @@ const SemesterModal = (props) => {
         console.log(error);
         errorMsg(error.response.data)
       });
-
-
-
   };
 
   const deleteSemester = async (e) => {
