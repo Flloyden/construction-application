@@ -39,6 +39,7 @@ axios.interceptors.response.use(
     if (status === 401 && !excludedEndpoints.includes(error.config.url)) {
       // If the access token has expired, try to refresh it using the refresh token
       const refreshToken = localStorage.getItem("refreshToken");
+
       if (refreshToken) {
         return refreshAccessToken(refreshToken)
           .then((accessToken) => {
@@ -51,6 +52,8 @@ axios.interceptors.response.use(
             localStorage.removeItem("refreshToken");
             return Promise.reject(err);
           });
+      } else{
+        localStorage.removeItem("accessToken");
       }
     }
     return Promise.reject(error);
