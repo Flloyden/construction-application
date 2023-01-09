@@ -4,6 +4,9 @@ import DatePicker from "react-datepicker";
 import ApiConnector from "../../services/ApiConnector";
 
 const SemesterModal = (props) => {
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   let [startDate, setStartDate] = useState(new Date(props.semesterStartDate));
   const [semester, setSemester] = useState({
     id: props.currentId,
@@ -21,27 +24,44 @@ const SemesterModal = (props) => {
     console.log(semester);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     // Deletes a client with given id and updates the id
-    try {
-      await ApiConnector.editSemester(props.currentId, semester);
-      window.location.reload(false);
-    } catch (error) {
-      console.log(error);
-    }
-    props.setIsModalOpen(false);
+
+    ApiConnector.editSemester(props.currentId, semester)
+      .then((response) => {
+        console.log(response);
+        window.location.reload(false);
+        props.setIsModalOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        errorMsg(error.response.data)
+      });
+
+
+
   };
 
-  const deleteSemester = async () => {
+  const deleteSemester = async (e) => {
     // Deletes a semester with given id and updates the id
     try {
       await ApiConnector.deleteSemester(props.currentId);
       window.location.reload(false);
     } catch (error) {
       console.log(error);
+      errorMsg(error.response.data)
     }
     props.setIsModalOpen(false);
   };
+
+  function errorMsg(message) {
+    setErrorMessage(message)
+    setShowErrorMessage(true)
+    setTimeout(() => {
+      setShowErrorMessage(false)
+    }, 3000)
+  }
 
   return (
     <>
@@ -131,6 +151,18 @@ const SemesterModal = (props) => {
               >
                 Avbryt
               </button>
+            </div>
+
+            <div
+              className={
+                showErrorMessage
+                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
+                  : "invisible duration-200"
+              }
+            >
+              <p className={showErrorMessage ? "visible" : "invisible"}>
+                {errorMessage}
+              </p>
             </div>
           </div>
         </form>

@@ -17,14 +17,13 @@ public class VacationAPI {
     private VacationRepository vacationRepository;
 
     @PostMapping("/vacation")
-    public ResponseEntity<VacationEntity> saveVacation(@RequestBody VacationEntity vacationEntity) {
+    public ResponseEntity<?> saveVacation(@RequestBody VacationEntity vacationEntity) {
         return vacationRepository.saveVacation(vacationEntity);
     }
 
     @PostMapping("/vacation/{vacationId}/update")
-    public ResponseEntity<VacationEntity> updateVacation(@PathVariable final Long vacationId, @RequestBody VacationEntity vacationEntity) {
-        vacationRepository.deleteVacation(vacationId);
-        return vacationRepository.saveVacation(vacationEntity);
+    public ResponseEntity<?> updateVacation(@PathVariable final Long vacationId, @RequestBody VacationEntity vacationEntity) {
+        return vacationRepository.updateVacation(vacationEntity);
     }
 
     @GetMapping("/vacation/{id}")
