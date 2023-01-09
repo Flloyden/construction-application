@@ -33,6 +33,6 @@ public interface NoteSummaryDao extends JpaRepository<NoteSummaryEntity, Long> {
                     "ORDER BY ns.date_posted_sum DESC ",
             nativeQuery = true
     )
-    Optional<NoteSummaryEntity> findLatestSumForWork(@Param("workId") Long workId);
+    List<NoteSummaryEntity> findLatestSumForWork(@Param("workId") Long workId);
 
 }

@@ -228,21 +228,23 @@ public class WorkRepository {
         //TODO detta är problematiskt om han råkar göra en summering sista månaden på ett jobb, innan jobbet faktiskt är klart. Bättre han gör d manuellt?
         for (WorkEntity workEntity : startedWork) {
             Optional<CalendarEntity> lastDateOfWork = calendarDao.findFirstByWorkIdOrderByDateDesc(workEntity.getId()); //last date in calendar for the work
-            Optional<NoteSummaryEntity> lastSumForWork = noteSummaryDao.findLatestSumForWork(workEntity.getId());       //last sum made for the work
+            List<NoteSummaryEntity> lastSumsForWorkList = noteSummaryDao.findLatestSumForWork(workEntity.getId());       //last sum made for the work
 
-            if (!(workEntity.getNoteSummaries().isEmpty()) &&
-                    workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size() &&                             //same amount of workDays as notes for the work
-                    lastDateOfWork.get().getDate().getMonthValue() == lastSumForWork.get().getMonth())                  //lastest sum was made for the last month of the job
-            {
-                workEntity.setWorkStatus(WorkStatus.COMPLETED);
-                success = true;
+            if(!lastSumsForWorkList.isEmpty()){
+                Optional<NoteSummaryEntity> lastSumForWork = Optional.ofNullable(lastSumsForWorkList.get(0));
+                System.out.println("-----------last month of work " + lastDateOfWork.get().getDate().getMonthValue());
+                System.out.println("------------last month of last sum " + lastSumForWork.get().getMonth());
+
+                if (!(workEntity.getNoteSummaries().isEmpty()) &&
+                        workEntity.getNumberOfDays() == workEntity.getCustomerNotes().size() &&                             //same amount of workDays as notes for the work
+                        lastDateOfWork.get().getDate().getMonthValue() == lastSumForWork.get().getMonth())                  //lastest sum was made for the last month of the job
+                {
+                    workEntity.setWorkStatus(WorkStatus.COMPLETED);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+                }
             }
         }
 
-        //---------------------
-        if(success){
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 

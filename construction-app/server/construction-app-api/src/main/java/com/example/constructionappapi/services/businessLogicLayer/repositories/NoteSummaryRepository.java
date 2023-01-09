@@ -36,6 +36,7 @@ public class NoteSummaryRepository {
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
         Optional<WorkEntity> work = workDao.findById(workId);
+        boolean success = false;
 
         List<CustomerNoteEntity> summedNotes = new ArrayList<>();
         long kmDrivenSum = 0;
@@ -73,9 +74,10 @@ public class NoteSummaryRepository {
                         noteSummary.setWorkForSummary(work.get()); //assigna summary till work
                         //workRepository.findWorkAndUpdateToCompleted();
                         work.get().setSummary(noteSummary);
+                        success = true;
                     }
                 }
-                if(summedNotes.isEmpty()){
+                if(!success){
                     return null;
                 }
                 noteSummary.setCustomerNotes(summedNotes);
