@@ -149,7 +149,7 @@ export default function Calendar() {
                 duration={{ days: 1 }}
                 eventClick={
                   function(arg){
-                    if (arg.event._def.ui.backgroundColor === "#10b981") {
+                    if (arg.event._def.ui.backgroundColor === "#10B981") {
                       setCurrentSemesterName(arg.event.extendedProps.description.name);
                       setCurrentSemesterId(arg.event.id);
                       setSemesterStartDate(arg.event.extendedProps.description.start)
