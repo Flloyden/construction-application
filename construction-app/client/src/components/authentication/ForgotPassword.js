@@ -106,7 +106,7 @@ export default function ForgotPassword(props) {
                 <p>Genom att återställa lösenordet skickas ett meddelande till den angivna mailadressen.</p>
               </div>
             </div>
-            <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
+            <div className="flex w-full gap-2 mt-4 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
                 className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
                 type="submit"
