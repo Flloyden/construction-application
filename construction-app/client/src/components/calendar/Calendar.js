@@ -46,7 +46,7 @@ export default function Calendar() {
   var holiday = hd.getHolidays(date);
   var nextYear = hd.getHolidays(new Date(year + 1, month, day));
   var nextNextYear = hd.getHolidays(new Date(year + 2, month, day));
-  
+
   const listDate = [];
   var plusOne = new Date(year + 2, month, day);
   const startDate = moment(new Date()).format('YYYY-MM-DD');
@@ -62,7 +62,7 @@ export default function Calendar() {
 
   while (strDate < endDate) {
     strDate = dateMove.toISOString().slice(0, 10);
-    listDate.push({date: strDate});
+    listDate.push({ date: strDate });
     dateMove.setDate(dateMove.getDate() + 1);
   };
 
@@ -83,14 +83,14 @@ export default function Calendar() {
         console.log(error);
       }
       setLoading(false);
-      
+
     };
     fetchData();
   }, []);
 
-  const kl = holiday.map((item => {return (moment(new Date(item.date)).format('YYYY-MM-DD'))}));
-  const kl2 = nextYear.map((item => {return (moment(new Date(item.date)).format('YYYY-MM-DD'))}));
-  const kl3 = nextNextYear.map((item => {return (moment(new Date(item.date)).format('YYYY-MM-DD'))}));
+  const kl = holiday.map((item => { return (moment(new Date(item.date)).format('YYYY-MM-DD')) }));
+  const kl2 = nextYear.map((item => { return (moment(new Date(item.date)).format('YYYY-MM-DD')) }));
+  const kl3 = nextNextYear.map((item => { return (moment(new Date(item.date)).format('YYYY-MM-DD')) }));
 
   const allowNavigate = () => {
     //Navigates to given customer
@@ -110,7 +110,7 @@ export default function Calendar() {
     //Checks if it is weekend
     var givenDate = new Date(e);
     var day = givenDate.getDay();
-    var isWeekend = (day === 6) || (day === 0) ? '#fff': '#000';
+    var isWeekend = (day === 6) || (day === 0) ? '#fff' : '#000';
     return isWeekend
   }
 
@@ -148,7 +148,7 @@ export default function Calendar() {
                 initialView="timeline"
                 duration={{ days: 1 }}
                 eventClick={
-                  function(arg){
+                  function (arg) {
                     if (arg.event._def.ui.backgroundColor === "#10B981") {
                       setCurrentSemesterName(arg.event.extendedProps.description.name);
                       setCurrentSemesterId(arg.event.id);
@@ -156,7 +156,7 @@ export default function Calendar() {
                       setCurrentSemesterDays(arg.event.extendedProps.description.length)
                       setIsSemesterModalOpen(true);
                     }
-                     else if ((arg.event.id).length < 1) {
+                    else if ((arg.event.id).length < 1) {
                       setIsCalendarModalOpen(true)
                     } else {
                       setCurrentCustomerName(arg.event.extendedProps.description);
@@ -167,25 +167,35 @@ export default function Calendar() {
                 }
                 eventSources={[
                   calendarInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                    var locked
+                    if (item.lockedInCalendar) {
+                      locked = "(låst)"
+                    } else {
+                      locked = ""
+                    }
+
+                    return {
+                      title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName + " " + locked, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false
+                    }
+
                   }),
                   semesterInfo.map((item) => {
-                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: { name: item.vacationName, start: item.startDate, length: item.numberOfDays }, borderColor: '#000', allDay: false }
                   }),
                   holiday.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false }
                   }),
                   nextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false }
                   }),
                   nextNextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false }
                   }),
-                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.date}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
-                    return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
+                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => { return item.date }).includes(date) && !calendarInfo.map((item) => { return item.date }).includes(date)).map((item) => {
+                    return { title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false }
                   }),
                 ]}
-                
+
                 height="auto"
                 locale="sv"
                 firstDay={1}
@@ -227,22 +237,22 @@ export default function Calendar() {
                 duration={{ days: 1 }}
                 eventSources={[
                   calendarInfo.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.customerName + " - " + item.workName, start: item.date, color: colors.workColor, id: item.customerId, description: item.customerName, borderColor: '#000', allDay: false }
                   }),
                   semesterInfo.map((item) => {
-                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: {name: item.vacationName, start: item.startDate, length: item.numberOfDays}, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.vacationName, start: item.date, color: colors.vacationColor, id: item.vacationId, description: { name: item.vacationName, start: item.startDate, length: item.numberOfDays }, borderColor: '#000', allDay: false }
                   }),
                   holiday.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false }
                   }),
                   nextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false }
                   }),
                   nextNextYear.map((item) => {
-                    return {title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false}
+                    return { title: moment(item.date).format('DD') + ": " + item.name, start: item.start, color: colors.weekendsColor, borderColor: '#000', allDay: false }
                   }),
-                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => {return item.date}).includes(date) && !calendarInfo.map((item) => {return item.date}).includes(date)).map((item) => {
-                    return {title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false}
+                  listDate.filter(({ date }) => !kl.includes(date) && !kl2.includes(date) && !kl3.includes(date) && !semesterInfo.map((item) => { return item.date }).includes(date) && !calendarInfo.map((item) => { return item.date }).includes(date)).map((item) => {
+                    return { title: moment(item.date).format('DD'), start: item.date, color: checkDay(item.date), textColor: checkDayText(item.date), borderColor: '#000', allDay: false }
                   }),
                 ]}
                 height="auto"
@@ -268,26 +278,26 @@ export default function Calendar() {
       </MobileView>
       {isModalOpen && (
         <NavigateModal
-        setIsModalOpen={setIsModalOpen}
-        allowNavigate={allowNavigate}
-        currentName={currentCustomerName}
-        currentId={currentCustomerId}
-      />
+          setIsModalOpen={setIsModalOpen}
+          allowNavigate={allowNavigate}
+          currentName={currentCustomerName}
+          currentId={currentCustomerId}
+        />
       )}
       {isSemesterModalOpen && (
         <SemesterModal
-        setIsModalOpen={setIsSemesterModalOpen}
-        semesterStartDate={semesterStartDate}
-        currentName={currentSemesterName}
-        currentId={currentSemesterId}
-        currentSemesterDays={currentSemesterDays}
-        deleteSemester={deleteSemester}
-      />
+          setIsModalOpen={setIsSemesterModalOpen}
+          semesterStartDate={semesterStartDate}
+          currentName={currentSemesterName}
+          currentId={currentSemesterId}
+          currentSemesterDays={currentSemesterDays}
+          deleteSemester={deleteSemester}
+        />
       )}
-      {isCalendarModalOpen&& (
+      {isCalendarModalOpen && (
         <CalendarModal
-        setIsModalOpen={setIsCalendarModalOpen}
-      />
+          setIsModalOpen={setIsCalendarModalOpen}
+        />
       )}
     </div>
   );

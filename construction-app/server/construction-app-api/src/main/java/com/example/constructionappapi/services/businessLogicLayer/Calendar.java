@@ -355,6 +355,7 @@ public class Calendar {
                 workMap.get(entry.getValue()).getCustomer().getId(),
                 workMap.get(entry.getValue()).getCustomer().getName(),
                 workMap.get(entry.getValue()).getName(),
+                workMap.get(entry.getValue()).isLockedInCalendar(),
                 entry.getKey().getDate()
         )).collect(Collectors.toList());
     }

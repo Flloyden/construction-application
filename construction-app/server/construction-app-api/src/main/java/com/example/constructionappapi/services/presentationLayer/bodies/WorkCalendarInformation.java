@@ -13,5 +13,6 @@ public class WorkCalendarInformation {
     private long customerId;
     private String customerName;
     private String workName;
+    private boolean lockedInCalendar;
     private LocalDate date;
 }
