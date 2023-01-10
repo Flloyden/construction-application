@@ -45,7 +45,8 @@ public interface AccountingDao extends JpaRepository<AccountingEntity, Long> {
     @Query(
             value = "UPDATE accounting a " +
                     "SET a.status = 1 " +
-                    "WHERE DATE(a.warranty_date) <= :today",
+                    "WHERE DATE(a.warranty_date) <= :today " +
+                    "AND a.status = 0",
             nativeQuery = true)
     int updateOldAccountingStatus(@Param("today") LocalDate today);
 

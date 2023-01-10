@@ -78,6 +78,14 @@ public class WorkEntity implements Comparable<WorkEntity> {
         this.noteSummaries.add(noteSummary);
     }
 
+    public WorkStatus getWorkStatus(){
+        return workStatus;
+    }
+
+    public void setWorkStatus(WorkStatus workStatus) {
+        this.workStatus = workStatus;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj.getClass() != WorkEntity.class) return false;

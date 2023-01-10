@@ -244,13 +244,20 @@ public class WorkRepository {
 
     public ResponseEntity findWorkAndUpdateToStarted() {
         System.out.println("------ findWorkAndUpdateToStarted() just ran... ------");
+        boolean success = false;
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 
-        for (WorkEntity workEntity : workNotStarted) {
-            if (workEntity.getStartDate().equals(LocalDate.now()) && workEntity.getWorkStatus() == WorkStatus.NOTSTARTED) {
-                workEntity.setWorkStatus(WorkStatus.STARTED);
-                return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        for (WorkEntity work : workNotStarted) {
+            if (work.getWorkStatus() == WorkStatus.NOTSTARTED && (work.getStartDate().equals(LocalDate.now()) || work.getStartDate().isBefore(LocalDate.now()))) {
+                work.setWorkStatus(WorkStatus.STARTED);
+                System.out.println("1 work updated to Started!");
+                System.out.println(work.getWorkStatus().toString());
+                System.out.println(work.getName());
+                success = true;
             }
+        }
+        if(success){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
