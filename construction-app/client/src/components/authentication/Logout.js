@@ -76,7 +76,7 @@ export default function Logout(props) {
           <button
             className={
               isMobile
-                ? "bg-blue-600 text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
+                ? "bg-blue-600 text-white hover:bg-blue-500 font-bold py-3 px-4 w-full duration-300"
                 : "bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 w-full duration-300"
             }
             onClick={props.handleLogout}

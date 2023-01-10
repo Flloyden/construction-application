@@ -1,11 +1,10 @@
 import React, { useState } from "react";
+import { BrowserView, isMobile, MobileView } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../navigation/Navbar";
-import { BrowserView, MobileView } from "react-device-detect";
-import Logout from "../authentication/Logout";
-import { isMobile } from "react-device-detect";
-import ForgotPassword from "../authentication/ForgotPassword";
 import image from "../../BiTs-logo.png";
+import ForgotPassword from "../authentication/ForgotPassword";
+import Logout from "../authentication/Logout";
+import Navbar from "../navigation/Navbar";
 
 const Login = () => {
   document.title = "BiTs | Thomas Erikssons byggnadsserice";
@@ -111,10 +110,11 @@ const Login = () => {
         </div>
       ) : (
         <>
-          <div className="absolute w-screen h-full bg-gray-500 bg-opacity-70 top-0 left-0">
+          <div className="w-screen h-screen bg-gray-500 bg-opacity-70 fixed top-0 left-0 z-10" />
+      <div className="bg-gray-500 bg-opacity-70 top-0 left-0 fixed w-screen h-screen justify-center items-center flex flex-row rounded z-20">
               <form
                 onSubmit={handleSubmit}
-                className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-max h-max m-auto rounded p-6" : "bg-white fixed inset-0 items-center justify-center w-fit h-max my-auto rounded p-4 mx-auto"}
+                className={isMobile ? "bg-white fixed inset-0 items-center justify-center w-fit max-w-sm h-max my-auto rounded mx-auto p-6" : "bg-white fixed inset-0 items-center justify-center w-fit h-max my-auto rounded p-4 mx-auto"}
               >
                 <img
                   src={image}
@@ -122,7 +122,7 @@ const Login = () => {
                   width={"30%"}
                   className="mx-auto pb-2"
                 />
-                <h1 className={isMobile ? "text-2xl" : " text-xl"}>Thomas Erikssons byggnadsservice</h1>
+                <h1 className={"text-xl"}>Thomas Erikssons byggnadsservice</h1>
                 <div className="mt-2">
                   <label className="block mb-2 text-sm font-medium text-gray-700">
                     Email:
