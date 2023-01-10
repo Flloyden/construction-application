@@ -36,10 +36,12 @@ public class TaskDoneEveryNight {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
 
+        System.out.println();
         //update workStatus on work that starts today to Started
         ResponseEntity responseEntity = workRepository.findWorkAndUpdateToStarted();
         System.out.println("Response Entity: " + responseEntity.toString());
 
+        System.out.println();
         //change status on guarantees with warranty date today or before today to 1
         accountingRepository.updateOldAccountingStatus(LocalDate.now());
     }
