@@ -37,7 +37,6 @@ public class AccountingRepository{
 
 
     public int updateOldAccountingStatus(LocalDate today){
-        System.out.println("------ updateOldAccountingStatus() just ran... ------");
         return accountingDao.updateOldAccountingStatus(today);
     }
 

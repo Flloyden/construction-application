@@ -27,8 +27,8 @@ public class TaskDoneEveryNight {
 
     //cron modification: second, minute, hour, day-of-month, month, day-of-week
 
-    @Scheduled(cron = "*/60 * * * * *") //every 60 seconds
-    //@Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
+    //@Scheduled(cron = "*/60 * * * * *") //every 60 seconds
+    @Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
     public void execute() throws InterruptedException {
         System.out.println();
         System.out.println("______ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ______");
@@ -36,12 +36,9 @@ public class TaskDoneEveryNight {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
 
-        System.out.println();
         //update workStatus on work that starts today to Started
-        ResponseEntity responseEntity = workRepository.findWorkAndUpdateToStarted();
-        System.out.println("Response Entity: " + responseEntity.toString());
+        workRepository.findWorkAndUpdateToStarted();
 
-        System.out.println();
         //change status on guarantees with warranty date today or before today to 1
         accountingRepository.updateOldAccountingStatus(LocalDate.now());
     }
