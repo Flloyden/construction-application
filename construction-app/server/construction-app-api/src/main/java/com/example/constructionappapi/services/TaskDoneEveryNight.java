@@ -27,8 +27,8 @@ public class TaskDoneEveryNight {
 
     //cron modification: second, minute, hour, day-of-month, month, day-of-week
 
-    @Scheduled(cron = "*/60 * * * * *") //every 60 seconds
-    //@Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
+    //@Scheduled(cron = "*/60 * * * * *") //every 60 seconds
+    @Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
     public void execute() throws InterruptedException {
         System.out.println();
         System.out.println("______ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ______");
