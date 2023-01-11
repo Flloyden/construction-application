@@ -42,7 +42,7 @@ public class VacationRepository {
     public ResponseEntity<?> saveVacation(VacationEntity vacationEntity) {
         List<VacationCalendarEntity> vacationInTheWay = isDateIntervalTakenByVacation(vacationEntity);
 
-        if(vacationInTheWay != null){
+        if(!vacationInTheWay.isEmpty()){
             for (VacationCalendarEntity vacation : vacationInTheWay) {
                 if (vacation.getVacation().getId() != vacationEntity.getId()) {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
@@ -76,7 +76,7 @@ public class VacationRepository {
     public ResponseEntity<?> updateVacation(VacationEntity vacationEntity) {
         List<VacationCalendarEntity> vacationInTheWay = isDateIntervalTakenByVacation(vacationEntity);
 
-        if(vacationInTheWay != null){
+        if(!vacationInTheWay.isEmpty()){
             for (VacationCalendarEntity vacation : vacationInTheWay) {
                 if (vacation.getVacation().getId() != vacationEntity.getId()) {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
