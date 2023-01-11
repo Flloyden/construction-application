@@ -77,8 +77,8 @@ export default function CircleChart() {
       try {
         const response = await ApiConnector.getWork();
         setWorkList(response.data);
-        const responseSemester = await ApiConnector.getSemester();
-        setSemesterList(responseSemester.data.length);
+        const responseSemester = await ApiConnector.getAmountOfNotOldSemesterDays();
+        setSemesterList(responseSemester.data);
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);

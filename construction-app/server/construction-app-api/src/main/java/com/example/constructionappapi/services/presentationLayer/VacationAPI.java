@@ -36,6 +36,11 @@ public class VacationAPI {
         return vacationRepository.getAllVacationEntities();
     }
 
+    @GetMapping("/vacation/amount-not-old")
+    public int getAmountOfVacationDays(){
+        return vacationRepository.getAmountOfVacationDays();
+    }
+
     @DeleteMapping("/vacation/{vacationId}/remove")
     public void deleteVacation(@PathVariable final Long vacationId) {
         vacationRepository.deleteVacation(vacationId);

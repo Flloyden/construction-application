@@ -2,18 +2,17 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
+import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationCalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationDao;
-import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.VacationCalendarEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.VacationEntity;
-import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
+import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +46,13 @@ public class VacationRepository {
 
         if (isDateIntervalTakenByWork(vacationEntity)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb här.");
+        }
+
+        if(vacationEntity.getStartDate().isAfter(LocalDate.now())){
+            vacationEntity.setWorkStatus(WorkStatus.NOTSTARTED);
+        }
+        if(vacationEntity.getStartDate().equals(LocalDate.now())){
+            vacationEntity.setWorkStatus(WorkStatus.STARTED);
         }
 
         VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
@@ -143,5 +149,55 @@ public class VacationRepository {
 
     public List<VacationCalendarEntity> findAllVacationCalendarEntities() {
         return vacationCalendarDao.findAll();
+    }
+
+    public ResponseEntity findVacationsAndUpdateToStarted() {
+        boolean success = false;
+        List<VacationEntity> vacationsNotStarted = vacationDao.findNotStartedVacations();
+
+        for (VacationEntity vacation : vacationsNotStarted) {
+            if (vacation.getStartDate().equals(LocalDate.now()) || vacation.getStartDate().isBefore(LocalDate.now())) {
+                vacation.setWorkStatus(WorkStatus.STARTED);
+                System.out.println("Hello from update vacation to started");
+                vacationDao.save(vacation);
+                success = true;
+            }
+        }
+        if(success){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Transactional
+    public ResponseEntity findStartedVacationAndUpdateToCompleted() {
+        boolean success = false;
+        List<VacationEntity> startedVacations = vacationDao.findAllStartedVacations();
+
+        for (VacationEntity vacation : startedVacations) {
+            if (vacation.getStartDate().plusDays(vacation.getNumberOfDays() - 1).isBefore(LocalDate.now())){
+                vacation.setWorkStatus(WorkStatus.COMPLETED);
+                vacationDao.save(vacation);
+                success = true;
+            }
+        }
+        if(success){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+
+    public int getAmountOfVacationDays() {
+        List<VacationEntity> vacations = vacationDao.findAllNotFinishedVacation();
+        int days = 0;
+
+        if(!vacations.isEmpty()){
+            for (VacationEntity vacation: vacations) {
+                days += vacation.getNumberOfDays();
+            }
+            return days;
+        }
+        return 0;
     }
 }

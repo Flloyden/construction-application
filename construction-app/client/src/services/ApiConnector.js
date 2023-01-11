@@ -203,6 +203,11 @@ class ApiConnector {
     return axios.get(CALENDAR_BASE_API + "/vacation");
   }
 
+  getAmountOfNotOldSemesterDays() {
+    //Gets all existing info about calendar from the database
+    return axios.get(VACATION_BASE_API + "/amount-not-old");
+  }
+
   deleteSemester(semesterId) {
     console.log(semesterId);
     return axios.delete(VACATION_BASE_API + "/" + semesterId + "/remove");

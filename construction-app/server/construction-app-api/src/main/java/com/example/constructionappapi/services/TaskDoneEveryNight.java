@@ -1,9 +1,9 @@
 package com.example.constructionappapi.services;
 
 import com.example.constructionappapi.services.businessLogicLayer.repositories.AccountingRepository;
+import com.example.constructionappapi.services.businessLogicLayer.repositories.VacationRepository;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,14 +27,19 @@ public class TaskDoneEveryNight {
 
     //cron modification: second, minute, hour, day-of-month, month, day-of-week
 
-    //@Scheduled(cron = "*/60 * * * * *") //every 60 seconds
-    @Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
+    @Scheduled(cron = "*/60 * * * * *") //every 60 seconds
+    //@Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
     public void execute() throws InterruptedException {
         System.out.println();
         System.out.println("______ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ______");
 
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
+        VacationRepository vacationRepository = configurableApplicationContext.getBean(VacationRepository.class);
+
+        //updates vacationStatus to started and Completed depending on dates
+        vacationRepository.findVacationsAndUpdateToStarted();
+        vacationRepository.findStartedVacationAndUpdateToCompleted();
 
         //update workStatus on work that starts today to Started
         workRepository.findWorkAndUpdateToStarted();
