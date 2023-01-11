@@ -18,6 +18,7 @@ public interface CustomerNoteDao extends JpaRepository<CustomerNoteEntity, Long>
     Optional<CustomerNoteEntity> findFirstByWork(WorkEntity workEntity);
 
     List<CustomerNoteEntity> findAllByCustomerId(Long customerId);
+
     List<CustomerNoteEntity> findAllByWorkId(Long workId);
 
     @Query(
@@ -26,6 +27,7 @@ public interface CustomerNoteDao extends JpaRepository<CustomerNoteEntity, Long>
             nativeQuery = true
     )
     List<CustomerNoteEntity> findAllByWorkIdAndNoteStatus(int noteStatus, Long workId);
+
     List<CustomerNoteEntity> findAllBySummaryId(Long noteSummaryId);
 
     //CustomerNoteEntity findFirstByOrderByDatePostedDesc(Long workId);

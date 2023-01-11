@@ -51,6 +51,7 @@ public class CustomerNoteEntity {
     public void setCustomerForNote(CustomerEntity customer) {
         this.customer = customer;
     }
+
     public void setWorkForNote(WorkEntity workEntity) {
         this.work = workEntity;
     }

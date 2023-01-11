@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+
 @Entity
 @Table(name = "vacationCalendar")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VacationCalendarEntity implements Comparable<VacationCalendarEntity>{
+public class VacationCalendarEntity implements Comparable<VacationCalendarEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

@@ -37,7 +37,7 @@ public class VacationAPI {
     }
 
     @GetMapping("/vacation/amount-not-old")
-    public int getAmountOfVacationDays(){
+    public int getAmountOfVacationDays() {
         return vacationRepository.getAmountOfVacationDays();
     }
 

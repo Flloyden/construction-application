@@ -4,6 +4,7 @@ package com.example.constructionappapi.services.presentationLayer;
 import com.example.constructionappapi.services.businessLogicLayer.repositories.WorkRepository;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,9 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class WorkAPI {
-    private final WorkRepository workRepository;
+    @Autowired
+    private WorkRepository workRepository;
 
     @GetMapping("/work")
     public List<WorkEntity> getAllWorkEntities() {
@@ -65,11 +66,10 @@ public class WorkAPI {
     public List<Object> getOngoingWork() {
         List<Object> objectList = new ArrayList<>();
         List<WorkEntity> work = workRepository.checkForOngoingWork();
-        if (work.size() != 0)
-        {
-          objectList.add(work.get(0));
-          objectList.add(work.get(0).getCustomer());
-          return objectList;
+        if (work.size() != 0) {
+            objectList.add(work.get(0));
+            objectList.add(work.get(0).getCustomer());
+            return objectList;
         } else {
             return null;
         }

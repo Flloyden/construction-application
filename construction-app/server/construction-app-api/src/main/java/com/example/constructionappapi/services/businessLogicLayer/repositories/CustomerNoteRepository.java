@@ -43,20 +43,20 @@ public class CustomerNoteRepository {
 
         Optional<WorkEntity> work = workDao.findById(workId);
 
-        if(work.get().getNumberOfDays() == work.get().getCustomerNotes().size()){
+        if (work.get().getNumberOfDays() == work.get().getCustomerNotes().size()) {
             return null;
         }
 
         LocalDate dateToAdd;
-        if(!customerNoteDao.existsById(customerNoteEntity.getId())){ //om ny anteckning
+        if (!customerNoteDao.existsById(customerNoteEntity.getId())) { //om ny anteckning
             dateToAdd = getDateForNewNote(workId);
 
-            if(dateToAdd == null){
+            if (dateToAdd == null) {
                 return null;
             }
 
             customerNoteEntity.setDatePosted(dateToAdd);
-        }else{ //om gammal anteckning som redigeras
+        } else { //om gammal anteckning som redigeras
             Optional<CustomerNoteEntity> oldNote = customerNoteDao.findById(customerNoteEntity.getId());
             customerNoteEntity.setDatePosted(oldNote.get().getDatePosted());
         }
@@ -75,31 +75,30 @@ public class CustomerNoteRepository {
     }
 
 
-    public LocalDate getDateForNewNote(long workId){
+    public LocalDate getDateForNewNote(long workId) {
 
         Optional<WorkEntity> work = workDao.findById(workId);
         List<CustomerNoteEntity> allNotesForThisWork = work.get().getCustomerNotes();
 
-        if(work.get().getCustomerNotes().isEmpty()){ //om detta är första anteckningen för jobbet så blir datum för anteckningen första dagen på jobbet
+        if (work.get().getCustomerNotes().isEmpty()) { //om detta är första anteckningen för jobbet så blir datum för anteckningen första dagen på jobbet
             return (work.get().getStartDate());
-        }
-        else { //annars sätt datumet på anteckningen till jobbdagen efter senaste anteckningen
+        } else { //annars sätt datumet på anteckningen till jobbdagen efter senaste anteckningen
             LocalDate dateLastNote = null;
 
             for (int i = 0; i < allNotesForThisWork.size(); i++) {
-                if(i == (allNotesForThisWork.size()) - 1){ //Hämta datum på senaste anteckningen //TODO detta går att göra snyggare med korrekt funktion i Dao?
+                if (i == (allNotesForThisWork.size()) - 1) { //Hämta datum på senaste anteckningen //TODO detta går att göra snyggare med korrekt funktion i Dao?
                     dateLastNote = allNotesForThisWork.get(i).getDatePosted();
                 }
             }
 
             List<CalendarEntity> workCalendar = work.get().getCalendar();
-                    //calendarDao.findAllByWorkId(workId) ; //kalender för jobbet som anteckningen tillhör
+            //calendarDao.findAllByWorkId(workId) ; //kalender för jobbet som anteckningen tillhör
 
-            if(workCalendar.isEmpty()){
+            if (workCalendar.isEmpty()) {
                 System.out.println("-----------------workCalendar empty!!!!");
             }
             //kolla igenom alla datum i jobbkalender och hitta första datumet efter senaste anteckningen
-            for(CalendarEntity calendarEntity : workCalendar) {
+            for (CalendarEntity calendarEntity : workCalendar) {
                 if (calendarEntity.getDate().isAfter(dateLastNote)) { //datumet efter förra anteckningen
                     return calendarEntity.getDate();
                 }
@@ -124,7 +123,7 @@ public class CustomerNoteRepository {
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if(noteStatus == NoteStatus.SUMMARIZED){
+            if (noteStatus == NoteStatus.SUMMARIZED) {
                 summarizedNotes.add(customerNoteEntity);
             }
         }
@@ -138,7 +137,7 @@ public class CustomerNoteRepository {
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if(noteStatus == NoteStatus.NOTSUMMARIZED){
+            if (noteStatus == NoteStatus.NOTSUMMARIZED) {
                 nonSummarizedNotes.add(customerNoteEntity);
             }
         }
@@ -156,7 +155,7 @@ public class CustomerNoteRepository {
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if(noteStatus == NoteStatus.SUMMARIZED){
+            if (noteStatus == NoteStatus.SUMMARIZED) {
                 summarizedNotes.add(customerNoteEntity);
             }
         }
@@ -170,7 +169,7 @@ public class CustomerNoteRepository {
 
         for (CustomerNoteEntity customerNoteEntity : allNotes) {
             NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if(noteStatus == NoteStatus.NOTSUMMARIZED){
+            if (noteStatus == NoteStatus.NOTSUMMARIZED) {
                 nonSummarizedNotes.add(customerNoteEntity);
             }
         }
@@ -179,15 +178,14 @@ public class CustomerNoteRepository {
     }
 
 
-
     public void deleteNote(Long noteId) {
-        if(customerNoteDao.existsById(noteId)){
-           customerNoteDao.deleteById(noteId);
+        if (customerNoteDao.existsById(noteId)) {
+            customerNoteDao.deleteById(noteId);
         }
     }
 
     public List<CustomerNoteEntity> getAllNotesForSum(long sumId) {
-        if(noteSummaryDao.existsById(sumId)){
+        if (noteSummaryDao.existsById(sumId)) {
             return customerNoteDao.findAllBySummaryId(sumId);
         }
         return null;

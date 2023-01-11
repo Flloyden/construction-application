@@ -43,11 +43,11 @@ public class NoteSummaryRepository {
         long timeSpentSum = 0;
         long timeEmployeeSum = 0;
 
-        if(work.isPresent()){
+        if (work.isPresent()) {
             List<CustomerNoteEntity> allNotesForWork = customerNoteDao.findAllByWorkId(workId);
-            if(!allNotesForWork.isEmpty()){
+            if (!allNotesForWork.isEmpty()) {
                 for (CustomerNoteEntity customerNoteEntity : allNotesForWork) {
-                    if(customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED){ //alla anteckningar för detta jobb med samma månad som summering
+                    if (customerNoteEntity.getDatePosted().getMonth().getValue() == noteSummary.getMonth() && customerNoteEntity.getNoteStatus() == NoteStatus.NOTSUMMARIZED) { //alla anteckningar för detta jobb med samma månad som summering
                         //räkna ihop all data
                         kmDrivenSum += Long.parseLong(customerNoteEntity.getKmDriven());
                         timeSpentSum += Long.parseLong(customerNoteEntity.getTimeSpend());
@@ -77,7 +77,7 @@ public class NoteSummaryRepository {
                         success = true;
                     }
                 }
-                if(!success){
+                if (!success) {
                     return null;
                 }
                 noteSummary.setCustomerNotes(summedNotes);

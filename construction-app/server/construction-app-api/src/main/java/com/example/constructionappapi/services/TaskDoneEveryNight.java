@@ -20,7 +20,7 @@ public class TaskDoneEveryNight {
     private final ConfigurableApplicationContext configurableApplicationContext;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
 
-    public TaskDoneEveryNight(ConfigurableApplicationContext configurableApplicationContext){
+    public TaskDoneEveryNight(ConfigurableApplicationContext configurableApplicationContext) {
         this.configurableApplicationContext = configurableApplicationContext;
 
     }

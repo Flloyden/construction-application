@@ -78,7 +78,7 @@ public class WorkEntity implements Comparable<WorkEntity> {
         this.noteSummaries.add(noteSummary);
     }
 
-    public WorkStatus getWorkStatus(){
+    public WorkStatus getWorkStatus() {
         return workStatus;
     }
 

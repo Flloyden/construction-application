@@ -54,7 +54,7 @@ public class CalendarEntity implements Comparable<CalendarEntity> {
         return date.compareTo(o.date);
     }
 
-    public WorkEntity getWork(){
+    public WorkEntity getWork() {
         return work;
     }
 

@@ -64,7 +64,7 @@ public class CustomerEntity {
         return workList;
     }
 
-    public CustomerEntity getCustomerObject(long customerId){
+    public CustomerEntity getCustomerObject(long customerId) {
         return this;
     }
 }

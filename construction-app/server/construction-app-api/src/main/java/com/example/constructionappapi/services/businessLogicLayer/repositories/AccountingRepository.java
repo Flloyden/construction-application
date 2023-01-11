@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountingRepository{
+public class AccountingRepository {
 
     @Autowired
     private AccountingDao accountingDao;
@@ -36,7 +36,7 @@ public class AccountingRepository{
     }
 
 
-    public int updateOldAccountingStatus(LocalDate today){
+    public int updateOldAccountingStatus(LocalDate today) {
         return accountingDao.updateOldAccountingStatus(today);
     }
 

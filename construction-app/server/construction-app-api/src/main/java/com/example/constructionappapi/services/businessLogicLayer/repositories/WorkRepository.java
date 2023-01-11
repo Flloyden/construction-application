@@ -136,7 +136,7 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet som du försöker ändra kan inte hittas.");
         }
 
-        if (work.getName() == null || work.getName().equals("")){
+        if (work.getName() == null || work.getName().equals("")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ett jobb måste ha ett namn.");
         }
 
@@ -144,11 +144,11 @@ public class WorkRepository {
             work.setStartDate(findNewStartDate());
         }
 
-        if (work.getStartDate().isBefore(LocalDate.now())){
+        if (work.getStartDate().isBefore(LocalDate.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
         }
 
-        if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())){
+        if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
         }
 
@@ -160,7 +160,7 @@ public class WorkRepository {
             }
         }
 
-        if(vacationCalendarDao.findFirstByDate(work.getStartDate()).isPresent()){
+        if (vacationCalendarDao.findFirstByDate(work.getStartDate()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger en semester på det valda startdatumet.");
         }
 
@@ -201,9 +201,9 @@ public class WorkRepository {
             calendar.changeStartDateOfWorkOnCalendar(workBeforeUpdate.getStartDate(), workToUpdateWith);
         } else if (workBeforeUpdate.getNumberOfDays() != workToUpdateWith.getNumberOfDays()) {
             updateNumberOfDays(workBeforeUpdate, workToUpdateWith.getNumberOfDays());
-        } else if (workBeforeUpdate.isLockedInCalendar() != workToUpdateWith.isLockedInCalendar()){
+        } else if (workBeforeUpdate.isLockedInCalendar() != workToUpdateWith.isLockedInCalendar()) {
             calendar.moveCalendarItemBackwards(LocalDate.now());
-        } else if(workBeforeUpdate.getEarliestStartDate() != null && workToUpdateWith.getEarliestStartDate() == null){
+        } else if (workBeforeUpdate.getEarliestStartDate() != null && workToUpdateWith.getEarliestStartDate() == null) {
             calendar.moveCalendarItemBackwards(LocalDate.now());
         }
     }
@@ -232,9 +232,9 @@ public class WorkRepository {
     @Transactional
     public ResponseEntity<?> findStartedWorkAndUpdateToCompleted(Long workId) {
         Optional<WorkEntity> thisWork = workDao.findById(workId);
-        if(!thisWork.isEmpty() && thisWork.get().getWorkStatus() == WorkStatus.STARTED){
+        if (!thisWork.isEmpty() && thisWork.get().getWorkStatus() == WorkStatus.STARTED) {
             List<CustomerNoteEntity> summarizedNotes = customerNoteDao.findAllByWorkIdAndNoteStatus(1, workId);
-            if(summarizedNotes.size() == thisWork.get().getNumberOfDays()){
+            if (summarizedNotes.size() == thisWork.get().getNumberOfDays()) {
                 thisWork.get().setWorkStatus(WorkStatus.COMPLETED);
                 workDao.save(thisWork.get());
                 return ResponseEntity.status(HttpStatus.ACCEPTED).build();
@@ -254,7 +254,7 @@ public class WorkRepository {
                 success = true;
             }
         }
-        if(success){
+        if (success) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -263,7 +263,7 @@ public class WorkRepository {
     public List<WorkEntity> checkForUpcomingWork() {
         LocalDate today = LocalDate.now();
         today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
-                                            //Lägger därför en dag framåt från dagens datum.
+        //Lägger därför en dag framåt från dagens datum.
         LocalDate thirtyDaysForward = today.plusDays(30);
 
         return workDao.findFirstByStartDateBetween(today, thirtyDaysForward);
@@ -272,11 +272,9 @@ public class WorkRepository {
     public List<WorkEntity> checkForOngoingWork() {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
-        if (dayOfWeek== java.util.Calendar.SATURDAY)
-        {
+        if (dayOfWeek == java.util.Calendar.SATURDAY) {
             return workDao.findWorkEntityForTodayIfSaturday(1);
-        } else if(dayOfWeek==java.util.Calendar.SUNDAY)
-        {
+        } else if (dayOfWeek == java.util.Calendar.SUNDAY) {
             return workDao.findWorkEntityForTodayIfSunday(1);
         } else {
             return workDao.findWorkEntityForToday(1);

@@ -7,7 +7,6 @@ RUN ./gradlew build
 
 FROM eclipse-temurin:17-jdk-alpine
 COPY --from=build build/libs/construction-app-api.jar app.jar
-EXPOSE 5432
+EXPOSE 3306
 EXPOSE 8080
-EXPOSE 10000
 ENTRYPOINT ["java","-jar","/app.jar"]

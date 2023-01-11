@@ -16,14 +16,12 @@ public class CalendarColorAPI {
     private CalendarColorRepository calendarColorRepository;
 
     @PostMapping("/calendarcolor")
-    public ResponseEntity<CalendarColorEntity> createCalendarColor(@RequestBody CalendarColorEntity calendarColorEntity)
-    {
+    public ResponseEntity<CalendarColorEntity> createCalendarColor(@RequestBody CalendarColorEntity calendarColorEntity) {
         return calendarColorRepository.createCalendarcolor(calendarColorEntity);
     }
 
     @GetMapping("/calendarcolor")
-    public ResponseEntity<CalendarColorEntity> getCalendarColor()
-    {
+    public ResponseEntity<CalendarColorEntity> getCalendarColor() {
         return calendarColorRepository.getColorEntity();
     }
 }

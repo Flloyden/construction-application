@@ -18,7 +18,6 @@ import java.util.List;
 @Repository
 public interface AccountingDao extends JpaRepository<AccountingEntity, Long> {
 
-
     @Modifying
     @Transactional
     @Query(
