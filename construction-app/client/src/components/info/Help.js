@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import HelpCalendar from "./HelpCalendar";
 import HelpCustomer from "./HelpCustomer";
-import HelpExtra from "./HelpExtra";
 import HelpHome from "./HelpHome";
 import HelpSettings from "./HelpSettings";
 import HelpWarranty from "./HelpWarranty";
@@ -13,7 +12,6 @@ export default function Help() {
     { test: "Kalender" },
     { test: "Garantier" },
     { test: "Inställningar" },
-    { test: "Annat" },
   ];
   const [active, setActive] = useState(0);
   const [showHome, setShowHome] = useState(true)
@@ -21,7 +19,6 @@ export default function Help() {
   const [showCalendar, setShowCalendar] = useState(false)
   const [showWarranty, setShowWarranty] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
-  const [showExtra, setShowExtra] = useState(false)
 
   function test(e) {
     setShowHome(false)
@@ -29,7 +26,6 @@ export default function Help() {
     setShowCalendar(false)
     setShowWarranty(false)
     setShowSettings(false)
-    setShowExtra(false)
     if(e === 0) {
       setShowHome(true)
     } if(e === 1) {
@@ -40,8 +36,6 @@ export default function Help() {
       setShowWarranty(true)
     } if(e === 4) {
       setShowSettings(true)
-    } if(e === 5) {
-      setShowExtra(true)
     }
   }
 
@@ -83,9 +77,6 @@ export default function Help() {
           )}
           {showSettings && (
             <HelpSettings />
-          )}
-          {showExtra && (
-            <HelpExtra />
           )}
         </div>
       </div>

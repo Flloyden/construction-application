@@ -4,7 +4,7 @@ export default function HelpHome() {
   return (
     <div className="pt-4 mt-4 border-t-2">
       <div className="flex gap-10">
-        <div className="w-fit">
+        <div className="w-fit border-r-2 pr-10">
           <div className="">
             <h1 className="font-bold">Översikt</h1>
             <p>Lägg in semester</p>
@@ -47,7 +47,7 @@ export default function HelpHome() {
         <div className="">
           <img src="1.png" alt="Översikt bild" className="border-black border rounded" />
           <div className="flex mt-6 gap-6">
-            <div className="mt-6 border-l-2">
+            <div className="mt-6">
               <h1 className="font-bold mt-6 ml-6">Jobb & Semester</h1>
               <p className="font-normal ml-6">
                 Här kan man se antal kommande, pågående och slutförda jobb samt

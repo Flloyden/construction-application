@@ -5,9 +5,6 @@ import { RiCloseLine } from "react-icons/ri";
 
 const AddWaranty = (props) => {
   // Declare variables
-  const [image, setImage] = useState("");
-  const receipt = useRef();
-  let [endDate, setEndDate] = useState(new Date());
   const nameRef = useRef();
   const regRef = useRef();
   const dNumberRef = useRef();
@@ -17,20 +14,17 @@ const AddWaranty = (props) => {
     receipt: "",
     registration_number: "",
     d_number: "",
-    warranty_date: "",
+    warranty_date: new Date(),
   });
 
   /**
    * Updates the warranty on change
    */
-  const handleChange = () => {
+  const handleChange = (e) => {
+    let value = e.target.value;
     setWarranty({
-      id: "",
-      name: nameRef.current.value,
-      receipt: image,
-      registration_number: regRef.current.value,
-      d_number: dNumberRef.current.value,
-      warranty_date: endDate,
+      ...warranty,
+      [e.target.name]: value,
     });
   };
 
@@ -67,7 +61,11 @@ const AddWaranty = (props) => {
     /**Gets the file from input and makes it into base64 and saves it */
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
-    setImage(base64);
+    setWarranty({
+      ...warranty,
+      receipt: base64,
+    });
+    return base64;
   };
 
   return (
@@ -99,7 +97,8 @@ const AddWaranty = (props) => {
                 type="text"
                 name="name"
                 required
-                onChange={(e) => handleChange(e)}
+                value={warranty.name}
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -108,12 +107,13 @@ const AddWaranty = (props) => {
               Kvitto:{" "}
             </label>
             <input
-              ref={receipt}
               className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type="file"
               name="receipt"
               accept="image/png, image/jpg, image/jpeg, application/pdf"
-              onChange={(e) => handleFile(e)}
+              onChange={(item) => {
+                handleFile(item);
+              }}
             ></input>
 
             <div className="mt-4">
@@ -127,7 +127,8 @@ const AddWaranty = (props) => {
                 type="text"
                 required
                 name="registration_number"
-                onChange={(e) => handleChange(e)}
+                value={warranty.registration_number}
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -141,28 +142,29 @@ const AddWaranty = (props) => {
                 type="text"
                 required
                 name="d_number"
-                onChange={(e) => handleChange(e)}
+                value={warranty.d_number}
+                onChange={handleChange}
               ></input>
             </div>
 
             <div className="mt-4">
-              <label onClick={handleChange}>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
-                  Utgångsdatum:{" "}
-                  <span className="text-red-700 font-black">*</span>{" "}
-                </label>
-                <DatePicker
-                  className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                  selected={endDate}
-                  calendarStartDay={1}
-                  onChange={(date) => {
-                    setEndDate(date);
-                    handleChange(date);
-                  }}
-                  selectsStart
-                  startDate={endDate}
-                />
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                Utgångsdatum: <span className="text-red-700 font-black">*</span>{" "}
               </label>
+              <DatePicker
+                className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                selected={warranty.warranty_date}
+                value={warranty.warranty_date}
+                calendarStartDay={1}
+                onChange={(date) =>
+                  setWarranty({
+                    ...warranty,
+                    warranty_date: new Date(date),
+                  })
+                }
+                selectsStart
+                startDate={warranty.warranty_date}
+              />
             </div>
 
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
