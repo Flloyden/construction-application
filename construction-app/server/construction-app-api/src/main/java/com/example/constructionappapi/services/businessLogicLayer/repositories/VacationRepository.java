@@ -44,7 +44,7 @@ public class VacationRepository {
 
         if(vacationInTheWay != null){
             for (VacationCalendarEntity vacation : vacationInTheWay) {
-                if (vacation.getId() != vacationEntity.getId()) {
+                if (vacation.getVacation().getId() != vacationEntity.getId()) {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
                 }
             }
@@ -78,7 +78,7 @@ public class VacationRepository {
 
         if(vacationInTheWay != null){
             for (VacationCalendarEntity vacation : vacationInTheWay) {
-                if (vacation.getId() != vacationEntity.getId()) {
+                if (vacation.getVacation().getId() != vacationEntity.getId()) {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
                 }
             }
