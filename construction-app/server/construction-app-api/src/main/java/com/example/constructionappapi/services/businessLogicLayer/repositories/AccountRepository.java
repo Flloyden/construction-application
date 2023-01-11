@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +83,7 @@ public class AccountRepository {
         return accountDao.findFirstByRefreshToken(refreshToken);
     }
 
-    public ResponseEntity changePassword(String email, String oldPassword, String newPassword, String newPasswordConfirmation) {
+    public ResponseEntity<?> changePassword(String email, String oldPassword, String newPassword, String newPasswordConfirmation) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         final Optional<AccountEntity> accountEntity = Optional.ofNullable(findByEmail(email));
@@ -103,7 +105,7 @@ public class AccountRepository {
         return ResponseEntity.ok().body("Password successfully changed.");
     }
 
-    public ResponseEntity checkPasswordForAccountChange(String email, String password, AccountEntity account) {
+    public ResponseEntity<?> checkPasswordForAccountChange(String email, String password, AccountEntity account) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         final Optional<AccountEntity> accountEntity = accountDao.findById(account.getId());
@@ -121,5 +123,25 @@ public class AccountRepository {
         accountDao.save(accountEntity.get());
 
         return ResponseEntity.ok().body("Password matched.");
+    }
+
+    public String resetPassword(AccountEntity accountEntity) {
+        // Generate a new random password for the user
+        SecureRandom random = new SecureRandom();
+        byte[] passwordBytes = new byte[10];
+        random.nextBytes(passwordBytes);
+        String newPassword = DatatypeConverter.printHexBinary(passwordBytes);
+
+        // Set the user's password to the new password
+        accountEntity.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        save(accountEntity);
+        return newPassword;
+    }
+
+    public String generateRecoveryToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] tokenBytes = new byte[20];
+        random.nextBytes(tokenBytes);
+        return DatatypeConverter.printHexBinary(tokenBytes);
     }
 }

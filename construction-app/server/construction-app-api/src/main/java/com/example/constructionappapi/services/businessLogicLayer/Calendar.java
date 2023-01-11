@@ -109,7 +109,6 @@ public class Calendar {
             }
 
             calendarEntity = calendarRepository.save(calendarEntity);
-            //calendarEntity.getWork().getCalendar().add(calendarEntity); //Is this needed?
             calendarDates.put(calendarEntity, work.getId());
         }
     }

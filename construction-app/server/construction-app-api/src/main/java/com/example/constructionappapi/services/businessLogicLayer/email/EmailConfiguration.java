@@ -19,10 +19,10 @@ public class EmailConfiguration {
             Properties properties = new Properties();
             properties.load(inputStream);
 
-            mailSender.setHost(properties.getProperty("email-host"));
-            mailSender.setPort(Integer.parseInt(properties.getProperty("email-port")));
-            mailSender.setUsername(properties.getProperty("app-email"));
-            mailSender.setPassword(properties.getProperty("app-email-password"));
+            mailSender.setHost(properties.getProperty("email.host"));
+            mailSender.setPort(Integer.parseInt(properties.getProperty("email.port")));
+            mailSender.setUsername(properties.getProperty("app.email"));
+            mailSender.setPassword(properties.getProperty("app.email.password"));
 
             Properties props = mailSender.getJavaMailProperties();
             props.put("mail.transport.protocol", "smtp");

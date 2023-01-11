@@ -10,15 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-import java.security.SecureRandom;
 import java.util.Optional;
 
 @RestController
@@ -74,7 +71,9 @@ public class AuthenticationAPI {
         }
 
         // Check that the refresh token has not expired and is still valid
-        if (jwtUtils.isTokenExpired(refreshToken, jwtUtils.getJwtRefreshKey())) {
+        try {
+            jwtUtils.isTokenExpired(refreshToken, jwtUtils.getJwtRefreshKey());
+        } catch (Exception e) {
             return ResponseEntity.status(401).body("Refresh failed");
         }
 
@@ -107,11 +106,11 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("/initiate-email-recovery")
-    public ResponseEntity initiateEmailRecovery(@RequestBody EmailRecoveryRequest emailRecoveryRequest) {
+    public ResponseEntity<?> initiateEmailRecovery(@RequestBody EmailRecoveryRequest emailRecoveryRequest) {
         AccountEntity user = accountRepository.findByEmail(emailRecoveryRequest.getEmail());
 
         if (user != null) {
-            String recoveryToken = generateRecoveryToken();
+            String recoveryToken = accountRepository.generateRecoveryToken();
             user.setRecoveryToken(recoveryToken);
             accountRepository.save(user);
 
@@ -124,15 +123,8 @@ public class AuthenticationAPI {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    private String generateRecoveryToken() {
-        SecureRandom random = new SecureRandom();
-        byte[] tokenBytes = new byte[20];
-        random.nextBytes(tokenBytes);
-        return DatatypeConverter.printHexBinary(tokenBytes);
-    }
-
     @PostMapping("/recover")
-    public ResponseEntity recoverAccount(@RequestBody RecoveryTokenRequest recoveryTokenRequest) {
+    public ResponseEntity<?> recoverAccount(@RequestBody RecoveryTokenRequest recoveryTokenRequest) {
         try {
             Optional<AccountEntity> accountEntity = accountRepository.findByRecoveryToken(recoveryTokenRequest.getToken());
             if (accountEntity.isEmpty()) {
@@ -140,7 +132,7 @@ public class AuthenticationAPI {
             }
 
             String emailSubject = "New password";
-            String emailText = resetPassword(accountEntity.get());
+            String emailText = accountRepository.resetPassword(accountEntity.get());
             emailService.sendEmail(accountEntity.get().getEmail(), emailSubject, emailText);
 
             accountEntity.get().setRecoveryToken(null);
@@ -152,21 +144,8 @@ public class AuthenticationAPI {
         }
     }
 
-    private String resetPassword(AccountEntity accountEntity) {
-        // Generate a new random password for the user
-        SecureRandom random = new SecureRandom();
-        byte[] passwordBytes = new byte[10];
-        random.nextBytes(passwordBytes);
-        String newPassword = DatatypeConverter.printHexBinary(passwordBytes);
-
-        // Set the user's password to the new password
-        accountEntity.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-        accountRepository.save(accountEntity);
-        return newPassword;
-    }
-
     @PostMapping("/change-password")
-    public ResponseEntity changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest) {
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest) {
         return accountRepository.changePassword(
                 passwordChangeRequest.getEmail(),
                 passwordChangeRequest.getOldPassword(),
@@ -175,7 +154,7 @@ public class AuthenticationAPI {
     }
 
     @PostMapping("/check-password")
-    public ResponseEntity checkPasswordForAccountChange(@RequestBody CheckPasswordRequest checkPasswordRequest, @RequestBody AccountEntity account) {
+    public ResponseEntity<?> checkPasswordForAccountChange(@RequestBody CheckPasswordRequest checkPasswordRequest, @RequestBody AccountEntity account) {
         return accountRepository.checkPasswordForAccountChange(
                 checkPasswordRequest.getNewEmail(),
                 checkPasswordRequest.getPassword(),

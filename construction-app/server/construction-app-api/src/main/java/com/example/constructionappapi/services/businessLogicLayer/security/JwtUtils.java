@@ -3,6 +3,10 @@ package com.example.constructionappapi.services.businessLogicLayer.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +17,24 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Component
+@PropertySource("classpath:application.properties")
 public class JwtUtils {
-    private final String JWT_ACCESS_KEY = "q3r6s5v9w1x2y7z8m4n0o1p5k6l2j3h7g8d0e5f9b2c1t4u6i8";
-    private final String JWT_REFRESH_KEY = "GpfYFwA7ZDtT3xRJEuKX9vzOyqUiM2sVQW0L8jk1ANmh6rcdCbP5IeHSB4wgTlE";
-    private final long JWT_ACCESS_TOKEN_DURATION = TimeUnit.HOURS.toMillis(1);
-    private final long JWT_REFRESH_TOKEN_DURATION = TimeUnit.DAYS.toMillis(7);
+    @Autowired
+    private Environment env;
+    @Value("${jwt.access.key}")
+    private String JWT_ACCESS_KEY;
+
+    @Value("${jwt.refresh.key}")
+    private String JWT_REFRESH_KEY;
+
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(userDetails, claims, JWT_ACCESS_TOKEN_DURATION, JWT_ACCESS_KEY);
+        return createToken(userDetails, claims, getAccessDuration(), JWT_ACCESS_KEY);
     }
 
     public String generateToken(UserDetails userDetails, Map<String, Object> claims) {
-        return createToken(userDetails, claims, JWT_REFRESH_TOKEN_DURATION, JWT_ACCESS_KEY);
+        return createToken(userDetails, claims, getAccessDuration(), JWT_ACCESS_KEY);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -33,13 +42,31 @@ public class JwtUtils {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token, JWT_ACCESS_KEY));
     }
 
+    private long getAccessDuration() {
+        try {
+            return TimeUnit.HOURS.toMillis(env.getProperty("jwt.access.duration", Long.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return TimeUnit.HOURS.toMillis(5);
+        }
+    }
+
     public String generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(userDetails, claims, JWT_REFRESH_TOKEN_DURATION, JWT_REFRESH_KEY);
+        return createToken(userDetails, claims, getRefreshDuration(), JWT_REFRESH_KEY);
     }
 
     public String generateRefreshToken(UserDetails userDetails, Map<String, Object> claims) {
-        return createToken(userDetails, claims, JWT_REFRESH_TOKEN_DURATION, JWT_REFRESH_KEY);
+        return createToken(userDetails, claims, getRefreshDuration(), JWT_REFRESH_KEY);
+    }
+
+    private long getRefreshDuration() {
+        try {
+            return TimeUnit.HOURS.toMillis(env.getProperty("jwt.refresh.duration", Long.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return TimeUnit.HOURS.toMillis(60);
+        }
     }
 
     public boolean isRefreshTokenValid(String token, UserDetails userDetails) {

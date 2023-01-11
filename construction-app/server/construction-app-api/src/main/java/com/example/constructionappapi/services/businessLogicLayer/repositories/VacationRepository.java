@@ -40,11 +40,11 @@ public class VacationRepository {
      * @return
      */
     public ResponseEntity<?> saveVacation(VacationEntity vacationEntity) {
-        if (vacationEntity.getStartDate().isBefore(LocalDate.now())){
+        if (vacationEntity.getStartDate().isBefore(LocalDate.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
         }
 
-        if(isDateIntervalTakenByVacation(vacationEntity)){
+        if (isDateIntervalTakenByVacation(vacationEntity)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Det ligger redan en semester här.");
         }
 
@@ -52,10 +52,10 @@ public class VacationRepository {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb här.");
         }
 
-        if(vacationEntity.getStartDate().isAfter(LocalDate.now())){
+        if (vacationEntity.getStartDate().isAfter(LocalDate.now())) {
             vacationEntity.setWorkStatus(WorkStatus.NOTSTARTED);
         }
-        if(vacationEntity.getStartDate().equals(LocalDate.now())){
+        if (vacationEntity.getStartDate().equals(LocalDate.now())) {
             vacationEntity.setWorkStatus(WorkStatus.STARTED);
         }
 
@@ -72,11 +72,11 @@ public class VacationRepository {
     }
 
     public ResponseEntity<?> updateVacation(VacationEntity vacationEntity) {
-        if (vacationEntity.getStartDate().isBefore(LocalDate.now())){
+        if (vacationEntity.getStartDate().isBefore(LocalDate.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
         }
 
-        if(isDateIntervalTakenByVacation(vacationEntity)){
+        if (isDateIntervalTakenByVacation(vacationEntity)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Det ligger redan en semester här.");
         }
 
@@ -90,10 +90,10 @@ public class VacationRepository {
 
     private boolean isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
         List<VacationCalendarEntity> vacationList = vacationCalendarDao.findAllByDateLessThanEqualAndDateGreaterThanEqual(
-                        vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
-                        vacationEntity.getStartDate());
+                vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
+                vacationEntity.getStartDate());
 
-        if(!vacationList.isEmpty()){
+        if (!vacationList.isEmpty()) {
             for (VacationCalendarEntity vacation : vacationList) {
                 if (vacation.getVacation().getId() != vacationEntity.getId()) {
                     return true;
@@ -179,7 +179,7 @@ public class VacationRepository {
                 success = true;
             }
         }
-        if(success){
+        if (success) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -191,13 +191,13 @@ public class VacationRepository {
         List<VacationEntity> startedVacations = vacationDao.findAllStartedVacations();
 
         for (VacationEntity vacation : startedVacations) {
-            if (vacation.getStartDate().plusDays(vacation.getNumberOfDays() - 1).isBefore(LocalDate.now())){
+            if (vacation.getStartDate().plusDays(vacation.getNumberOfDays() - 1).isBefore(LocalDate.now())) {
                 vacation.setWorkStatus(WorkStatus.COMPLETED);
                 vacationDao.save(vacation);
                 success = true;
             }
         }
-        if(success){
+        if (success) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -208,8 +208,8 @@ public class VacationRepository {
         List<VacationEntity> vacations = vacationDao.findAllNotFinishedVacation();
         int days = 0;
 
-        if(!vacations.isEmpty()){
-            for (VacationEntity vacation: vacations) {
+        if (!vacations.isEmpty()) {
+            for (VacationEntity vacation : vacations) {
                 days += vacation.getNumberOfDays();
             }
             return days;
