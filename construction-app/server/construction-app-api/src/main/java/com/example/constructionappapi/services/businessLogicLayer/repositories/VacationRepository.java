@@ -40,8 +40,14 @@ public class VacationRepository {
      * @return
      */
     public ResponseEntity<?> saveVacation(VacationEntity vacationEntity) {
-        if (isDateIntervalTakenByVacation(vacationEntity)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
+        List<VacationCalendarEntity> vacationInTheWay = isDateIntervalTakenByVacation(vacationEntity);
+
+        if(vacationInTheWay != null){
+            for (VacationCalendarEntity vacation : vacationInTheWay) {
+                if (vacation.getId() != vacationEntity.getId()) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
+                }
+            }
         }
 
         if (isDateIntervalTakenByWork(vacationEntity)) {
@@ -68,8 +74,14 @@ public class VacationRepository {
     }
 
     public ResponseEntity<?> updateVacation(VacationEntity vacationEntity) {
-        if (isDateIntervalTakenByVacation(vacationEntity)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
+        List<VacationCalendarEntity> vacationInTheWay = isDateIntervalTakenByVacation(vacationEntity);
+
+        if(vacationInTheWay != null){
+            for (VacationCalendarEntity vacation : vacationInTheWay) {
+                if (vacation.getId() != vacationEntity.getId()) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
+                }
+            }
         }
 
         if (isDateIntervalTakenByWork(vacationEntity)) {
@@ -80,12 +92,11 @@ public class VacationRepository {
         return saveVacation(vacationEntity);
     }
 
-    private boolean isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
-        return vacationCalendarDao
-                .findFirstByDateLessThanEqualAndDateGreaterThanEqual(
+    private List<VacationCalendarEntity> isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
+        List<VacationCalendarEntity> vacationList = vacationCalendarDao.findAllByDateLessThanEqualAndDateGreaterThanEqual(
                         vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
-                        vacationEntity.getStartDate()
-                ).isPresent();
+                        vacationEntity.getStartDate());
+        return vacationList;
     }
 
     private boolean isDateIntervalTakenByWork(VacationEntity vacationEntity) {
