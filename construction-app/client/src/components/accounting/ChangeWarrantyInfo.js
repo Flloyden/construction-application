@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import ApiConnector from "../../services/ApiConnector";
 import { RiCloseLine } from "react-icons/ri";
+import DatePicker from "react-datepicker";
 
 const ChangeWarrantyInfo = ({
   setIsChangeWarrantyOpen,
@@ -14,26 +15,18 @@ const ChangeWarrantyInfo = ({
   const [warranty, setWarranty] = useState({
     id: currentWarrantyId,
     name: currentWarrantyName,
+    receipt: currentWarrantyReceipt,
     registration_number: currentWarrantyReg,
     d_number: currentDnumber,
-    warranty_date: currentWarrantyDate,
-    receipt: currentWarrantyReceipt,
+    warranty_date: new Date(currentWarrantyDate),
   });
-  const [image, setImage] = useState("");
   const receipt = useRef();
 
   const handleChange = (e) => {
-    /**Gets the current input every keystroke
-     * and sets the value to warranty
-     */
-    const value = e.target.value;
+    let value = e.target.value;
     setWarranty({
       ...warranty,
       [e.target.name]: value,
-      [e.target.receipt]: image,
-      [e.target.registration_number]: value,
-      [e.target.warranty_date]: value,
-      [e.target.d_number]: value,
     });
   };
 
@@ -55,7 +48,11 @@ const ChangeWarrantyInfo = ({
     /**Gets the file from input and makes it into base64 and saves it */
     const file = e.target.files[0];
     const base64 = await convertToBase64(file);
-    setImage(base64);
+    setWarranty({
+      ...warranty,
+      receipt: base64,
+    });
+    return base64;
   };
 
   const handleSubmit = (e) => {
@@ -102,8 +99,7 @@ const ChangeWarrantyInfo = ({
                 name="name"
                 required
                 value={warranty.name}
-                placeholder={currentWarrantyName}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -117,9 +113,9 @@ const ChangeWarrantyInfo = ({
                 type="file"
                 name="offer"
                 accept="image/png, image/jpg, image/jpeg"
-                value={warranty.address}
-                placeholder={currentWarrantyReceipt}
-                onChange={(e) => handleFile(e)}
+                onChange={(item) => {
+                  handleFile(item);
+                }}
               ></input>
             </div>
 
@@ -133,8 +129,7 @@ const ChangeWarrantyInfo = ({
                 type="text"
                 name="registration_number"
                 value={warranty.registration_number}
-                placeholder={currentWarrantyReg}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
               ></input>
             </div>
 
@@ -147,24 +142,28 @@ const ChangeWarrantyInfo = ({
                 type="text"
                 name="d_number"
                 value={warranty.d_number}
-                placeholder={currentDnumber}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
               ></input>
             </div>
 
             <div className="mt-4">
               <label className="block mb-2 text-sm font-medium text-gray-700">
-                Utgångsdatum för garanti:{" "}
-                <span className="text-red-700 font-black">*</span>
+                Utgångsdatum: <span className="text-red-700 font-black">*</span>{" "}
               </label>
-              <input
+              <DatePicker
                 className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                type="text"
-                name="warranty_date"
+                selected={warranty.warranty_date}
                 value={warranty.warranty_date}
-                placeholder={currentWarrantyDate}
-                onChange={(e) => handleChange(e)}
-              ></input>
+                calendarStartDay={1}
+                onChange={(date) =>
+                  setWarranty({
+                    ...warranty,
+                    warranty_date: new Date(date),
+                  })
+                }
+                selectsStart
+                startDate={warranty.warranty_date}
+              />
             </div>
 
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
