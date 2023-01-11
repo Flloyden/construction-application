@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.*;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
@@ -48,7 +47,7 @@ public class WorkRepository {
      *
      * @return
      */
-    public ResponseEntity createWork(long customerId, WorkEntity work) {
+    public ResponseEntity<?> createWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kan inte hittas.");
@@ -111,6 +110,7 @@ public class WorkRepository {
      */
     public ResponseEntity<String> deleteWorkEntity(Long id) {
         Optional<WorkEntity> work = getWorkEntity(id);
+
         if (work.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Jobbet du försöker ta bort kan inte hittas.");
         }
@@ -230,7 +230,7 @@ public class WorkRepository {
     }
 
     @Transactional
-    public ResponseEntity findStartedWorkAndUpdateToCompleted(Long workId) {
+    public ResponseEntity<?> findStartedWorkAndUpdateToCompleted(Long workId) {
         Optional<WorkEntity> thisWork = workDao.findById(workId);
         if(!thisWork.isEmpty() && thisWork.get().getWorkStatus() == WorkStatus.STARTED){
             List<CustomerNoteEntity> summarizedNotes = customerNoteDao.findAllByWorkIdAndNoteStatus(1, workId);
@@ -243,7 +243,7 @@ public class WorkRepository {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    public ResponseEntity findWorkAndUpdateToStarted() {
+    public ResponseEntity<?> findWorkAndUpdateToStarted() {
         boolean success = false;
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
 

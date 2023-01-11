@@ -40,14 +40,12 @@ public class VacationRepository {
      * @return
      */
     public ResponseEntity<?> saveVacation(VacationEntity vacationEntity) {
-        List<VacationCalendarEntity> vacationInTheWay = isDateIntervalTakenByVacation(vacationEntity);
+        if (vacationEntity.getStartDate().isBefore(LocalDate.now())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
+        }
 
-        if(!vacationInTheWay.isEmpty()){
-            for (VacationCalendarEntity vacation : vacationInTheWay) {
-                if (vacation.getVacation().getId() != vacationEntity.getId()) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
-                }
-            }
+        if(isDateIntervalTakenByVacation(vacationEntity)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Det ligger redan en semester här.");
         }
 
         if (isDateIntervalTakenByWork(vacationEntity)) {
@@ -74,29 +72,36 @@ public class VacationRepository {
     }
 
     public ResponseEntity<?> updateVacation(VacationEntity vacationEntity) {
-        List<VacationCalendarEntity> vacationInTheWay = isDateIntervalTakenByVacation(vacationEntity);
+        if (vacationEntity.getStartDate().isBefore(LocalDate.now())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
+        }
 
-        if(!vacationInTheWay.isEmpty()){
-            for (VacationCalendarEntity vacation : vacationInTheWay) {
-                if (vacation.getVacation().getId() != vacationEntity.getId()) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan en semester här.");
-                }
-            }
+        if(isDateIntervalTakenByVacation(vacationEntity)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Det ligger redan en semester här.");
         }
 
         if (isDateIntervalTakenByWork(vacationEntity)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger redan ett låst jobb här.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Det ligger redan ett låst jobb här.");
         }
 
         deleteVacation(vacationEntity.getId());
         return saveVacation(vacationEntity);
     }
 
-    private List<VacationCalendarEntity> isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
+    private boolean isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
         List<VacationCalendarEntity> vacationList = vacationCalendarDao.findAllByDateLessThanEqualAndDateGreaterThanEqual(
                         vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
                         vacationEntity.getStartDate());
-        return vacationList;
+
+        if(!vacationList.isEmpty()){
+            for (VacationCalendarEntity vacation : vacationList) {
+                if (vacation.getVacation().getId() != vacationEntity.getId()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private boolean isDateIntervalTakenByWork(VacationEntity vacationEntity) {

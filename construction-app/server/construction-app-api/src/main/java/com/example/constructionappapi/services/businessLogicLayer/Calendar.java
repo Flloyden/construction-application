@@ -198,15 +198,12 @@ public class Calendar {
      */
     public void addVacation(VacationEntity vacation, List<VacationCalendarEntity> vacationDatesToAdd) {
         int daysToAdd = vacation.getNumberOfDays();
-        int daysToShuffleForward = daysToAdd;
 
         for (int i = 0; i < daysToAdd; i++) {
             LocalDate dateToAddTo = vacation.getStartDate().plusDays(i);
 
             if (calendarDates.get(new CalendarEntity(dateToAddTo)) != null) {
-                shuffleForward(dateToAddTo, daysToShuffleForward);
-            } else {
-                daysToShuffleForward--;
+                shuffleForward(dateToAddTo, 1);
             }
 
             vacationDates.put(vacationDatesToAdd.get(i), vacation);

@@ -28,10 +28,6 @@ export default function Semester({ setIsSemesterOpen }) {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     console.log(semester);
-    if (
-      semester.startDate.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0) ||
-      semester.startDate > today
-    ) {
       // Adds work to user with api call
       ApiConnector.saveSemester(semester)
         .then((response) => {
@@ -42,15 +38,6 @@ export default function Semester({ setIsSemesterOpen }) {
           console.log(error);
           errorMsg(error.response.data);
         });
-    } else {
-      setErrorMessage(
-        "Går inte lägga in semseter som är äldre än dagens datum"
-      );
-      setShowErrorMessage(true);
-      setTimeout(() => {
-        setShowErrorMessage(false);
-      }, 3000);
-    }
   };
 
   function errorMsg(message) {
