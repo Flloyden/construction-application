@@ -40,7 +40,7 @@ axios.interceptors.response.use(
       // If the access token has expired, try to refresh it using the refresh token
       const refreshToken = localStorage.getItem("refreshToken");
 
-      if (refreshToken) {
+      if (refreshToken && error.response.data !== "Refresh failed") {
         return refreshAccessToken(refreshToken)
           .then((accessToken) => {
             // If the refresh token request was successful, retry the original request
@@ -69,17 +69,21 @@ async function refreshAccessToken(refreshToken) {
     await axios.post(BASE_URL + "/refresh",
       { refreshToken }
     ).then((response) => {
-      const newAccessToken = response.headers.authorization;
-      const newRefreshToken = response.headers.refreshtoken;
+      if (response.status === 200) {
+        const newAccessToken = response.headers.authorization;
+        const newRefreshToken = response.headers.refreshtoken;
 
-      // Store the new access and refresh tokens in local storage or a cookie
-      localStorage.setItem("accessToken", newAccessToken);
-      localStorage.setItem("refreshToken", newRefreshToken);
+        // Store the new access and refresh tokens in local storage or a cookie
+        localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
 
-      // Return the new access token
-      return newAccessToken;
+        // Return the new access token
+        return newAccessToken;
+      }
     }).catch((error) => {
+      console.log(error)
       // If the refresh token is invalid or has expired, log out the user
+      window.location.reload(false);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
     });

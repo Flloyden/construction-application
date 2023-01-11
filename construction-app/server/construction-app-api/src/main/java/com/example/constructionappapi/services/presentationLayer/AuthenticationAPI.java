@@ -70,12 +70,12 @@ public class AuthenticationAPI {
         // Retrieve the user associated with the refresh token
         Optional<AccountEntity> user = accountRepository.findByRefreshToken(refreshToken);
         if (user.isEmpty()) {
-            return ResponseEntity.status(401).body("Invalid email or refresh token");
+            return ResponseEntity.status(401).body("Refresh failed");
         }
 
         // Check that the refresh token has not expired and is still valid
         if (jwtUtils.isTokenExpired(refreshToken, jwtUtils.getJwtRefreshKey())) {
-            return ResponseEntity.status(401).body("Refresh token has expired");
+            return ResponseEntity.status(401).body("Refresh failed");
         }
 
         // Generate a new access token and refresh token
