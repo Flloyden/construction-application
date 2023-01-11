@@ -83,7 +83,7 @@ const ChangeWorkInfo = (props) => {
     /**Saves the "kund" and navigates back to the register */
     e.preventDefault();
     // Makes the change with the help of api call
-    const response = await ApiConnector.changeWork(props.currentCustomerId, newList)
+    ApiConnector.changeWork(props.currentCustomerId, newList)
       .then((response) => {
         console.log(response);
         window.location.reload(false);
