@@ -6,6 +6,7 @@ import { RiCloseLine } from "react-icons/ri";
 export default function Semester({ setIsSemesterOpen }) {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const today = new Date();
 
   let [startDate, setStartDate] = useState(new Date());
   const [semester, setSemester] = useState({
@@ -27,24 +28,37 @@ export default function Semester({ setIsSemesterOpen }) {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
     console.log(semester);
-    // Adds work to user with api call
-    ApiConnector.saveSemester(semester)
-      .then((response) => {
-        console.log(response);
-        window.location.reload(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        errorMsg(error.response.data)
-      });
+    if (
+      semester.startDate.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0) ||
+      semester.startDate > today
+    ) {
+      // Adds work to user with api call
+      ApiConnector.saveSemester(semester)
+        .then((response) => {
+          console.log(response);
+          window.location.reload(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          errorMsg(error.response.data);
+        });
+    } else {
+      setErrorMessage(
+        "Går inte lägga in semseter som är äldre än dagens datum"
+      );
+      setShowErrorMessage(true);
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 3000);
+    }
   };
 
   function errorMsg(message) {
-    setErrorMessage(message)
-    setShowErrorMessage(true)
+    setErrorMessage(message);
+    setShowErrorMessage(true);
     setTimeout(() => {
-      setShowErrorMessage(false)
-    }, 3000)
+      setShowErrorMessage(false);
+    }, 3000);
   }
 
   return (
@@ -128,16 +142,22 @@ export default function Semester({ setIsSemesterOpen }) {
             </div>
 
             <div
-              className={
-                showErrorMessage
-                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
-                  : "invisible duration-200"
-              }
-            >
-              <p className={showErrorMessage ? "visible" : "invisible"}>
-                {errorMessage}
-              </p>
-            </div>
+                className={
+                  showErrorMessage
+                    ? "bg-red-500 rounded text-white py-1 duration-200 visible mb-0 text-center mt-4 top-0 w-full"
+                    : "hidden duration-200 mb-0 text-center mt-2 py-1"
+                }
+              >
+                <div
+                  className={
+                    showErrorMessage
+                      ? "visible h-12 flex items-center justify-center align-middle font-normal"
+                      : "h-12 hidden"
+                  }
+                >
+                  <p>{errorMessage}</p>
+                </div>
+              </div>
           </div>
         </form>
       </div>
