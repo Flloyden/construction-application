@@ -128,14 +128,14 @@ const SemesterModal = (props) => {
             </div>
             <div className="flex gap-2   mx-auto text-white">
               <button
-                className="bg-blue-600 hover:bg-blue-500 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                className="bg-blue-600 hover:bg-blue-500 font-semibold py-2 px-4 rounded duration-300 text-center w-2/4"
                 onClick={() => handleSubmit(props.currentId)}
               >
                 Ändra
               </button>
               <button
                 type="button"
-                className="rounded text-white bg-red-600 hover:bg-red-500 font-bold py-2 px-4 w-2/4 duration-300"
+                className="rounded text-white bg-red-600 hover:bg-red-500 font-semibold py-2 px-4 w-2/4 duration-300"
                 onClick={() => deleteSemester(props.currentId)}
               >
                 Ta bort
@@ -143,7 +143,7 @@ const SemesterModal = (props) => {
             </div>
             <div className=" mx-auto">
               <button
-                className="bg-gray-600 hover:bg-gray-500  text-white font-bold py-2 rounded duration-300 text-center w-full my-2"
+                className="bg-gray-600 hover:bg-gray-500  text-white font-semibold py-2 rounded duration-300 text-center w-full my-2"
                 onClick={() => props.setIsModalOpen(false)}
               >
                 Avbryt

@@ -159,7 +159,7 @@ export default function Customer() {
                 </div>
                 <div className="flex gap-2 justify-end items-center pb-8 mt-4 w-full">
                   <button
-                    className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
+                    className="bg-blue-600 rounded text-white hover:bg-blue-500 py-2 px-4 w-full duration-300"
                     onClick={() => {
                       setIsChangeOpen(true);
                     }}

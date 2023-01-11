@@ -21,7 +21,7 @@ const CalendarModal = (props) => {
           </div>
           <div className="px-4 mx-auto">
             <button
-              className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded duration-300 text-center w-full my-2"
+              className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 rounded duration-300 text-center w-full my-2"
               onClick={() => props.setIsModalOpen(false)}
             >
               Ok

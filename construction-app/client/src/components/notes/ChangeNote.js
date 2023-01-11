@@ -128,7 +128,7 @@ export default function ChangeNote(props) {
             </div>
             <div className="flex w-full gap-2 mt-5 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
-                className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-full duration-300"
+                className="bg-blue-500 rounded text-white hover:bg-blue-600 py-2 px-4 w-full duration-300"
                 type="submit"
               >
                 Spara

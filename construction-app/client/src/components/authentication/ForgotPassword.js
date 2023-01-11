@@ -38,7 +38,7 @@ export default function ForgotPassword(props) {
           onSubmit={handleSubmit}
           className={"bg-white fixed inset-0 items-center justify-center w-fit max-w-sm h-max my-auto rounded mx-auto"}
         >
-          <div className="flex border-b-2 px-6 py-4 items-center justify-between align-middle">
+          <div className="flex border-b-2 px-6 py-2 items-center justify-between align-middle">
             <div className="w-min whitespace-nowrap">
               <h1 className="text-2xl">Glömt lösenord</h1>
             </div>
@@ -51,7 +51,7 @@ export default function ForgotPassword(props) {
               </button>
             </div>
           </div>
-          <div className="w-full shadow-lg rounded-md p-8">
+          <div className="w-full shadow-lg rounded-md p-4">
             <div className="w-full gap-2 text-white">
               <label className="block text-sm font-medium text-gray-700">
                 Email:
@@ -86,8 +86,8 @@ export default function ForgotPassword(props) {
               <div
                 className={
                   showError
-                    ? "bg-red-500 px-4 rounded text-white py-1 duration-200 visible mb-0 text-center mt-0 absolute top-0 w-full"
-                    : "hidden duration-200 px-4 mb-0 text-center mt-2 py-1 absolute"
+                    ? "bg-red-500 rounded text-white py-1 duration-200 visible mb-0 text-center mt-0 absolute top-0 w-full"
+                    : "hidden duration-200 mb-0 text-center mt-2 py-1 absolute"
                 }
               >
                 <div
@@ -101,14 +101,14 @@ export default function ForgotPassword(props) {
                 </div>
               </div>
             </div>
-            <div className="mx-4 text-center">
+            <div className="text-center">
               <div className="pb-2 mt-16">
                 <p>Genom att återställa lösenordet skickas ett meddelande till den angivna mailadressen.</p>
               </div>
             </div>
-            <div className="flex w-full gap-2 mt-4 justify-end inset-x-0 bottom-4 mx-auto text-white">
+            <div className="flex w-full gap-2 mt-14 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
-                className="bg-blue-600 rounded text-white hover:bg-blue-500 font-bold py-2 px-4 w-full duration-300"
+                className="bg-blue-600 rounded text-white hover:bg-blue-500 font-semibold py-2 px-4 w-full duration-300"
                 type="submit"
               >
                 Återställ lösenord

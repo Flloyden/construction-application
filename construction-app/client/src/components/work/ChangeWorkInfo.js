@@ -364,14 +364,14 @@ const ChangeWorkInfo = (props) => {
 
             <div className="flex w-full gap-2 mt-10 justify-end inset-x-0 bottom-4 mx-auto text-white">
               <button
-                className="bg-gray-500 hover:bg-gray-600 font-bold py-2 px-4 rounded duration-300 text-center w-2/4"
+                className="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded duration-300 text-center w-2/4"
                 onClick={() => props.setIsChangeOpen(false)}
               >
                 Avbryt
               </button>
               <button
                 type="submit"
-                className="bg-blue-500 rounded text-white hover:bg-blue-600 font-bold py-2 px-4 w-2/4 duration-300"
+                className="bg-blue-500 rounded text-white hover:bg-blue-600 py-2 px-4 w-2/4 duration-300"
               >
                 Spara
               </button>
