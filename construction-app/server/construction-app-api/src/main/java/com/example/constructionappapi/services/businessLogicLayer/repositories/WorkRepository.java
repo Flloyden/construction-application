@@ -264,7 +264,7 @@ public class WorkRepository {
 
     /**
      * Checks if a work has as many summed customer notes as there are work days.
-     * If so, the status of the work can be updated to Completed.
+     * If so, the status of the work will be updated to Completed.
      *
      * @param workId ID of the work to update the status of.
      * @return Http-status if accepted request or not
