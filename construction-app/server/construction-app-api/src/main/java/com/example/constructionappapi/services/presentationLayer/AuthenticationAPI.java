@@ -117,9 +117,9 @@ public class AuthenticationAPI {
             user.setRecoveryToken(recoveryToken);
             accountRepository.save(user);
 
-            String emailSubject = "Återställning av lösenord";
-            //TODO: Change to the correct domain.
-            String emailText = "Gå till länken för att få ett nytt lösenord: http://bits.norrto.se/recover?token=" + recoveryToken;
+            String emailSubject = "Återställning av lösenord till BiTs";
+            String emailText = "Hallå Thomas!\n \nKlicka på länken så kommer ett nytt lösenord skickas till dig på din e-mail inom några minuter: \nhttp://bits.norrto.se/recover?token=" + recoveryToken + ".\n" +
+                    "\nGlöm inte att sedan direkt logga in och uppdatera lösenordet till ett eget!\n \nMvh Construction Crew :)";
             emailService.sendEmail(emailRecoveryRequest.getEmail(), emailSubject, emailText);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
