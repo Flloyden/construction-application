@@ -65,28 +65,28 @@ axios.interceptors.response.use(
 let refreshPromise = null;
 async function refreshAccessToken(refreshToken) {
   const refresh = async () => {
+    await axios
+      .post(BASE_URL + "/refresh", { refreshToken })
+      .then((response) => {
+        if (response.status === 200) {
+          const newAccessToken = response.headers.authorization;
+          const newRefreshToken = response.headers.refreshtoken;
 
-    await axios.post(BASE_URL + "/refresh",
-      { refreshToken }
-    ).then((response) => {
-      if (response.status === 200) {
-        const newAccessToken = response.headers.authorization;
-        const newRefreshToken = response.headers.refreshtoken;
+          // Store the new access and refresh tokens in local storage or a cookie
+          localStorage.setItem("accessToken", newAccessToken);
+          localStorage.setItem("refreshToken", newRefreshToken);
 
-        // Store the new access and refresh tokens in local storage or a cookie
-        localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreshToken", newRefreshToken);
-
-        // Return the new access token
-        return newAccessToken;
-      }
-    }).catch((error) => {
-      console.log(error)
-      // If the refresh token is invalid or has expired, log out the user
-      window.location.reload(false);
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-    });
+          // Return the new access token
+          return newAccessToken;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        // If the refresh token is invalid or has expired, log out the user
+        window.location.reload(false);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      });
   };
 
   if (!refreshPromise) {
@@ -100,15 +100,13 @@ async function refreshAccessToken(refreshToken) {
 }
 
 class ApiConnector {
-  authenicate() {
-    return axios.post(AUTHENTICATION_API);
-  }
-
   login(credentials, headers) {
+    //Logging in in the user
     return axios.post(AUTHENTICATION_API, credentials, headers);
   }
 
   recover(token) {
+    //Gets the recover token
     return axios.post(BASE_URL + "/recover", token);
   }
 
@@ -133,8 +131,9 @@ class ApiConnector {
     return axios.delete(CUSTOMER_BASE_API + "/" + customer + "/remove");
   }
 
-    // ----------- WORK -----------
+  // ----------- WORK -----------
   saveWork(customer, work) {
+    //Saves a work
     return axios.post(WORK_BASE_API + "/" + customer + "/save", work);
   }
 
@@ -144,6 +143,7 @@ class ApiConnector {
   }
 
   changeWork(customer, work) {
+    //Changes a specific work
     return axios.put(WORK_BASE_API + "/" + customer + "/update/", work);
   }
 
@@ -153,19 +153,17 @@ class ApiConnector {
   }
 
   getUpcomingWork() {
-    //Gets upcoming work based on tomorrows date and ten days forward.
     //Checks if any customer has work with startdate within 10 days.
     return axios.get(WORK_BASE_API + "/upcoming");
   }
 
   getOngoingWork() {
     //Gets ongoing work based on todays date.
-    //Checks if any customer has work that has date = todays date
-    //Used for updating workStatus
     return axios.get(WORK_BASE_API + "/ongoing");
   }
 
   findWorkAndUpdateToCompleted(workId) {
+    //Used for updating workStatus
     return axios.get(WORK_BASE_API + "/update-workstatus-completed/ " + workId);
   }
 
@@ -213,6 +211,7 @@ class ApiConnector {
 
   // ----------- VACATION / "SEMESTER" -----------
   saveSemester(date) {
+    //Saves a new vacation to the database
     return axios.post(VACATION_BASE_API, date);
   }
 
@@ -222,11 +221,11 @@ class ApiConnector {
   }
 
   deleteSemester(semesterId) {
-    console.log(semesterId);
     return axios.delete(VACATION_BASE_API + "/" + semesterId + "/remove");
   }
 
   editSemester(semesterId, semester) {
+    //Edits a vaction with given id
     return axios.post(
       VACATION_BASE_API + "/" + semesterId + "/update",
       semester
@@ -235,61 +234,67 @@ class ApiConnector {
 
   // ----------- CUSTOMER NOTE -----------
   saveNote(workId, noteList) {
+    //Saves a new note
     return axios.post(CUSTOMERNOTE_BASE_API + "/save/" + workId, noteList);
   }
 
   deleteNote(noteId) {
-    console.log(noteId);
+    //Deletes a note
     return axios.delete(CUSTOMERNOTE_BASE_API + "/" + noteId + "/remove");
   }
 
   getNotesForSum(sumId) {
+    //Gets summed notes
     return axios.get(CUSTOMERNOTE_BASE_API + "/notes-for-sum/" + sumId);
   }
 
   editNote(workId, noteList) {
+    //Edits a note
     return axios.post(CUSTOMERNOTE_BASE_API + "/" + workId + "/edit", noteList);
   }
 
   // ----------- NOTE SUMMARY -----------
   sumNote(workId, noteSum) {
+    //Sum notes for a specific work
     return axios.post(NOTESUMMARY_BASE_API + "/save/" + workId, noteSum);
   }
 
   getSummedNotes(customerId) {
+    //Gets the summed notes for a customer
     return axios.get(NOTESUMMARY_BASE_API + "/" + customerId);
   }
 
   // ----------- USER -----------
   getUser(user) {
+    //Gets the profile
     return axios.get(ACCOUNT_BASE_API + "/" + user);
   }
 
   updateUser(user) {
+    //Updates the profile
     return axios.post(ACCOUNT_BASE_API + "/update", user);
   }
 
-
   // ----------- CHANGE PASSWORD -----------
   changePassword(password) {
-    console.log(password);
-    return axios.post("http://localhost:8080/api/v1/change-password", password);
+    //changes the password
+    return axios.post(BASE_URL + "/change-password", password);
   }
 
   recoverPassword(email) {
-    return axios.post(
-      "http://localhost:8080/api/v1/initiate-email-recovery",
-      email
-    );
+    //Initiates the password recover
+    return axios.post(BASE_URL + "/initiate-email-recovery", email);
   }
 
   // ----------- CALENDAR COLOR -----------
   getColors() {
-    return axios.get(BASE_URL + "/calendarcolor")
+    //Gets the calendar colors
+    return axios.get(BASE_URL + "/calendarcolor");
   }
 
   updateColors(colors) {
-    return axios.post(BASE_URL + "/calendarcolor", colors)
+    //Updates the calendar colors
+    return axios.post(BASE_URL + "/calendarcolor", colors);
   }
 }
 
