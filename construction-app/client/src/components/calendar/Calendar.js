@@ -49,7 +49,7 @@ export default function Calendar() {
 
   const listDate = [];
   var plusOne = new Date(year + 2, month, day);
-  const startDate = moment(new Date()).format('YYYY-MM-DD');
+  const startDate = moment(new Date()).format('YYYY-MM');
   const endDate = moment(plusOne).format('YYYY-MM-DD');
   const dateMove = new Date(startDate);
   let strDate = startDate;
