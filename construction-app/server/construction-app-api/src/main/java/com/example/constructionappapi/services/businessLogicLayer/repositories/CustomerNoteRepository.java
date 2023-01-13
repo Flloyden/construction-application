@@ -31,13 +31,13 @@ public class CustomerNoteRepository {
 
     /**
      * Creates or edits a note for a work.
+     *
      * @param customerNoteEntity
      * @param workId
      * @return null if work is not found, otherwise the saved NoteEntity.
      */
     @Transactional //@Transactional is necessary for getDateForNewNote();
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNoteEntity, long workId) {
-
         Optional<WorkEntity> work = workDao.findById(workId);
 
         if (work.get().getNumberOfDays() == work.get().getCustomerNotes().size()) {
@@ -68,14 +68,20 @@ public class CustomerNoteRepository {
 
     }
 
+    /**
+     * Saves a CustomerNoteEntity to the database.
+     *
+     * @param customerNote CustomerNoteEntity to save.
+     * @return The saved CustomerNoteEntity.
+     */
     public CustomerNoteEntity editCustomerNote(CustomerNoteEntity customerNote) {
         return customerNoteDao.save(customerNote);
     }
 
-
     /**
      * If a new note is saved, and it is the first note made for the work, the date of the note will be the same date as the date of the first work day.
      * Otherwise the date for the note will be the same date as the date for the work day that is scheduled after the last note that was made.
+     *
      * @param workId
      * @return null if something went wrong, otherwise the date for the note.
      */
@@ -108,6 +114,11 @@ public class CustomerNoteRepository {
         }
     }
 
+    /**
+     * Deletes the customer note from the database with the specified ID.
+     *
+     * @param noteId ID of the customer note to delete.
+     */
     public void deleteNote(Long noteId) {
         if (customerNoteDao.existsById(noteId)) {
             customerNoteDao.deleteById(noteId);

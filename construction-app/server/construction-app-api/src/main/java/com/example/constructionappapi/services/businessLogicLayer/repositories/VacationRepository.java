@@ -71,6 +71,12 @@ public class VacationRepository {
         return ResponseEntity.ok().body(savedVacationEntity);
     }
 
+    /**
+     * Updates a vacation entity by removing the old one and adding a new one.
+     *
+     * @param vacationEntity VacationEntity to update.
+     * @return The updated VacationEntity.
+     */
     public ResponseEntity<?> updateVacation(VacationEntity vacationEntity) {
         if (vacationEntity.getStartDate().isBefore(LocalDate.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
@@ -88,6 +94,12 @@ public class VacationRepository {
         return saveVacation(vacationEntity);
     }
 
+    /**
+     * Checks if there's already any other vacations within the interval of dates of a vacation entity.
+     *
+     * @param vacationEntity Vacation to check the interval of.
+     * @return true if there's already another vacation within the interval, false otherwise.
+     */
     private boolean isDateIntervalTakenByVacation(VacationEntity vacationEntity) {
         List<VacationCalendarEntity> vacationList = vacationCalendarDao.findAllByDateLessThanEqualAndDateGreaterThanEqual(
                 vacationEntity.getStartDate().plusDays(vacationEntity.getNumberOfDays()),
@@ -104,6 +116,12 @@ public class VacationRepository {
         return false;
     }
 
+    /**
+     * Checks if there's already a locked work within the interval of dates of a vacation entity.
+     *
+     * @param vacationEntity Vacation to check the interval of.
+     * @return true if there's already a locked work within the interval, false otherwise.
+     */
     private boolean isDateIntervalTakenByWork(VacationEntity vacationEntity) {
         for (int i = 0; i < vacationEntity.getNumberOfDays(); i++) {
             if (calendar.getCalendarMap().containsKey(new CalendarEntity(vacationEntity.getStartDate().plusDays(i)))) {
@@ -159,15 +177,16 @@ public class VacationRepository {
         return true;
     }
 
-    public List<VacationEntity> findAllVacationEntities() {
-        return vacationDao.findAll();
-    }
-
+    /**
+     * Returns all vacation calendar entities.
+     *
+     * @return All vacation calendar entities.
+     */
     public List<VacationCalendarEntity> findAllVacationCalendarEntities() {
         return vacationCalendarDao.findAll();
     }
 
-    public ResponseEntity findVacationsAndUpdateToStarted() {
+    public ResponseEntity<?> findVacationsAndUpdateToStarted() {
         boolean success = false;
         List<VacationEntity> vacationsNotStarted = vacationDao.findNotStartedVacations();
 
@@ -203,7 +222,11 @@ public class VacationRepository {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-
+    /**
+     * Returns the number of unfinished vacation dates on the calendar.
+     *
+     * @return Number of unfinished vacation dates
+     */
     public int getAmountOfVacationDays() {
         List<VacationEntity> vacations = vacationDao.findAllNotFinishedVacation();
         int days = 0;

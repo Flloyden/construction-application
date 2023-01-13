@@ -50,7 +50,7 @@ public class ServerInit {
             colorEntity1.setVacationColor("#10B981");
             colorEntity1.setWeekendsColor("#DC2626");
 
-            calendarColorRepository.createCalendarcolor(colorEntity1);
+            calendarColorRepository.saveCalendarColor(colorEntity1);
         }
     }
 }

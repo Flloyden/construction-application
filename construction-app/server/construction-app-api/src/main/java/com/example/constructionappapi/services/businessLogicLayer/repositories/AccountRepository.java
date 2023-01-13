@@ -36,7 +36,7 @@ public class AccountRepository {
      * Looks for a user in the database based on their ID.
      *
      * @param id ID of the user.
-     * @return AccountEntity of the user or null if not found.
+     * @return AccountEntity of the user or empty if not found.
      */
     public Optional<AccountEntity> findById(Long id) {
         return accountDao.findById(id);
@@ -95,7 +95,7 @@ public class AccountRepository {
      * Looks for a user in the database based on their refresh token.
      *
      * @param refreshToken Refresh token sent from the frontend.
-     * @return Optional with the AccountEntity of the user or null if not found.
+     * @return Optional with the AccountEntity of the user or empty if not found.
      */
     public Optional<AccountEntity> findByRefreshToken(String refreshToken) {
         return accountDao.findFirstByRefreshToken(refreshToken);
@@ -156,7 +156,7 @@ public class AccountRepository {
      * Looks for a user in the database based on their recovery token.
      *
      * @param token Recovery token sent by frontend.
-     * @return Optional with the AccountEntity of the user or null if not found.
+     * @return Optional with the AccountEntity of the user or empty if not found.
      */
     public Optional<AccountEntity> findByRecoveryToken(String token) {
         return accountDao.findFirstByRecoveryToken(token);

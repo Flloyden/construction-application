@@ -122,6 +122,13 @@ public class WorkRepository {
         return ResponseEntity.ok().body(work.get().getName() + " har tagits bort.");
     }
 
+    /**
+     * Updates an existing work item.
+     *
+     * @param customerId ID of the customer related to the work.
+     * @param work       The work to update with.
+     * @return The updated work if successful, otherwise an error code and message.
+     */
     public ResponseEntity<?> updateWork(long customerId, WorkEntity work) {
         Optional<CustomerEntity> customer = customerDao.findById(customerId);
         if (customer.isEmpty()) {
@@ -153,7 +160,7 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Du har angivit för få dagar. Antal dagar kan inte vara färre än så många dagar som har avklarats på jobbet.");
         }
 
-        if(customerNoteDao.findAllByWorkId(work.getId()).size() > work.getNumberOfDays()){
+        if (customerNoteDao.findAllByWorkId(work.getId()).size() > work.getNumberOfDays()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Du har angivit för få dagar. Antal dagar kan inte vara färre än antalet anteckningar som gjorts.");
         }
 
@@ -192,6 +199,12 @@ public class WorkRepository {
         return ResponseEntity.ok().body(updatedWork);
     }
 
+    /**
+     * Checks if there's already a locked work at the specified date.
+     *
+     * @param date Date to look for a locked work at.
+     * @return true if a locked work was found, false otherwise.
+     */
     private boolean isDateTakenByLocked(LocalDate date) {
         CalendarEntity calendarEntity = calendarDao.findFirstByDate(date);
         if (calendarEntity == null) {
@@ -201,6 +214,12 @@ public class WorkRepository {
         return workDao.findById(calendar.getCalendarMap().get(calendarEntity)).map(WorkEntity::isLockedInCalendar).orElse(false);
     }
 
+    /**
+     * Updates the calendar based on what has changed for the work being updated.
+     *
+     * @param workBeforeUpdate The work item pre-update.
+     * @param workToUpdateWith The work item to update with.
+     */
     private void updateCalendar(WorkEntity workBeforeUpdate, WorkEntity workToUpdateWith) {
         if (!workBeforeUpdate.getStartDate().equals(workToUpdateWith.getStartDate())) {
             calendar.changeStartDateOfWorkOnCalendar(workBeforeUpdate.getStartDate(), workToUpdateWith);
@@ -213,6 +232,12 @@ public class WorkRepository {
         }
     }
 
+    /**
+     * Changes the number of days of a work item on the calendar.
+     *
+     * @param work            Pre-update work item to change the number of days for.
+     * @param newNumberOfDays The new amount of days.
+     */
     private void updateNumberOfDays(WorkEntity work, int newNumberOfDays) {
         if (newNumberOfDays < work.getNumberOfDays()) {
             calendar.reduceNumberOfDaysOfWork(work, work.getNumberOfDays() - newNumberOfDays);
@@ -221,6 +246,9 @@ public class WorkRepository {
         }
     }
 
+    /**
+     * Updates the starting dates of all work items in the database.
+     */
     public void updateStartingDates() {
         workDao.findAllUncompletedWork().forEach(work -> {
             Optional<CalendarEntity> calendarEntity = calendarDao.findFirstByWorkIdOrderByDate(work.getId());
@@ -237,7 +265,8 @@ public class WorkRepository {
     /**
      * Checks if a work has as many summed customer notes as there are work days.
      * If so, the status of the work can be updated to Completed.
-     * @param workId
+     *
+     * @param workId ID of the work to update the status of.
      * @return Http-status if accepted request or not
      */
     @Transactional
@@ -257,6 +286,7 @@ public class WorkRepository {
     /**
      * Checks the start date on all work that has not been started yet.
      * If a work has a start date that is today, or before today, the status on the job is updated to Started.
+     *
      * @return Http-status if accepted request or not
      */
     public ResponseEntity<?> findWorkAndUpdateToStarted() {
@@ -276,6 +306,11 @@ public class WorkRepository {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    /**
+     * Looks for work items within the next 30-day interval.
+     *
+     * @return Work items within the next 30-day interval
+     */
     public List<WorkEntity> checkForUpcomingWork() {
         LocalDate today = LocalDate.now();
         today = today.plusDays(1); // "Kommande" innebär att man inte kollar på dagen utan det som kommer att komma
@@ -285,6 +320,11 @@ public class WorkRepository {
         return workDao.findFirstByStartDateBetween(today, thirtyDaysForward);
     }
 
+    /**
+     * Looks for started work items on the current date, if it's a weekend it instead looks at the friday.
+     *
+     * @return Found work-item.
+     */
     public List<WorkEntity> checkForOngoingWork() {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
@@ -298,6 +338,12 @@ public class WorkRepository {
     }
 
 
+    /**
+     * Finds all work items related to the customer with the specified ID.
+     *
+     * @param id ID of customer.
+     * @return List of all work items related to the customer
+     */
     public List<WorkEntity> getAllWorkEntitiesByCustomerId(Long id) {
         return workDao.findAllByCustomerId(id);
     }

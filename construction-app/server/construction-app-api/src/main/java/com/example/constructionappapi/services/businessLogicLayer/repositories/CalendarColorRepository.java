@@ -17,10 +17,21 @@ public class CalendarColorRepository {
     @Autowired
     CalendarColorDao calendarColorDao;
 
-    public ResponseEntity<CalendarColorEntity> createCalendarcolor(CalendarColorEntity calendarColor) {
+    /**
+     * Saves colors used for the calendar to the database.
+     *
+     * @param calendarColor Colors used in the calendar.
+     * @return The saved colors.
+     */
+    public ResponseEntity<CalendarColorEntity> saveCalendarColor(CalendarColorEntity calendarColor) {
         return ResponseEntity.status(HttpStatus.CREATED).body(calendarColorDao.save(calendarColor));
     }
 
+    /**
+     * Returns colors used for the calendar.
+     *
+     * @return Colors used for the calendar.
+     */
     public ResponseEntity<CalendarColorEntity> getColorEntity() {
         Optional<CalendarColorEntity> calendarColor = calendarColorDao.findById(1L);
         if (calendarColor.isEmpty()) {
@@ -29,7 +40,14 @@ public class CalendarColorRepository {
         return ResponseEntity.ok().body(calendarColor.get());
     }
 
-    public Optional<CalendarColorEntity> findById(long l) {
-        return calendarColorDao.findById(1L);
+
+    /**
+     * Looks for a CalendarColorEntity in the database based on its ID.
+     *
+     * @param id ID of the CalendarColorEntity.
+     * @return Optional with the CalendarColorEntity of the user or empty if not found.
+     */
+    public Optional<CalendarColorEntity> findById(long id) {
+        return calendarColorDao.findById(id);
     }
 }
