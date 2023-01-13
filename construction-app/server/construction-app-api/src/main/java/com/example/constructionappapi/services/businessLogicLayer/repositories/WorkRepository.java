@@ -2,7 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.dataAccessLayer.CompletionStatus;
+import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.*;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,7 +176,7 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Det ligger en semester på det valda startdatumet.");
         }
 
-        if (workBeforeUpdate.get().getCompletionStatus() == CompletionStatus.COMPLETED) {
+        if (workBeforeUpdate.get().getWorkStatus() == WorkStatus.COMPLETED) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Det är inte tillåtet att ändra ett avklarat jobb.");
         }
 
@@ -272,10 +272,10 @@ public class WorkRepository {
     @Transactional
     public ResponseEntity<?> findStartedWorkAndUpdateToCompleted(Long workId) {
         Optional<WorkEntity> thisWork = workDao.findById(workId);
-        if (!thisWork.isEmpty() && thisWork.get().getCompletionStatus() == CompletionStatus.STARTED) {
+        if (!thisWork.isEmpty() && thisWork.get().getWorkStatus() == WorkStatus.STARTED) {
             List<CustomerNoteEntity> summarizedNotes = customerNoteDao.findAllByWorkIdAndNoteStatus(1, workId);
             if (summarizedNotes.size() == thisWork.get().getNumberOfDays()) {
-                thisWork.get().setCompletionStatus(CompletionStatus.COMPLETED);
+                thisWork.get().setWorkStatus(WorkStatus.COMPLETED);
                 workDao.save(thisWork.get());
                 return ResponseEntity.status(HttpStatus.ACCEPTED).build();
             }
@@ -295,7 +295,7 @@ public class WorkRepository {
 
         for (WorkEntity work : workNotStarted) {
             if (work.getStartDate().equals(LocalDate.now()) || work.getStartDate().isBefore(LocalDate.now())) {
-                work.setCompletionStatus(CompletionStatus.STARTED);
+                work.setWorkStatus(WorkStatus.STARTED);
                 workDao.save(work);
                 success = true;
             }
