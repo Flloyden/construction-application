@@ -144,12 +144,12 @@ public class WorkRepository {
             work.setStartDate(findNewStartDate());
         }
 
-        if (work.getStartDate().isBefore(LocalDate.now())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
-        }
-
         if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
+        }
+
+        if(work.getStartDate().plusDays(work.getNumberOfDays() -1).isBefore(LocalDate.now())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Du har angivit för få dagar. Antal dagar kan inte vara färre än så många dagar som har avklarats på jobbet.");
         }
 
         if (isDateTakenByLocked(work.getStartDate())) {
