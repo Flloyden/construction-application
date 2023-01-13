@@ -36,7 +36,7 @@ public class StartServer {
     }
 
     /**
-     * Makes sure a task runs every night at 1 am to update vacation statuses, workstatuses and guarantees statuses
+     * Makes sure a task runs every night at 1 am to update vacation statuses, work statuses and guarantees statuses
      */
     @Bean
     public TaskDoneEveryNight task() {
