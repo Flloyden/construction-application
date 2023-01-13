@@ -36,8 +36,12 @@ const ChangeWorkInfo = (props) => {
     .format("YYYY-MM-DD");
 
   let [startDate, setStartDate] = useState(new Date(props.currentStartDate));
-  let [earliestStartDate, setEarliestStartDate] = useState(new Date(props.currentEarliestStartDate));
-  const [enableEarliestStartDate, setEnableEarliestStartDate] = useState(props.currentEarliestStartDate != null);
+  let [earliestStartDate, setEarliestStartDate] = useState(
+    new Date(props.currentEarliestStartDate)
+  );
+  const [enableEarliestStartDate, setEnableEarliestStartDate] = useState(
+    props.currentEarliestStartDate != null
+  );
   let [endDate] = useState(new Date(currentEndDateMoment));
   const dayCountRef = useRef();
   const [toggleLock, setToggleLock] = useState(newList.lockedInCalendar);
@@ -90,7 +94,7 @@ const ChangeWorkInfo = (props) => {
       })
       .catch((error) => {
         console.log(error);
-        errorMsg(error.response.data)
+        errorMsg(error.response.data);
       });
   };
 
@@ -125,18 +129,70 @@ const ChangeWorkInfo = (props) => {
     }
   }
 
+  function checkEarliestStartDate() {
+    if (new Date(earliestStartDate) > new Date("11/21/1980")) {
+      return "w-full";
+    } else {
+      if (props.currentWorkStatus === "STARTED") {
+        return "hidden";
+      } else {
+        return "w-full";
+      }
+    }
+  }
+
+  function checkContent() {
+    if (new Date(earliestStartDate) > new Date("11/21/1980")) {
+      return "flex gap-2";
+    } else {
+      if (props.currentWorkStatus === "STARTED") {
+        return "";
+      } else {
+        return "flex gap-2";
+      }
+    }
+  }
+
   function getEarliestStartDateIfStarted() {
-    const thisDate = props.currentEarliestStartDate;
+    console.log(new Date(earliestStartDate));
     if (props.currentWorkStatus === "STARTED") {
       return (
         <input
           className="rounded block w-full border border-white p-2.5 bg-white placeholder-black border-whiteborder text-black focus:outline-none focus:border-white focus:ring-1 focus:ring-white"
           disabled
-          placeholder={thisDate}
+          placeholder={earliestStartDate}
         ></input>
       );
     } else {
-      return;
+      return (
+        <div className={disableEarliestStartDate()}>
+          <DatePicker
+            className="rounded block w-full p-2.5 border-gray-500 border focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+            selected={earliestStartDate}
+            calendarStartDay={1}
+            disabled={!enableEarliestStartDate}
+            onChange={(date) => {
+              setEarliestStartDate(date);
+              setNewList({
+                ...newList,
+                earliestStartDate: new Date(date),
+              });
+
+              if (date.getTime() > startDate.getTime()) {
+                setNewList({
+                  ...newList,
+                  startDate: new Date(date),
+                  earliestStartDate: new Date(date),
+                });
+
+                setStartDate(date);
+              }
+            }}
+            selectsStart
+            startDate={earliestStartDate}
+          />
+        </div>
+      );
     }
   }
 
@@ -149,11 +205,11 @@ const ChangeWorkInfo = (props) => {
   }
 
   function errorMsg(message) {
-    setErrorMessage(message)
-    setShowErrorMessage(true)
+    setErrorMessage(message);
+    setShowErrorMessage(true);
     setTimeout(() => {
-      setShowErrorMessage(false)
-    }, 3000)
+      setShowErrorMessage(false);
+    }, 3000);
   }
 
   return (
@@ -258,65 +314,41 @@ const ChangeWorkInfo = (props) => {
               </div>
             </div>
 
-            <div className="flex gap-2">
-              <div className="mt-4 w-full">
-                <div className="flex gap-2">
-                  <div className="mt-0">
-                    <p className="block mb-2 text-sm font-medium text-gray-700">
-                      Tidigaste startdatum:{" "}
-                      <input
-                        type="checkbox"
-                        id="lockOnCalendar"
-                        name="lock"
-                        defaultChecked={enableEarliestStartDate}
-                        onChange={() => {
-                          if (enableEarliestStartDate) {
-                            setEnableEarliestStartDate(false);
-                            setEarliestStartDate("");
-                            setNewList({
-                              ...newList,
-                              earliestStartDate: "",
-                            });
-                          } else {
-                            setEnableEarliestStartDate(true);
-                            setEarliestStartDate(startDate);
-                            setNewList({
-                              ...newList,
-                              earliestStartDate: startDate,
-                            });
-                          }
+            <div className={disableDate()}></div>
+            <div className={checkContent()}>
+              <div className={checkEarliestStartDate()}>
+                <div className="mt-4 w-full">
+                  <div className="flex gap-2">
+                    <div className="mt-0">
+                      <p className="block mb-2 text-sm font-medium text-gray-700">
+                        Tidigaste startdatum:{" "}
+                        <input
+                          type="checkbox"
+                          id="lockOnCalendar"
+                          name="lock"
+                          defaultChecked={enableEarliestStartDate}
+                          onChange={() => {
+                            if (enableEarliestStartDate) {
+                              setEnableEarliestStartDate(false);
+                              setEarliestStartDate("");
+                              setNewList({
+                                ...newList,
+                                earliestStartDate: "",
+                              });
+                            } else {
+                              setEnableEarliestStartDate(true);
+                              setEarliestStartDate(startDate);
+                              setNewList({
+                                ...newList,
+                                earliestStartDate: startDate,
+                              });
+                            }
 
-                          console.log(newList);
-                        }}
-                      />
-                    </p>
-                    {getEarliestStartDateIfStarted()}
-                    <div className={disableEarliestStartDate()}>
-                      <DatePicker
-                        className="rounded block w-full p-2.5 border-gray-500 border focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                        selected={earliestStartDate}
-                        calendarStartDay={1}
-                        disabled={!enableEarliestStartDate}
-                        onChange={(date) => {
-                          setEarliestStartDate(date);
-                          setNewList({
-                            ...newList,
-                            earliestStartDate: new Date(date),
-                          });
-
-                          if (date.getTime() > startDate.getTime()) {
-                            setNewList({
-                              ...newList,
-                              startDate: new Date(date),
-                              earliestStartDate: new Date(date),
-                            });
-
-                            setStartDate(date);
-                          }
-                        }}
-                        selectsStart
-                        startDate={earliestStartDate}
-                      />
+                            console.log(newList);
+                          }}
+                        />
+                      </p>
+                      {getEarliestStartDateIfStarted()}
                     </div>
                   </div>
                 </div>
@@ -324,7 +356,7 @@ const ChangeWorkInfo = (props) => {
 
               <div className="mt-11 w-full">
                 <div className="mt-0 w-full">
-                  <div className="flex justify-end gap-8 items-center align-middle">
+                  <div className="flex gap-8 items-center align-middle justify-end">
                     <p className="text-sm font-medium text-gray-700">
                       Lås på kalendern:{" "}
                     </p>
@@ -335,7 +367,7 @@ const ChangeWorkInfo = (props) => {
                       name="lock"
                       defaultChecked={newList.lockedInCalendar}
                       onClick={() => {
-                        setToggleLock(!toggleLock)
+                        setToggleLock(!toggleLock);
                         setNewList({
                           ...newList,
                           lockedInCalendar: !newList.lockedInCalendar,
