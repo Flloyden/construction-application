@@ -76,7 +76,7 @@ const Work = (props) => {
   return (
     <div className={checkWorkStatus()}>
       <div className="flex w-full justify-between bg-gray-300 dark:bg-gray-800 bg-opacity-90 rounded-t align-middle items-center">
-        <h1 className="p-4 text-black dark:text-white font-bold">{props.label}</h1>
+        <h1 className="text-ellipsis overflow-hidden p-4 text-black dark:text-white font-bold">{props.label}</h1>
         <div className={"flex justify-end"}>
           <button
             className={checkEditStatus()}
@@ -122,7 +122,7 @@ const Work = (props) => {
               : "flex pb-2 px-2 py-2"
           }
         >
-          <p>
+          <p className="text-ellipsis overflow-hidden">
             <b className="text-1xl font-bold">Material:</b>{" "}
             {props.workName.materialNote}
           </p>
