@@ -2,7 +2,7 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
-import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
+import com.example.constructionappapi.services.dataAccessLayer.CompletionStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationCalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.VacationDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.*;
@@ -53,10 +53,10 @@ public class VacationRepository {
         }
 
         if (vacationEntity.getStartDate().isAfter(LocalDate.now())) {
-            vacationEntity.setWorkStatus(WorkStatus.NOTSTARTED);
+            vacationEntity.setCompletionStatus(CompletionStatus.NOTSTARTED);
         }
         if (vacationEntity.getStartDate().equals(LocalDate.now())) {
-            vacationEntity.setWorkStatus(WorkStatus.STARTED);
+            vacationEntity.setCompletionStatus(CompletionStatus.STARTED);
         }
 
         VacationEntity savedVacationEntity = vacationDao.save(vacationEntity);
@@ -192,7 +192,7 @@ public class VacationRepository {
 
         for (VacationEntity vacation : vacationsNotStarted) {
             if (vacation.getStartDate().equals(LocalDate.now()) || vacation.getStartDate().isBefore(LocalDate.now())) {
-                vacation.setWorkStatus(WorkStatus.STARTED);
+                vacation.setCompletionStatus(CompletionStatus.STARTED);
                 System.out.println("Hello from update vacation to started");
                 vacationDao.save(vacation);
                 success = true;
@@ -211,7 +211,7 @@ public class VacationRepository {
 
         for (VacationEntity vacation : startedVacations) {
             if (vacation.getStartDate().plusDays(vacation.getNumberOfDays() - 1).isBefore(LocalDate.now())) {
-                vacation.setWorkStatus(WorkStatus.COMPLETED);
+                vacation.setCompletionStatus(CompletionStatus.COMPLETED);
                 vacationDao.save(vacation);
                 success = true;
             }

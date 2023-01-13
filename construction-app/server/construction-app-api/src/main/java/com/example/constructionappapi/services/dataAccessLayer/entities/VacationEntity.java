@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
-import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
+import com.example.constructionappapi.services.dataAccessLayer.CompletionStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class VacationEntity {
     private long id;
     private String name;
     private LocalDate startDate;
-    private WorkStatus workStatus;
+    private CompletionStatus completionStatus;
     private int numberOfDays;
     @OneToMany(
             mappedBy = "vacation",

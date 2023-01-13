@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
-import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
+import com.example.constructionappapi.services.dataAccessLayer.CompletionStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
@@ -91,7 +91,7 @@ public class CustomerRepository {
         List<WorkEntity> workEntities = workRepository.getAllWorkEntitiesByCustomerId(id);
         if (workEntities != null && !workEntities.isEmpty()) {
             for (WorkEntity workEntity : workEntities) {
-                if (workEntity.getWorkStatus() != WorkStatus.NOTSTARTED) {
+                if (workEntity.getCompletionStatus() != CompletionStatus.NOTSTARTED) {
                     return ResponseEntity
                             .status(HttpStatus.FORBIDDEN)
                             .body("Kunden kunde inte tas bort då den innehåller ett eller flera påbörjade eller avklarade jobb");

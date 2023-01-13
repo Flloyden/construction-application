@@ -1,6 +1,6 @@
 package com.example.constructionappapi.services.dataAccessLayer.entities;
 
-import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
+import com.example.constructionappapi.services.dataAccessLayer.CompletionStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class WorkEntity implements Comparable<WorkEntity> {
     private String materialNote;
     @Lob
     private String offer;
-    private WorkStatus workStatus;
+    private CompletionStatus completionStatus;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonBackReference("customerToWork")
@@ -78,12 +78,12 @@ public class WorkEntity implements Comparable<WorkEntity> {
         this.noteSummaries.add(noteSummary);
     }
 
-    public WorkStatus getWorkStatus() {
-        return workStatus;
+    public CompletionStatus getCompletionStatus() {
+        return completionStatus;
     }
 
-    public void setWorkStatus(WorkStatus workStatus) {
-        this.workStatus = workStatus;
+    public void setCompletionStatus(CompletionStatus completionStatus) {
+        this.completionStatus = completionStatus;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class WorkEntity implements Comparable<WorkEntity> {
         this.isLockedInCalendar = newWorkEntity.isLockedInCalendar();
         this.materialNote = newWorkEntity.getMaterialNote();
         this.offer = newWorkEntity.offer;
-        this.workStatus = newWorkEntity.workStatus;
+        this.completionStatus = newWorkEntity.completionStatus;
         this.customer = newWorkEntity.getCustomer();
         this.calendar = newWorkEntity.getCalendar();
         this.customerNotes = newWorkEntity.getCustomerNotes();
