@@ -144,6 +144,10 @@ public class WorkRepository {
             work.setStartDate(findNewStartDate());
         }
 
+        if (work.getStartDate().isBefore(LocalDate.now()) && !workBeforeUpdate.get().getStartDate().equals(work.getStartDate())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före dagens datum.");
+        }
+
         if (work.getEarliestStartDate() != null && work.getEarliestStartDate().isBefore(work.getStartDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Startdatumet kan inte ligga före det tidigaste startdatumet.");
         }
