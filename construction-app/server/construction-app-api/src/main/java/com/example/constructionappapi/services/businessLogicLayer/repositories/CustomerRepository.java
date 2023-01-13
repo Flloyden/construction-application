@@ -33,7 +33,6 @@ public class CustomerRepository {
      * @param customer
      * @return
      */
-
     public ResponseEntity<CustomerEntity> createCustomer(CustomerEntity customer) {
         List<WorkEntity> workList;
         if ((workList = customer.getWorkList()) != null) { //Kollar om listan är tom

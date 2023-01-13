@@ -11,21 +11,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * A task runs every night at 1 am to update vacation statuses, workstatuses and guarantees statuses
- */
 @Component
 public class TaskDoneEveryNight {
     private final ConfigurableApplicationContext configurableApplicationContext;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
 
     public TaskDoneEveryNight(ConfigurableApplicationContext configurableApplicationContext) {
         this.configurableApplicationContext = configurableApplicationContext;
 
     }
 
-    //cron modification: second, minute, hour, day-of-month, month, day-of-week
-    @Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
+    /**
+     * This task runs every night at 1 am to update vacation statuses, workstatuses and guarantees statuses.
+     */
+    @Scheduled(cron = "0 0 1 * * *") //cron modification: second, minute, hour, day-of-month, month, day-of-week
     public void execute() throws InterruptedException {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);

@@ -22,7 +22,6 @@ public class NoteSummaryAPI {
     @Autowired
     private NoteSummaryRepository noteSummaryRepository;
 
-
     @PostMapping("/summary/save/{workId}")
     public NoteSummaryEntity createNoteSummary(@RequestBody NoteSummaryEntity noteSummary, @PathVariable final long workId) {
         return noteSummaryRepository.createNoteSummary(noteSummary, workId);
