@@ -104,6 +104,10 @@ class ApiConnector {
     return axios.post(AUTHENTICATION_API);
   }
 
+  login(credentials, headers) {
+    return axios.post(AUTHENTICATION_API, credentials, headers);
+  }
+
   recover(token) {
     return axios.post(BASE_URL + "/recover", token);
   }

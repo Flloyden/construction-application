@@ -5,6 +5,7 @@ import ChangeWarrantyInfo from "./ChangeWarrantyInfo";
 import WarrantyModal from "../modals/WarrantyModal";
 
 const Accounting = () => {
+  //Checking for theme
   if (
     localStorage.theme === "true" ||
     (!("theme" in localStorage) &&
@@ -240,9 +241,7 @@ const Accounting = () => {
                                   setCurrentWarrantyDate(
                                     warranty.warranty_date
                                   );
-                                  setCurrentDnumber(
-                                    warranty.d_number
-                                  );
+                                  setCurrentDnumber(warranty.d_number);
                                   setCurrentWarrantyReceipt(warranty.receipt);
                                   setIsChangeWarrantyOpen(true);
                                 }}
@@ -365,9 +364,7 @@ const Accounting = () => {
                                   setCurrentWarrantyReg(
                                     warranties.registration_number
                                   );
-                                  setCurrentDnumber(
-                                    warranties.d_number
-                                  );
+                                  setCurrentDnumber(warranties.d_number);
                                   setCurrentWarrantyDate(
                                     warranties.warranty_date
                                   );
