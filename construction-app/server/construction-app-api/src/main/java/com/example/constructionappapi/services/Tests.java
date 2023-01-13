@@ -20,6 +20,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * A test class for testing API calls on the server
+ */
 public class Tests {
     private final ConfigurableApplicationContext configurableApplicationContext;
 
@@ -28,10 +31,13 @@ public class Tests {
     }
 
     public void testChangePassword() {
+        /*
         AuthenticationAPI authenticationAPI = configurableApplicationContext.getBean(AuthenticationAPI.class);
 
         ResponseEntity response = authenticationAPI.changePassword(new PasswordChangeRequest("bitsapp.noreply@gmail.com", "admin", "test", "test"));
         System.out.println(response.getStatusCode() + ", " + response.getBody());
+
+         */
     }
 
     public void testAddVacation() {
@@ -48,8 +54,9 @@ public class Tests {
     }
 
     public void testSkipVacationDatesWhenAddingWork() {
+        /*
         Calendar calendar = CalendarSingleton.getCalendar();
-/*
+
         VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
@@ -69,8 +76,9 @@ public class Tests {
     }
 
     public void testSkipVacationDatesWhenRemovingWork() {
+        /*
         Calendar calendar = CalendarSingleton.getCalendar();
-/*
+
         VacationEntity vacationEntity = new VacationEntity(0L, "test", LocalDate.now().plusDays(5), 10, new ArrayList<>());
         VacationAPI vacationAPI = configurableApplicationContext.getBean(VacationAPI.class);
         vacationAPI.saveVacation(vacationEntity);
@@ -99,8 +107,8 @@ public class Tests {
  */
     }
 
-    /*
     public void testGetAmountOfOldAccountings() {
+        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Getting amount of old accountings." + ANSI_RED);
@@ -108,9 +116,8 @@ public class Tests {
         int amount = accountingRepository.getOldAccountings();
         System.out.println("antal gamla garantier: " + amount);
 
-    }
-
      */
+    }
 
     public void testMoveWorkForwardsOnAddVacation() {
         /*
@@ -133,8 +140,9 @@ public class Tests {
     }
 
     public void testMoveWorkBackwardsOnRemoveVacation() {
+        /*
         Calendar calendar = CalendarSingleton.getCalendar();
-/*
+
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         customer = customerRepository.createCustomer(customer);
@@ -155,9 +163,10 @@ public class Tests {
     }
 
     public void testAddNotesCheckDateAndGetSum() {
+        /*
         String ANSI_RED = "\u001B[31m";
         Calendar calendar = CalendarSingleton.getCalendar();
-/*
+
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
         CustomerRepository customerRepository = configurableApplicationContext.getBean(CustomerRepository.class);
@@ -190,7 +199,6 @@ public class Tests {
         CustomerNoteEntity note3 = new CustomerNoteEntity(0L, null, "test", "4", "4", "1", "Roof", 3, NoteStatus.NOTSUMMARIZED, customer, roof, null);
         customerNoteRepository.createCustomerNote(note3, roof.getId());
 
-        /*
         System.out.println(ANSI_RED + "Adding sumNote for Roof December." + ANSI_RED);
         NoteSummaryRepository noteSummaryRepository = configurableApplicationContext.getBean(NoteSummaryRepository.class);
         NoteSummaryEntity sum = new NoteSummaryEntity(0L, LocalDate.now(), LocalDate.now().getMonth(), null, null, null, "Roof", 3,new ArrayList<>(), roof);
@@ -237,6 +245,7 @@ public class Tests {
     }
 
     public void testAddWork() {
+        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
@@ -311,27 +320,30 @@ public class Tests {
         CalendarSingleton.getCalendar().printCalendar();
         System.out.println();
         CalendarSingleton.getCalendar().printWorkMap();
+        */
     }
-    /*
+
 
     public void testSetWorkStatusToCompleted() {
+        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Changing workstatus to completed" + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
         workAPI.findStartedWorkAndUpdateToCompleted();
+        */
     }
 
 
     public void testGetAllNotesForSum() {
+        /*
         String ANSI_RED = "\u001B[31m";
 
         System.out.println(ANSI_RED + "Get all notes for sum" + ANSI_RED);
         CustomerNoteAPI customerNoteAPI = configurableApplicationContext.getBean(CustomerNoteAPI.class);
         customerNoteAPI.getAllNotesForSum(1);
+        */
     }
-
-     */
 
     public void testRemoveCustomer() {
         /*
@@ -359,8 +371,9 @@ public class Tests {
     }
 
     public void testRemoveWork() {
+        /*
         String ANSI_RED = "\u001B[31m";
-/*
+
         System.out.println(ANSI_RED + "Adding customer." + ANSI_RED);
         CustomerEntity customer = new CustomerEntity(0L, "test", "test","test","test","test", "54321", "test", "9999999", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), null);
 
