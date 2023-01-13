@@ -70,14 +70,14 @@ public class AuthenticationAPI {
         // Retrieve the user associated with the refresh token
         Optional<AccountEntity> user = accountRepository.findByRefreshToken(refreshToken);
         if (user.isEmpty()) {
-            return ResponseEntity.status(401).body("Refresh failed");
+            return ResponseEntity.status(401).body("Refresh misslyckades");
         }
 
         // Check that the refresh token has not expired and is still valid
         try {
             jwtUtils.isTokenExpired(refreshToken, jwtUtils.getJwtRefreshKey());
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Refresh failed");
+            return ResponseEntity.status(401).body("Refresh misslyckades");
         }
 
         // Generate a new access token and refresh token
@@ -105,7 +105,7 @@ public class AuthenticationAPI {
             jwtUtils.invalidateToken(token);
         }
         */
-        return ResponseEntity.ok("Successfully logged out");
+        return ResponseEntity.ok("Utloggad.");
     }
 
     @PostMapping("/initiate-email-recovery")
@@ -117,13 +117,14 @@ public class AuthenticationAPI {
             user.setRecoveryToken(recoveryToken);
             accountRepository.save(user);
 
-            String emailSubject = "Account Recovery";
-            String emailText = "Click this link to recover your account: http://localhost:3000/recover?token=" + recoveryToken;
+            String emailSubject = "Återställning av lösenord";
+            //TODO: Change to the correct domain.
+            String emailText = "Gå till länken för att få ett nytt lösenord: http://bits.norrto.se/recover?token=" + recoveryToken;
             emailService.sendEmail(emailRecoveryRequest.getEmail(), emailSubject, emailText);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Användaren kunde inte hittas");
     }
 
     @PostMapping("/recover")
@@ -131,17 +132,17 @@ public class AuthenticationAPI {
         try {
             Optional<AccountEntity> accountEntity = accountRepository.findByRecoveryToken(recoveryTokenRequest.getToken());
             if (accountEntity.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token not found");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("En användare med detta tokenet kunde inte hittas");
             }
 
-            String emailSubject = "New password";
+            String emailSubject = "Nytt lösenord";
             String emailText = accountRepository.resetPassword(accountEntity.get());
             emailService.sendEmail(accountEntity.get().getEmail(), emailSubject, emailText);
 
             accountEntity.get().setRecoveryToken(null);
             accountRepository.save(accountEntity.get());
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("New password sent");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Nytt lösenord skickat");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -155,13 +156,4 @@ public class AuthenticationAPI {
                 passwordChangeRequest.getNewPassword(),
                 passwordChangeRequest.getNewPasswordConfirmation());
     }
-
-    @PostMapping("/check-password")
-    public ResponseEntity<?> checkPasswordForAccountChange(@RequestBody CheckPasswordRequest checkPasswordRequest, @RequestBody AccountEntity account) {
-        return accountRepository.checkPasswordForAccountChange(
-                checkPasswordRequest.getNewEmail(),
-                checkPasswordRequest.getPassword(),
-                account);
-    }
-
 }
