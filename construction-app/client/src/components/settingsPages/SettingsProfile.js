@@ -155,7 +155,7 @@ export default function SettingsProfile() {
                       className="rounded block w-full p-1 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                       type="password"
                       name="password"
-                      minLength={8}
+                      minLength={1}
                       required
                       value={newUserInfo.password}
                       onChange={handleChange}
