@@ -7,11 +7,11 @@ import HelpWarranty from "./HelpWarranty";
 
 export default function Help() {
   const list = [
-    { test: "Översikt" },
-    { test: "Kunder" },
-    { test: "Kalender" },
-    { test: "Garantier" },
-    { test: "Inställningar" },
+    { option: "Översikt" },
+    { option: "Kunder" },
+    { option: "Kalender" },
+    { option: "Garantier" },
+    { option: "Inställningar" },
   ];
   const [active, setActive] = useState(0);
   const [showHome, setShowHome] = useState(true)
@@ -20,7 +20,7 @@ export default function Help() {
   const [showWarranty, setShowWarranty] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
 
-  function test(e) {
+  function option(e) {
     setShowHome(false)
     setShowCustomer(false)
     setShowCalendar(false)
@@ -50,7 +50,7 @@ export default function Help() {
                   key={index}
                   onClick={() => {
                     setActive(index);
-                    test(index)
+                    option(index)
                   }}
                   className={
                     active === index
@@ -58,7 +58,7 @@ export default function Help() {
                       : "hover:cursor-pointer bg-gray-200 hover:border-b-4 w-full dark:bg-gray-700 py-2 rounded border-blue-600"
                   }
                 >
-                  {item.test}
+                  {item.option}
                 </li>
               );
             })}
