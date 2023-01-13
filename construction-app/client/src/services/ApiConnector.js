@@ -32,7 +32,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     const excludedEndpoints = [BASE_URL + "/recover"];
 
     const status = error.response ? error.response.status : null;
@@ -41,17 +41,16 @@ axios.interceptors.response.use(
       const refreshToken = localStorage.getItem("refreshToken");
 
       if (refreshToken && error.response.data !== "Refresh misslyckades") {
-        return refreshAccessToken(refreshToken)
-          .then((accessToken) => {
-            // If the refresh token request was successful, retry the original request
-            error.config.headers["Authorization"] = `${accessToken}`;
-            return axios.request(error.config);
-          })
-          .catch((err) => {
-            // If the refresh token request fails, clear the refresh token and return the error
-            localStorage.removeItem("refreshToken");
-            return Promise.reject(err);
-          });
+        try {
+          const accessToken = await refreshAccessToken(refreshToken);
+          // If the refresh token request was successful, retry the original request
+          error.config.headers["Authorization"] = `${accessToken}`;
+          return await axios.request(error.config);
+        } catch (err) {
+          // If the refresh token request fails, clear the refresh token and return the error
+          localStorage.removeItem("refreshToken");
+          return await Promise.reject(err);
+        }
       } else {
         window.location.reload(false);
         localStorage.removeItem("accessToken");
