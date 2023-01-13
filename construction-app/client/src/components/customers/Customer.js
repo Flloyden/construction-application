@@ -55,6 +55,7 @@ export default function Customer() {
         // Logs any errors
       } catch (error) {
         console.log(error);
+        navigate("/error");
       }
       setLoading(false);
     };

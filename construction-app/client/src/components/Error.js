@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import image from "../404.png";
 
 export default function Error() {
   if (
@@ -15,7 +16,7 @@ export default function Error() {
   return (
     <div className='text 2x1 font-semibold flex-1 h-screen bg-white'>
       <div className='w-full'>
-      <img src='404.png' alt='Error img' className='w-full' />
+      <img src={image} alt='Error img' className='w-full' />
       </div>
       <div className='text-center mt-10'>
       <h1 className='text-4xl'>SIDAN KUNDE INTE HITTAS</h1>
