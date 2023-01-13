@@ -20,12 +20,4 @@ public interface NoteSummaryDao extends JpaRepository<NoteSummaryEntity, Long> {
 
     List<NoteSummaryEntity> findAllByCustomerId(Long customerId);
 
-    @Query(
-            value = "SELECT * FROM note_summary ns " +
-                    "WHERE ns.work_number = :workId " +
-                    "ORDER BY ns.date_posted_sum DESC ",
-            nativeQuery = true
-    )
-    List<NoteSummaryEntity> findLatestSumForWork(@Param("workId") Long workId);
-
 }
