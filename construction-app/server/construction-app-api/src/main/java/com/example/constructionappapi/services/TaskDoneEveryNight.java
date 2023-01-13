@@ -21,7 +21,7 @@ public class TaskDoneEveryNight {
     }
 
     /**
-     * This task runs every night at 1 am to update vacation statuses, workstatuses and guarantees statuses.
+     * This task runs every night at 1 am to update vacation statuses, work statuses and guarantees statuses.
      */
     @Scheduled(cron = "0 0 1 * * *") //cron modification: second, minute, hour, day-of-month, month, day-of-week
     public void execute() throws InterruptedException {

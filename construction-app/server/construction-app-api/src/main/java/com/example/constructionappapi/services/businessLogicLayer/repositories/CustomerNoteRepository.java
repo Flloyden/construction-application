@@ -1,6 +1,5 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
-import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**

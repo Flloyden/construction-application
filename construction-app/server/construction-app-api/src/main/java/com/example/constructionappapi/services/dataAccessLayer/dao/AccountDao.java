@@ -1,6 +1,5 @@
 package com.example.constructionappapi.services.dataAccessLayer.dao;
 
-
 import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
