@@ -288,7 +288,6 @@ const ChangeWorkInfo = (props) => {
                       }}
                       selectsStart
                       startDate={startDate}
-                      endDate={endDate}
                     />
                   </div>
                 </div>
