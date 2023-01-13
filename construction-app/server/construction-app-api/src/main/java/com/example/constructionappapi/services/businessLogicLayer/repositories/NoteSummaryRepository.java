@@ -31,6 +31,13 @@ public class NoteSummaryRepository {
     @Autowired
     private CustomerNoteDao customerNoteDao;
 
+    /**
+     * Creates a summary of notes from a chosen month.
+     *
+     * @param noteSummary
+     * @param workId
+     * @return
+     */
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
         Optional<WorkEntity> work = workDao.findById(workId);
@@ -86,6 +93,12 @@ public class NoteSummaryRepository {
         return null;
     }
 
+    /**
+     * Fetches all summaries for a costumer.
+     *
+     * @param customerId
+     * @return List of summaries.
+     */
     public List<NoteSummaryEntity> getSumsForCustomer(long customerId) {
         List<NoteSummaryEntity> sum = noteSummaryDao.findAllByCustomerId(customerId);
         return sum;

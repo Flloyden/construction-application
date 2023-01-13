@@ -108,14 +108,4 @@ public class CustomerRepository {
         return ResponseEntity.ok().body("Kund borttagen");
     }
 
-    public List<CustomerEntity> getOngoingWorkTest() {
-        return customerDao.findCustomersWithWorkAndCalendarForToday();
-    }
-
-    public List<CustomerEntity> getUpcomingWorkTest() {
-        LocalDate tomorrow = LocalDate.now();
-        tomorrow = tomorrow.plusDays(1);
-        LocalDate tenDaysForward = tomorrow.plusDays(10);
-        return customerDao.findCustomersWithWorkAndCalendarBetweenStartDateAndEndDate(tomorrow, tenDaysForward);
-    }
 }

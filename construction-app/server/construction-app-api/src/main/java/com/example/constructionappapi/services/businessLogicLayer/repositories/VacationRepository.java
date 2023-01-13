@@ -186,6 +186,11 @@ public class VacationRepository {
         return vacationCalendarDao.findAll();
     }
 
+    /**
+     * Checks all vacations that has not started yet. Updates vacation statuses to Started depending on their start date and the current date.
+     *
+     * @return true if one or more vacation statuses were set.
+     */
     public ResponseEntity<?> findVacationsAndUpdateToStarted() {
         boolean success = false;
         List<VacationEntity> vacationsNotStarted = vacationDao.findNotStartedVacations();
@@ -193,7 +198,6 @@ public class VacationRepository {
         for (VacationEntity vacation : vacationsNotStarted) {
             if (vacation.getStartDate().equals(LocalDate.now()) || vacation.getStartDate().isBefore(LocalDate.now())) {
                 vacation.setWorkStatus(WorkStatus.STARTED);
-                System.out.println("Hello from update vacation to started");
                 vacationDao.save(vacation);
                 success = true;
             }
@@ -204,6 +208,11 @@ public class VacationRepository {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    /**
+     * Checks all started vacations. Updates vacation statuses to Completed depending on the current date and when the vacation ends
+     * .
+     * @return true if one or more vacation statuses were set.
+     */
     @Transactional
     public ResponseEntity findStartedVacationAndUpdateToCompleted() {
         boolean success = false;

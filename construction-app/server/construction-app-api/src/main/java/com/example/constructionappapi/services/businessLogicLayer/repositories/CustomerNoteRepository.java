@@ -127,6 +127,7 @@ public class CustomerNoteRepository {
 
     /**
      * Fetches all customer notes for one summary.
+     *
      * @param sumId
      * @return List of all the notes.
      */
