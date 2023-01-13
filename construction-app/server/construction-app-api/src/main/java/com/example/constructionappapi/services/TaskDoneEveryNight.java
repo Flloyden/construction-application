@@ -23,7 +23,8 @@ public class TaskDoneEveryNight {
     /**
      * This task runs every night at 1 am to update vacation statuses, work statuses and guarantees statuses.
      */
-    @Scheduled(cron = "0 0 1 * * *") //cron modification: second, minute, hour, day-of-month, month, day-of-week
+    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0/30 0/1 * * * *") //cron modification: second, minute, hour, day-of-month, month, day-of-week
     public void execute() throws InterruptedException {
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
