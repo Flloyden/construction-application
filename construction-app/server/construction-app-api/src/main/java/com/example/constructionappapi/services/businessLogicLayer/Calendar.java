@@ -249,6 +249,11 @@ public class Calendar {
         calendarDates.put(calendarEntity, calendarEntity.getWork().getId());
     }
 
+    /**
+     * Moves all work related calendar items after startDate backwards on the calendar.
+     *
+     * @param startDate The date to start looking forwards on the calendar from.
+     */
     public void moveCalendarItemBackwards(LocalDate startDate) {
         //A work-item being moved back shouldn't be moved back past the date that the last work-item that was moved back were moved to.
         LocalDate[] lastDateMovedTo = {LocalDate.MIN};
@@ -263,6 +268,14 @@ public class Calendar {
         });
     }
 
+    /**
+     * Moves all calendar items backwards on the calendar.
+     *
+     * @param workToMove      The work currently being moved.
+     * @param calendarEntity  CalendarEntity related to the work being moved.
+     * @param lastDateMovedTo The last date that something was moved to.
+     * @return The date that the calendar item was moved to.
+     */
     public LocalDate moveCalendarItemBackwards(WorkEntity workToMove, CalendarEntity calendarEntity, LocalDate lastDateMovedTo) {
         LocalDate possibleDate = calendarEntity.getDate().minusDays(1L);
         LocalDate freeCalendarSpot = findFreeCalendarSpot(possibleDate, lastDateMovedTo, workToMove);
