@@ -24,7 +24,7 @@ public class CustomerAPI {
     }
 
     @GetMapping("/customers/{id}")
-    public ResponseEntity<CustomerEntity> getCustomer(@PathVariable final Long id) {
+    public ResponseEntity<?> getCustomer(@PathVariable final Long id) {
         return customerRepository.getCustomer(id);
     }
 
@@ -35,6 +35,6 @@ public class CustomerAPI {
 
     @DeleteMapping("/customers/{id}/remove")
     public ResponseEntity<String> deleteCustomer(@PathVariable final Long id) {
-        return customerRepository.deleteCustomer(id); // Ska det vara return här?
+        return customerRepository.deleteCustomer(id);
     }
 }

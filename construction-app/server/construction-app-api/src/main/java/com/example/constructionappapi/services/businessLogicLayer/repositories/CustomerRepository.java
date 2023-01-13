@@ -1,5 +1,6 @@
 package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
+import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerDao;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CalendarEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
@@ -62,24 +63,42 @@ public class CustomerRepository {
         return ResponseEntity.ok().body(customerDao.findAll());
     }
 
-    public ResponseEntity<CustomerEntity> getCustomer(Long id) {
+    /**
+     * Looks for a customer in the database based on their ID.
+     *
+     * @param id ID of the user.
+     * @return 200 and CustomerEntity of the customer if found, 404 if otherwise.
+     */
+    public ResponseEntity<?> getCustomer(Long id) {
         Optional<CustomerEntity> customer = customerDao.findById(id);
         if (customer.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kunde inte hittas");
         }
 
         return ResponseEntity.ok().body(customer.get());
     }
 
+    /**
+     * Deletes a customer from the database.
+     *
+     * @param id ID of the customer to delete.
+     * @return Status confirming of denying the success of the deletion.
+     */
     public ResponseEntity<String> deleteCustomer(Long id) {
         if (!customerDao.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("That customer doesn't exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunden kunde inte hittas");
         }
-
-        //Todo: Error check to prevent customer from being deleted if started/completed wok exist.
 
         List<WorkEntity> workEntities = workRepository.getAllWorkEntitiesByCustomerId(id);
         if (workEntities != null && !workEntities.isEmpty()) {
+            for (WorkEntity workEntity : workEntities) {
+                if (workEntity.getWorkStatus() != WorkStatus.NOTSTARTED) {
+                    return ResponseEntity
+                            .status(HttpStatus.FORBIDDEN)
+                            .body("Kunden kunde inte tas bort då den innehåller ett eller flera påbörjade eller avklarade jobb");
+                }
+            }
+
             for (WorkEntity workEntity : workEntities) {
                 workRepository.deleteWorkEntity(workEntity.getId());
             }
@@ -87,7 +106,7 @@ public class CustomerRepository {
 
         customerDao.deleteById(id); //Deletes customer by ID
 
-        return ResponseEntity.ok().body("Customer deleted");
+        return ResponseEntity.ok().body("Kund borttagen");
     }
 
     public List<CustomerEntity> getOngoingWorkTest() {

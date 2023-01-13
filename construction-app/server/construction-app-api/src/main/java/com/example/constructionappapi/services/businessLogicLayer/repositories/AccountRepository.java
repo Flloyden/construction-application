@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.SecureRandom;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,13 +21,16 @@ public class AccountRepository {
     @Autowired
     private AccountDao accountDao;
 
+    /**
+     * Saves an AccountEntity to the database.
+     *
+     * @param account AccountEntity to save.
+     * @return The saved AccountEntity.
+     */
     public AccountEntity createAccount(AccountEntity account) {
         return accountDao.save(account);
     }
 
-    public List<AccountEntity> getAllAccountEntities() {
-        return accountDao.findAll();
-    }
 
     /**
      * Looks for a user in the database based on their ID.
@@ -38,10 +40,6 @@ public class AccountRepository {
      */
     public Optional<AccountEntity> findById(Long id) {
         return accountDao.findById(id);
-    }
-
-    public void deleteAccount(Long id) {
-        //accountDao.deleteById(id);
     }
 
     /**
