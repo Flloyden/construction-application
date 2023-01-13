@@ -99,14 +99,14 @@ export default function CircleChart() {
                 <h1 className="text-2xl font-bold">
                   {checkLength("upcoming")}
                 </h1>
-                <p className="font-normal">Kommande</p>
+                <p className="font-normal">Kommande jobb</p>
               </div>
             </div>
             <div className="flex gap-4 mt-2">
               <div className="w-5 h-5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mt-2" />
               <div className="">
                 <h1 className="text-2xl font-bold">{checkLength("ongoing")}</h1>
-                <p className="font-normal">Pågående</p>
+                <p className="font-normal">Pågående jobb</p>
               </div>
             </div>
             <div className="flex gap-4 mt-2">
@@ -115,7 +115,7 @@ export default function CircleChart() {
                 <h1 className="text-2xl font-bold">
                   {checkLength("completed")}
                 </h1>
-                <p className="font-normal">Slutförda</p>
+                <p className="font-normal">Slutförda jobb</p>
               </div>
             </div>
             <div className="flex gap-4 mt-2">

@@ -24,6 +24,7 @@ public class CustomerNoteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate datePosted;
+    @Lob
     private String note;
     private String timeSpend;
     private String kmDriven;
