@@ -30,6 +30,7 @@ public class WorkEntity implements Comparable<WorkEntity> {
     private LocalDate earliestStartDate;
     private int numberOfDays;
     private boolean isLockedInCalendar;
+    @Lob
     private String materialNote;
     @Lob
     private String offer;
