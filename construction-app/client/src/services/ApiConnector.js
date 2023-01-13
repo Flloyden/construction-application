@@ -40,7 +40,7 @@ axios.interceptors.response.use(
       // If the access token has expired, try to refresh it using the refresh token
       const refreshToken = localStorage.getItem("refreshToken");
 
-      if (refreshToken && error.response.data !== "Refresh failed") {
+      if (refreshToken && error.response.data !== "Refresh misslyckades") {
         return refreshAccessToken(refreshToken)
           .then((accessToken) => {
             // If the refresh token request was successful, retry the original request
