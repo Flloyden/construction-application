@@ -412,13 +412,11 @@ const ChangeWorkInfo = (props) => {
             <div
               className={
                 showErrorMessage
-                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
-                  : "invisible duration-200"
+                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible mx-auto m-0"
+                  : "hidden"
               }
             >
-              <p className={showErrorMessage ? "visible" : "invisible"}>
-                {errorMessage}
-              </p>
+              <p className="max-w-sm font-normal">{errorMessage}</p>
             </div>
           </div>
         </form>

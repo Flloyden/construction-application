@@ -26,7 +26,10 @@ export default function CheckWarranties() {
 
   function getWarranty() {
     /**Gets the warranty with nearest expiring date by sorting the array */
-    let sortedDates = warranties.sort(
+    let notExpired = warranties.filter((element) => {
+      return element.status === 0;
+    })
+    let sortedDates = notExpired.sort(
       (a, b) =>
         new Date(...a.warranty_date.split("/").reverse()) -
         new Date(...b.warranty_date.split("/").reverse())

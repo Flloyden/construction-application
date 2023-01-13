@@ -6,7 +6,6 @@ import { RiCloseLine } from "react-icons/ri";
 export default function Semester({ setIsSemesterOpen }) {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const today = new Date();
 
   let [startDate, setStartDate] = useState(new Date());
   const [semester, setSemester] = useState({
