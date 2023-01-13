@@ -10,6 +10,8 @@ export default function SettingsPassword() {
     newPassword: "",
     newPasswordConfirmation: "",
   });
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
@@ -48,8 +50,17 @@ export default function SettingsPassword() {
       })
       .catch((error) => {
         console.log(error);
+        errorMsg(error.response.data)
       });
   };
+
+  function errorMsg(message) {
+    setErrorMessage(message)
+    setShowErrorMessage(true)
+    setTimeout(() => {
+      setShowErrorMessage(false)
+    }, 3000)
+  }
 
   return (
     <div className="pt-4 mt-4 border-t-2">
@@ -114,6 +125,18 @@ export default function SettingsPassword() {
                 </button>
               </form>
             </div>
+
+            <div
+                className={
+                  showErrorMessage
+                    ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
+                    : "invisible duration-200"
+                }
+              >
+                <p className={showErrorMessage ? "visible" : "invisible"}>
+                  {errorMessage}
+                </p>
+              </div>
           </div>
         </div>
       )}
