@@ -38,7 +38,7 @@ public class CustomerNoteRepository {
     private Calendar calendar;
 
 
-    @Transactional //krävs för getDateForNewNote();
+    @Transactional //@Transactional is necessary for getDateForNewNote();
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNoteEntity, long workId) {
 
         Optional<WorkEntity> work = workDao.findById(workId);
