@@ -3,22 +3,17 @@ package com.example.constructionappapi.services;
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.businessLogicLayer.CalendarSingleton;
 import com.example.constructionappapi.services.dataAccessLayer.WorkStatus;
-import com.example.constructionappapi.services.dataAccessLayer.entities.AccountEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.CustomerEntity;
 import com.example.constructionappapi.services.dataAccessLayer.entities.WorkEntity;
 import com.example.constructionappapi.services.presentationLayer.AuthenticationAPI;
 import com.example.constructionappapi.services.presentationLayer.CustomerAPI;
-import com.example.constructionappapi.services.presentationLayer.CustomerNoteAPI;
 import com.example.constructionappapi.services.presentationLayer.WorkAPI;
 import com.example.constructionappapi.services.presentationLayer.bodies.PasswordChangeRequest;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class Tests {
     private final ConfigurableApplicationContext configurableApplicationContext;
@@ -30,7 +25,7 @@ public class Tests {
     public void testChangePassword() {
         AuthenticationAPI authenticationAPI = configurableApplicationContext.getBean(AuthenticationAPI.class);
 
-        ResponseEntity response = authenticationAPI.changePassword(new PasswordChangeRequest("bitsapp.noreply@gmail.com", "admin", "test", "test"));
+        ResponseEntity<?> response = authenticationAPI.changePassword(new PasswordChangeRequest("bitsapp.noreply@gmail.com", "admin", "test", "test"));
         System.out.println(response.getStatusCode() + ", " + response.getBody());
     }
 
@@ -247,7 +242,7 @@ public class Tests {
         System.out.println(ANSI_RED + "Adding work." + ANSI_RED);
         WorkAPI workAPI = configurableApplicationContext.getBean(WorkAPI.class);
 
-        ResponseEntity<WorkEntity> door = workAPI
+        ResponseEntity<?> door = workAPI
                 .createWork(
                         customer.getId(),
                         new WorkEntity(
@@ -268,7 +263,7 @@ public class Tests {
 
         CalendarSingleton.getCalendar().printCalendar();
 
-        ResponseEntity<WorkEntity> fence = workAPI
+        ResponseEntity<?> fence = workAPI
                 .createWork(
                         customer.getId(),
                         new WorkEntity(
@@ -289,7 +284,7 @@ public class Tests {
 
         CalendarSingleton.getCalendar().printCalendar();
 
-        ResponseEntity<WorkEntity> roof = workAPI
+        ResponseEntity<?> roof = workAPI
                 .createWork(
                         customer.getId(),
                         new WorkEntity(

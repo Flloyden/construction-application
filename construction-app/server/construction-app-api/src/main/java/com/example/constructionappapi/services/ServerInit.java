@@ -39,6 +39,9 @@ public class ServerInit {
         }
     }
 
+    /**
+     * Adds default colors to the database if there isn't any already in the database.
+     */
     private void addDefaultColor() {
         CalendarColorRepository calendarColorRepository = configurableApplicationContext.getBean(CalendarColorRepository.class);
         Optional<CalendarColorEntity> colorEntity = calendarColorRepository.findById(1L);
