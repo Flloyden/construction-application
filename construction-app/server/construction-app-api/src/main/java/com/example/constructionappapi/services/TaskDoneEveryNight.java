@@ -38,7 +38,7 @@ public class TaskDoneEveryNight {
         //update work status to started depending on start date and current date today
         workRepository.findWorkAndUpdateToStarted();
 
-        //change guarentees/accounting status to 1 (meaning "old") depending on warranty date and current date today
+        //change guarentees/accountings/warranties status to 1 (meaning "old") depending on warranty date and current date today
         accountingRepository.updateOldAccountingStatus(LocalDate.now());
     }
 }

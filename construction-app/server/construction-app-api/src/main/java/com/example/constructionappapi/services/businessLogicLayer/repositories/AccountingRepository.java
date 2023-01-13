@@ -22,10 +22,6 @@ public class AccountingRepository {
         return accountingDao.save(accounting);
     }
 
-    public AccountingEntity editAccounting(AccountingEntity accounting) {
-        return accountingDao.save(accounting);
-    }
-
     public List<AccountingEntity> getAllAccountingEntities() {
         return accountingDao.findAll();
     }

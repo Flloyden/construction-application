@@ -29,7 +29,6 @@ public class StartServer {
 
             CalendarSingleton.getCalendar().initializeCalendar();
 
-            //TODO: Remove when done with project? Could be useful.
             new ServerInit(configurableApplicationContext);
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);

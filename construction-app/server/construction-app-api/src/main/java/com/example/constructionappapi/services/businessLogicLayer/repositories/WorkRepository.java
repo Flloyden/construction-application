@@ -230,6 +230,12 @@ public class WorkRepository {
         });
     }
 
+    /**
+     * Checks if a work has as many summed customer notes as there are work days.
+     * If so, the status of the work can be updated to Completed.
+     * @param workId
+     * @return Http-status if accepted request or not
+     */
     @Transactional
     public ResponseEntity<?> findStartedWorkAndUpdateToCompleted(Long workId) {
         Optional<WorkEntity> thisWork = workDao.findById(workId);
@@ -244,6 +250,11 @@ public class WorkRepository {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    /**
+     * Checks the start date on all work that has not been started yet.
+     * If a work has a start date that is today, or before today, the status on the job is updated to Started.
+     * @return Http-status if accepted request or not
+     */
     public ResponseEntity<?> findWorkAndUpdateToStarted() {
         boolean success = false;
         List<WorkEntity> workNotStarted = workDao.findNotStartedWork();
