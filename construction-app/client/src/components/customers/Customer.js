@@ -261,6 +261,7 @@ export default function Customer() {
           currentCustomerSSN={customer.socialSecurityNumber}
           currentCustomerWorkList={customer.workList}
           currentCustomerNotes={customer.customerNotes}
+          currentCreationDate={customer.creationDate}
         />
       )}
       {isWorkOpen && (

@@ -15,6 +15,7 @@ const ChangeCustomerInfo = ({
   currentCustomerMail,
   currentCustomerCity,
   currentCustomerZip,
+  currentCreationDate
 }) => {
   const [customer, setCustomer] = useState({
     id: currentCustomerId,
@@ -28,6 +29,7 @@ const ChangeCustomerInfo = ({
     socialSecurityNumber: currentCustomerSSN,
     workList: currentCustomerWorkList,
     customerNotes: currentCustomerNotes,
+    creationDate: currentCreationDate
   });
 
   const handleChange = (e) => {

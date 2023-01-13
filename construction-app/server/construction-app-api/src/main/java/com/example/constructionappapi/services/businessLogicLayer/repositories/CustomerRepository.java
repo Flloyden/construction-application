@@ -54,7 +54,8 @@ public class CustomerRepository {
             }
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerDao.save(customer));
+        CustomerEntity savedCustomer = customerDao.save(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
     }
 
     public ResponseEntity<List<CustomerEntity>> getAllCustomers() {
