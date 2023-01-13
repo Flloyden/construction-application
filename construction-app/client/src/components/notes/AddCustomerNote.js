@@ -65,7 +65,6 @@ export default function AddCustomerNote(
     // Adds work to user with api call
     ApiConnector.saveNote(addNoteInfo.workNumber, addNoteInfo)
       .then((response) => {
-        console.log(response);
         if (response.data.length < 1) {
           setShowWrongInput((showWrongInput) => !showWrongInput);
           setTimeout(() => {

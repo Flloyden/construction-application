@@ -55,7 +55,6 @@ const ChangeWorkInfo = (props) => {
       ...newList,
       [e.target.name]: value,
     });
-    console.log(newList);
   };
 
   const convertToBase64 = (file) => {
@@ -89,7 +88,6 @@ const ChangeWorkInfo = (props) => {
     // Makes the change with the help of api call
     ApiConnector.changeWork(props.currentCustomerId, newList)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {
@@ -154,7 +152,6 @@ const ChangeWorkInfo = (props) => {
   }
 
   function getEarliestStartDateIfStarted() {
-    console.log(new Date(earliestStartDate));
     if (props.currentWorkStatus === "STARTED") {
       return (
         <input
@@ -343,8 +340,6 @@ const ChangeWorkInfo = (props) => {
                                 earliestStartDate: startDate,
                               });
                             }
-
-                            console.log(newList);
                           }}
                         />
                       </p>

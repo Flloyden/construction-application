@@ -40,17 +40,12 @@ const Login = () => {
     /**Handles the login function when the login button is pressed */
     e.preventDefault();
     setLoading(true);
-    console.log(credentials)
     //Tries to login the user with given cridentials
     ApiConnector.login(credentials, headers)
       .then((response) => {
-        console.log(response);
         if (response) {
           const accessToken = response.headers.authorization;
           const refreshToken = response.headers.refreshtoken;
-
-          console.log(accessToken)
-          console.log(refreshToken)
 
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
@@ -69,15 +64,15 @@ const Login = () => {
           setLoading(false);
         } else {
           console.error("Authentication failed");
-          setShowWrongLogin((showWrongInput) => !showWrongInput);
-          setTimeout(() => {
-            setShowWrongLogin(false);
-            setLoading(false);
-          }, 3000);
         }
       })
       .catch((error) => {
         console.log(error);
+        setShowWrongLogin((showWrongInput) => !showWrongInput);
+          setTimeout(() => {
+            setShowWrongLogin(false);
+            setLoading(false);
+          }, 3000);
       });
   };
 

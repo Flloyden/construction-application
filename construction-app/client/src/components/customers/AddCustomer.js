@@ -35,7 +35,6 @@ const AddCustomer = (props) => {
     // Sends the data to the backend
     ApiConnector.saveCustomer(customer)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

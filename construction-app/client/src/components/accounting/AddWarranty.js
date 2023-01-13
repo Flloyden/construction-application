@@ -32,7 +32,6 @@ const AddWaranty = (props) => {
     e.preventDefault();
     ApiConnector.saveWarranty(warranty)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

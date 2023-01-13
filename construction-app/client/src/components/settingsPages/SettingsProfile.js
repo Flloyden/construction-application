@@ -63,7 +63,6 @@ export default function SettingsProfile() {
     // Makes the change with the help of api call
     ApiConnector.updateUser(newUserInfo)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

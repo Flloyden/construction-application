@@ -89,7 +89,6 @@ export default function SumCustomerNote(
     // Adds work to user with api call
     ApiConnector.sumNote(Id, sumNoteInfo)
       .then((response) => {
-        console.log(response);
         if (response.data.length < 1) {
           setShowWrongInput((showWrongInput) => !showWrongInput);
           setTimeout(() => {

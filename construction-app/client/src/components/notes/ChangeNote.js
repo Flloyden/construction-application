@@ -24,18 +24,14 @@ export default function ChangeNote(props) {
       workNumber: props.currentWorkNumber,
       noteStatus: 0,
     };
-    console.log(newNote)
     // Adds work to user with api call
     ApiConnector.editNote(props.currentWorkNumber, newNote)
       .then((response) => {
-        console.log(response);
-        console.log(newNote)
         window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
       });
-      console.log(newNote)
   };
 
   return (

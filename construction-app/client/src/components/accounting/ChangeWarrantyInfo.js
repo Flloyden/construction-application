@@ -61,7 +61,6 @@ const ChangeWarrantyInfo = ({
     // Makes the api call to save changes
     ApiConnector.saveWarranty(warranty)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

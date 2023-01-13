@@ -119,7 +119,6 @@ export default function Calendar() {
     e.preventDefault();
     ApiConnector.saveSemester(e)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

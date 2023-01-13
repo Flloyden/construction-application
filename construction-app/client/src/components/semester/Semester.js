@@ -26,11 +26,9 @@ export default function Semester({ setIsSemesterOpen }) {
   const handleSubmit = (e) => {
     /**Saves the work and navigates back to the register */
     e.preventDefault();
-    console.log(semester);
       // Adds work to user with api call
       ApiConnector.saveSemester(semester)
         .then((response) => {
-          console.log(response);
           window.location.reload(false);
         })
         .catch((error) => {

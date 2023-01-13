@@ -102,7 +102,6 @@ export default function Home() {
     // Adds work to user with api call
     ApiConnector.saveSemester(e)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {
@@ -219,7 +218,6 @@ export default function Home() {
               height="100%"
               initialView="listWeek"
               eventClick={function (arg) {
-                console.log(arg.event);
                 if (arg.event._def.ui.backgroundColor === "#10b981") {
                   setCurrentSemesterName(
                     arg.event.extendedProps.description.name

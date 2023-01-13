@@ -15,7 +15,6 @@ export default function ForgotPassword(props) {
     e.preventDefault();
     ApiConnector.recoverPassword(email)
       .then((response) => {
-        console.log(response);
         setShowSuccess((showSuccess) => !showSuccess);
         setTimeout(() => {
           setShowSuccess(false);

@@ -22,7 +22,6 @@ export default function SettingsCalendar() {
       try {
         const response = await ApiConnector.getColors();
         setColors(response.data);
-        console.log(response.data)
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
@@ -37,7 +36,6 @@ export default function SettingsCalendar() {
     e.preventDefault();
     ApiConnector.updateColors(colors)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

@@ -28,9 +28,6 @@ export default function BarChart() {
     return date.toLocaleString('sv-SE', { month: 'long' });
   }
 
-  //const checkActive = calendarInfo.filter((item) => moment(new Date(item.date)).format("YYYY-MM") > day)
-  //console.log(checkActive)
-
   useEffect(() => {
     // Gets all the warrenties on page load and runs only once
     const fetchData = async () => {

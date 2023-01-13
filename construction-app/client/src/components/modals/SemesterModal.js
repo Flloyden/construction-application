@@ -21,7 +21,6 @@ const SemesterModal = (props) => {
       ...semester,
       [e.target.name]: value,
     });
-    console.log(semester);
   };
 
   const handleSubmit = async (e) => {
@@ -30,7 +29,6 @@ const SemesterModal = (props) => {
 
     ApiConnector.editSemester(props.currentId, semester)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
         props.setIsModalOpen(false);
       })

@@ -12,7 +12,6 @@ export default function OldNotes(props) {
       setLoading(true);
       try {
         const response = await ApiConnector.getNotesForSum(props.currentSumId);
-        console.log(response.data)
         setNotes(response.data);
       } catch (error) {
         console.log(error);

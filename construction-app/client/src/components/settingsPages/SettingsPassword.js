@@ -37,7 +37,6 @@ export default function SettingsPassword() {
       email: currentEmail,
       [e.target.name]: value,
     });
-    console.log(updatedPassword);
   };
 
   const handleSubmit = (e) => {
@@ -45,7 +44,6 @@ export default function SettingsPassword() {
     e.preventDefault();
     ApiConnector.changePassword(updatedPassword)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {

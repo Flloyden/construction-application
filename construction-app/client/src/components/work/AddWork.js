@@ -55,7 +55,6 @@ const AddWork = (props) => {
     // Adds work to user with api call
     ApiConnector.saveWork(props.currentCustomerId, work)
       .then((response) => {
-        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => {
