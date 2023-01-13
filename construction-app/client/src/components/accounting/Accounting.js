@@ -191,11 +191,11 @@ const Accounting = () => {
                             }}
                           >
                             {showReceipt && (
-                              <img
+                              <embed
                                 className="w-full mx-auto"
                                 src={currentWarrantyImage}
                                 alt="receipt"
-                                style={{ width: "50%" }}
+                                style={{height: "100%", width: "50%" }}
                               />
                             )}
                           </div>
@@ -317,11 +317,11 @@ const Accounting = () => {
                             }}
                           >
                             {showReceipt && (
-                              <img
+                              <embed
                                 className="w-full mx-auto"
                                 src={currentWarrantyImage}
                                 alt="receipt"
-                                style={{ width: "50%" }}
+                                style={{height: "100%", width: "50%" }}
                               />
                             )}
                           </div>
