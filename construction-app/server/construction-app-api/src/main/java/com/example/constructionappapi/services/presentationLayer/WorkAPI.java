@@ -26,7 +26,7 @@ public class WorkAPI {
     }
 
     @PostMapping("/work/{customerId}/save")
-    public ResponseEntity createWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
+    public ResponseEntity<?> createWork(@PathVariable final long customerId, @RequestBody WorkEntity work) {
         return workRepository.createWork(customerId, work);
     }
 
@@ -41,7 +41,7 @@ public class WorkAPI {
     }
 
     @GetMapping("/work/update-workstatus-completed/{workId}")
-    public ResponseEntity findStartedWorkAndUpdateToCompleted(@PathVariable final Long workId) {
+    public ResponseEntity<?> findStartedWorkAndUpdateToCompleted(@PathVariable final Long workId) {
         return workRepository.findStartedWorkAndUpdateToCompleted(workId);
     }
 
