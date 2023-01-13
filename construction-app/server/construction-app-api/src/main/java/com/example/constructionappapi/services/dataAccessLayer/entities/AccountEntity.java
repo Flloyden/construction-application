@@ -20,6 +20,9 @@ import java.util.Collections;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating the table account in DB. Also used for sending objects representing this DB table.
+ */
 public class AccountEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

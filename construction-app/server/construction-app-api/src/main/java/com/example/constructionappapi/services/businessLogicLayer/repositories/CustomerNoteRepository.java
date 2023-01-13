@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * Class accessing the customer note table in DB
+ * This class is the middle-man between the Presentation Layer and the Data Access Layer.
  */
 @Service
 public class CustomerNoteRepository {

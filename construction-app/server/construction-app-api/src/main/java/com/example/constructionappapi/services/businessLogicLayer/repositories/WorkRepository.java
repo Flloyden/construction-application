@@ -18,6 +18,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This class is the middle-man between the Presentation Layer and the Data Access Layer.
+ */
 @Service
 public class WorkRepository {
 
@@ -58,12 +61,6 @@ public class WorkRepository {
         if (work.getStartDate() == null) {
             work.setStartDate(findNewStartDate());
         }
-
-        //TODO detta gör att nytt jobb i tom kalender som hamnar på dagens datum inte sätts till started
-        //if (work.getStartDate().equals(LocalDate.now())) {
-        //work.setWorkStatus(WorkStatus.STARTED);
-        //}
-
         return calendar.addWork(workDao.save(work));
     }
 

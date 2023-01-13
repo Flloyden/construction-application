@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A class that gives access to interaction with table note_summary in the DB (save, find, delete,
- * etc, given by JpaRepository) through it's entity-class
+ * A class that gives access to interaction with the table note_summary in the DB (save, find, update, delete,
+ * etc, given by JpaRepository).
  */
 @Repository
 public interface NoteSummaryDao extends JpaRepository<NoteSummaryEntity, Long> {

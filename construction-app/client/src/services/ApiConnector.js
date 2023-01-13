@@ -108,8 +108,9 @@ class ApiConnector {
     return axios.post(BASE_URL + "/recover", token);
   }
 
-  //Saves the customer to the database
+  // ----------- CUSTOMER -----------
   saveCustomer(customer) {
+    //Saves the customer to the database
     return axios.post(CUSTOMER_BASE_API, customer);
   }
 
@@ -128,11 +129,13 @@ class ApiConnector {
     return axios.delete(CUSTOMER_BASE_API + "/" + customer + "/remove");
   }
 
+    // ----------- WORK -----------
   saveWork(customer, work) {
     return axios.post(WORK_BASE_API + "/" + customer + "/save", work);
   }
 
   getWork() {
+    //Gets all existing work from the database
     return axios.get(WORK_BASE_API);
   }
 
@@ -151,10 +154,10 @@ class ApiConnector {
     return axios.get(WORK_BASE_API + "/upcoming");
   }
 
-  //Gets ongoing work based on todays date.
-  //Checks if any customer has work that has date = todays date
-  //Used for updating workStatus
   getOngoingWork() {
+    //Gets ongoing work based on todays date.
+    //Checks if any customer has work that has date = todays date
+    //Used for updating workStatus
     return axios.get(WORK_BASE_API + "/ongoing");
   }
 
@@ -162,49 +165,51 @@ class ApiConnector {
     return axios.get(WORK_BASE_API + "/update-workstatus-completed/ " + workId);
   }
 
-  // ACCOUNTING / WARRANTY
+  // ----------- ACCOUNTING / WARRANTY / GUARANTEE -----------
   saveWarranty(warranty) {
-    //Saves the warranty to the database (Can also update existing warranty if ID already exists)
+    //Saves the warranty/guarantee/"accounting" to the database (Can also update existing warranty if ID already exists)
     return axios.post(GUARENTEES_BASE_API, warranty);
   }
 
   getWarranties() {
-    //Gets existing warranties from the database
+    //Gets existing warranties/guarantees/"accountings" from the database
     return axios.get(GUARENTEES_BASE_API);
   }
 
   getWarranty(warranty) {
-    //Gets specific warranty from the database
+    //Gets specific warranty/guarantee/"accounting" from the database
     return axios.get(GUARENTEES_BASE_API + "/" + warranty);
   }
 
   getOldWarranty() {
-    //Gets specific warranty from the database
+    //Gets specific warranty/guarantee/"accounting" from the database
     return axios.get(GUARENTEES_BASE_API + "/old-guarantees");
   }
 
   getActiveWarranty() {
-    //Gets specific warranty from the database
+    //Gets specific warranty/guarantee/"accounting" from the database
     return axios.get(GUARENTEES_BASE_API + "/active-guarantees");
   }
 
   deleteWarranty(warranty) {
-    //Deletes an existing warranty from the database
+    //Deletes an existing warranty/guarantee/"accounting" from the database
     return axios.delete(GUARENTEES_BASE_API + "/" + warranty + "/remove");
   }
 
+  // ----------- CALENDAR -----------
   getCalendar() {
-    //Gets all existing info about calendar from the database
+    //Gets all existing info about the work calendar from the database
     return axios.get(CALENDAR_BASE_API + "/work");
   }
 
-  saveSemester(date) {
-    return axios.post(VACATION_BASE_API, date);
+  getSemester() {
+    //Gets all existing info about the vacation/"semester" calendar from the database
+    return axios.get(CALENDAR_BASE_API + "/vacation");
   }
 
-  getSemester() {
-    //Gets all existing info about calendar from the database
-    return axios.get(CALENDAR_BASE_API + "/vacation");
+  // ----------- VACATION / "SEMESTER" -----------
+  saveSemester(date) {
+    return axios.post(VACATION_BASE_API, date);
   }
 
   getAmountOfNotOldSemesterDays() {
@@ -224,6 +229,7 @@ class ApiConnector {
     );
   }
 
+  // ----------- CUSTOMER NOTE -----------
   saveNote(workId, noteList) {
     return axios.post(CUSTOMERNOTE_BASE_API + "/save/" + workId, noteList);
   }
@@ -231,14 +237,6 @@ class ApiConnector {
   deleteNote(noteId) {
     console.log(noteId);
     return axios.delete(CUSTOMERNOTE_BASE_API + "/" + noteId + "/remove");
-  }
-
-  sumNote(workId, noteSum) {
-    return axios.post(NOTESUMMARY_BASE_API + "/save/" + workId, noteSum);
-  }
-
-  getSummedNotes(customerId) {
-    return axios.get(NOTESUMMARY_BASE_API + "/" + customerId);
   }
 
   getNotesForSum(sumId) {
@@ -249,6 +247,16 @@ class ApiConnector {
     return axios.post(CUSTOMERNOTE_BASE_API + "/" + workId + "/edit", noteList);
   }
 
+  // ----------- NOTE SUMMARY -----------
+  sumNote(workId, noteSum) {
+    return axios.post(NOTESUMMARY_BASE_API + "/save/" + workId, noteSum);
+  }
+
+  getSummedNotes(customerId) {
+    return axios.get(NOTESUMMARY_BASE_API + "/" + customerId);
+  }
+
+  // ----------- USER -----------
   getUser(user) {
     return axios.get(ACCOUNT_BASE_API + "/" + user);
   }
@@ -257,6 +265,8 @@ class ApiConnector {
     return axios.post(ACCOUNT_BASE_API + "/update", user);
   }
 
+
+  // ----------- CHANGE PASSWORD -----------
   changePassword(password) {
     console.log(password);
     return axios.post("http://localhost:8080/api/v1/change-password", password);
@@ -269,6 +279,7 @@ class ApiConnector {
     );
   }
 
+  // ----------- CALENDAR COLOR -----------
   getColors() {
     return axios.get(BASE_URL + "/calendarcolor")
   }

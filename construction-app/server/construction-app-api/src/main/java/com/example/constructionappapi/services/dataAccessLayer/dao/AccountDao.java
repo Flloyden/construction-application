@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * A class that gives access to interaction with table Account in the DB (save, find, delete,
- * etc, given by JpaRepository) through it's entity-class
+ * A class that gives access to interaction with the table account in the DB (save, find, update, delete,
+ * etc, given by JpaRepository).
  */
 public interface AccountDao extends JpaRepository<AccountEntity, Long> {
     Optional<AccountEntity> findFirstByNameAndPassword(String username, String password);

@@ -11,15 +11,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * A class creating and giving access to the table Vacation in DB
- */
 @Entity
 @Table(name = "vacation")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating the table vacation in DB. Also used for sending objects representing this DB table.
+ */
 public class VacationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Class for making a task that must execute every night.
- * Updates work with start date today to Started and old accountings to status 1
+ * A task runs every night at 1 am to update vacation statuses, workstatuses and guarantees statuses
  */
 @Component
 public class TaskDoneEveryNight {
@@ -26,25 +25,20 @@ public class TaskDoneEveryNight {
     }
 
     //cron modification: second, minute, hour, day-of-month, month, day-of-week
-
-    //@Scheduled(cron = "*/60 * * * * *") //every 60 seconds
     @Scheduled(cron = "0 0 1 * * *") //will run at 1 am every night
     public void execute() throws InterruptedException {
-        System.out.println();
-        System.out.println("______ Code is being executed from TaskDoneEveryNight... Time: " + formatter.format(LocalDateTime.now()) + " ______");
-
         WorkRepository workRepository = configurableApplicationContext.getBean(WorkRepository.class);
         AccountingRepository accountingRepository = configurableApplicationContext.getBean(AccountingRepository.class);
         VacationRepository vacationRepository = configurableApplicationContext.getBean(VacationRepository.class);
 
-        //updates vacationStatus to started and Completed depending on dates
+        //updates vacation status to started & completed depending on start date and current date today
         vacationRepository.findVacationsAndUpdateToStarted();
         vacationRepository.findStartedVacationAndUpdateToCompleted();
 
-        //update workStatus on work that starts today to Started
+        //update work status to started depending on start date and current date today
         workRepository.findWorkAndUpdateToStarted();
 
-        //change status on guarantees with warranty date today or before today to 1
+        //change guarentees/accounting status to 1 (meaning "old") depending on warranty date and current date today
         accountingRepository.updateOldAccountingStatus(LocalDate.now());
     }
 }

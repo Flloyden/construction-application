@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * API for note summaries. This is where the client/front-end and server communication is made possible.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class NoteSummaryAPI {

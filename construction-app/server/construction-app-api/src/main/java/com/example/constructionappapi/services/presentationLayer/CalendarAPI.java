@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * API for the calendar. This is where the client/front-end and server communication is made possible.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class CalendarAPI {

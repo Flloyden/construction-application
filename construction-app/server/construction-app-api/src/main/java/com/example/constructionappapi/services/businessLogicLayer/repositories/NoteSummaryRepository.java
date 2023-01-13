@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class accessing the customer note_summary table in DB
+ * This class is the middle-man between the Presentation Layer and the Data Access Layer.
  */
 @Service
 public class NoteSummaryRepository {

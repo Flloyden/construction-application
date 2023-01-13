@@ -37,15 +37,8 @@ public class StartServer {
 
             CalendarSingleton.getCalendar().initializeCalendar();
 
-            //TODO: Remove when done with project? Could be useful.
             addDefaultUser();
             addDefaultColor();
-
-            Tests tests = new Tests(configurableApplicationContext);
-            //tests.testGetAllNotesForSum();
-            //tests.testSetWorkStatusToCompleted();
-            //tests.testAddWork();
-            //tests.testChangeNumberOfDaysOnWork();
         } catch (Exception e) {
             System.out.println("Spring application could not run: " + e);
         }
@@ -86,6 +79,7 @@ public class StartServer {
             calendarColorRepository.createCalendarcolor(colorEntity1);
         }
     }
+
     @Bean
     public TaskDoneEveryNight task() {
         return new TaskDoneEveryNight(configurableApplicationContext);

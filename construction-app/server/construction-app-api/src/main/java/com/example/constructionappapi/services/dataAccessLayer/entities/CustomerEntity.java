@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 /**
- * A class creating and giving access to the table Customer in DB
+ * A class creating the table customer in DB. Also used for sending objects representing this DB table.
  */
 public class CustomerEntity {
     @Id

@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A class that gives access to interaction with table Calendar in the DB (save, find, delete,
- * etc, given by JpaRepository) through it's entity-class
+ * A class that gives access to interaction with the table calendar in the DB (save, find, update, delete,
+ * etc, given by JpaRepository).
  */
 @Repository
 public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {

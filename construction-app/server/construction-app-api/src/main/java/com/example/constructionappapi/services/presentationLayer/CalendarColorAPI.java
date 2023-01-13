@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * API for chosen calendar colors. This is where the client/front-end and server communication is made possible.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class CalendarColorAPI {

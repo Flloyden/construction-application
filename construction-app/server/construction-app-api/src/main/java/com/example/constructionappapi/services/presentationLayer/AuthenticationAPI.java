@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
+/**
+ * API for authentication. This is where the client/front-end and server communication is made possible.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class AuthenticationAPI {

@@ -12,8 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * A class that gives access to interaction with table Accounting in the DB (save, find, delete,
- * etc, given by JpaRepository) through it's entity-class
+ * A class that gives access to interaction with the table accounting in the DB (save, find, update, delete,
+ * etc, given by JpaRepository). Accounting representing guarantee/"accounting"/warranty.
  */
 @Repository
 public interface AccountingDao extends JpaRepository<AccountingEntity, Long> {

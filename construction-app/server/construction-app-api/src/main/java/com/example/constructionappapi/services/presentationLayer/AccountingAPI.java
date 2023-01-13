@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * API for guarantees/"accountings"/warranties (these three names all represent the same thing). This is where the client/front-end and server communication is made possible.
+ */
 @RestController
 @RequestMapping("/api/v1")
 public class AccountingAPI {
@@ -28,11 +31,6 @@ public class AccountingAPI {
     @GetMapping("/guarantees/old-guarantees")
     public int getAmountOfOldAccounting() {
         return accountingRepository.getOldAccountings();
-    }
-
-    @GetMapping("guarantees/all-guarantees")
-    public int getAmountOfAccounting() {
-        return accountingRepository.getAllAccountingEntities().size();
     }
 
     @GetMapping("guarantees/active-guarantees")

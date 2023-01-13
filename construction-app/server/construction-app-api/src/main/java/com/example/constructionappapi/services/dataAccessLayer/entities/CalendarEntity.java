@@ -16,6 +16,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating the table calendar in DB. Also used for sending objects representing this DB table.
+ */
 public class CalendarEntity implements Comparable<CalendarEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

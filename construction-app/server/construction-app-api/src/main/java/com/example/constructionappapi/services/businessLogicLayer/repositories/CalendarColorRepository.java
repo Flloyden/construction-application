@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * This class is the middle-man between the Presentation Layer and the Data Access Layer.
+ */
 @Service
 public class CalendarColorRepository {
     @Autowired

@@ -11,6 +11,9 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating the table calendarcolor in DB. Also used for sending objects representing this DB table.
+ */
 public class CalendarColorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

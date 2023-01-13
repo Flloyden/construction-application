@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A class creating and giving access to the table Work in DB
- */
 @Entity
 @Table(name = "work")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating the table work in DB. Also used for sending objects representing this DB table.
+ */
 public class WorkEntity implements Comparable<WorkEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

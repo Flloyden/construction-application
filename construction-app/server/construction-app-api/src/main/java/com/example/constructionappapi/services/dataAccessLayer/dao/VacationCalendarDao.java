@@ -8,6 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A class that gives access to interaction with the table vacation_calendar in the DB (save, find, update, delete,
+ * etc, given by JpaRepository).
+ */
 @Repository
 public interface VacationCalendarDao extends JpaRepository<VacationCalendarEntity, Long> {
     Optional<VacationCalendarEntity> findFirstByDateLessThanEqualAndDateGreaterThanEqual(LocalDate endDate, LocalDate startDate);

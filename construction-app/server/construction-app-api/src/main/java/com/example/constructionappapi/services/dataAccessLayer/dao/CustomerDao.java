@@ -11,8 +11,8 @@ import java.util.Optional;
 
 
 /**
- * A class that gives access to interaction with table Customer in the DB (save, find, delete,
- * etc, given by JpaRepository) through it's entity-class
+ * A class that gives access to interaction with the table customer in the DB (save, find, update, delete,
+ * etc, given by JpaRepository).
  */
 @Repository
 public interface CustomerDao extends JpaRepository<CustomerEntity, Long> {

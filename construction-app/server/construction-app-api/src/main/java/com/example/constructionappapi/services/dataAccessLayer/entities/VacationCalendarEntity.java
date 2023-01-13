@@ -13,6 +13,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * A class creating the table vacation_calendar in DB. Also used for sending objects representing this DB table.
+ */
 public class VacationCalendarEntity implements Comparable<VacationCalendarEntity> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 /**
- * A class creating and giving access to the table Accounting in DB
+ * A class creating the table accounting in DB. Also used for sending objects representing this DB table. Accountings representing guarantees/"accountings"/warranties
  */
 public class AccountingEntity {
     @Id

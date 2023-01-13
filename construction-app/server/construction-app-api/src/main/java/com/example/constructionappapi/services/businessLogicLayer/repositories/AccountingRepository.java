@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class is the middle-man between the Presentation Layer and the Data Access Layer. Accountings representing guarantees/"accountings"/warranties.
+ */
 @Service
 public class AccountingRepository {
 

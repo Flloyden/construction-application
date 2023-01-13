@@ -9,8 +9,8 @@ import java.util.List;
 
 
 /**
- * A class that gives access to interaction with table Vacation in the DB (save, find, delete,
- * etc, given by JpaRepository) through it's entity-class
+ * A class that gives access to interaction with the table vacation in the DB (save, find, update, delete,
+ * etc, given by JpaRepository).
  */
 @Repository
 public interface VacationDao extends JpaRepository<VacationEntity, Long> {

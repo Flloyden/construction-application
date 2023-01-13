@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 /**
- * A class creating and giving access to the table customer_note in DB
+ * A class creating the table customer_note in DB. Also used for sending objects representing this DB table.
  */
 
 public class CustomerNoteEntity {

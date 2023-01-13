@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 
 /**
- * A class creating and giving access to the table note_summary in DB
+ * A class creating the table note_summary in DB. Also used for sending objects representing this DB table.
  */
 public class NoteSummaryEntity {
     @Id
