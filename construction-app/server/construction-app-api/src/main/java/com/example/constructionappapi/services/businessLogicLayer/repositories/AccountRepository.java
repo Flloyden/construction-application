@@ -51,7 +51,7 @@ public class AccountRepository {
     public ResponseEntity<String> updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        final Optional<AccountEntity> accountEntity = Optional.ofNullable(findByEmail(userInfoUpdateRequest.getEmail()));
+        final Optional<AccountEntity> accountEntity = findById(userInfoUpdateRequest.getId());
         if (accountEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Användaren kunde inte hittas");
         }
