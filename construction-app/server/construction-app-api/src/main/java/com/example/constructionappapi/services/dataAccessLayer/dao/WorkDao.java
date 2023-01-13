@@ -16,17 +16,6 @@ import java.util.Optional;
  */
 @Repository
 public interface WorkDao extends JpaRepository<WorkEntity, Long> {
-    Optional<WorkEntity> findFirstByOrderByIdDesc();
-
-    List<WorkEntity> findByStartDateBetween(LocalDate start, LocalDate end);
-
-    List<WorkEntity> findByStartDate(LocalDate startdate);
-
-    @Query(
-            value = "SELECT * FROM work WHERE work.work_status = 1",
-            nativeQuery = true
-    )
-    List<WorkEntity> findStartedWork();
 
     @Query(
             value = "SELECT * FROM work WHERE NOT work.work_status = 2",
@@ -70,13 +59,6 @@ public interface WorkDao extends JpaRepository<WorkEntity, Long> {
             nativeQuery = true
     )
     List<WorkEntity> findWorkEntityForTodayIfSunday(int workStatus);
-
-    @Query(value = "SELECT w.* FROM work w " +
-            "INNER JOIN customer c ON c.id=w.customer_id " +
-            "INNER JOIN calendar ca ON w.id = ca.work_id " +
-            "WHERE start_date BETWEEN ?1 AND ?2 AND work_status = ?3 ORDER BY start_date ASC LIMIT 1",
-            nativeQuery = true)
-    List<WorkEntity> findFirstByStartDateBetweenAndWorkStatus(LocalDate tomorrow, LocalDate tenDaysForward, int workStatus);
 
     @Query(value = "SELECT w.* FROM work w " +
             "INNER JOIN customer c ON c.id=w.customer_id " +

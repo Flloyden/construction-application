@@ -31,8 +31,6 @@ public class NoteSummaryRepository {
     @Autowired
     private CustomerNoteDao customerNoteDao;
 
-    private WorkRepository workRepository;
-
     @Transactional
     public NoteSummaryEntity createNoteSummary(NoteSummaryEntity noteSummary, long workId) {
         Optional<WorkEntity> work = workDao.findById(workId);
@@ -86,12 +84,6 @@ public class NoteSummaryRepository {
 
         }
         return null;
-    }
-
-
-    public Optional<NoteSummaryEntity> getSumForWork(long workId) {
-        Optional<NoteSummaryEntity> sum = noteSummaryDao.findByWorkNumber(workId);
-        return sum;
     }
 
     public List<NoteSummaryEntity> getSumsForCustomer(long customerId) {

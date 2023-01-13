@@ -14,7 +14,6 @@ import java.util.Optional;
  */
 @Repository
 public interface VacationCalendarDao extends JpaRepository<VacationCalendarEntity, Long> {
-    Optional<VacationCalendarEntity> findFirstByDateLessThanEqualAndDateGreaterThanEqual(LocalDate endDate, LocalDate startDate);
 
     Optional<VacationCalendarEntity> findFirstByDate(LocalDate startDate);
 

@@ -20,12 +20,7 @@ public interface CalendarDao extends JpaRepository<CalendarEntity, Long> {
     Optional<CalendarEntity> findFirstByOrderByDateDesc(); //last date in calendar
 
     @Transactional
-    void deleteAllByDate(LocalDate date);
-
-    @Transactional
     void deleteAllByWorkId(long id);
-
-    List<CalendarEntity> findByDateBetween(LocalDate tomorrow, LocalDate thirtyDaysForward);
 
     Optional<CalendarEntity> findFirstByWorkIdOrderByDateDesc(long workId);
 

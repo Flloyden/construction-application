@@ -12,5 +12,4 @@ import java.util.List;
  */
 public interface CalendarColorDao extends JpaRepository<CalendarColorEntity, Long> {
 
-    List<CalendarColorEntity> findAllById(int i);
 }

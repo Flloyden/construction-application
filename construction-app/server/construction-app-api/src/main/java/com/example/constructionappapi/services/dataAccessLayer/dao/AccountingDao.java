@@ -17,14 +17,6 @@ import java.util.List;
  */
 @Repository
 public interface AccountingDao extends JpaRepository<AccountingEntity, Long> {
-
-    @Modifying
-    @Transactional
-    @Query(
-            value = "DELETE FROM accounting a WHERE DATE(a.warranty_date) <= :today",
-            nativeQuery = true)
-    int deleteOldAccountings(@Param("today") LocalDate today);
-
     @Query(
             value = "SELECT * FROM accounting WHERE accounting.status = 1",
             nativeQuery = true

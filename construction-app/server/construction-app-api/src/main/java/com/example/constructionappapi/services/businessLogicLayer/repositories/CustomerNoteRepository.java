@@ -2,7 +2,6 @@ package com.example.constructionappapi.services.businessLogicLayer.repositories;
 
 import com.example.constructionappapi.services.businessLogicLayer.Calendar;
 import com.example.constructionappapi.services.dataAccessLayer.NoteStatus;
-import com.example.constructionappapi.services.dataAccessLayer.dao.CalendarDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.CustomerNoteDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.NoteSummaryDao;
 import com.example.constructionappapi.services.dataAccessLayer.dao.WorkDao;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,12 +28,6 @@ public class CustomerNoteRepository {
     private WorkDao workDao;
     @Autowired
     private WorkRepository workRepository;
-
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    private HashMap<VacationCalendarEntity, VacationEntity> vacationDates = new HashMap<>();
-
-    private Calendar calendar;
 
     /**
      * Creates or edits a note for a work.
@@ -116,82 +108,17 @@ public class CustomerNoteRepository {
         }
     }
 
-    public List<CustomerNoteEntity> getAllNotesForOneSum(long sumNoteId) {
-        return customerNoteDao.findAllBySummaryId(sumNoteId);
-
-    }
-
-    public List<CustomerNoteEntity> getAllNotesByWorkId(long workId) {
-        return customerNoteDao.findAllByWorkId(workId);
-    }
-
-    public List<CustomerNoteEntity> getAllSummarizedNotesForWork(long workId) {
-        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByWorkId(workId);
-        List<CustomerNoteEntity> summarizedNotes = new ArrayList<>();
-
-        for (CustomerNoteEntity customerNoteEntity : allNotes) {
-            NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if (noteStatus == NoteStatus.SUMMARIZED) {
-                summarizedNotes.add(customerNoteEntity);
-            }
-        }
-
-        return summarizedNotes;
-    }
-
-    public List<CustomerNoteEntity> getAllNotSummarizedNotesForWork(long workId) {
-        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByWorkId(workId);
-        List<CustomerNoteEntity> nonSummarizedNotes = new ArrayList<>();
-
-        for (CustomerNoteEntity customerNoteEntity : allNotes) {
-            NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if (noteStatus == NoteStatus.NOTSUMMARIZED) {
-                nonSummarizedNotes.add(customerNoteEntity);
-            }
-        }
-
-        return nonSummarizedNotes;
-    }
-
-    public List<CustomerNoteEntity> getAllNotesByCustomerId(long customerId) {
-        return customerNoteDao.findAllByCustomerId(customerId);
-    }
-
-    public List<CustomerNoteEntity> getAllSummarizedNotesForCustomer(long customerId) {
-        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByCustomerId(customerId);
-        List<CustomerNoteEntity> summarizedNotes = null;
-
-        for (CustomerNoteEntity customerNoteEntity : allNotes) {
-            NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if (noteStatus == NoteStatus.SUMMARIZED) {
-                summarizedNotes.add(customerNoteEntity);
-            }
-        }
-
-        return summarizedNotes;
-    }
-
-    public List<CustomerNoteEntity> getAllNotSummarizedNotesForCustomer(long customerId) {
-        List<CustomerNoteEntity> allNotes = customerNoteDao.findAllByCustomerId(customerId);
-        List<CustomerNoteEntity> nonSummarizedNotes = new ArrayList<>();
-
-        for (CustomerNoteEntity customerNoteEntity : allNotes) {
-            NoteStatus noteStatus = customerNoteEntity.getNoteStatus();
-            if (noteStatus == NoteStatus.NOTSUMMARIZED) {
-                nonSummarizedNotes.add(customerNoteEntity);
-            }
-        }
-
-        return nonSummarizedNotes;
-    }
-
-
     public void deleteNote(Long noteId) {
         if (customerNoteDao.existsById(noteId)) {
             customerNoteDao.deleteById(noteId);
         }
     }
 
+    /**
+     * Fetches all customer notes for one summary.
+     * @param sumId
+     * @return List of all the notes.
+     */
     public List<CustomerNoteEntity> getAllNotesForSum(long sumId) {
         if (noteSummaryDao.existsById(sumId)) {
             return customerNoteDao.findAllBySummaryId(sumId);

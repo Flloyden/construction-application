@@ -27,9 +27,6 @@ public class VacationRepository {
     @Autowired
     private VacationCalendarDao vacationCalendarDao;
 
-    @Autowired
-    private WorkRepository workRepository;
-
     private Calendar calendar = CalendarSingleton.getCalendar();
 
     public VacationRepository() {
