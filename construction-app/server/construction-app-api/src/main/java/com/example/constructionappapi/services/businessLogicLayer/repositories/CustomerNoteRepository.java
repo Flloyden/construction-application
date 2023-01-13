@@ -37,7 +37,12 @@ public class CustomerNoteRepository {
 
     private Calendar calendar;
 
-
+    /**
+     * Creates or edits a note for a work.
+     * @param customerNoteEntity
+     * @param workId
+     * @return null if work is not found, otherwise the saved NoteEntity.
+     */
     @Transactional //@Transactional is necessary for getDateForNewNote();
     public CustomerNoteEntity createCustomerNote(CustomerNoteEntity customerNoteEntity, long workId) {
 
@@ -48,7 +53,7 @@ public class CustomerNoteRepository {
         }
 
         LocalDate dateToAdd;
-        if (!customerNoteDao.existsById(customerNoteEntity.getId())) { //om ny anteckning
+        if (!customerNoteDao.existsById(customerNoteEntity.getId())) { //if this is a new note, get date for note depending on when the last note was written
             dateToAdd = getDateForNewNote(workId);
 
             if (dateToAdd == null) {
@@ -56,14 +61,15 @@ public class CustomerNoteRepository {
             }
 
             customerNoteEntity.setDatePosted(dateToAdd);
-        } else { //om gammal anteckning som redigeras
+        } else {
+            //if this is an old note that is being edited, the date is the same
             Optional<CustomerNoteEntity> oldNote = customerNoteDao.findById(customerNoteEntity.getId());
             customerNoteEntity.setDatePosted(oldNote.get().getDatePosted());
         }
 
-        CustomerEntity customerEntity = work.get().getCustomer(); //hämta customer till det jobbet
-        customerNoteEntity.setCustomer(customerEntity); //assignar note till customer
-        customerNoteEntity.setWorkForNote(work.get()); //assigna note till work
+        CustomerEntity customerEntity = work.get().getCustomer();
+        customerNoteEntity.setCustomer(customerEntity);
+        customerNoteEntity.setWorkForNote(work.get());
         customerNoteEntity.setNoteStatus(NoteStatus.NOTSUMMARIZED);
 
         return customerNoteDao.save(customerNoteEntity);
@@ -75,28 +81,30 @@ public class CustomerNoteRepository {
     }
 
 
+    /**
+     * If a new note is saved, and it is the first note made for the work, the date of the note will be the same date as the date of the first work day.
+     * Otherwise the date for the note will be the same date as the date for the work day that is scheduled after the last note that was made.
+     * @param workId
+     * @return null if something went wrong, otherwise the date for the note.
+     */
     public LocalDate getDateForNewNote(long workId) {
 
         Optional<WorkEntity> work = workDao.findById(workId);
         List<CustomerNoteEntity> allNotesForThisWork = work.get().getCustomerNotes();
 
-        if (work.get().getCustomerNotes().isEmpty()) { //om detta är första anteckningen för jobbet så blir datum för anteckningen första dagen på jobbet
+        if (allNotesForThisWork.isEmpty()) { //if this note is the first one made for the work, the date of the note will be the same as first work day
             return (work.get().getStartDate());
-        } else { //annars sätt datumet på anteckningen till jobbdagen efter senaste anteckningen
+        } else { //otherwise, the date for the note will be the same as the next workday on the job
             LocalDate dateLastNote = null;
 
             for (int i = 0; i < allNotesForThisWork.size(); i++) {
-                if (i == (allNotesForThisWork.size()) - 1) { //Hämta datum på senaste anteckningen //TODO detta går att göra snyggare med korrekt funktion i Dao?
+                if (i == (allNotesForThisWork.size()) - 1) { //Get the date of the last note being made for this work
                     dateLastNote = allNotesForThisWork.get(i).getDatePosted();
                 }
             }
 
             List<CalendarEntity> workCalendar = work.get().getCalendar();
-            //calendarDao.findAllByWorkId(workId) ; //kalender för jobbet som anteckningen tillhör
 
-            if (workCalendar.isEmpty()) {
-                System.out.println("-----------------workCalendar empty!!!!");
-            }
             //kolla igenom alla datum i jobbkalender och hitta första datumet efter senaste anteckningen
             for (CalendarEntity calendarEntity : workCalendar) {
                 if (calendarEntity.getDate().isAfter(dateLastNote)) { //datumet efter förra anteckningen

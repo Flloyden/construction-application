@@ -153,6 +153,10 @@ public class WorkRepository {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Du har angivit för få dagar. Antal dagar kan inte vara färre än så många dagar som har avklarats på jobbet.");
         }
 
+        if(customerNoteDao.findAllByWorkId(work.getId()).size() > work.getNumberOfDays()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Du har angivit för få dagar. Antal dagar kan inte vara färre än antalet anteckningar som gjorts.");
+        }
+
         if (isDateTakenByLocked(work.getStartDate())) {
             Optional<WorkEntity> workAtStartDate = workDao.findById(calendarDao.findFirstByDate(work.getStartDate()).getWork().getId());
 
