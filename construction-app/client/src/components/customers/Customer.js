@@ -118,13 +118,13 @@ export default function Customer() {
                   <div className="flex">
                     <BsPersonFill className="text-4xl mr-4 mt-0.5 pl-2" />
                   </div>
-                  <span className="text-1xl my-auto">{customer.name}</span>
+                  <span className="text-ellipsis overflow-hidden text-1xl my-auto">{customer.name}</span>
                 </div>
                 <div className="flex py-2 justify-start items-center w-full">
                   <div className="flex">
                     <AiOutlineNumber className="text-4xl mr-4 mt-0.5 pl-2" />
                   </div>
-                  <span className="text-1xl my-auto">
+                  <span className="text-ellipsis overflow-hidden text-1xl my-auto">
                     {customer.socialSecurityNumber}
                   </span>
                 </div>
@@ -132,7 +132,7 @@ export default function Customer() {
                   <div className="flex">
                     <MdLocationOn className="text-4xl mr-4 mt-0.5 pl-2" />
                   </div>
-                  <span className="text-1xl my-auto">
+                  <span className="text-ellipsis overflow-hidden text-1xl my-auto">
                     {customer.address}, {customer.city}, {customer.zip}
                   </span>
                 </div>
@@ -140,13 +140,13 @@ export default function Customer() {
                   <div className="flex">
                     <MdEmail className="text-4xl mr-4 mt-0.5 pl-2" />
                   </div>
-                  <span className="text-1xl my-auto">{customer.mail}</span>
+                  <span className="text-ellipsis overflow-hidden text-1xl my-auto">{customer.mail}</span>
                 </div>
                 <div className={checkItem(customer.phoneNumber)}>
                   <div className="flex">
                     <BsTelephoneFill className="text-4xl mr-4 mt-0.5 pl-2" />
                   </div>
-                  <span className="text-1xl my-auto">
+                  <span className="text-ellipsis overflow-hidden text-1xl my-auto">
                     {customer.phoneNumber}
                   </span>
                 </div>
@@ -154,7 +154,7 @@ export default function Customer() {
                   <div className="flex">
                     <BsFillHouseFill className="text-4xl mr-4 mt-0.5 pl-2" />
                   </div>
-                  <span className="text-1xl my-auto">
+                  <span className="text-ellipsis overflow-hidden text-1xl my-auto">
                     {customer.propertyDesignation}
                   </span>
                 </div>
