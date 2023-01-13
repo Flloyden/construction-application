@@ -171,16 +171,16 @@ export default function SettingsProfile() {
               </div>
 
               <div
-              className={
-                showErrorMessage
-                  ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
-                  : "invisible duration-200"
-              }
-            >
-              <p className={showErrorMessage ? "visible" : "invisible"}>
-                {errorMessage}
-              </p>
-            </div>
+                className={
+                  showErrorMessage
+                    ? "bg-red-500 px-4 mt-4 rounded text-white py-1 duration-200 visible"
+                    : "invisible duration-200"
+                }
+              >
+                <p className={showErrorMessage ? "visible" : "invisible"}>
+                  {errorMessage}
+                </p>
+              </div>
             </div>
           </div>
         </div>
