@@ -131,7 +131,7 @@ const Login = () => {
                       email: e.target.value,
                     })
                   }
-                  type="text"
+                  type="email"
                   placeholder="Email"
                   className="rounded block w-full p-2.5 border-gray-500 border text-black focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
                 />
