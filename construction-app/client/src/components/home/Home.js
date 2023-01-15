@@ -84,7 +84,7 @@ export default function Home() {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const kl = holiday.map((item) => {
     return moment(new Date(item.date)).format("YYYY-MM-DD");
