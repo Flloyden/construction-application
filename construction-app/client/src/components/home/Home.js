@@ -2,7 +2,6 @@ import listPlugin from "@fullcalendar/list";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import Holidays from "date-holidays";
 import moment from "moment";
-import { isMobile } from "react-device-detect";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import ApiConnector from "../../services/ApiConnector";
@@ -81,11 +80,6 @@ export default function Home() {
         // Logs error if api cal not successful
       } catch (error) {
         console.log(error);
-      }
-      if (isMobile) {
-        navigate("/kalender");
-      } else {
-        window.location.href = "/";
       }
       setLoading(false);
     };
