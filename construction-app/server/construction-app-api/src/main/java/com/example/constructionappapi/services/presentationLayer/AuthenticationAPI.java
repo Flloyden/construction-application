@@ -118,7 +118,7 @@ public class AuthenticationAPI {
             accountRepository.save(user);
 
             String emailSubject = "Återställning av lösenord till BiTs";
-            String emailText = "Hallå Thomas!\n \nKlicka på länken så kommer ett nytt lösenord skickas till dig på denna e-mail inom några minuter: \nhttp://bits.norrto.se/recover?token=" + recoveryToken + ".\n" +
+            String emailText = "Hallå Thomas!\n \nKlicka på länken så kommer ett nytt lösenord skickas till dig på denna e-mail inom några minuter: \nhttps://bitsapp.norrto.se/recover?token=" + recoveryToken + ".\n" +
                     "\nGlöm inte att sedan direkt logga in och uppdatera lösenordet till ett eget!\n \nMvh Construction Crew :)";
             emailService.sendEmail(emailRecoveryRequest.getEmail(), emailSubject, emailText);
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();

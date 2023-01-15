@@ -2,6 +2,7 @@
 !build/libs/dependency/BOOT-INF/lib
 !build/libs/dependency/BOOT-INF/classes
 !build/libs/dependency/META-INF
+!build/libs/*.jar
 
 !gradlew
 !gradle
