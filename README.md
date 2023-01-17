@@ -11,3 +11,6 @@ We hope that the company will be satisfied with our work. BiTs was created in 20
 ## Frameworks
 - React 
 - Spring
+
+## Demo
+[Construction_demo.pdf](https://github.com/Flloyden/construction-application/files/10434605/Construction_demo.pdf)
